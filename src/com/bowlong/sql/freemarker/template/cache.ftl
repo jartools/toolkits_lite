@@ -148,7 +148,7 @@ public class ${d_tableName}Cache {
 	public static List<${d_tableName}> getCacheAll(){
 		<#list indexKeys as index>
 		<#if index.indexName == "PRIMARY">
-		return ListEx.valueToList(<#list index.x_columnNames as x_columnName>${x_columnName}</#list>Cache);
+		return new ArrayList<${d_tableName}>(<#list index.x_columnNames as x_columnName>${x_columnName}</#list>Cache.values());
 		</#if>
 		</#list>
 	}
@@ -182,7 +182,7 @@ public class ${d_tableName}Cache {
 		}else{
 			<#list indexKeys as index>
 			<#if index.indexName == "PRIMARY">
-			${x_tableName}s = ListEx.valueToList(<#list index.x_columnNames as x_columnName>${x_columnName}</#list>Cache);
+			${x_tableName}s = new ArrayList<${d_tableName}>(<#list index.x_columnNames as x_columnName>${x_columnName}</#list>Cache.values());
 			</#if>
 			</#list>
 		}
@@ -261,12 +261,24 @@ public class ${d_tableName}Cache {
 		</#list>
 	}
 	
-	/*** 清除缓存 **/
-	public static void clearCache(${d_tableName} ${x_tableName}){
+	
+	
+	/**
+	 * 清空缓存 
+	 * clearType 1:只清空缓存关系  2:只清空对象   3.全部清空
+	 * saveType  0:不保存 1：保存database 2:保存redis 3:保存全部(redis+database)
+	 */
+	public static void clearCache(${d_tableName} ${x_tableName},int clearType,int saveType){
 		<#list indexKeys as index>
 		<#if index.unique>
 		<#if index.indexName == "PRIMARY">
-		<#list index.x_columnNames as x_columnName>${x_columnName}</#list>Cache.remove(${index.all_d_columnName_get});
+		if(clearType == 2){
+			<#list index.x_columnNames as x_columnName>${x_columnName}</#list>Cache.remove(${index.all_d_columnName_get});
+			return;
+		}
+		if(clearType == 3){
+			<#list index.x_columnNames as x_columnName>${x_columnName}</#list>Cache.remove(${index.all_d_columnName_get});
+		}
 		<#else>
 		<#list index.x_columnNames as x_columnName>${x_columnName}</#list>Cache.remove(${x_tableName}.get<#list index.d_columnNames as d_columnName>${d_columnName}</#list>Index());
 		</#if>
@@ -281,14 +293,6 @@ public class ${d_tableName}Cache {
 		<#list index.x_columnNames as x_columnName>${x_columnName}</#list>Cache.put(${index.all_d_columnName_get},<#list index.x_columnNames as x_columnName>${x_columnName}</#list>set);
 		</#if>
 		</#list>
-	}
-	
-	/**
-	 * 清空缓存 
-	 * saveType  0:不保存 1：保存database 2:保存redis 3:保存全部(redis+database)
-	 */
-	public static void clearCache(${d_tableName} ${x_tableName},int saveType){
-		clearCache(${x_tableName});
 		switch (saveType) {
 		case 1:
 			saveDatabase(${x_tableName});
@@ -306,11 +310,12 @@ public class ${d_tableName}Cache {
 	
 	/**
 	 * 清空缓存
+	 * clearType 1:只清空缓存关系  2:只清空对象   3.全部清空
 	 * saveType  0:不保存 1：保存database 2:保存redis 3:保存全部(redis+database)
 	 */
-	public static void clearCaches(List<${d_tableName}> ${x_tableName}s,int saveType){
+	public static void clearCaches(List<${d_tableName}> ${x_tableName}s,int clearType,int saveType){
 		for(${d_tableName} ${x_tableName} : ${x_tableName}s){
-			clearCache(${x_tableName},0);
+			clearCache(${x_tableName},clearType,0);
 		}
 		switch (saveType) {
 		case 1:
@@ -368,11 +373,11 @@ public class ${d_tableName}Cache {
     	}else{
     		isSaveUq = true;
     		int _id = ${x_tableName}.get${primaryD_columnName}();
-			if (_id < id) {
+			if (_id > id) {
+				unitCell.set(_id);
+			} else {
 				_id = id;
 				${x_tableName}.set${primaryD_columnName}(id);
-			} else if (_id > id) {
-				unitCell.set(_id);
 			}
 				
 			switch (cacheCur) {
@@ -399,7 +404,7 @@ public class ${d_tableName}Cache {
     }
     
     private static ${d_tableName} update(${d_tableName} ${x_tableName},boolean isFlush){
-    	clearCache(${x_tableName},0);
+    	clearCache(${x_tableName},1,0);
     	loadCache(${x_tableName});
     	//加入定时器
     	if(!isFlush){
@@ -413,7 +418,7 @@ public class ${d_tableName}Cache {
     }
     
     private static boolean delete(${d_tableName} ${x_tableName},boolean isFlush){
-    	clearCache(${x_tableName},0);
+    	clearCache(${x_tableName},3,0);
     	//加入定时器
     	if(!isFlush){
     		if (!saveDelete.contains(${x_tableName})) {
@@ -489,6 +494,8 @@ public class ${d_tableName}Cache {
 		}
     	return isDel;
     }
+    
+    
     
     // ******************************** 持久化操作 ********************************
      public static void saveDatabase(){
@@ -687,7 +694,7 @@ public class ${d_tableName}Cache {
 	 */
 	public static void clearCacheCascade(${d_tableName} ${x_tableName},int saveType){
 	
-		clearCache(${x_tableName},saveType);
+		clearCache(${x_tableName},3,saveType);
 		
 		<#list bindKeys as bindKey>
 		<#if !bindKey.pk>

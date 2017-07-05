@@ -43,14 +43,14 @@ public class ${d_tableName}Jedis{
 	// 数据库唯一标识字段名称(主键)
 	static final String dbID = "${index.all_x_columnName}";
 	static final String dbIDHead = "${index.all_x_columnName}:";
-	static final String tbMapKey = "Object:${d_tableName}";
 	
 	public static ${d_tableName} getBy<#list index.d_columnNames as d_columnName>${d_columnName}</#list>(Jedis jedis,${index.all_basicType_x_columnName}) throws Exception{
 		if(jedis == null)
 			return null;
 		${d_tableName} ${x_tableName} = null;
+		String key = "Object:${d_tableName}";
 		String field = PStr.b(dbIDHead,${index.all_x_columnName}).e();
-		${x_tableName} = ${d_tableName}.createForJson(jedis.hget(tbMapKey,field));
+		${x_tableName} = ${d_tableName}.createForJson(jedis.hget(key,field));
 		return ${x_tableName};
 	}
 	<#else>
@@ -64,8 +64,9 @@ public class ${d_tableName}Jedis{
 		String field_unique = PStr.b(${index.all_x_columnName}).e();
 		String primaryKey = jedis.hget(key_unique,field_unique);
 		if(primaryKey != null){
+			String key = "Object:${d_tableName}";
 			String field = PStr.b(dbIDHead,primaryKey).e();
-			${x_tableName} = ${d_tableName}.createForJson(jedis.hget(tbMapKey,field));
+			${x_tableName} = ${d_tableName}.createForJson(jedis.hget(key,field));
 		}
 		return ${x_tableName};
 	}
@@ -80,9 +81,10 @@ public class ${d_tableName}Jedis{
 			String key = PStr.b("Indexes:${d_tableName}:${index.all_x_columnName}:",${index.all_x_columnName}).e();
 			Set<String> setStr = jedis.smembers(key);
 			if(setStr != null){
+				key = "Object:${d_tableName}";
 				String[] fieldArray = {};
 				fieldArray = setStr.toArray(fieldArray);
-				List<String> jsons = jedis.hmget(tbMapKey,fieldArray);
+				List<String> jsons = jedis.hmget(key,fieldArray);
 				${x_tableName}s = ${d_tableName}.createForJson(jsons);
 				loadCaches(${x_tableName}s);
 			}
@@ -133,8 +135,7 @@ public class ${d_tableName}Jedis{
 		<#assign i=1 />
 		</#if>
 		
-		//${index.all_d_columnName_get}
-		tmpVal = PStr.b(${index.all_x_columnName_get}).e();
+		tmpVal = PStr.b(${index.all_x_columnName_get}).e();//${index.all_d_columnName_get}
 		${x_tableName}.set<#list index.d_columnNames as d_columnName>${d_columnName}</#list>Index(tmpVal);
 		</#if>
 		</#if>
@@ -150,10 +151,10 @@ public class ${d_tableName}Jedis{
 <#list indexKeys as index>
 	<#if index.unique>
 		<#if index.indexName == "PRIMARY">
-		int primaryKeyInt = ${x_tableName}.get${primaryD_columnName}();
+		int primaryKeyInt = ${x_tableName}.get${primaryD_columnName}();//${index.all_x_columnName_get}
 		String primaryKey = String.valueOf(primaryKeyInt);
 		// ---------------------- 主键索引  Indexes----------------------
-		String key = tbMapKey;
+		String key = "Object:${d_tableName}";
 		String field = PStr.b(dbIDHead,primaryKey).e();
 		String data = ${x_tableName}.toJson();
 		p.hset(key,field,data);
@@ -165,10 +166,14 @@ public class ${d_tableName}Jedis{
 		saveUqVal(${x_tableName});
 			<#assign i=1 />
 			</#if>
-		// ---------------------- 唯一索引  key,field,val[主键primaryKey]
+		// ---------------------- 唯一索引  key,field[${index.all_x_columnName_get}],val[主键primaryKey]
 		tmpKey = PStr.b(key,"${index.all_x_columnName}").e();
 		field = PStr.b(${index.all_x_columnName_get}).e();
 		p.hset(tmpKey,field,primaryKey);
+		
+		// ---------------------- 唯一索引  key,field[主键primaryKey],val[${index.all_x_columnName_get}]
+		// tmpKey = PStr.b(key,"${index.all_x_columnName}_Index").e();
+		// p.hset(tmpKey,primaryKey,field);
 		</#if>
 	<#else>
 		<#if i==0>
@@ -237,7 +242,7 @@ public class ${d_tableName}Jedis{
 		int primaryKeyInt = ${x_tableName}.get${primaryD_columnName}();//${index.all_x_columnName_get}
 		String primaryKey = String.valueOf(primaryKeyInt);
 		// ---------------------- 主键索引  Indexes----------------------
-		String key = tbMapKey;
+		String key = "Object:${d_tableName}";
 		String field = PStr.b(dbIDHead,primaryKey).e();
 		p.hdel(key,field);
 		<#else>
@@ -248,7 +253,7 @@ public class ${d_tableName}Jedis{
 			<#assign i=1 />
 			</#if>
 		
-		// ---------------------- 唯一索引  key,field,val[主键primaryKey]
+		// ---------------------- 唯一索引  key,field[${index.all_x_columnName_get}],val[主键primaryKey]
 		tmpKey = PStr.b(key,"${index.all_x_columnName}").e();
 		field = PStr.b(${index.all_x_columnName_get}).e();
 		p.hdel(tmpKey,field);
@@ -384,7 +389,8 @@ public class ${d_tableName}Jedis{
 		Jedis jedis = JedisTookits.getJedis();
 		List<${d_tableName}> ${x_tableName}s = new ArrayList<${d_tableName}>();
 		try{
-			List<String> jsons = jedis.hvals(tbMapKey);
+			String key = "Object:${d_tableName}";
+			List<String> jsons = jedis.hvals(key);
 			${x_tableName}s = ${d_tableName}.createForJson(jsons);
 		}catch (Exception e) {
 			
@@ -401,8 +407,15 @@ public class ${d_tableName}Jedis{
 		Jedis jedis = JedisTookits.getJedis();
 		List<${d_tableName}> ${x_tableName}s = new ArrayList<${d_tableName}>();
 		try{
-			List<String> jsons = jedis.hvals(tbMapKey);
-			${x_tableName}s = ${d_tableName}.createForJson(jsons);
+			// if(!isLoadAll){
+				// ${x_tableName}s = ${d_tableName}Dao.getAll();
+				// loadCaches(${x_tableName}s);
+				// isLoadAll = true;
+			// }else{
+			String key = "Object:${d_tableName}";
+			List<String> jsons = jedis.hvals(key);
+			${x_tableName}s = ${d_tableName}.createForJson(jsons);			
+			// }
 		}catch (Exception e) {
 			
 		}finally{

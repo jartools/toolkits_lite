@@ -47,6 +47,7 @@ public class ${d_tableName} {
 	</#list>
 	
 	public ${d_tableName}() {
+		super();
 	}
 	
 	public ${d_tableName}(${all_basicType_x_columnName}) {
@@ -54,11 +55,6 @@ public class ${d_tableName} {
 		<#list columns as column>
 		this.${column.x_columnName} = ${column.x_columnName};
 		</#list>
-	}
-	
-	/*** 初始化新的对象 **/
-	static public ${d_tableName} new${d_tableName}(${all_basicType_x_columnName}) {
-		return new ${d_tableName}(${all_x_columnName});
 	}
 	
 	<#-- 取得更新字段集 -->

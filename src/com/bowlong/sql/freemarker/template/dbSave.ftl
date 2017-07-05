@@ -9,10 +9,6 @@ public class ${className} {
 
 	static private int cacheCur = CfgDbCache.CP;
 
-	static public int getChacheType() {
-		return cacheCur;
-	}
-	
 	static public void setChacheType(int cType) {
 		cacheCur = cType;
 	<#list tables as table>
@@ -21,15 +17,19 @@ public class ${className} {
 	</#list>
 	}
 	
-	static public boolean saveAll() throws Exception{
+	static public int getChacheType() {
+		return cacheCur;
+	}
+	
+	public static boolean saveAll() throws Exception{
 	<#list tables as table>
 		// ${table.tableName}
 		${table.d_tableName}Imp.saveAll();
 	</#list>
 		return true;
 	}
-		
-	static public boolean saveRedisAll() throws Exception{
+	
+	public static boolean saveRedisAll() throws Exception{
 	<#list tables as table>
 		// ${table.tableName}
 		${table.d_tableName}Imp.saveRedisClear();
@@ -37,7 +37,7 @@ public class ${className} {
 		return true;
 	}
 	
-	static public boolean saveDatabaseAll() throws Exception{
+	public static boolean saveDatabaseAll() throws Exception{
 	<#list tables as table>
 		// ${table.tableName}
 		${table.d_tableName}Imp.saveDatabaseClear();
