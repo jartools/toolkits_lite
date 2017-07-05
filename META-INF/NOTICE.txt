@@ -1,0 +1,45 @@
+Notice-Version: 1.0
+Maker : Canyon
+Name  : Mr.Gyh
+Email : gongyanghui1986@163.com
+QQ    : 379657505
+Desc  : json-20160212 是 org.json类型,org.json比json-lib要轻量得多
+	fastjson : 进行了优化,快速
+Content:
+	bio2:B2Helper,B2InputStream,B2OutPutStream,...
+	concurrent.async:Async,Async.ForExcept,...
+	image:ImageEx,ImgEx
+	io:ByteInStream,ByteOutStream,FileEx,FileRw
+	lang:StrEx,Pstr,NumEx,NumFmtEx,RndEx,ByteEx
+	lang.task:MyThreadFactory,SchedulerEx,ThreadEx
+	net:TcpChannel
+	net.http.uri:HttpUriPostEx,HttpUriGetEx
+	net.http.urlcon:HttpUrlConEx
+	net.proto.gen:Bio2G...
+	objpool:AbstractQueueObjPool,StringBufPool,...
+	pinyin:PinYin
+	reflect:TypeEx,Invoke,BeanUtils
+	regex:RegxEx
+	security:DES,Encrypt,EncDecoder,MD5
+	sql:SqlEx
+	sql.builder.jdbc.mysql:
+	sql.jdbc:
+	sql.mysql:
+	sql.freemarker:
+	text:EncodingEx
+	text.filter:DFAFilter
+	third:FastJSON
+	third.jsoup:JsoupEx
+	third.jsptag:TagFmtData
+	third.netty4:
+	third.poi:PoiEx
+	third.poi.excel.hss:
+	third.poi.excel.xss:
+	third.xml:XMLEx
+	third.xml.jaxb:JaxbReadXml
+	third.xml.province.entity:XmlCities,XmlCity,XmlDistrict,XmlDistricts,XmlProvince,XmlProvinces
+	tool:NameRndEx,TkitBase,TkitJsp,TkitOrigin,TkitValidataeCheck
+	util:Base64,CalendarEx,DateEx,DateFmtEx,Delegate,ExceptionEx,ListEx,MapEx,Ref,...
+	util.page:APage,IPage,PageEnt
+	util.page.tag:PageTag
+	...

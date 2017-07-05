@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib>
+	<tlib-version>1.1</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>tags</short-name>
+	<uri>http://page.bowlong.com/jsp/tags</uri>
+	
+	<tag>
+		<name>pageTag</name>
+		<tag-class>com.bowlong.third.jsptag.page.tag.PageTag</tag-class>
+		<body-content>empty</body-content>
+		<description><![CDATA[page_tag_entity]]></description>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[PageEnt_example]]></description>
+		</attribute>
+		<attribute>
+			<name>action</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[form_action]]></description>
+		</attribute>
+		<attribute>
+			<name>wrapid</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[json_backdata_in_html's_id]]></description>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>fmtDate</name>
+		<tag-class>com.bowlong.third.jsptag.TagFmtDate</tag-class>
+		<body-content>empty</body-content>
+		<description><![CDATA[entity_4_format]]></description>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[value:Date,long]]></description>
+		</attribute>
+		<attribute>
+			<name>parttern</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[pars:(yyyyMMdd ...)]]></description>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>map</name>
+		<tag-class>com.bowlong.third.jsptag.MapTag</tag-class>
+		<attribute>
+			<name>key</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>data</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>defVal</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+</taglib>
