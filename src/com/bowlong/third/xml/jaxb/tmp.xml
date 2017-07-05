@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SyncAppOrderResp>
+<MsgType>SyncAppOrderResp</MsgType>
+<Version>1.0.0</Version>
+<hRet>0</hRet>
+</SyncAppOrderResp>

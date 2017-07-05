@@ -1,0 +1,513 @@
+package com.bowlong.net.proto.gen.lua.ver2;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.bowlong.lang.PStr;
+import com.bowlong.lang.StrEx;
+import com.bowlong.net.proto.gen.B2Class;
+import com.bowlong.net.proto.gen.B2Field;
+import com.bowlong.net.proto.gen.B2G;
+import com.bowlong.text.Encoding;
+import com.bowlong.util.NewList;
+import com.bowlong.util.NewMap;
+import com.bowlong.util.StrBuilder;
+
+@SuppressWarnings({ "unused" })
+public class Bio2GLua {
+	/**
+	 * @param args
+	 * @return
+	 */
+	public static String b2g(Class<?> c, boolean src) {
+		B2Class B2C = c.getAnnotation(B2Class.class);
+		String sname = c.getSimpleName();
+		String namespace = "";
+		if (B2C != null) {
+			namespace = B2C.namespace();
+		}
+
+		// String p = "gen_b2g";
+		String p = (src ? "src/" : "") + "gen_b2g";
+		if (namespace != null && !namespace.isEmpty()) {
+			p = p + "/" + namespace;
+		}
+		File path = new File(p);
+		if (!path.exists())
+			path.mkdirs();
+
+		Class<?>[] classes = c.getDeclaredClasses();
+		StrBuilder sb = new StrBuilder();
+
+		sb.pn("do");
+		sb.pn("");
+		sb.pn("  " + sname + " = {");
+		sb.pn("");
+		// =========== 生成实体对象
+
+		for (Class<?> class1 : classes) {
+			if (B2G.isData(class1)) {
+				String f = class1.getSimpleName();
+				// 是否是常量类
+				boolean isConstant = B2G.isConstant(class1);
+				if (isConstant) {
+					g2beanConstant(class1, namespace, sb);
+				} else {
+					g2bean(class1, namespace, sb, sname);
+				}
+			}
+		}
+
+		// =========== end
+
+		// 请求
+		List<Class<?>> listServer = new ArrayList<Class<?>>();
+		for (Class<?> class1 : classes) {
+			if (B2G.isServer(class1)) {
+				listServer.add(class1);
+			}
+		}
+
+		sb.pn("   callNet = { ");
+		sb.pn("    __sessionid = 0;");
+		sb.pn("");
+
+		for (Class<?> class1 : listServer) {
+			if (B2G.isServer(class1)) {
+				lua_request(class1, namespace, sb, sname);
+			}
+		}
+		sb.pn("   };");
+		sb.pn("");
+
+		// 回调
+		sb.pn("   --[[");
+		sb.pn("    // //////////////////////////////////////////////");
+		sb.pn("    // 请求回掉分发解析");
+		sb.pn("    // //////////////////////////////////////////////");
+		sb.pn("    --]]");
+		sb.pn("");
+		sb.pn("    onCallNet = { ");
+		sb.pn("");
+
+		for (Class<?> class1 : listServer) {
+			if (B2G.isServer(class1)) {
+				lua_call(class1, namespace, sb, sname);
+			}
+		}
+		sb.pn("    };");
+		sb.pn("");
+		sb.pn("  };");
+		sb.pn("");
+
+		// swich
+		for (Class<?> class1 : listServer) {
+			if (B2G.isServer(class1)) {
+				lua_call_swich(class1, namespace, sb, sname);
+			}
+		}
+
+		sb.pn("end;");
+		sb.pn("");
+
+		sb.pn("module(\"" + sname + "\",package.seeall)");
+
+		writeFile(p + "/" + sname + ".lua", sb.toString());
+
+		System.out.println(sb);
+		return sb.toString();
+	}
+
+	// 普通类
+	public static void g2bean(Class<?> c, String namespace, StrBuilder sb,
+			String fathName) {
+		Field[] fs = c.getDeclaredFields();
+		String cname = c.getSimpleName();
+		int hcname = cname.hashCode();
+		sb.pn("    ${1} = {", cname);
+
+		// ///////
+		for (Field field : fs) {
+			B2Field a = field.getAnnotation(B2Field.class);
+			String s = field.getName();
+			String t = B2G.getType(field);
+			if (s.contains("$"))
+				continue;
+
+			if (field.getType().equals(List.class)) {
+				String gtype = B2G.getListType(field);
+				boolean isBtype = B2G.isBType(gtype);
+				if (gtype != null && !gtype.isEmpty() && !isBtype) {
+					sb.pn("      maps_${1} = function(maps) ", s);
+					sb.pn("        if(maps == nil) then");
+					sb.pn("          return ArrayList();");
+					sb.pn("        end;");
+					sb.pn("        local len = maps.Count");
+					sb.pn("        local r = ArrayList();");
+					sb.pn("        for i=0,len-1 do");
+					sb.pn("          local _e = maps:get_Item(i);");
+					sb.pn("          local e = ${1}.${2}.parse(_e);",
+							fathName, gtype);
+					sb.pn("          if(e ~= nil) then");
+					sb.pn("            r:Add(e);");
+					sb.pn("          end");
+					sb.pn("        end");
+					sb.pn("        return r;");
+					sb.pn("      end;");
+					sb.pn("");
+				}
+			}
+		}
+		// ///////
+		sb.pn("      parse = function(dataMap)");
+		sb.pn("        if(dataMap == nil) then return nil; end;");
+		sb.pn("");
+		sb.pn("        local r = Hashtable();");
+		for (Field field : fs) {
+			String t = B2G.getCsType(field);
+			String gm = B2G.getCsMapType(t);
+			String s = field.getName();
+			String remark = B2G.getRemark(field);
+			if (!StrEx.isEmpty(remark)) {
+				remark = remark.replaceAll("//", "--");
+			} else {
+				remark = "--";
+			}
+			remark = remark + " [" + t + "]";
+
+			int hs = s.hashCode();
+			if (s.contains("$"))
+				continue;
+
+			if (field.getType().equals(List.class)) {
+				String gtype = B2G.getListType(field);
+				boolean isBtype = B2G.isBType(gtype);
+				if (gtype != null && !gtype.isEmpty() && !isBtype) {
+					sb.pn("        r:set_Item(\"${1}\",${2}.${3}.maps_${1}(dataMap:get_Item(\"${4}\")));--${4}",
+							s, fathName, cname, hs, t);
+				} else {
+					sb.pn("        r:set_Item(\"${1}\",dataMap:get_Item(\"${2}\"));  ${3}", s,
+							hs, remark);
+				}
+			} else {
+				if (gm.equals("getObject")) {
+					sb.pn("        r:set_Item(\"${1}\",${2}.${3}.parse(dataMap:get_Item(\"${4}\")));  ${5}",
+							s, fathName, t, hs, remark);
+				} else {
+					sb.pn("        r:set_Item(\"${1}\",dataMap:get_Item(\"${2}\"));  ${3}", s,
+							hs, remark);
+				}
+			}
+		}
+		sb.pn("        return r;");
+		sb.pn("      end;");
+		sb.pn("");
+		sb.pn("    };");
+		sb.pn("");
+	}
+
+	// 常量类
+	public static void g2beanConstant(Class<?> c, String namespace,
+			StrBuilder sb) {
+		Field[] fs = c.getDeclaredFields();
+		String cname = c.getSimpleName();
+		sb.pn("    ${1} = {", cname);
+		for (Field field : fs) {
+			String t = B2G.getCsType(field);
+			String s = field.getName();
+
+			if (s.contains("$"))
+				continue;
+
+			String remark = B2G.getRemark(field);
+			if (!StrEx.isEmpty(remark)) {
+				remark = remark.replaceAll("//", "--");
+			} else {
+				remark = "--";
+			}
+
+			String def = B2G.getDef(field);
+			if (field.getType().equals(List.class)) {
+				String gtype = B2G.getListType(field);
+				if (gtype != null && !gtype.isEmpty()) {
+					continue;
+				}
+			} else {
+				if ("string".equals(t))
+					sb.pn("      ${1} = \"${3}\"; ${2}", s, remark, def);
+				else
+					sb.pn("      ${1} = ${3}; ${2}", s, remark, def);
+			}
+		}
+		sb.pn("    };");
+		sb.pn("");
+	}
+
+	// 生成客户端接口--请求
+	public static void lua_request(Class<?> c, String namespace, StrBuilder sb,
+			String fathName) {
+		String sname = c.getSimpleName();
+		Method[] methods = c.getMethods();
+		String cname = c.getSimpleName();
+		for (Method m : methods) {
+			if (!B2G.isServer(m))
+				continue;
+
+			String remark = B2G.getRemark(m);
+			String srtype = B2G.getReturnType(m);
+			String mname = B2G.getNethodName(m);
+			int hmname = mname.hashCode();
+			NewList<NewMap<String, String>> params = B2G.getParameters(m);
+			StrBuilder sb1 = new StrBuilder();
+			for (NewMap<String, String> m1 : params) {
+				String myvar = (String) m1.getValue();
+				boolean isOut = B2G.isOut(m, myvar);
+				if (isOut) {
+
+				} else {
+					sb1.ap("${1}, ", myvar);
+				}
+			}
+			if (sb1.length() > 2) {
+				sb1.removeRight(2);
+			}
+
+			// 需要实现的逻辑函数
+			sb.pn("      -- ${1}", remark);
+			sb.pn("      ${1} = function(${2})", mname, sb1);
+			sb.pn("        local _map = Hashtable();");
+			sb.pn("        _map:set_Item(\"-100\", ${1}.callNet.__sessionid);-- __sessionid",
+					fathName);
+			sb.pn("        _map:set_Item(\"${1}\", ${2});-- cmd:${3}",
+					B2G.METHOD, hmname, mname);
+			for (NewMap<String, String> m1 : params) {
+				String key = (String) m1.getKey();
+				String val = (String) m1.getValue();
+				String p = B2G.getMapType(key);
+				String hval = val.hashCode() + "";
+				boolean isOut = B2G.isOut(m, val);
+				if (isOut) {
+
+				} else {
+					if (p.equals("getList")) {
+						String oType = B2G.getOType(m, val);
+						String mType = B2G.getMapType(oType);
+						if (mType.equals("getObject")) {
+
+						} else {
+							sb.pn("        _map:set_Item(\"${1}\", ${2});",
+									hval, val);
+						}
+					} else if (B2G.getMapType(key).equals("getObject")) {
+						sb.pn("        _map:set_Item(\"${1}\", ${2}.toMap());",
+								hval, val);
+					} else {
+						sb.pn("        _map:set_Item(\"${1}\", ${2});", hval,
+								val);
+					}
+				}
+			}
+			sb.pn("        return _map;");
+			sb.pn("      end;");
+			sb.pn("");
+		}
+		sb.pn("");
+	}
+
+	// 生成客户端接口--回调
+	public static void lua_call(Class<?> c, String namespace, StrBuilder sb,
+			String fathName) {
+		String sname = c.getSimpleName();
+		Method[] methods = c.getMethods();
+		String cname = c.getSimpleName();
+
+		String callName = fathName + ".onCallNet";
+
+		sb.pn("      --[[");
+		sb.pn("      // //////////////////////////////////////////////");
+		sb.pn("      // 逻辑分发");
+		sb.pn("      // //////////////////////////////////////////////");
+		sb.pn("      --]]");
+		sb.pn("");
+
+		sb.pn("      disp = function(map)");
+		sb.pn("        local cmd = map:get_Item(\"${1}\");", B2G.METHOD);
+		sb.pn("        ${1}.disp_each(cmd, map);", callName);
+		sb.pn("      end;");
+		sb.pn("");
+
+		sb.pn("      disp_each = function(cmd,map)");
+		sb.pn("        local funMap = ${1}_switch[cmd];", fathName);
+		sb.pn("        if(funMap ~= nil) then");
+		sb.pn("          local exFun = funMap[\"fun\"];");
+		sb.pn("          local exMethod = funMap[\"name\"];");
+		sb.pn("          exFun(exMethod, map);");
+		sb.pn("        end;");
+		sb.pn("");
+		sb.pn("      end;");
+		sb.pn("");
+
+		sb.pn("");
+		sb.pn("      --[[");
+		sb.pn("      // //////////////////////////////////////////////");
+		sb.pn("      // 参数解析");
+		sb.pn("      // //////////////////////////////////////////////");
+		sb.pn("      --]]");
+		sb.pn("");
+
+		for (Method m : methods) {
+			String remark = B2G.getRemark(m);
+			String srtype = B2G.getReturnType(m);
+			String mname = B2G.getNethodName(m);
+			int hmname = mname.hashCode();
+			NewList<NewMap<String, String>> params = B2G.getParameters(m);
+
+			// 解析参数函数
+			// if (B2G.isServer(m)) {
+			if (!srtype.equals("void")) {
+				sb.pn("      -- ${1}", remark);
+				sb.pn("      __onCallback_${1} = function(cmd,map)", mname);
+				String mx = B2G.getCsMapType(srtype);
+				sb.pn("        local retVal = map:get_Item(\"${1}\");",
+						B2G.RETURN_STAT);
+				sb.pn("        local rst = ${1}.ReturnStatus.parse(retVal);",
+						fathName);
+				StrBuilder msb = new StrBuilder();
+				for (NewMap<String, String> m1 : params) {
+					String key = (String) m1.getKey();
+					String val = (String) m1.getValue();
+					String hval = val.hashCode() + "";
+					String p = B2G.getMapType(key);
+					boolean isOut = B2G.isOut(m, val);
+					if (isOut) {
+						if (p.equals("getObject")) {
+							sb.pn("        local ${2} = ${4}.${1}.parse(map:get_Item(\"${3}\"));",
+									key, val, hval, fathName);
+							msb.ap("${1}, ", val);
+						}
+					}
+				}
+				sb.pn("");
+				sb.pn("        cllNetDis.dispatch(cmd,${1}rst);", msb);
+				sb.pn("      end;");
+			}
+			// }
+			sb.pn("");
+		}
+	}
+
+	// 生成客户端接口--回调
+	public static void lua_call_swich(Class<?> c, String namespace,
+			StrBuilder sb, String fathName) {
+		String sname = c.getSimpleName();
+		Method[] methods = c.getMethods();
+		String cname = c.getSimpleName();
+
+		String callName = fathName + ".onCallNet";
+
+		sb.pn("  --[[");
+		sb.pn("  // //////////////////////////////////////////////");
+		sb.pn("  // 请求回掉分发解析所对应的对象");
+		sb.pn("  // //////////////////////////////////////////////");
+		sb.pn("  --]]");
+		sb.pn("");
+
+		sb.pn("  " + fathName + "_switch = {");
+
+		for (Method m : methods) {
+			String remark = B2G.getRemark(m);
+			remark = remark.replaceAll("//", "--");
+			String srtype = B2G.getReturnType(m);
+			String mname = B2G.getNethodName(m);
+			int hmname = mname.hashCode();
+			if (!srtype.equals("void")) {
+				sb.pn("    [\"${1}\"] = {[\"name\"] = \"${2}\"; fun = ${4}.__onCallback_${2}}; --${3}",
+						hmname, mname, remark, callName);
+			}
+
+			// if (B2G.isServer(m)) {
+			// if (!srtype.equals("void")) {
+			// sb.pn("    [\"${1}\"] = {[\"name\"] = \"${2}\"; fun = ${4}.__onCallback_${2}}; --${3}",
+			// hmname, mname, remark, callName);
+			// }
+			// } else {
+			// sb.pn("    [\"${1}\"] = {[\"name\"] = \"${2}\"; fun = ${4}.__onCall_${2}}; --${3}",
+			// hmname, mname, remark, callName);
+			// }
+		}
+		sb.pn("  };");
+		sb.pn("");
+	}
+
+	public static String upper1(String s) {
+		if (s == null || s.isEmpty())
+			return s;
+		int len = s.length();
+		return s.substring(0, 1).toUpperCase() + s.substring(1, len);
+	}
+
+	public static void writeFile(String f, String str) {
+		try (FileOutputStream out = new FileOutputStream(new File(f));
+				OutputStreamWriter osw = new OutputStreamWriter(out,
+						Encoding.UTF8);) {
+			osw.write(str, 0, str.length());
+			osw.close();
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static String b2g_globle(Class<?> c, boolean src) {
+		B2Class B2C = c.getAnnotation(B2Class.class);
+		String sname = c.getSimpleName();
+		String namespace = "";
+		if (B2C != null) {
+			namespace = B2C.namespace();
+		}
+
+		String p = (src ? "src/" : "") + "gen_b2g";
+		if (namespace != null && !namespace.isEmpty()) {
+			p = p + "/" + namespace;
+		}
+		File path = new File(p);
+		if (!path.exists())
+			path.mkdirs();
+
+		Class<?>[] classes = c.getDeclaredClasses();
+		StrBuilder sb = new StrBuilder();
+
+		sb.pn("do");
+		sb.pn("");
+		sb.pn("  " + sname + " = {");
+		sb.pn("");
+		// =========== 生成实体对象
+		for (Class<?> class1 : classes) {
+			if (B2G.isData(class1)) {
+				String f = class1.getSimpleName();
+				// 是否是常量类
+				boolean isConstant = B2G.isConstant(class1);
+				if (isConstant) {
+					g2beanConstant(class1, namespace, sb);
+				}
+			}
+		}
+		sb.pn("  };");
+		sb.pn("");
+		sb.pn("end;");
+		sb.pn("");
+
+		sb.pn("module(\"" + sname + "\",package.seeall);");
+
+		writeFile(p + "/" + sname + ".lua", sb.toString());
+
+		System.out.println(sb);
+		return sb.toString();
+	}
+}

@@ -1,0 +1,59 @@
+<div style="margin:2px auto 1px auto;width:100%;height:26px;text-align:center;">
+	<div style="position:relative;left:0px;top:0px;width:100%;height:100%;">
+		<div style="width:32px;height:20px;center;cursor:pointer;display:inline-block;border:1px solid #bababa;"
+		 onmouseover="this.style.borderColor='#f45819'" 
+		 onmouseout="this.style.borderColor='#bababa'"
+		 onclick="click2PrePage();">&lt;</div>
+		<div style="width:auto;height:20px;line-height:20px;font-family:'Microsoft YaHei';font-size:14px;display:inline-block;padding:0px 10px">
+			<a href="javascript:void(0);" style="padding:0px 10px;">1</a>
+			<a href="javascript:void(0);">2</a>
+			<a href="javascript:void(0);">3</a>
+			<a href="javascript:void(0);">4</a>
+			<a href="javascript:void(0);">5</a>
+			<a href="javascript:void(0);">6</a>
+			<a href="javascript:void(0);">7</a>
+			<a href="javascript:void(0);">8</a>
+			<span>...<span>
+		</div>
+		<div style="width:32px;height:20px;center;cursor:pointer;display:inline-block;border:1px solid #bababa;"
+		 onmouseover="this.style.borderColor='#f45819'" 
+		 onmouseout="this.style.borderColor='#bababa'"
+		 onclick="click2NxtPage();">&gt;</div>
+		<div style="clear:both;"></div>  
+	</div>
+	
+	<!--
+	<div class="sckc_pag_left" onmouseout="this.className='sckc_pag_left'" onmouseover="this.className='sckc_pag_left_hover'" onclick="click2PrePage();"><!--left--</div>
+	<div class="sckc_pag_right" onmouseout="this.className='sckc_pag_right'" onmouseover="this.className='sckc_pag_right_hover'" onclick="click2NxtPage();"><!--right--</div>
+	-->
+	
+</div>
+<form action="${2}" id="fm_page_req" method="post">
+	<input type="hidden" value="${3}" id="inp_fm_page" name="inp_fm_page">
+	<input type="hidden" value="${4}" id="inp_fm_pageMax" name="inp_fm_pageMax">
+</form>
+
+<script type="text/javascript">
+	function click2sendPaging(curPage){
+		$("#inp_fm_page").val(curPage);
+		$("#fm_page_req").submit();
+	};
+	function click2PrePage(){
+		var curPage = $("#inp_fm_page").val();
+		curPage--;
+		if(curPage <= 0)
+			curPage = 1;
+		$("#inp_fm_page").val(curPage);
+		$("#fm_page_req").submit();
+	};
+	
+	function click2NxtPage(){
+		var curPage = $("#inp_fm_page").val();
+		curPage++;
+		var pageMax = $("#inp_fm_pageMax").val();
+		if(curPage > pageMax)
+			curPage = pageMax;
+		$("#inp_fm_page").val(curPage);
+		$("#fm_page_req").submit();
+	};
+</script>

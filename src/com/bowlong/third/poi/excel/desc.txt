@@ -1,0 +1,8 @@
+HSSFWorkbook:是操作Excel2003以前（包括2003）的版本，扩展名是.xls
+XSSFWorkbook:是操作Excel2007的版本，扩展名是.xlsx
+
+对于不同版本的EXCEL文档要使用不同的工具类，如果使用错了，会提示如下错误信息。
+
+org.apache.poi.openxml4j.exceptions.InvalidOperationException
+
+org.apache.poi.poifs.filesystem.OfficeXmlFileException
