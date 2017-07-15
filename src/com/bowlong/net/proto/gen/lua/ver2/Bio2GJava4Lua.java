@@ -119,10 +119,10 @@ public class Bio2GJava4Lua {
 		} else if (B2G.isSheetRow(c)) {
 			if (isXls) {
 				sb.pn("import org.apache.poi.hssf.usermodel.*;");
-				sb.pn("import com.bowlong.third.excel.hss.*;");
+				sb.pn("import com.bowlong.third.poi.excel.hss.*;");
 			} else {
 				sb.pn("import org.apache.poi.xssf.usermodel.*;");
-				sb.pn("import com.bowlong.third.excel.xss.*;");
+				sb.pn("import com.bowlong.third.poi.excel.xss.*;");
 			}
 		}
 

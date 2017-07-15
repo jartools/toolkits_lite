@@ -296,9 +296,9 @@ public class ${d_tableName}Cfg {
 		</#list>
 	}
 	
-	public static List<${d_tableName}Cfg> getAll(int page,int size,Integer pageCount){
+	public static List<${d_tableName}Cfg> getAll(int page,int pageCount){
 		List<${d_tableName}Cfg> ${x_tableName}Cfgs = getAll();
-		${x_tableName}Cfgs = ListEx.getPage(${x_tableName}Cfgs, page, size, pageCount);
+		${x_tableName}Cfgs = ListEx.getPage(${x_tableName}Cfgs, page, pageCount);
 		return ${x_tableName}Cfgs;
 	}
 }
