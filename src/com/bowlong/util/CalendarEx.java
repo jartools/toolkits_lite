@@ -167,19 +167,64 @@ public class CalendarEx extends DateFmtEx {
 	}
 
 	/*** 此时间内当月共有多少天 **/
-	static public final int dayNum(int year, int month) {
-		Calendar test = nowCalendar();
-		test.set(Calendar.YEAR, year);
-		test.set(Calendar.MONTH, month);
-		int totalDay = test.getActualMaximum(Calendar.DAY_OF_MONTH);
-		return totalDay;
+	static public final int dayNumInMonth(Calendar calendar,int year,int month) {
+		if(calendar == null){
+			calendar = nowCalendar();
+		}
+		
+		if(year > 0){
+			calendar.set(Calendar.YEAR, year);
+		}
+		
+		if(month >= 0 && month <= 11){
+			calendar.set(Calendar.MONTH, month);
+		}
+		return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+	}
+	
+	/*** 此时间内当月共有多少天 **/
+	static public final int dayNumInMonth(Calendar calendar) {
+		return dayNumInMonth(calendar,0, -1);
+	}
+	
+	/*** 此时间内当月共有多少天 **/
+	static public final int dayNumInMonth(int month) {
+		return dayNumInMonth(null,0, month);
+	}
+	
+	/*** 当前时间内当月共有多少天 **/
+	static public final int dayNumInMonth() {
+		return dayNumInMonth(null,0,-1);
+	}
+	
+	/*** 此时间内当月共有多少天 **/
+	static public final int dayNumInMonth(int year, int month) {
+		return dayNumInMonth(null, year, month);
 	}
 	
 	/*** 此时间内当年共有多少天 **/
-	static public final int dayNum(int year) {
-		Calendar test = nowCalendar();
-		test.set(Calendar.YEAR, year);
-		int totalDay = test.getActualMaximum(Calendar.DAY_OF_YEAR);
-		return totalDay;
+	static public final int dayNumInYear(Calendar calendar,int year) {
+		if(calendar == null){
+			calendar = nowCalendar();
+		}
+		if(year > 0){
+			calendar.set(Calendar.YEAR, year);
+		}
+		return calendar.getActualMaximum(Calendar.DAY_OF_YEAR);
+	}
+	
+	/*** 此时间内当年共有多少天 **/
+	static public final int dayNumInYear(Calendar calendar) {
+		return dayNumInYear(calendar,0);
+	}
+	
+	/*** 此时间内当年共有多少天 **/
+	static public final int dayNumInYear() {
+		return dayNumInYear(null,0);
+	}
+	
+	/*** 此时间内当年共有多少天 **/
+	static public final int dayNumInYear(int year) {
+		return dayNumInYear(null,year);
 	}
 }
