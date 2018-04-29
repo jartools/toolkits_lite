@@ -180,7 +180,7 @@ public class IOSHelper {
 
 			if (day <= 0) {
 				Calendar vCalDate = CalendarEx.parse2Cal(order_time_ms);
-				day = CalendarEx.dayNumInMonth(vCalDate);
+				day = CalendarEx.diffDayNum4NextMonth(vCalDate);
 			}
 
 			long day_ms = day * DateEx.TIME_DAY;

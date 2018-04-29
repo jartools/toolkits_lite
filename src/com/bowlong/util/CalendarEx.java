@@ -227,4 +227,37 @@ public class CalendarEx extends DateFmtEx {
 	static public final int dayNumInYear(int year) {
 		return dayNumInYear(null,year);
 	}
+	
+	/*** calendar 与  nCalendar 之间相差多少天 **/
+	static public final int diffDayNum4AddMonth(Calendar calendar,Calendar nCalendar) {
+		long t1 = calendar.getTimeInMillis();
+		long t2 = nCalendar.getTimeInMillis();
+		long diff = t2 - t1;
+		if(diff < 0)
+			diff = diff * -1;
+		
+		int day = (int)(diff / TIME_DAY);
+		return day;
+	}
+	
+	/*** 到添加n个月后 的 calender的day 所增加的天数 **/
+	static public final int diffDayNum4AddMonth(Calendar calendar,int add) {
+		if(calendar == null){
+			calendar = nowCalendar();
+		}
+		long t1 = calendar.getTimeInMillis();
+		Calendar nCalendar = parse2Cal(t1);
+		nCalendar = addMonth(nCalendar, add);
+		return diffDayNum4AddMonth(calendar, nCalendar);
+	}
+	
+	/*** 到下个月的calender的day 所增加的天数 **/
+	static public final int diffDayNum4NextMonth(Calendar calendar) {
+		return diffDayNum4AddMonth(calendar, 1);
+	}
+	
+	/*** 到下个月的 今天 所增加的天数 **/
+	static public final int diffDayNum4NextMonth() {
+		return diffDayNum4AddMonth(null, 1);
+	}
 }
