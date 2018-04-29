@@ -169,22 +169,21 @@ public class IOSHelper {
 			if (targetItem == null) {
 				return "-9";
 			}
+			
+			// original_transaction_id 与  transaction_id 在 targetItem 里面可能不一致
+			// 一致表示首次购买，不一致标识续订成功订单
 
-			// long original_transaction_id =
-			// targetItem.getLong("original_transaction_id");
-			// long transaction_id = targetItem.getLong("transaction_id");
-
-			long order_time_ms = 0;
-			long zone_time = 8 * DateEx.TIME_HOUR;
-			order_time_ms = purchase_date_ms_target + zone_time;
+			long order_time_ms = purchase_date_ms_target;
+//			long zone_time = 8 * DateEx.TIME_HOUR;
+//			order_time_ms = order_time_ms + zone_time;
 
 			if (day <= 0) {
 				Calendar vCalDate = CalendarEx.parse2Cal(order_time_ms);
 				day = CalendarEx.dayNumInMonth(vCalDate);
 			}
 
-			long day_ms = day * DateEx.TIME_DAY;
-			long end_ms = order_time_ms + day_ms + DateEx.TIME_SECOND * 10;
+			long day_ms = day * DateEx.TIME_DAY + DateEx.TIME_SECOND * 5;
+			long end_ms = order_time_ms + day_ms;
 			long now_time_ms = System.currentTimeMillis();
 			if (end_ms <= now_time_ms) {
 				return "-10";
