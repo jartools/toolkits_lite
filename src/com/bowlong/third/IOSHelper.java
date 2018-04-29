@@ -138,10 +138,10 @@ public class IOSHelper {
 			}
 
 			// 当前订阅状态 正常（status为 1）, 已停止续费 （status为 0）
-			String auto_renew_status = targetRenew.getString("auto_renew_status");
-			if (!"1".equals(auto_renew_status)) {
-				return "-6";
-			}
+//			String auto_renew_status = targetRenew.getString("auto_renew_status");
+//			if (!"1".equals(auto_renew_status)) {
+//				return "-6";
+//			}
 
 			if (!resultJson.has("latest_receipt_info")) {
 				return "-7";
