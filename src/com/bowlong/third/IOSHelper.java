@@ -21,6 +21,8 @@ import com.bowlong.util.DateEx;
  */
 public class IOSHelper {
 	
+	static public boolean m_isDebug = false;
+	
 	/*** App 专用共享密钥 ***/
 	static public String m_iosAppSharedSecret = "";
 	
@@ -55,7 +57,10 @@ public class IOSHelper {
 				}
 				respReader.close();
 				String vStr = sb.toString();
-				System.out.println(String.format("== ios_verify = [%s]", vStr));
+				
+				if(m_isDebug)
+					System.out.println(String.format("== ios_verify = [%s]", vStr));
+				
 				JSONObject resultJson = JsonHelper.toJSON(vStr);
 				int nState = resultJson.getInt("status");
 				if (nState == 21007) {
@@ -86,7 +91,10 @@ public class IOSHelper {
 			}
 			
 			str64 = json.toString();
-			System.out.println(String.format("== str64 = [%s]", str64));
+			
+			if(m_isDebug)
+				System.out.println(String.format("== str64 = [%s]", str64));
+			
 			return Valid("https://buy.itunes.apple.com/verifyReceipt", str64);
 		} catch (Exception e) {
 			e.printStackTrace();
