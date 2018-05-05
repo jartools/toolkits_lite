@@ -22,28 +22,6 @@ public class TkitOrigin {
 		return getMapAllParams(request, "", "");
 	}
 
-	/*** 取得HttpServletRequest全部参数 参数值进行改变 getParameterNames **/
-	static public final Map<String, String> getMapAllParamsHandle(
-			HttpServletRequest request, String charsetFrom, String charsetTo) {
-		boolean isFrom = !StrEx.isEmptyTrim(charsetFrom);
-		if (isFrom) {
-			isFrom = EncodingEx.isSupported(charsetFrom);
-		}
-		if (!isFrom) {
-			charsetFrom = EncodingEx.ISO_8859_1;
-		}
-
-		boolean isTo = !StrEx.isEmptyTrim(charsetTo);
-		if (isTo) {
-			isTo = EncodingEx.isSupported(charsetTo);
-		}
-		if (!isTo) {
-			charsetTo = EncodingEx.UTF_8;
-		}
-
-		return getMapAllParams(request, charsetFrom, charsetTo);
-	}
-
 	/*** 取得HttpServletRequest全部参数 getParameterNames **/
 	static public final Map<String, String> getMapAllParams(
 			HttpServletRequest request, String charsetFrom, String charsetTo) {
@@ -163,35 +141,14 @@ public class TkitOrigin {
 			HttpServletRequest request) {
 		return getMapAllParamsBy(request, "", "");
 	}
-
-	/*** 取得HttpServletRequest全部参数 参数值进行改变 getParameterMap **/
-	static public final Map<String, String> getMapAllParamsByHandle(
-			HttpServletRequest request, String charsetFrom, String charsetTo) {
-		boolean isFrom = !StrEx.isEmptyTrim(charsetFrom);
-		if (isFrom) {
-			isFrom = EncodingEx.isSupported(charsetFrom);
-		}
-		if (!isFrom) {
-			charsetFrom = EncodingEx.ISO_8859_1;
-		}
-
-		boolean isTo = !StrEx.isEmptyTrim(charsetTo);
-		if (isTo) {
-			isTo = EncodingEx.isSupported(charsetTo);
-		}
-		if (!isTo) {
-			charsetTo = EncodingEx.UTF_8;
-		}
-
-		return getMapAllParamsBy(request, charsetFrom, charsetTo);
-	}
-
+	
 	/*** 简单拼接取得数量的Sql语句 **/
 	static public final String getSql4Count(String tabName, Map params) {
 		Map queMap = new HashMap();
 		if (!MapEx.isEmpty(params)) {
+			Object val = null;
 			for (Object key : params.keySet()) {
-				Object val = params.get(key);
+				val = params.get(key);
 				if (val != null) {
 					String valStr = "";
 					if (val instanceof String) {
@@ -214,8 +171,9 @@ public class TkitOrigin {
 			strBuf.append("SELECT COUNT(*) FROM ").append(tabName)
 					.append(" WHERE 1 = 1 ");
 			if (!MapEx.isEmpty(params)) {
+				Object val = null;
 				for (Object key : params.keySet()) {
-					Object val = params.get(key);
+					val = params.get(key);
 					if (val != null) {
 						strBuf.append("AND ").append(key.toString())
 								.append(val.toString()).append(" ");
@@ -235,8 +193,9 @@ public class TkitOrigin {
 			int begin, int limit) {
 		Map queMap = new HashMap();
 		if (!MapEx.isEmpty(params)) {
+			Object val = null;
 			for (Object key : params.keySet()) {
-				Object val = params.get(key);
+				val = params.get(key);
 				if (val != null) {
 					String valStr = "";
 					if (val instanceof String) {
@@ -260,8 +219,9 @@ public class TkitOrigin {
 			strBuf.append("SELECT * FROM ").append(tabName)
 					.append(" WHERE 1 = 1 ");
 			if (!MapEx.isEmpty(params)) {
+				Object val = null;
 				for (Object key : params.keySet()) {
-					Object val = params.get(key);
+					val = params.get(key);
 					if (val != null) {
 						strBuf.append("AND ").append(key.toString())
 								.append(val.toString()).append(" ");
