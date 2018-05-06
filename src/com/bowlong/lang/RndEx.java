@@ -22,6 +22,11 @@ public final class RndEx {
 		return rnd.nextBoolean();
 	}
 	
+	static public final boolean nextBool(int max, int f) {
+		int v = nextInt(max);
+		return (v < f);
+	}
+	
 	public static final byte[] nextBytes(byte[] bts) {
 		if (bts == null)
 			return null;

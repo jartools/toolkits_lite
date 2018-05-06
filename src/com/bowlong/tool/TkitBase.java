@@ -10,11 +10,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -110,15 +108,6 @@ public class TkitBase extends TkitOrigin {
 	}
 
 	// ///////////////////////////////////////////////////
-	static public final boolean nextBool() {
-		return RndEx.nextBoolean();
-	}
-
-	static public final boolean nextBool(int max, int f) {
-		int v = nextInt(max);
-		return (v < f);
-	}
-
 	static public final <T> T rand(List objs) {
 		if (objs == null || objs.isEmpty())
 			return null;
@@ -128,38 +117,12 @@ public class TkitBase extends TkitOrigin {
 		int i = RndEx.nextInt(0, objs.size());
 		return (T) objs.get(i);
 	}
-
-	static public final int nextInt(int max) {
-		if (max <= 0)
-			return 0;
-		return RndEx.nextInt(max);
-	}
-
-	static public final int nextInt(int f, int t) {
-		if (t <= f)
-			return f;
-		return RndEx.nextInt(t - f) + f;
-	}
-
+	
 	static public final String pn(int n) {
 		return n > 0 ? "+" + n : String.valueOf(n);
 	}
-
-	static public final List<Map> sort(List m1, final String key) {
-		Collections.sort(m1, new Comparator<Map>() {
-			public int compare(Map o1, Map o2) {
-				Object v1 = o1.get(key);
-				Object v2 = o2.get(key);
-				if (v1 == null || v2 == null)
-					return 0;
-				return compareTo(v1, v2);
-			}
-		});
-		return m1;
-	}
-
+	
 	static public final int compareTo(Object v1, Object v2) {
-
 		if (v1 == null || v2 == null)
 			return 0;
 
@@ -345,15 +308,7 @@ public class TkitBase extends TkitOrigin {
 	static public final void sn(StringBuffer sb, String s, Object... args) {
 		s(sb, s + "\r\n", args);
 	}
-
-	static public final String fmt(String s, Object... args) {
-		return String.format(s, args);
-	}
-
-	static public final String format(String s, Object... args) {
-		return String.format(s, args);
-	}
-
+	
 	// 带1位小数
 	static public final String n2s(int i) {
 		if (i < 1000)
@@ -367,19 +322,6 @@ public class TkitBase extends TkitOrigin {
 		return String.format("%.1fG", ((double) i / (1000 * 1000 * 1000)));
 	}
 
-	// 自动识别是否带小数
-	static public final String n2sn(long i) {
-		if (i < 1000)
-			return i + "";
-		if (i < 1000 * 10)
-			return String.format("%.1fK", ((double) i / 1000));
-		if (i < 1000 * 1000)
-			return String.format("%.0fW", ((double) i / 10000));
-		if (i < 1000 * 1000 * 1000)
-			return String.format("%.0fM", ((double) i / (1000 * 1000)));
-		return String.format("%.1fG", ((double) i / (1000 * 1000 * 1000)));
-	}
-
 	// 带小数,支持负数
 	static public final String n(int i) {
 		boolean abs = false;
@@ -390,199 +332,6 @@ public class TkitBase extends TkitOrigin {
 		String s = n2s(i);
 		String r = abs ? ('-' + s) : s;
 		return r;
-	}
-
-	// ///////////////////////////////////////////////////
-	// 计算两点间距离
-	public final static int distance(Point a, Point b) {
-		int x1 = a.x;
-		int y1 = a.y;
-		int x2 = b.x;
-		int y2 = b.y;
-		return distance(x1, y1, x2, y2);
-	}
-
-	// 计算直角距离
-	public final static int distance90Angle(Point a, Point b) {
-		int x1 = a.x;
-		int y1 = a.y;
-		int x2 = b.x;
-		int y2 = b.y;
-		return Math.abs(x2 - x1) + Math.abs(y2 - y1);
-	}
-
-	public final static int distance90Angle(int x1, int y1, int x2, int y2) {
-		return Math.abs(x2 - x1) + Math.abs(y2 - y1);
-	}
-
-	public final static int distance(int x1, int y1, int x2, int y2) {
-		double v = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-		return (int) v;
-	}
-
-	static public final double angle(int x1, int y1, int x2, int y2) {
-		int x = Math.abs(x1 - x2);
-		int y = Math.abs(y1 - y2);
-		double z = Math.sqrt(x * x + y * y);
-		return (Math.asin(y / z) / Math.PI * 180);// 最终角度
-	}
-
-	// ///////////////////////////////////////////////////
-	// 计算两点间距离(直线，直角)
-	public final static int distanceXy(int x1, int y1, int x2, int y2) {
-		double v = Math.abs(x1 - x2) + Math.abs(y1 - y2);
-		return (int) v;
-	}
-
-	// 周围4个点，按远近关系排序
-	public final static List<Point> point4(final Point f, final Point t) {
-		List<Point> p4 = new ArrayList<Point>();
-		p4.add(new Point(t.x - 1, t.y));
-		p4.add(new Point(t.x + 1, t.y));
-		p4.add(new Point(t.x, t.y - 1));
-		p4.add(new Point(t.x, t.y + 1));
-		// 按距离排序
-		Collections.sort(p4, new Comparator<Point>() {
-			@Override
-			public int compare(Point o1, Point o2) {
-				Integer d1 = distance90Angle(f, o1);
-				Integer d2 = distance90Angle(f, o2);
-				return d1.compareTo(d2);
-			}
-		});
-		return p4;
-	}
-
-	// 近点
-	public final static Point near(List<Point> p4) {
-		return p4.get(1);
-	}
-
-	// 远点
-	public final static Point far(List<Point> p4) {
-		return p4.get(p4.size() - 1);
-	}
-
-	// 到达目标的最远点
-	public final static Point p2(final Point f, final Point t, final int d) {
-		int x2 = f.x;
-		int y2 = f.y;
-
-		int dist = distance90Angle(f, t);
-		if (dist < d)
-			return new Point(t.x, t.y);
-
-		int d2 = d;
-		int mx = Math.abs(t.x - f.x);
-		int my = Math.abs(t.y - f.y);
-
-		if (mx > my) { // 先走x边
-			if (d2 > 0) {
-				if (f.x > t.x)
-					x2 = d2 > mx ? f.x - mx : f.x - d2;
-				else
-					x2 = d2 > mx ? f.x + mx : f.x + d2;
-				d2 -= mx;
-			}
-
-			if (d2 > 0) {
-				if (f.y > t.x)
-					y2 = d2 > my ? f.y - my : f.y - d2;
-				else
-					y2 = d2 > my ? f.y + my : f.y + d2;
-				d2 -= my;
-			}
-		} else { // 先走y边
-			if (d2 > 0) {
-				if (f.y > t.y) {
-					y2 = d2 > my ? f.y - my : f.y - d2;
-				} else {
-					y2 = d2 > my ? f.y + my : f.y + d2;
-				}
-				d2 -= d2 > my ? my : d2;
-			}
-
-			if (d2 > 0) {
-				if (f.x > t.x)
-					x2 = d2 > mx ? f.x - mx : f.x - d2;
-				else
-					x2 = d2 > mx ? f.x + mx : f.x + d2;
-				d2 -= d2 > mx ? mx : d2;
-			}
-		}
-
-		Point p = new Point(x2, y2);
-		return p;
-	}
-
-	public final static Point move2d(final Point f, final Point t, final int d,
-			final int range, List<Point> occupys) {
-		if (f == null || t == null)
-			return null;
-		if (occupys == null)
-			occupys = new ArrayList<Point>();
-
-		List<Point> p4 = point4(f, t);
-
-		// 排除不能到达的点
-		Iterator<Point> it = p4.iterator();
-		while (it.hasNext()) {
-			int dist = distance90Angle(f, it.next());
-			if (dist > d)
-				it.remove();
-		}
-
-		// 如果没有点了则找一个能够到达的最近的点
-		if (p4.isEmpty()) {
-			p4.add(p2(f, t, d));
-		}
-
-		if (occupys.isEmpty())
-			return p4.get(0);
-
-		// 找出没有船的点
-		for (Point p : occupys) {
-			if (intersectedPoints(occupys, p)) {
-				continue;
-			}
-			return p;
-		}
-
-		// 没有找到，继续找新点
-		return move2d(f, t, d - 1, range, occupys);
-	}
-
-	// 直线上的所有点
-	public final static List<Point> points2(int x1, int y1, int x2, int y2) {
-		List<Point> result = newList();
-		Point a = new Point(x1, y1);
-		Point b = new Point(x2, y2);
-		if (x1 > x2) {
-			Point x = a;
-			a = b;
-			b = x;
-		}
-		Set<String> e = newSet();
-		// 循环x坐标
-		for (int i = a.x + 1; i < b.x; i++) {
-			// 计算斜率
-			double k = ((double) (a.y - b.y)) / (a.x - b.x);
-			// 根据斜率，计算y坐标
-			double y = k * (i - a.x) + a.y;
-			// 简单判断一下y是不是整数
-			// double d = y - (int) y;
-			int ey = (int) y;
-			String key = i + "," + ey;
-			if (e.contains(key))
-				continue;
-			e.add(key);
-			result.add(new Point(i, ey));
-			// if (0.001 > d && d > -0.001) {
-			// // Console.Write("点的坐标：{0},{1}", i, y);
-			// result.add(new Point(i, (int) y));
-			// }
-		}
-		return result;
 	}
 
 	// 计算百分率
@@ -817,21 +566,5 @@ public class TkitBase extends TkitOrigin {
 
 	static public final String getAppPath() {
 		return TkitBase.class.getClassLoader().getResource("").getPath();
-	}
-
-	static public final String nStr(long n) {
-		boolean isNegative = n < 0;
-		n = Math.abs(n);
-		String vRet = "";
-		if (n >= 1000000) {
-			vRet = (n / 1000000) + "M";
-		} else if (n >= 10000) {
-			vRet = (n / 10000) + "W";
-		} else if (n >= 1000) {
-			vRet = (n / 10000) + "K";
-		} else {
-			vRet = n + "";
-		}
-		return isNegative ? ("-" + vRet) : vRet;
 	}
 }
