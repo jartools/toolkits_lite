@@ -183,7 +183,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public int[] insert(final String sql, final List<Map> list)
+	public int[] batchInsert4LMap(final String sql, final List<Map> list)
 			throws SQLException {
 		Connection conn = conn_w();
 		try {
@@ -447,7 +447,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public int[] batchUpdate(final String sql, final List<Map> list)
+	public int[] batchUpdate4LMap(final String sql, final List<Map> list)
 			throws SQLException {
 		Connection conn = conn_w();
 		try {
@@ -578,7 +578,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public int[] batchInsert(final String sql, final List list)
+	public int[] batchInsert4LBean(final String sql, final List<BeanSupport> list)
 			throws SQLException {
 		Connection conn = conn_w();
 		try {
@@ -588,8 +588,8 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 			PreparedStatement stmt = conn.prepareStatement(sr.sql,
 					PreparedStatement.RETURN_GENERATED_KEYS);
 
-			for (Object x : list) {
-				Map params = ((BeanSupport) x).toBasicMap();
+			for (BeanSupport x : list) {
+				Map params = x.toBasicMap();
 				prepareMap(stmt, sr.keys, params);
 				stmt.addBatch();
 			}
@@ -746,15 +746,15 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public int[] batchUpdate2(final String sql, final List list)
+	public int[] batchUpdate4LBean(final String sql, final List<BeanSupport> list)
 			throws SQLException {
 		Connection conn = conn_w();
 		try {
 			int r2[] = null;
 			PrepareSQLResult sr = prepareKeys(sql);
 			PreparedStatement stmt = conn.prepareStatement(sr.sql);
-			for (Object x : list) {
-				Map map = ((BeanSupport) x).toBasicMap();
+			for (BeanSupport x : list) {
+				Map map = x.toBasicMap();
 				prepareMap(stmt, sr.keys, map);
 				stmt.addBatch();
 			}

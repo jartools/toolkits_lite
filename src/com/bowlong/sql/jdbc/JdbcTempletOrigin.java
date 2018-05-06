@@ -351,12 +351,12 @@ public class JdbcTempletOrigin {
 		}
 	}
 
-	public int[] batchUpdate(final String as[]) throws SQLException {
+	public int[] batch4Sqls(final String sqls[]) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			int r2[] = null;
 			Statement stmt = conn.createStatement();
-			for (String sql : as) {
+			for (String sql : sqls) {
 				stmt.addBatch(sql);
 			}
 			r2 = stmt.executeBatch();
