@@ -4,15 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-import java.util.Random;
-
-import com.bowlong.objpool.StringBufPool;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public final class ByteEx {
-	// private static final Random rnd = new Random(System.currentTimeMillis());
-	private static final Random rnd = new Random(RndEx.randomNum());
-
 	public static final int MIN_VALUE = NumEx.BYTE_MIN_VALUE;
 	public static final int MAX_VALUE = NumEx.BYTE_MAX_VALUE;
 
@@ -509,28 +503,6 @@ public final class ByteEx {
 	public static final byte[] appendDouble(final byte[] b1, final double val) {
 		byte[] b2 = putDouble(val);
 		return append(b1, b2);
-	}
-
-	public static final byte[] nextBytes(byte[] b) {
-		if (b == null)
-			return null;
-		rnd.nextBytes(b);
-		return b;
-	}
-
-	public static final String nextString(int num) {
-		if (num <= 0)
-			return "";
-		StringBuffer sb = StringBufPool.borrowObject();
-		try {
-			for (int i = 0; i < num; i++) {
-				int ch = RndEx.nextInt(33, 127);
-				sb.append((char) ch);
-			}
-			return sb.toString();
-		} finally {
-			StringBufPool.returnObject(sb);
-		}
 	}
 
 	public static final byte[] bitSet2ByteArray(final BitSet bitSet) {

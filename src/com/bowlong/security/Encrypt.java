@@ -3,7 +3,6 @@ package com.bowlong.security;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Random;
 
 import com.bowlong.io.ByteInStream;
 import com.bowlong.io.ByteOutStream;
@@ -15,10 +14,6 @@ import com.bowlong.objpool.ByteOutPool;
 
 public class Encrypt {
 	private static final int KEY_LENGTH = 4;
-
-	// private static Random _rnd = new Random(System.currentTimeMillis());
-	private static Random _rnd = new Random(RndEx.randomNum());
-
 	/**
 	 * XOR
 	 * 
@@ -50,8 +45,7 @@ public class Encrypt {
 	 * @return byte[] key
 	 */
 	private static byte[] RandomXOR(byte[] op1, boolean asc) {
-		byte[] key = new byte[KEY_LENGTH];
-		_rnd.nextBytes(key);
+		byte[] key = RndEx.nextBytes(KEY_LENGTH);
 		XOR(op1, key, asc);
 		return key;
 	}

@@ -21,11 +21,16 @@ public final class RndEx {
 	public static final boolean nextBoolean() {
 		return rnd.nextBoolean();
 	}
+	
+	public static final byte[] nextBytes(byte[] bts) {
+		if (bts == null)
+			return null;
+		rnd.nextBytes(bts);
+		return bts;
+	}
 
 	public static final byte[] nextBytes(final int len) {
-		byte[] bytes = new byte[len];
-		rnd.nextBytes(bytes);
-		return bytes;
+		return nextBytes(new byte[len]);
 	}
 
 	public static final double nextDouble() {
@@ -69,13 +74,6 @@ public final class RndEx {
 	public static final int nextIntArgs(final int... args) {
 		int i = nextInt(args.length);
 		return args[i];
-	}
-
-	public static final byte[] nextBytes(byte[] b) {
-		if (b == null)
-			return null;
-		rnd.nextBytes(b);
-		return b;
 	}
 
 	public static final String nextString(int num) {
