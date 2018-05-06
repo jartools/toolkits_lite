@@ -354,7 +354,7 @@ public final class StrEx {
 	}
 
 	public static final int nextInt(final List<Integer> list) {
-		int index = NumEx.nextInt(list.size());
+		int index = RndEx.nextInt(list.size());
 		return list.get(index);
 	}
 

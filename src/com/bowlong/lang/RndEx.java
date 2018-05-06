@@ -66,7 +66,7 @@ public final class RndEx {
 		return args.get(i);
 	}
 
-	public static final int nextInt2(final int... args) {
+	public static final int nextIntArgs(final int... args) {
 		int i = nextInt(args.length);
 		return args[i];
 	}

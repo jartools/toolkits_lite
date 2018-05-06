@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Random;
 
 import com.bowlong.util.ListEx;
 
@@ -1164,50 +1163,7 @@ public final class NumEx {
 	public static final double readSwappedDouble(final InputStream input) throws IOException {
 		return Double.longBitsToDouble(readSwappedLong(input));
 	}
-
-	// public static final Random random = new
-	// Random(System.currentTimeMillis());
-	private static final Random random = new Random(RndEx.randomNum());
-
-	public static final boolean nextBoolean() {
-		return random.nextBoolean();
-	}
-
-	public static final int nextInt() {
-		return random.nextInt();
-	}
-
-	public static final int nextInt(final int max) {
-		return random.nextInt(max);
-	}
-
-	public static final int nextInt(final int min, final int max) {
-		int v = max - min;
-		return min + random.nextInt(v);
-	}
-
-	public static final int nextInt(final List<Integer> list) {
-		int index = nextInt(list.size());
-		return list.get(index);
-	}
-
-	public static final int nextInt(final int[] list) {
-		int index = nextInt(list.length);
-		return list[index];
-	}
-
-	public static final long nextLong() {
-		return random.nextLong();
-	}
-
-	public static final double nextDouble() {
-		return random.nextDouble();
-	}
-
-	public static final double nextGaussian() {
-		return random.nextGaussian();
-	}
-
+	
 	// 计算距离
 	public static final int distance(final int x1, final int y1, final int x2, final int y2) {
 		double v = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
@@ -1244,6 +1200,11 @@ public final class NumEx {
 		}
 		return result;
 	}
+	
+	public static final int maxPars(int... arr) {
+		int[] v = ListEx.toIntArray(arr);
+		return max(v);
+	}
 
 	public static final int min(final int[] list) {
 		int result = list[0];
@@ -1255,7 +1216,7 @@ public final class NumEx {
 		return result;
 	}
 
-	public static final int minArray(int... arr) {
+	public static final int minPars(int... arr) {
 		int[] v = ListEx.toIntArray(arr);
 		return min(v);
 	}
