@@ -148,24 +148,14 @@ public class ListEx {
 		return ret;
 	}
 
-	public static final List<Integer> toList(int[] array) {
+	public static final List<Integer> toList(int... array) {
 		List ret = newList();
-		if (array == null)
-			return ret;
-		for (int v : array) {
-			ret.add(v);
-		}
-		return ret;
+		return add(ret, array);
 	}
 
-	public static final List<String> toList(String[] array) {
-		List ret = newList();
-		if (array == null)
-			return ret;
-		for (String v : array) {
-			ret.add(v);
-		}
-		return ret;
+	public static final List<String> toList(String... array) {
+		List<String> ret = newListT();
+		return addT(ret, array);
 	}
 
 	public static final int[] toArrs4Int(List<Integer> list) {
@@ -222,33 +212,19 @@ public class ListEx {
 		return ret;
 	}
 
-	public static final List toListByObj(Object[] array) {
+	public static final List toListByObj(Object... arrs) {
 		List list = newList();
-		if (array == null)
-			return list;
-		for (Object e : array)
-			list.add(e);
-		return list;
+		return add(list, arrs);
 	}
 	
-	public static final <T> List<T> toListT(T[] arrs) {
+	public static final <T> List<T> toListT(T... arrs) {
 		List<T> list = newListT();
-		if (arrs == null || arrs.length <= 0)
-			return list;
-		
-		for (int i = 0; i < arrs.length; i++) {			
-			list.add(arrs[i]);
-		}
-		return list;
+		return addT(list, arrs);
 	}
 
-	public static final List toLinkedList(Object[] array) {
+	public static final List toLinkedList(Object... arrs) {
 		List list = newLinkedList();
-		if (array == null)
-			return list;
-		for (Object e : array)
-			list.add(e);
-		return list;
+		return add(list, arrs);
 	}
 
 	public static final <K, V> List<K> keyToList(Map<K, V> map) {
@@ -267,13 +243,9 @@ public class ListEx {
 		return list;
 	}
 
-	public static final List toVector(Object[] array) {
+	public static final List toVector(Object... arrs) {
 		List list = newVector();
-		if (array == null)
-			return list;
-		for (Object e : array)
-			list.add(e);
-		return list;
+		return add(list, arrs);
 	}
 	
 	/*** 转为数组对象 **/
@@ -293,8 +265,21 @@ public class ListEx {
 	}
 
 	public static final List add(List list, Object... objs) {
-		for (Object e : objs) {
-			list.add(e);
+		if (objs == null || objs.length <= 0)
+			return list;
+		
+		for (int i = 0; i < objs.length; i++) {			
+			list.add(objs[i]);
+		}
+		return list;
+	}
+	
+	public static final <T> List<T> addT(List<T> list, T... objs) {
+		if (objs == null || objs.length <= 0)
+			return list;
+		
+		for (int i = 0; i < objs.length; i++) {			
+			list.add(objs[i]);
 		}
 		return list;
 	}
@@ -484,6 +469,11 @@ public class ListEx {
 		Collections.sort(src);
 		return src;
 	}
+	
+	public static final List sort(List src, Comparator comparator) {
+		Collections.sort(src, comparator);
+		return src;
+	}
 
 	public static final List<Map> sort(final List m1, final String key) {
 		Collections.sort(m1, new Comparator<Map>() {
@@ -511,27 +501,11 @@ public class ListEx {
 		return list;
 	}
 
-	public static final List sort2(List src, Comparator comparator) {
-		Collections.sort(src, comparator);
-		return src;
-	}
-
-	public static final List<Map> sortIntMap(List<Map> m1, final Object key) {
+	public static final List<Map> sortLMap4NVal(List<Map> m1, final Object key) {
 		Collections.sort(m1, new Comparator<Map>() {
 			public int compare(Map o1, Map o2) {
-				int i1 = (Integer) o1.get(key);
-				int i2 = (Integer) o2.get(key);
-				return i1 - i2;
-			}
-		});
-		return m1;
-	}
-
-	public static final List<Map> sortLongMap(List<Map> m1, final Object key) {
-		Collections.sort(m1, new Comparator<Map>() {
-			public int compare(Map o1, Map o2) {
-				long i1 = (Long) o1.get(key);
-				long i2 = (Long) o2.get(key);
+				double i1 = (Double) o1.get(key);
+				double i2 = (Double) o2.get(key);
 				return i1 > i2 ? 1 : -1;
 			}
 		});

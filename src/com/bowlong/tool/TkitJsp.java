@@ -328,4 +328,12 @@ public class TkitJsp extends TkitBase {
 	static public final String getUrlIPProject(HttpServletRequest request) {
 		return getUrlIP(request).concat(request.getContextPath());
 	}
+	
+	static String _dirTmWebRoot = null;
+	static public final String getDirTmWebRoot() {
+		if (null == _dirTmWebRoot) {
+			_dirTmWebRoot = getAppRoot().replace("bin", "webapps"); 
+		}
+		return _dirTmWebRoot;
+	}
 }
