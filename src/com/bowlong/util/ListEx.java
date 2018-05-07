@@ -193,19 +193,7 @@ public class ListEx {
 	}
 
 	public static final String[] toStrArray(List<String> list) {
-		if (list == null || list.isEmpty())
-			return new String[0];
-
-		int count = list.size();
-		String[] result = new String[count];
-
-		for (int i = 0; i < count; i++) {
-			String v = list.get(i);
-			if (v == null)
-				result[i] = "";
-			result[i] = v;
-		}
-		return result;
+		return toArrs(list,new String[0]);
 	}
 
 	public static final List toArrayList(List list) {
@@ -282,10 +270,10 @@ public class ListEx {
 	}
 	
 	/*** 转为数组对象 **/
-	static public final <T> T[] toArrs(List<T> list){
+	static public final <T> T[] toArrs(List<T> list,T[] arrs){
 		if(isEmpty(list))
-			return null;
-		return (T[])list.toArray();
+			return arrs;
+		return (T[])list.toArray(arrs);
 	}
 
 	public static final List listIt(Object... var) {
