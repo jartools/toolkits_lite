@@ -1202,7 +1202,7 @@ public final class NumEx {
 	}
 	
 	public static final int maxPars(int... arr) {
-		int[] v = ListEx.toIntArray(arr);
+		int[] v = ListEx.toArrs4Int(arr);
 		return max(v);
 	}
 
@@ -1217,7 +1217,7 @@ public final class NumEx {
 	}
 
 	public static final int minPars(int... arr) {
-		int[] v = ListEx.toIntArray(arr);
+		int[] v = ListEx.toArrs4Int(arr);
 		return min(v);
 	}
 

@@ -30,11 +30,7 @@ import com.bowlong.objpool.StringBufPool;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ListEx {
-	// private static Random rnd;
-	// static {
-	// rnd = new Random(System.currentTimeMillis());
-	// }
-
+	
 	public static final List singletonEmptyList = new ArrayList();
 
 	public static final List singletonEmptyList() {
@@ -172,7 +168,7 @@ public class ListEx {
 		return ret;
 	}
 
-	public static final int[] toIntArray(List<Integer> list) {
+	public static final int[] toArrs4Int(List<Integer> list) {
 		if (list == null || list.isEmpty())
 			return new int[0];
 
@@ -188,7 +184,7 @@ public class ListEx {
 		return result;
 	}
 
-	public static final int[] toIntArray(int... args) {
+	public static final int[] toArrs4Int(int... args) {
 		return args;
 	}
 
@@ -226,8 +222,8 @@ public class ListEx {
 		return ret;
 	}
 
-	public static final List toArrayList(Object[] array) {
-		List list = newArrayList();
+	public static final List toListByObj(Object[] array) {
+		List list = newList();
 		if (array == null)
 			return list;
 		for (Object e : array)
@@ -341,7 +337,7 @@ public class ListEx {
 	}
 	
 	/*** 清空并创建对象 **/
-	static public final List clear4List(List ls) {
+	static public final List clearOrNew(List ls) {
 		if (ls == null) {
 			ls = newArrayList();
 			return ls;

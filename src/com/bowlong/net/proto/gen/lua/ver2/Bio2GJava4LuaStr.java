@@ -1239,9 +1239,8 @@ public class Bio2GJava4LuaStr {
 		return s.substring(0, 1).toUpperCase() + s.substring(1, len);
 	}
 
-	@SuppressWarnings("unchecked")
 	static public final List<Method> sortMethod(Method[] methods) {
-		List<Method> list = (List<Method>) ListEx.toArrayList(methods);
+		List<Method> list = ListEx.toListT(methods);
 		Collections.sort(list, new Comparator<Method>() {
 			@Override
 			public int compare(Method o1, Method o2) {
