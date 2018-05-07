@@ -234,6 +234,17 @@ public class ListEx {
 			list.add(e);
 		return list;
 	}
+	
+	public static final <T> List<T> toListT(T[] arrs) {
+		List<T> list = newListT();
+		if (arrs == null || arrs.length <= 0)
+			return list;
+		
+		for (int i = 0; i < arrs.length; i++) {			
+			list.add(arrs[i]);
+		}
+		return list;
+	}
 
 	public static final List toLinkedList(Object[] array) {
 		List list = newLinkedList();
