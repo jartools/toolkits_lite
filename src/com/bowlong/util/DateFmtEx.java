@@ -35,45 +35,27 @@ public class DateFmtEx {
 	// Z 时区 RFC 822 time zone -0800
 
 	static public final String fmt_yyyy_MM_dd_HH_mm_ss_sss = "yyyy-MM-dd HH:mm:ss.SSS";
-
 	static public final String fmt_yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
-
 	static public final String fmt_yyyyMMddHHmmss = "yyyyMMddHHmmss";
-
+	static public final String fmt_yyyyMMdd_HHmmss = "yyyyMMdd_HHmmss";
 	static public final String fmt_yyyy_MM_dd_HH_mm = "yyyy-MM-dd HH:mm";
-
 	static public final String fmt_yyyyMMddHHmm = "yyyyMMddHHmm";
-
+	static public final String fmt_yyyyMMdd_HHmm = "yyyyMMdd_HHmm";
 	static public final String fmt_yyyy_MM_dd = "yyyy-MM-dd";
-
 	static public final String fmt_yyyyMMdd = "yyyyMMdd";
-
 	static public final String fmt_yyyy_MM = "yyyy-MM";
-
 	static public final String fmt_yyyyMM = "yyyyMM";
-
 	static public final String fmt_yyyy = "yyyy";
-
 	static public final String fmt_MM_dd_HH_mm_ss = "MM-dd HH:mm:ss";
-
 	static public final String fmt_MM_dd_HH_mm = "MM-dd HH:mm";
-
 	static public final String fmt_MM_dd = "MM-dd";
-
 	static public final String fmt_MM = "MM";
-
 	static public final String fmt_dd = "dd";
-
 	static public final String fmt_HH_mm_ss = "HH:mm:ss";
-
 	static public final String fmt_HH_mm = "HH:mm";
-
 	static public final String fmt_HH = "HH";
-
 	static public final String fmt_mm = "mm";
-
 	static public final String fmt_ss = "ss";
-
 	static public final String fmt_SSS = "SSS";
 
 	/*** 年中的星期(此日期是此年份第几个星期) **/
