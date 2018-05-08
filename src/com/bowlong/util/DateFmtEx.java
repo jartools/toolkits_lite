@@ -180,6 +180,16 @@ public class DateFmtEx {
 	static public final String nowStrYMDHms() {
 		return nowStr(fmt_yyyyMMddHHmmss);
 	}
+	
+	/*** 当前系统时间字符串(yyyyMMdd_HHmmss) **/
+	static public final String nowStrYMD_Hms() {
+		return nowStr(fmt_yyyyMMdd_HHmmss);
+	}
+	
+	/*** 当前系统时间字符串(yyyyMMdd_HHmm) **/
+	static public final String nowStrYMD_Hm() {
+		return nowStr(fmt_yyyyMMdd_HHmm);
+	}
 
 	/*** 当前系统时间字符串(yyyyMMdd) **/
 	static public final String nowStrYMD() {
