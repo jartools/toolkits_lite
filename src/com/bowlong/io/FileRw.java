@@ -21,12 +21,12 @@ public class FileRw extends FileBigEx {
 	// Mapped File way MappedByteBuffer 可以在处理大文件时，提升性能
 	private static final long serialVersionUID = 1L;
 
-	static public byte[] readBytes(String path) {
+	static final public byte[] readBytes(String path) {
 		File f = new File(path);
 		return readBytes(f);
 	}
 
-	static public byte[] readBytes(File f) {
+	static final public byte[] readBytes(File f) {
 		byte[] r = null;
 		try (FileInputStream read = new FileInputStream(f);
 				BufferedInputStream inStream = new BufferedInputStream(read);
@@ -51,11 +51,11 @@ public class FileRw extends FileBigEx {
 		return r;
 	}
 
-	static public File getFile(String path) {
+	static final public File getFile(String path) {
 		return createFile(path);
 	}
 
-	static public File getDire(String path) {
+	static final public File getDire(String path) {
 		File f = null;
 		f = new File(path);
 
@@ -65,7 +65,7 @@ public class FileRw extends FileBigEx {
 		return f;
 	}
 
-	static public File createFile(String path) {
+	static final public File createFile(String path) {
 		File f = null;
 		f = new File(path);
 
@@ -75,7 +75,7 @@ public class FileRw extends FileBigEx {
 		return f;
 	}
 
-	static public void createFile(File f) {
+	static final public void createFile(File f) {
 		try {
 			if (f == null)
 				return;
@@ -92,7 +92,7 @@ public class FileRw extends FileBigEx {
 		}
 	}
 
-	static public void createDire(File f) {
+	static final public void createDire(File f) {
 		try {
 			if (f == null)
 				return;
@@ -105,11 +105,11 @@ public class FileRw extends FileBigEx {
 		}
 	}
 
-	static public String readStr(String path) {
+	static final public String readStr(String path) {
 		return readStr(path, "UTF-8");
 	}
 
-	static public String readStr(String path, String charsetName) {
+	static final public String readStr(String path, String charsetName) {
 		String r = "";
 		byte[] data = readBytes(path);
 		if (data == null)
@@ -121,32 +121,32 @@ public class FileRw extends FileBigEx {
 	}
 
 	// ============= 读取文件的格式
-	static public String getCharsetStr(InputStream inps) {
+	static final public String getCharsetStr(InputStream inps) {
 		return EncodingEx.getCharsetStr(inps);
 	}
 
-	static public String getCharsetStr(String path) {
+	static final public String getCharsetStr(String path) {
 		return EncodingEx.getCharsetStr(path);
 	}
 
-	static public Charset getCharset(String path) {
+	static final public Charset getCharset(String path) {
 		return EncodingEx.getCharset(getCharsetStr(path));
 	}
 
-	public static String getCodeStr(InputStream inps) {
+	static final public String getCodeStr(InputStream inps) {
 		return EncodingEx.getCodeStr(inps);
 	}
 
-	public static String getCodeStr(String path) {
+	static final public String getCodeStr(String path) {
 		return EncodingEx.getCodeStr(path);
 	}
 
-	static public Charset getCodeCharset(String path) {
+	static final public Charset getCodeCharset(String path) {
 		return EncodingEx.getCodeCharset(getCodeStr(path));
 	}
 
 	/*** 取得文件夹下面所有文件的路径 [path4Folder文件夹路径] **/
-	static public List<String> getFilePath(String path4Folder, List<String> result) {
+	static final public List<String> getFilePath(String path4Folder, List<String> result) {
 		if (result == null)
 			result = new ArrayList<String>();
 
@@ -166,7 +166,7 @@ public class FileRw extends FileBigEx {
 	}
 
 	/*** 设置成ANSI格式(系统运行环境格式) **/
-	static public void resetByBuffReader(String path) {
+	static final public void resetByBuffReader(String path) {
 		List<String> list = getFilePath(path, null);
 		if (ListEx.isEmpty(list))
 			return;
@@ -196,7 +196,7 @@ public class FileRw extends FileBigEx {
 		}
 	}
 
-	static public void resetByReader(String path) {
+	static final public void resetByReader(String path) {
 		List<String> list = getFilePath(path, null);
 		if (ListEx.isEmpty(list))
 			return;
@@ -226,7 +226,7 @@ public class FileRw extends FileBigEx {
 		}
 	}
 
-	static public void resetByReaderWithOutBom(String path) {
+	static final public void resetByReaderWithOutBom(String path) {
 		List<String> list = getFilePath(path, null);
 		if (ListEx.isEmpty(list))
 			return;
@@ -254,5 +254,10 @@ public class FileRw extends FileBigEx {
 				}
 			}
 		}
+	}
+	
+	static final public void writeText(String fp,String cont){
+		File f = createFile(fp);
+		writeText(f, cont, EncodingEx.UTF8);
 	}
 }
