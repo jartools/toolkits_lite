@@ -222,7 +222,7 @@ public final class StrEx {
 		return repBackSlash(str, "");
 	}
 
-	/*** \反斜杠替换成空白 **/
+	/*** \反斜杠替换 **/
 	static public final String repBackSlash(final String str, String reval) {
 		if (reval == null)
 			reval = "";

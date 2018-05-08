@@ -332,7 +332,11 @@ public class TkitJsp extends TkitBase {
 	static String _dirTmWebRoot = null;
 	static public final String getDirTmWebRoot() {
 		if (null == _dirTmWebRoot) {
-			_dirTmWebRoot = getAppRoot().replace("bin", "webapps"); 
+			_dirTmWebRoot = getAppRoot().replace("bin", "webapps");
+			_dirTmWebRoot = StrEx.repBackSlash(_dirTmWebRoot, "/");
+			if(!_dirTmWebRoot.endsWith("/")){
+				_dirTmWebRoot = _dirTmWebRoot + "/"; 
+			}
 		}
 		return _dirTmWebRoot;
 	}
