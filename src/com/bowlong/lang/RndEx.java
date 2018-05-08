@@ -59,6 +59,11 @@ public final class RndEx {
 	}
 
 	public static final int nextInt(final int f, final int t) {
+		if(f >= t){
+			if(t <= 2)
+				return t;
+			return nextInt(1,t);
+		}
 		return rnd.nextInt(t - f) + f;
 	}
 
