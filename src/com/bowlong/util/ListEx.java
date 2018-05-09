@@ -464,6 +464,38 @@ public class ListEx {
 			final int subSize) {
 		return (List<T>) subRndList(srcList, subSize);
 	}
+	
+	/*** sublist ,Inc:inclusive,Exc:exclusive **/
+	static public final List subList(final List src,int fIndInc,int tIndExc){
+		if(src == null)
+			return newList();
+		if(src.isEmpty())
+			return src;
+		
+		int lens = src.size();
+		tIndExc = tIndExc >= lens ? lens : tIndExc; 
+		fIndInc = (fIndInc <= 0) ? 0 : (fIndInc >= tIndExc) ? tIndExc : fIndInc;
+		if(fIndInc >= lens)
+			return newList();
+		return src.subList(fIndInc, tIndExc);
+	}
+	
+	static public final List subList(final List src,int fIndInc){
+		int tIndExc = 0;
+		if(src != null){
+			tIndExc = src.size();
+		}
+		return subList(src, fIndInc,tIndExc);
+	}
+			
+	/*** sublist ,Inc:inclusive,Exc:exclusive  **/
+	static public final <T> List<T> subListT(final List<T> src,int fIndInc,int tIndExc){
+		return subList(src,fIndInc,tIndExc);
+	}
+	
+	static public final <T> List<T> subListT(final List<T> src,int fIndInc){
+		return subList(src,fIndInc);
+	}
 
 	public static final List sort(List src) {
 		Collections.sort(src);
@@ -496,6 +528,7 @@ public class ListEx {
 		return Toolkit.compareTo(v1, v2);
 	}
 
+	/*** 交换位置 **/
 	public static final List swap(List list, int i, int j) {
 		Collections.swap(list, i, j);
 		return list;
