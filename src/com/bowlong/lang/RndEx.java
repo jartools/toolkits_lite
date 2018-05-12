@@ -92,7 +92,7 @@ public final class RndEx {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			for (int i = 0; i < num; i++) {
-				int ch = RndEx.nextInt(33, 127);
+				int ch = nextInt(33, 127);
 				sb.append((char) ch);
 			}
 			return sb.toString();
@@ -118,6 +118,23 @@ public final class RndEx {
 		try {
 			for (int i = 0; i < rndLen; i++) {
 				buff.append(nextString(org));
+			}
+			return buff.toString();
+		} catch (Exception e) {
+			return "";
+		} finally {
+			StringBufPool.returnObject(buff);
+		}
+	}
+	
+	/*** 随机指定长度数字字符 **/
+	static public final String nextString(final int org, int rndLen) {
+		if(org <= 0 || rndLen <= 0)
+			return "";
+		StringBuffer buff = StringBufPool.borrowObject();
+		try {
+			for (int i = 0; i < rndLen; i++) {
+				buff.append(nextInt(org));
 			}
 			return buff.toString();
 		} catch (Exception e) {
