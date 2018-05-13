@@ -387,29 +387,6 @@ public class JedisOrigin implements Serializable {
 	}
 
 	// ///////////////////// 配置与池对象 /////////////////////
-	// redis参数配置
-	// {
-	// "REDIS":{
-	// "maxActiveUnlimite":-1,
-	// "maxIdleUnlimite":-1,
-	// "testOnBorrow":true,
-	// "testOnReturn":true,
-	// "testWhileIdle":true,
-	// "timeBetweenEvictionRunsMillis":60000,
-	// "minEvictableIdleTimeMillis":30000,
-	// "numTestsPerEvictionRun":3000,
-	// "maxActive":4000,
-	// "maxIdle":3000,
-	// "minIdle":10,
-	// "maxWait":10000,
-	// "timeOut":15000,
-	// "host":"127.0.0.1",
-	// "port":4011,
-	// "pwd":"1234567890!@#$%^&*()",
-	// "dbIndex":0,
-	// "defPort":6379
-	// }
-	// }
 	static public JedisPoolConfig config = null;
 
 	static public final JedisPoolConfig newConfig(final int maxActive,
