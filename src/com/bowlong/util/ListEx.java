@@ -152,6 +152,11 @@ public class ListEx {
 		List ret = newList();
 		return add(ret, array);
 	}
+	
+	public static final List<Integer> toListArrs(int[] array) {
+		List ret = newList();
+		return add(ret, array);
+	}
 
 	public static final List<String> toList(String... array) {
 		List<String> ret = newListT();
