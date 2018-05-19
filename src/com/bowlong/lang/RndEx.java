@@ -134,7 +134,7 @@ public final class RndEx {
 		StringBuffer buff = StringBufPool.borrowObject();
 		try {
 			for (int i = 0; i < rndLen; i++) {
-				buff.append(nextInt(9));
+				buff.append(nextInt(10));
 			}
 			return buff.toString();
 		} catch (Exception e) {
