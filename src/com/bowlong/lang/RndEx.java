@@ -128,13 +128,13 @@ public final class RndEx {
 	}
 	
 	/*** 随机指定长度数字字符 **/
-	static public final String nextString(final int org, int rndLen) {
-		if(org <= 0 || rndLen <= 0)
+	static public final String nextString09(final int rndLen) {
+		if(rndLen <= 0)
 			return "";
 		StringBuffer buff = StringBufPool.borrowObject();
 		try {
 			for (int i = 0; i < rndLen; i++) {
-				buff.append(nextInt(org));
+				buff.append(nextInt(9));
 			}
 			return buff.toString();
 		} catch (Exception e) {
