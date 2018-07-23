@@ -100,16 +100,31 @@ public class TkitJsp extends TkitBase {
 			e.printStackTrace();
 		}
 	}
+	
+	static public final void writeJsonAndClose(OutputStream out, String strJson,
+			String callBackFun) {
+		if (!StrEx.isEmptyTrim(callBackFun)) {
+			strJson = callBackFun + "(" + strJson + ")";
+		}
+		writeAndClose(out, strJson, "");
+	}
+	
+	static public final void writeJsonAndClose(HttpServletResponse response,
+			String strJson, String callBackFun) {
+		try {
+			ServletOutputStream out = response.getOutputStream();
+			writeJsonAndClose(out, strJson, callBackFun);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	/*** json格式写出map对象 [callfun:为空，就默认方式,不为空，就callFun方式] **/
 	static public final void writeAndClose(OutputStream out, Map map,
 			String callBackFun) {
 		try {
 			String v = JSON.toJSONString(map);
-			if (!StrEx.isEmptyTrim(callBackFun)) {
-				v = callBackFun + "(" + v + ")";
-			}
-			writeAndClose(out, v, "");
+			writeJsonAndClose(out, v, callBackFun);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
