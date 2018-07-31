@@ -97,29 +97,17 @@ public class DateFmtEx {
 	static public final Calendar nowCalendar() {
 		return Calendar.getInstance();// 默认时区(TimeZone)，默认语音环境(Locale)
 	}
-
-	static public final String formatStr(Date v, String fmt) {
+	
+	static public final String format(Date v, String fmt) {
 		return new SimpleDateFormat(fmt).format(v);
 	}
 
-	static public final String formatStr(Calendar v, String fmt) {
-		return formatStr(v.getTime(), fmt);
-	}
-
-	static public final String formatStr(long ms, String fmt) {
-		return formatStr(new Date(ms), fmt);
-	}
-
-	static public final String format(Date v, String fmt) {
-		return formatStr(v, fmt);
-	}
-
 	static public final String format(Calendar v, String fmt) {
-		return formatStr(v, fmt);
+		return format(v.getTime(), fmt);
 	}
 
 	static public final String format(long ms, String fmt) {
-		return formatStr(ms, fmt);
+		return format(new Date(ms), fmt);
 	}
 
 	static public final Date parse2Date(Calendar cal) {
@@ -217,7 +205,7 @@ public class DateFmtEx {
 
 	/*** 转换为字符串格式(yyyy-MM-dd HH:mm:ss) **/
 	static public final String format_YMDHms(Date v) {
-		return formatStr(v, fmt_yyyy_MM_dd_HH_mm_ss);
+		return format(v, fmt_yyyy_MM_dd_HH_mm_ss);
 	}
 
 	/*** [0]=天，[1]=时，[2]=分，[3]=秒，[4]=毫秒 **/
