@@ -344,6 +344,16 @@ public class TkitJsp extends TkitBase {
 		return getUrlIP(request).concat(request.getContextPath());
 	}
 	
+	/**
+	 * 获取项目的IP+项目名称+请求
+	 * 
+	 * @return 协议://服务器名称:Web应用的端口号/uri <br/>
+	 *         如：http://127.0.0.1:81/项目名称/函数
+	 */
+	static public final String getUriAll(HttpServletRequest request) {
+		return getUrlIP(request).concat(request.getRequestURI());
+	}
+	
 	static String _dirTmWebRoot = null;
 	static public final String getDirTmWebRoot() {
 		if (null == _dirTmWebRoot) {
