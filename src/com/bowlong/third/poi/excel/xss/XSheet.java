@@ -10,8 +10,8 @@ public class XSheet {
 	final XSSFSheet sheet;
 	final String sheetName;
 	int sheetIndex;
-	int maxCol;
-	int maxRow;
+	int maxCol = -1;
+	int maxRow = -1;
 	final Map<String, Object> cache = new Hashtable<String, Object>();
 
 	public XSheet(final XWorkbook wb, final XSSFSheet sheet) {
@@ -35,7 +35,7 @@ public class XSheet {
 			this.maxRow = row;
 		}
 
-		for (int col = 0; col < XSS.ROW_MAX; col++) {
+		for (int col = 0; col < XSS.COLUMN_MAX; col++) {
 			String str = getString(1, col);
 			if (str == null || str.isEmpty())
 				break;

@@ -10,8 +10,8 @@ public class HSheet {
 	final HSSFSheet sheet;
 	final String sheetName;
 	int sheetIndex;
-	int maxCol;
-	int maxRow;
+	int maxCol = -1;
+	int maxRow = -1;
 	final Map<String, Object> cache = new Hashtable<String, Object>();
 
 	public HSheet(final HWorkbook wb, final HSSFSheet sheet) {
@@ -35,7 +35,7 @@ public class HSheet {
 			this.maxRow = row;
 		}
 
-		for (int col = 0; col < HSS.ROW_MAX; col++) {
+		for (int col = 0; col < HSS.COLUMN_MAX; col++) {
 			String str = getString(1, col);
 			if (str == null || str.isEmpty())
 				break;

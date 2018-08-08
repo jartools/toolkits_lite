@@ -29,7 +29,7 @@ public class PoiEx {
 	static public int LINE_MEMO = 3;// 备忘录
 	static public int LINE_DATA_MIN = 4;// 数据开始行数
 	static public int LINE_DATA_MAX = 50000;// 最大行数
-	static public int ROW_MAX = 255;// 最大列数
+	static public int COLUMN_MAX = 255;// 最大列数
 
 	// ==== 2003 excel
 	static public final POIFSFileSystem openFS(final InputStream inStream)
