@@ -27,16 +27,15 @@ import javax.tools.ToolProvider;
 @SuppressWarnings("all")
 public class RSAEncrypt {
 
-	private RSAEncrypt() {
+	public RSAEncrypt() {
 	}
 
-	static RSAEncrypt _self;
-
-	public static RSAEncrypt getInstance() {
-		if (_self == null)
-			_self = new RSAEncrypt();
-
-		return _self;
+	public RSAEncrypt(String publicKey) {
+		try {
+			loadPublicKey(publicKey);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -54,6 +53,9 @@ public class RSAEncrypt {
 	 */
 	private static final char[] HEX_CHAR = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
 			'f' };
+
+	KeyFactory keyFactory = null;
+	Cipher cipher = null;
 
 	/**
 	 * 获取私钥
@@ -91,8 +93,10 @@ public class RSAEncrypt {
 
 	public RSAPublicKey toPublicKey(String publicKey) {
 		try {
+			if (keyFactory == null)
+				keyFactory = KeyFactory.getInstance("RSA");
+
 			byte[] buffer = Base64.decode(publicKey);
-			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
 			return (RSAPublicKey) keyFactory.generatePublic(keySpec);
 		} catch (Exception e) {
@@ -150,11 +154,12 @@ public class RSAEncrypt {
 		if (publicKey == null) {
 			throw new Exception("加密公钥为空, 请设置");
 		}
-		Cipher cipher = null;
 		try {
 			// 使用默认RSA
-			cipher = Cipher.getInstance("RSA");
-			// cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
+			if (cipher == null) {
+				cipher = Cipher.getInstance("RSA");
+				// cipher = Cipher.getInstance("RSA", new BouncyCastleProvider());
+			}
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 			byte[] output = cipher.doFinal(plainTextData);
 			return output;
@@ -188,11 +193,11 @@ public class RSAEncrypt {
 		if (publicKey == null) {
 			throw new Exception("解密公钥为空, 请设置");
 		}
-		Cipher cipher = null;
 		try {
-			// 使用默认RSA
-			cipher = Cipher.getInstance("RSA");
-			// cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
+			if (cipher == null) {
+				cipher = Cipher.getInstance("RSA");
+				// cipher = Cipher.getInstance("RSA", new BouncyCastleProvider());
+			}
 			cipher.init(Cipher.DECRYPT_MODE, publicKey);
 			byte[] output = cipher.doFinal(cipherData);
 			return output;
@@ -300,9 +305,17 @@ public class RSAEncrypt {
 		}
 		return false;
 	}
-	
+
 	public boolean verify(String content, String sign) {
 		return verify(content, sign, getPublicKey(), "");
+	}
+
+	static RSAEncrypt _self;
+
+	public static RSAEncrypt getInstance() {
+		if (_self == null)
+			_self = new RSAEncrypt();
+		return _self;
 	}
 
 	static void demoDecode() throws Exception {
@@ -336,5 +349,5 @@ public class RSAEncrypt {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}	
+	}
 }
