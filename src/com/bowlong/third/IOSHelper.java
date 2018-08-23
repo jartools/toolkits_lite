@@ -111,24 +111,24 @@ public class IOSHelper {
 	static final public String ValidRenewal(String item_id,String str64,String pwd,int day) {
 		try {
 			if (StrEx.isEmpty(str64)) {
-				return "-1";
+				return "-1"; // -1 : 没有购买记录
 			}
 
 			String strRes = VlidateTrasncation(str64,pwd);
 			if ("-1".equals(strRes) || "-2".equals(strRes)
 					|| "-3".equals(strRes)) {
-				return "-2";
+				return "-2"; // -2 : 取得验证字符串错误
 			}
 
 			JSONObject resultJson = JsonHelper.toJSON(strRes);
 			if (!resultJson.has("pending_renewal_info")) {
-				return "-3";
+				return "-3"; // -3 : 没有订购信息
 			}
 			
 			JSONArray json_array = resultJson.getJSONArray("pending_renewal_info");
 			int size = json_array.length();
 			if (size <= 0) {
-				return "-4";
+				return "-4"; // -4 : 订购信息列表为空
 			}
 
 			JSONObject item = null;
@@ -142,23 +142,23 @@ public class IOSHelper {
 			}
 
 			if (targetRenew == null) {
-				return "-5";
+				return "-5"; // -5 : 订购中没有 item_id 的产品
 			}
 
 			// 当前订阅状态 正常（status为 1）, 已停止续费 （status为 0）
 //			String auto_renew_status = targetRenew.getString("auto_renew_status");
 //			if (!"1".equals(auto_renew_status)) {
-//				return "-6";
+//				return "-6"; // -6 : 取消了续订
 //			}
 
 			if (!resultJson.has("latest_receipt_info")) {
-				return "-7";
+				return "-7"; // -7 : 最后购买信息为空
 			}
 			
 			json_array = resultJson.getJSONArray("latest_receipt_info");
 			size = json_array.length();
 			if (size <= 0) {
-				return "-8";
+				return "-8"; // -8 : 最后购买信息列表为空
 			}
 
 			JSONObject targetItem = null;
@@ -175,7 +175,7 @@ public class IOSHelper {
 			}
 
 			if (targetItem == null) {
-				return "-9";
+				return "-9"; // -9 : 最后购买信息中没有 item_id 的产品
 			}
 			
 			// original_transaction_id 与  transaction_id 在 targetItem 里面可能不一致
@@ -194,13 +194,13 @@ public class IOSHelper {
 			long end_ms = order_time_ms + day_ms;
 			long now_time_ms = System.currentTimeMillis();
 			if (end_ms <= now_time_ms) {
-				return "-10";
+				return "-10"; // -10 : 时间结束
 			}
 			return String.valueOf(end_ms);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "-11";
+		return "-11"; // -11 : 验证数据异常
 	}
 	
 	/*** 续订验证   ***/
