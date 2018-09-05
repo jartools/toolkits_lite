@@ -39,10 +39,6 @@ public class HttpBaseEx {
 	static public final int defaultSoTimeout = 30000;
 
 	/*** GET参数编码 */
-	static public final String buildQuery(Map<String, String> data,String charset) {
-		return buildQuery(data,charset,false);
-	}
-	
 	static public final String buildQuery(Map<String,?> data,String charset,boolean isOrderKey) {
 		if (MapEx.isEmpty(data))
 			return "";
@@ -87,6 +83,18 @@ public class HttpBaseEx {
 		ret = buff.toString();
 		buff.setLength(0);
 		return ret;
+	}
+	
+	static public final String buildQuery(Map<String, String> data,String charset) {
+		return buildQuery(data,charset,false);
+	}
+	
+	static public final String buildQuery(Map<String, String> data) {
+		return buildQuery(data,"",false);
+	}
+	
+	static public final String buildQuery(Map<String, String> data,boolean isOrderKey) {
+		return buildQuery(data,"",isOrderKey);
 	}
 
 	static public final String buildStrByJSON4Obj(Object data) {
