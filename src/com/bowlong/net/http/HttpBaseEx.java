@@ -3,7 +3,6 @@ package com.bowlong.net.http;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -39,14 +38,17 @@ public class HttpBaseEx {
 	static public final int defaultSoTimeout = 30000;
 
 	/*** GET参数编码 */
-	static public final String buildQuery(Map<String, String> data,
-			String charset) {
-
+	static public final String buildQuery(Map<String, String> data,String charset) {
+		return buildQuery(data,charset,false);
+	}
+	
+	static public final String buildQuery(Map<String,?> data,String charset,boolean isKeyOrderAcs) {
 		if (MapEx.isEmpty(data))
 			return "";
 
 		String ret = "";
-		String k, v;
+		String k,v;
+		Object vv;
 
 		boolean isSupported = !StrEx.isEmptyTrim(charset);
 		if (isSupported) {
@@ -56,25 +58,31 @@ public class HttpBaseEx {
 				isSupported = true;
 			}
 		}
-
+		
+		Object[] keys = data.keySet().toArray();
 		StringBuffer buff = new StringBuffer();
-		for (Entry<String, String> entry : data.entrySet()) {
-			k = entry.getKey();
-			v = entry.getValue();
-			try {
+		int lens = keys.length;
+		try {
+			for (int i = 0; i < lens; i++) {
+				k = keys[i].toString();
+				vv = data.get(k);
+				if(vv == null)
+					continue;
+				v = vv.toString();
 				if (isSupported) {
 					k = URLEncoder.encode(k, charset);
 					v = URLEncoder.encode(v, charset);
 				}
 				buff.append(k).append("=").append(v);
-			} catch (UnsupportedEncodingException e) {
+				if(i < lens - 1)
+					buff.append("&");
 			}
-			buff.append("&");
+		} catch (Exception e) {
 		}
+		
 		ret = buff.toString();
-		if (StrEx.isEmptyTrim(ret))
-			return ret;
-		return ret.substring(0, ret.length() - 1);
+		buff.setLength(0);
+		return ret;
 	}
 
 	static public final String buildStrByJSON4Obj(Object data) {
