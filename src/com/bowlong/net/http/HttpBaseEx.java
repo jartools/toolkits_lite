@@ -48,9 +48,6 @@ public class HttpBaseEx {
 			return "";
 
 		String ret = "";
-		String k,v;
-		Object vv;
-
 		boolean isSupported = !StrEx.isEmptyTrim(charset);
 		if (isSupported) {
 			isSupported = EncodingEx.isSupported(charset);
@@ -66,15 +63,19 @@ public class HttpBaseEx {
 		StringBuffer buff = new StringBuffer();
 		int lens = keys.length;
 		try {
+			String k,v;
+			Object vv;
 			for (int i = 0; i < lens; i++) {
 				k = keys[i].toString();
 				vv = data.get(k);
 				if(vv == null)
 					continue;
 				v = vv.toString();
-				if (isSupported) {
-					k = URLEncoder.encode(k, charset);
-					v = URLEncoder.encode(v, charset);
+				if(!StrEx.isEmpty(v)){
+					if (isSupported) {
+						k = URLEncoder.encode(k, charset);
+						v = URLEncoder.encode(v, charset);
+					}
 				}
 				buff.append(k).append("=").append(v);
 				if(i < lens - 1)
