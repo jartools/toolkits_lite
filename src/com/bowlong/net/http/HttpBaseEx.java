@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -42,7 +43,7 @@ public class HttpBaseEx {
 		return buildQuery(data,charset,false);
 	}
 	
-	static public final String buildQuery(Map<String,?> data,String charset,boolean isKeyOrderAcs) {
+	static public final String buildQuery(Map<String,?> data,String charset,boolean isOrderKey) {
 		if (MapEx.isEmpty(data))
 			return "";
 
@@ -60,6 +61,8 @@ public class HttpBaseEx {
 		}
 		
 		Object[] keys = data.keySet().toArray();
+		if(isOrderKey)
+			Arrays.sort(keys);
 		StringBuffer buff = new StringBuffer();
 		int lens = keys.length;
 		try {
