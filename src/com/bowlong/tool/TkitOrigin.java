@@ -16,36 +16,31 @@ import com.bowlong.util.MapEx;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class TkitOrigin {
-	/*** 取得HttpServletRequest全部参数 getParameterNames **/
+	/*** 取得HttpServletRequest全部参数 getParameterNames isNoFitlerEmpty-是否(不过滤空val) **/
 	static public final Map<String, String> getMapAllParams(
-			HttpServletRequest request) {
-		return getMapAllParams(request, "", "");
-	}
-
-	/*** 取得HttpServletRequest全部参数 getParameterNames **/
-	static public final Map<String, String> getMapAllParams(
-			HttpServletRequest request, String charsetFrom, String charsetTo) {
+			HttpServletRequest request, String charsetFrom, String charsetTo,boolean isNoFitlerEmpty) {
 		Map<String, String> map = new HashMap<String, String>();
 		Enumeration paramNames = request.getParameterNames();
 		StringBuffer buff = new StringBuffer();
-
-		boolean isFrom = !StrEx.isEmptyTrim(charsetFrom);
+		boolean isFrom,isTo,isNoEmpty = true;
+		isFrom = !StrEx.isEmptyTrim(charsetFrom);
 		if (isFrom) {
 			isFrom = EncodingEx.isSupported(charsetFrom);
 		}
 
-		boolean isTo = !StrEx.isEmptyTrim(charsetTo);
+		isTo = !StrEx.isEmptyTrim(charsetTo);
 		if (isTo) {
 			isTo = EncodingEx.isSupported(charsetTo);
 		}
-
+		
+		String key,val = "";
+		String[] vals;
+		int lens = 0;
 		while (paramNames.hasMoreElements()) {
-
 			buff.setLength(0);
-
-			String key = (String) paramNames.nextElement();
-			String[] vals = request.getParameterValues(key);
-			int lens = vals.length;
+			key = (String) paramNames.nextElement();
+			vals = request.getParameterValues(key);
+			lens = vals.length;
 			for (int i = 0; i < lens; i++) {
 				buff.append(vals[i]);
 				if (i < lens - 1) {
@@ -53,8 +48,9 @@ public class TkitOrigin {
 				}
 			}
 
-			String val = buff.toString();
-			if (!StrEx.isEmptyTrim(val)) {
+			val = buff.toString();
+			isNoEmpty = !StrEx.isEmptyTrim(val); 
+			if (isNoEmpty) {
 				try {
 					if (isFrom) {
 						if (!isTo) {
@@ -68,11 +64,23 @@ public class TkitOrigin {
 					}
 				} catch (Exception e) {
 				}
-
+			}
+			if(isNoEmpty || isNoFitlerEmpty){
 				map.put(key, val);
 			}
 		}
 		return map;
+	}
+	
+	static public final Map<String, String> getMapAllParams(
+			HttpServletRequest request,boolean isNoFitlerEmpty) {
+		return getMapAllParams(request, "", "",isNoFitlerEmpty);
+	}
+	
+	/*** 取得HttpServletRequest全部参数 getParameterNames **/
+	static public final Map<String, String> getMapAllParams(
+			HttpServletRequest request) {
+		return getMapAllParams(request,false);
 	}
 
 	/*** 取得HttpServletRequest全部参数 getParameterNames **/
