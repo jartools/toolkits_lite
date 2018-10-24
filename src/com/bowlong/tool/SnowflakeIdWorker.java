@@ -1,5 +1,7 @@
 package com.bowlong.tool;
 
+import java.util.Random;
+
 /**
  * Twitter的分布式自增ID算法snowflake <br/>
  * Twitter_Snowflake<br>
@@ -20,8 +22,8 @@ package com.bowlong.tool;
 public class SnowflakeIdWorker {
 
 	// ==============================Fields===========================================
-	/** 开始时间截 (2015-01-01) */
-	private final long twepoch = 1420041600000L;
+	/** 开始时间截 (2018-10-15) */
+	private final long twepoch = 1539532800000L;
 
 	/** 机器id所占的位数 */
 	private final long workerIdBits = 5L;
@@ -62,6 +64,8 @@ public class SnowflakeIdWorker {
 
 	/** 上次生成ID的时间截 */
 	private long lastTimestamp = -1L;
+	
+	private static final Random objRnd = new Random(System.currentTimeMillis());
 
 	// ==============================Constructors=====================================
 	/**
@@ -72,19 +76,28 @@ public class SnowflakeIdWorker {
 	 * @param datacenterId
 	 *            数据中心ID (0~31)
 	 */
-	public SnowflakeIdWorker(long workerId, long datacenterId) {
+	public SnowflakeIdWorker(int workerId, int datacenterId) {
+		reInit(workerId, datacenterId);
+	}
+	
+	/**
+	 * 初始函数
+	 * 
+	 * @param workerId
+	 *            工作ID (0~31)
+	 * @param datacenterId
+	 *            数据中心ID (0~31)
+	 */
+	public SnowflakeIdWorker reInit(int workerId, int datacenterId) {
 		if (workerId > maxWorkerId || workerId < 0) {
-			throw new IllegalArgumentException(String.format(
-					"worker Id can't be greater than %d or less than 0",
-					maxWorkerId));
+			workerId = objRnd.nextInt((int)maxWorkerId);
 		}
 		if (datacenterId > maxDatacenterId || datacenterId < 0) {
-			throw new IllegalArgumentException(String.format(
-					"datacenter Id can't be greater than %d or less than 0",
-					maxDatacenterId));
+			datacenterId = objRnd.nextInt((int)maxDatacenterId);
 		}
 		this.workerId = workerId;
 		this.datacenterId = datacenterId;
+		return this;
 	}
 
 	// ==============================Methods==========================================
