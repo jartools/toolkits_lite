@@ -30,25 +30,49 @@ public class MD5 {
 			return "";
 		}
 	}
-
-	/*** MD5加密方式 得32位 **/
-	static public final String MD5Encode(String s) {
-		byte[] b = s.getBytes();
-		return md5(b);
-	}
-
-	static public final byte[] MD5Bytes(byte[] v) {
+	
+	static public final byte[] md5Bytes(byte[] v) {
 		return md5(v).getBytes();
 	}
-
-	/*** 默认的MD5加密方式 **/
-	static public final String toMD5(String plain) {
-		if (plain == null)
-			return "";
-
-		return toMD5(plain.getBytes());
+	
+	static public final byte[] md5Bytes(String v) {
+		return md5Bytes(v.getBytes());
 	}
 
+	/*** MD5加密方式 得32位 **/
+	static public final String encode(String s) {
+		return md5(s.getBytes());
+	}
+
+	/*** MD5加密方式 取得16位 **/
+	static public final String encodeF16(String str) {
+		String v32 = encode(str);
+		return v32.substring(8, 24);
+	}
+	
+	static public final String encode(long times,boolean isAddUUID) {
+		String ss = String.valueOf(times);
+		if(isAddUUID) {
+			UUID uuid = UUID.randomUUID();
+			ss = uuid.toString() + times;
+		}
+		return encode(ss);
+	}
+	
+	static public final String encodeF16(long times,boolean isAddUUID) {
+		String v32 = encode(times,isAddUUID);
+		return v32.substring(8, 24);
+	}
+
+	/*** UUID+System.currentTimeMillis 值 MD5加密方式 取得32位 **/
+	static public final String encodeUUIDSystime() {
+		return encode(System.currentTimeMillis(),true);
+	}
+
+	static public final String encodeUUIDSystimeF16() {
+		return encodeF16(System.currentTimeMillis(),true);
+	}
+	
 	/*** 默认的MD5加密方式 **/
 	static public final String toMD5(byte[] v) {
 		try {
@@ -64,31 +88,25 @@ public class MD5 {
 			throw new RuntimeException(e);
 		}
 	}
-
-	/*** MD5加密方式 取得16位 **/
-	static public final String MD5EncodeF16(String str) {
-		String v32 = MD5Encode(str);
-		return v32.substring(8, 24);
-	}
-
-	/*** UUID+System.currentTimeMillis 值 MD5加密方式 取得32位 **/
-	static public final String MD5UUIDStime() {
-		return MD5UUIDStime(System.currentTimeMillis());
+	
+	/*** 默认的MD5加密方式 **/
+	static public final String toMD5(String plain) {
+		if (plain == null)
+			return "";
+		return toMD5(plain.getBytes());
 	}
 	
-	static public final String MD5UUIDStime(long times) {
-		UUID uuid = UUID.randomUUID();
-		String ss = uuid.toString() + times;
-		return MD5Encode(ss);
-	}
-
-	static public final String MD5UUIDStimeF16() {
-		return MD5UUIDStimeF16(System.currentTimeMillis());
+	static public final String toMD5(Object obj) {
+		if(obj ==null)
+			return "";
+		return toMD5(obj.toString());
 	}
 	
-	static public final String MD5UUIDStimeF16(long times) {
-		String v32 = MD5UUIDStime(times);
-		return v32.substring(8, 24);
+	static public final String toMD5F16(Object obj) {
+		String _md5 = toMD5(obj);
+		if("".equals(_md5))
+			return _md5;
+		return _md5.substring(8, 24);
 	}
 
 	public static void main(String[] args) {
@@ -97,7 +115,7 @@ public class MD5 {
 		System.out.println(uuid.toString());
 		System.out.println(ss);
 		System.out.println(MD5.toMD5(ss));
-		System.out.println(MD5.MD5Encode(ss));
-		System.out.println(MD5.MD5EncodeF16(ss));
+		System.out.println(MD5.encode(ss));
+		System.out.println(MD5.encodeF16(ss));
 	}
 }
