@@ -43,11 +43,23 @@ public class MD5 {
 	static public final String encode(String s) {
 		return md5(s.getBytes());
 	}
+	
+	static public final String encode(Object obj) {
+		if(obj ==null)
+			return "";
+		return encode(obj.toString());
+	}
 
 	/*** MD5加密方式 取得16位 **/
 	static public final String encodeF16(String str) {
 		String v32 = encode(str);
 		return v32.substring(8, 24);
+	}
+	
+	static public final String encodeF16(Object obj) {
+		if(obj ==null)
+			return "";
+		return encodeF16(obj.toString());
 	}
 	
 	static public final String encode(long times,boolean isAddUUID) {
