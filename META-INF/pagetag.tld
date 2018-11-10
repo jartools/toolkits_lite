@@ -7,7 +7,7 @@
 	
 	<tag>
 		<name>pageTag</name>
-		<tag-class>com.bowlong.third.jsptag.page.tag.PageTag</tag-class>
+		<tag-class>com.bowlong.third.jsp.page.PageTag</tag-class>
 		<body-content>empty</body-content>
 		<description><![CDATA[page_tag_entity]]></description>
 		<attribute>
@@ -32,7 +32,7 @@
 	
 	<tag>
 		<name>fmtDate</name>
-		<tag-class>com.bowlong.third.jsptag.TagFmtDate</tag-class>
+		<tag-class>com.bowlong.third.jsp.TagFmtDate</tag-class>
 		<body-content>empty</body-content>
 		<description><![CDATA[entity_4_format]]></description>
 		<attribute>
@@ -51,7 +51,7 @@
 	
 	<tag>
 		<name>map</name>
-		<tag-class>com.bowlong.third.jsptag.MapTag</tag-class>
+		<tag-class>com.bowlong.third.jsp.MapTag</tag-class>
 		<attribute>
 			<name>key</name>
 			<required>true</required>
