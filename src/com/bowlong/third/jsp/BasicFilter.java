@@ -127,6 +127,6 @@ public abstract class BasicFilter implements Filter {
 		System.out.println(String.format("%s = %s", uri,jsonData.toString()));
 	}
 
-	public abstract boolean isFilter(String uri, Map<String, String> pars);
 	public abstract void onInit(FilterConfig arg0);
+	public abstract boolean isFilter(String uri, Map<String, String> pars);
 }
