@@ -18,8 +18,12 @@ import com.bowlong.reflect.JsonHelper;
 import com.bowlong.tool.TkitJsp;
 import com.bowlong.util.CalendarEx;
 import com.bowlong.util.MapEx;
-
-public abstract class AppFilter implements Filter {
+/***
+ * jsp filter基础过滤文件
+ * 可以设置编码
+ * @author Canyon 2017-04-16 23:30
+ */
+public abstract class BasicFilter implements Filter {
 	static protected String[] badSqlStrs = { " and ", "insert ", "select ",
 			"delete ", "update ", "count", "drop table ", " or ", "char ",
 			"declare", "sitename", "net user", "xp_cmdshell", " like'",
@@ -33,7 +37,7 @@ public abstract class AppFilter implements Filter {
 	static public boolean isValidSql = true;
 
 	// 效验
-	private static boolean sqlValidate(String str) {
+	static private boolean sqlValidate(String str) {
 		str = str.toLowerCase();// 统一转为小写
 		for (int i = 0; i < badSqlStrs.length; i++) {
 			// 循环检测，判断在请求参数当中是否包含SQL关键字
@@ -44,22 +48,25 @@ public abstract class AppFilter implements Filter {
 		return false;
 	}
 
+	protected String strEncoding = "UTF-8";
+
 	@Override
 	public void destroy() {
+		strEncoding = "UTF-8";
 	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
-		req.setCharacterEncoding("UTF-8");
+		req.setCharacterEncoding(strEncoding);
 		HttpServletResponse res = (HttpServletResponse) response;
 		Map<String, String> valMap = TkitJsp.getMapAllParams(req);
 		String val = req.getRequestURI();
 
 		boolean isFlag = isFilter(val, valMap) || isFilterSql(valMap)
 				|| isFilterTime(valMap, key_time);
-		
+
 		if (isFlag) {
 			valMap.clear();
 			valMap.put("code", "fails");
@@ -72,7 +79,13 @@ public abstract class AppFilter implements Filter {
 	}
 
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
+	public void init(FilterConfig arg0) throws ServletException {
+		// 注意MyEclipse的版本不同，方法init的参数有可能不同
+		String encoding = arg0.getInitParameter("encoding");
+		if (encoding == null) {
+			encoding = "UTF-8";
+		}
+		this.strEncoding = encoding.trim();
 	}
 
 	protected boolean isFilterTime(Map<String, String> map, String keyTime) {
