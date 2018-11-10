@@ -1,4 +1,4 @@
-package com.bowlong.third.jsptag.page;
+package com.bowlong.third.jsp.page;
 
 import java.util.List;
 import java.util.Map;

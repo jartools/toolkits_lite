@@ -1,4 +1,4 @@
-package com.bowlong.third.jsptag;
+package com.bowlong.third.jsp;
 
 import java.util.Map;
 

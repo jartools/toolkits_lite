@@ -1,4 +1,4 @@
-package com.bowlong.third.jsptag.page.tag;
+package com.bowlong.third.jsp.page;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 import com.bowlong.io.FileRw;
 import com.bowlong.lang.StrEx;
 import com.bowlong.objpool.StringBufPool;
-import com.bowlong.third.jsptag.page.PageEnt;
 
 /**
  * 分页标签
