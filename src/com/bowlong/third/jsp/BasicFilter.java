@@ -36,8 +36,9 @@ public abstract class BasicFilter implements Filter {
 
 	static protected long ms_bef = CalendarEx.TIME_SECOND * 15;
 	static protected long ms_aft = CalendarEx.TIME_SECOND * 15;
-	static protected String key_time = "time_ms";
-	static public boolean isValidSql = true;
+	static public boolean isVSql = true; // 是否验证sql注入
+	static public boolean isVTime = false; // 是否验证有效时间
+	static public String key_time = "time_ms"; // 时间字段
 	static public boolean isPrint = false;
 	static private boolean isInit = false;
 
@@ -101,12 +102,12 @@ public abstract class BasicFilter implements Filter {
 	}
 
 	protected boolean isFilterTime(Map<String, String> pars, String keyTime) {
-		if (pars.containsKey(keyTime)) {
+		if (isVTime && pars.containsKey(keyTime)) {
 			long time_ms = MapEx.getLong(pars, keyTime);
 			long curr_ms = CalendarEx.now();
 			return !(time_ms > curr_ms - ms_bef && time_ms < curr_ms + ms_aft);
 		}
-		return false;
+		return isVTime;
 	}
 
 	protected boolean isFilterSql(Map<String, String> pars) {
