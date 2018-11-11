@@ -18,10 +18,12 @@ import com.bowlong.reflect.JsonHelper;
 import com.bowlong.tool.TkitJsp;
 import com.bowlong.util.CalendarEx;
 import com.bowlong.util.MapEx;
+
 /***
  * jsp filter基础过滤文件 <br/>
  * 启动的顺序为listener->Filter->servlet.<br/>
  * 简单记为：理(Listener)发(Filter)师(servlet).
+ * 
  * @author Canyon 2017-04-16 23:30
  */
 public abstract class BasicFilter implements Filter {
@@ -64,13 +66,13 @@ public abstract class BasicFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		req.setCharacterEncoding(strEncoding);
 		HttpServletResponse res = (HttpServletResponse) response;
-		Map<String, String> pars = TkitJsp.getMapAllParams(req,true);
+		Map<String, String> pars = TkitJsp.getMapAllParams(req, true);
 		String val = req.getRequestURI();
-		
+
 		_print(val, pars);
 
-		boolean isFlag = isFilter(val, pars) || isFilterSql(pars)
-				|| isFilterTime(pars, key_time);
+		boolean isFlag = (isFilter(val, pars) && isFilterTime(pars, key_time))
+				|| isFilterSql(pars);
 
 		if (isFlag) {
 			pars.clear();
@@ -91,8 +93,8 @@ public abstract class BasicFilter implements Filter {
 			encoding = "UTF-8";
 		}
 		this.strEncoding = encoding.trim();
-		
-		if(!isInit){
+
+		if (!isInit) {
 			isInit = true;
 			onInit(arg0);
 		}
@@ -119,14 +121,15 @@ public abstract class BasicFilter implements Filter {
 		}
 		return isFlag;
 	}
-	
-	private void _print(String uri, Map<String, String> pars){
-		if(!isPrint)
+
+	private void _print(String uri, Map<String, String> pars) {
+		if (!isPrint)
 			return;
 		JSONObject jsonData = JsonHelper.toJSON(pars);
-		System.out.println(String.format("%s = %s", uri,jsonData.toString()));
+		System.out.println(String.format("%s = %s", uri, jsonData.toString()));
 	}
 
 	public abstract void onInit(FilterConfig arg0);
+
 	public abstract boolean isFilter(String uri, Map<String, String> pars);
 }
