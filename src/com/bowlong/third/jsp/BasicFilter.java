@@ -102,7 +102,7 @@ public abstract class BasicFilter implements Filter {
 	}
 
 	protected boolean isFilterTime(Map<String, String> pars, String keyTime) {
-		if (isVTime && pars.containsKey(keyTime)) {
+		if (pars.containsKey(keyTime)) {
 			long time_ms = MapEx.getLong(pars, keyTime);
 			long curr_ms = CalendarEx.now();
 			return !(time_ms > curr_ms - ms_bef && time_ms < curr_ms + ms_aft);
