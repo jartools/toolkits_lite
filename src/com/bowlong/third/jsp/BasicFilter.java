@@ -39,7 +39,7 @@ public abstract class BasicFilter implements Filter {
 	static public boolean isVSql = true; // 是否验证sql注入
 	static public boolean isVTime = false; // 是否验证有效时间
 	static public String key_time = "time_ms"; // 时间字段
-	static public boolean isCFDef = false; // 错误时是否用默认函数返回
+	static public boolean isCFDef = true; // 错误时是否用默认函数返回
 	static public boolean isPrint = false;
 	static private boolean isInit = false;
 
