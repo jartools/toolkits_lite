@@ -39,6 +39,7 @@ public abstract class BasicFilter implements Filter {
 	static public boolean isVSql = true; // 是否验证sql注入
 	static public boolean isVTime = false; // 是否验证有效时间
 	static public String key_time = "time_ms"; // 时间字段
+	static public boolean isCFDef = false; // 错误时是否用默认函数返回
 	static public boolean isPrint = false;
 	static private boolean isInit = false;
 
@@ -76,11 +77,12 @@ public abstract class BasicFilter implements Filter {
 				|| isFilterSql(pars);
 
 		if (isFlag) {
-			pars.clear();
-			pars.put("code", "fails");
-			pars.put("cmd", val);
-			JSONObject jsonData = JsonHelper.toJSON(pars);
-			TkitJsp.writeAndClose(res, jsonData.toString(), "UTF-8");
+			if (isCFDef) {
+				val = cfFilterDef(val, pars);
+			}else{
+				val = cfFilter(val, pars);
+			}
+			TkitJsp.writeAndClose(res, val, strEncoding);
 			return;
 		}
 		chain.doFilter(req, res);
@@ -130,7 +132,17 @@ public abstract class BasicFilter implements Filter {
 		System.out.println(String.format("%s = %s", uri, jsonData.toString()));
 	}
 
+	protected String cfFilterDef(String uri, Map<String, String> pars) {
+		pars.put("uri", uri);
+		pars.put("code", "fails");
+		JSONObject jsonData = JsonHelper.toJSON(pars);
+		return jsonData.toString();
+	}
+
 	public abstract void onInit(FilterConfig arg0);
 
 	public abstract boolean isFilter(String uri, Map<String, String> pars);
+
+	// 过滤掉后需要返回的
+	public abstract String cfFilter(String uri, Map<String, String> pars);
 }
