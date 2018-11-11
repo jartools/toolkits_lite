@@ -56,6 +56,8 @@ public abstract class BasicFilter implements Filter {
 	}
 
 	protected String strEncoding = "UTF-8";
+	boolean isFlag = false;
+	int flagState = 0;
 
 	@Override
 	public void destroy() {
@@ -73,14 +75,20 @@ public abstract class BasicFilter implements Filter {
 
 		_print(val, pars);
 
-		boolean isFlag = (isFilter(val, pars) && isFilterTime(pars, key_time))
-				|| isFilterSql(pars);
-
+		isFlag = isFilter(val, pars) && isFilterTime(pars, key_time);
+		if (isFlag) {
+			flagState = 1;
+		}
+		if (!isFlag) {
+			isFlag = isFilterSql(pars);
+			if (isFlag)
+				flagState = 2;
+		}
 		if (isFlag) {
 			if (isCFDef) {
-				val = cfFilterDef(val, pars);
-			}else{
-				val = cfFilter(val, pars);
+				val = cfFilterDef(flagState, val, pars);
+			} else {
+				val = cfFilter(flagState, val, pars);
 			}
 			TkitJsp.writeAndClose(res, val, strEncoding);
 			return;
@@ -132,9 +140,10 @@ public abstract class BasicFilter implements Filter {
 		System.out.println(String.format("%s = %s", uri, jsonData.toString()));
 	}
 
-	protected String cfFilterDef(String uri, Map<String, String> pars) {
+	protected String cfFilterDef(int state, String uri, Map<String, String> pars) {
 		pars.put("uri", uri);
 		pars.put("code", "fails");
+		pars.put("ftState", String.valueOf(state));
 		JSONObject jsonData = JsonHelper.toJSON(pars);
 		return jsonData.toString();
 	}
@@ -144,5 +153,6 @@ public abstract class BasicFilter implements Filter {
 	public abstract boolean isFilter(String uri, Map<String, String> pars);
 
 	// 过滤掉后需要返回的
-	public abstract String cfFilter(String uri, Map<String, String> pars);
+	public abstract String cfFilter(int state, String uri,
+			Map<String, String> pars);
 }
