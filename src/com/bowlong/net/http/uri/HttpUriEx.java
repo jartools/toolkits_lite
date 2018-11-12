@@ -1,6 +1,7 @@
 package com.bowlong.net.http.uri;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -9,10 +10,11 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.params.ClientPNames;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 
@@ -32,11 +34,11 @@ public class HttpUriEx extends HttpBaseEx {
 
 	static Log log = LogFactory.getLog(HttpUriEx.class);
 
-	static public final HttpResponse execute(HttpUriRequest request,
+	static public final CloseableHttpResponse execute(HttpUriRequest request,
 			int timeOutCon, int timeOutSo) {
-		HttpClient client = null;
+		CloseableHttpClient client = null;
 		try {
-			client = new DefaultHttpClient();
+			client = HttpClients.createDefault();
 			HttpParams params = client.getParams();
 			// 设置是否可以重定向
 			params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
@@ -53,19 +55,23 @@ public class HttpUriEx extends HttpBaseEx {
 				timeOutSo = defaultSoTimeout;
 			}
 			params.setParameter(CoreConnectionPNames.SO_TIMEOUT, timeOutSo);
-			HttpResponse res = client.execute(request);
-			return res;
+			return client.execute(request);
 		} catch (Exception e) {
 			log.error(ExceptionEx.e2s(e));
 		} finally {
 			if (client != null) {
-				client.getConnectionManager().shutdown();
+				try {
+					// client.getConnectionManager().shutdown();
+					client.close();
+				} catch (IOException e) {
+					log.error(ExceptionEx.e2s(e));
+				}
 			}
 		}
 		return null;
 	}
 
-	static public final HttpResponse execute(HttpUriRequest request) {
+	static public final CloseableHttpResponse execute(HttpUriRequest request) {
 		return execute(request, 0, 0);
 	}
 
