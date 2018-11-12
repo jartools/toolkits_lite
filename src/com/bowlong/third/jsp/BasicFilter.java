@@ -22,7 +22,7 @@ import com.bowlong.util.MapEx;
 /***
  * jsp filter基础过滤文件 <br/>
  * 启动的顺序为listener->Filter->servlet.<br/>
- * 简单记为：理(Listener)发(Filter)师(servlet).
+ * 理(Listener)->发(Filter)->师(servlet).
  * 
  * @author Canyon 2017-04-16 23:30
  */
@@ -42,6 +42,7 @@ public abstract class BasicFilter implements Filter {
 	static public boolean isCFDef = true; // 错误时是否用默认函数返回
 	static public boolean isPrint = false;
 	static private boolean isInit = false;
+	static public String strEncoding = "UTF-8";
 
 	// 效验
 	static private boolean sqlValidate(String str) {
@@ -55,13 +56,11 @@ public abstract class BasicFilter implements Filter {
 		return false;
 	}
 
-	protected String strEncoding = "UTF-8";
 	boolean isFlag = false;
 	int flagState = 0;
 
 	@Override
 	public void destroy() {
-		strEncoding = "UTF-8";
 	}
 
 	@Override
@@ -103,7 +102,7 @@ public abstract class BasicFilter implements Filter {
 		if (encoding == null) {
 			encoding = "UTF-8";
 		}
-		this.strEncoding = encoding.trim();
+		strEncoding = encoding.trim();
 
 		if (!isInit) {
 			isInit = true;
@@ -153,6 +152,5 @@ public abstract class BasicFilter implements Filter {
 	public abstract boolean isFilter(String uri, Map<String, String> pars);
 
 	// 过滤掉后需要返回的
-	public abstract String cfFilter(int state, String uri,
-			Map<String, String> pars);
+	public abstract String cfFilter(int state, String uri,Map<String, String> pars);
 }
