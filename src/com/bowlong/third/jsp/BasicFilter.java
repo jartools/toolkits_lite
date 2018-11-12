@@ -56,9 +56,6 @@ public abstract class BasicFilter implements Filter {
 		return false;
 	}
 
-	boolean isFlag = false;
-	int flagState = 0;
-
 	@Override
 	public void destroy() {
 	}
@@ -74,22 +71,7 @@ public abstract class BasicFilter implements Filter {
 
 		_print(val, pars);
 
-		isFlag = isFilter(val, pars) && isFilterTime(pars, key_time);
-		if (isFlag) {
-			flagState = 1;
-		}
-		if (!isFlag) {
-			isFlag = isFilterSql(pars);
-			if (isFlag)
-				flagState = 2;
-		}
-		if (isFlag) {
-			if (isCFDef) {
-				val = cfFilterDef(flagState, val, pars);
-			} else {
-				val = cfFilter(flagState, val, pars);
-			}
-			TkitJsp.writeAndClose(res, val, strEncoding);
+		if (onFilter(res, val, pars)) {
 			return;
 		}
 		chain.doFilter(req, res);
@@ -108,6 +90,35 @@ public abstract class BasicFilter implements Filter {
 			isInit = true;
 			onInit(arg0);
 		}
+	}
+	
+	protected boolean onFilter(HttpServletResponse res,String uri, Map<String, String> pars){
+		int flagState = 0;
+		boolean isFlag = false;
+		isFlag = isFilter(uri, pars);
+		if (isFlag) {
+			flagState = 1;
+		}else{
+			isFlag = isFilterTime(pars, key_time);
+			if (isFlag) {
+				flagState = 2;
+			}
+		}
+		
+		if (!isFlag) {
+			isFlag = isFilterSql(pars);
+			if (isFlag)
+				flagState = 3;
+		}
+		if (isFlag) {
+			if (isCFDef) {
+				uri = cfFilterDef(flagState, uri, pars);
+			} else {
+				uri = cfFilter(flagState, uri, pars);
+			}
+			TkitJsp.writeAndClose(res, uri, strEncoding);
+		}
+		return isFlag;
 	}
 
 	protected boolean isFilterTime(Map<String, String> pars, String keyTime) {
