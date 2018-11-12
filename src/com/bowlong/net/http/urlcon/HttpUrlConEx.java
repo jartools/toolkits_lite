@@ -144,8 +144,8 @@ public class HttpUrlConEx extends HttpBaseEx {
 		return null;
 	}
 
-	static public final InputStream sendParams(String url,
-			Map<String, String> map, String charset, boolean isPost) {
+	static public final InputStream sendParams(String url, Map<String, ?> map,
+			String charset, boolean isPost) {
 		String query = buildQuery(map, charset);
 		if (isPost) {
 			return send(url, "", query.getBytes(), isPost, 0, 0);
@@ -154,18 +154,18 @@ public class HttpUrlConEx extends HttpBaseEx {
 		}
 	}
 
-	static public InputStream postParams(String url, Map<String, String> map,
+	static public InputStream postParams(String url, Map<String, ?> map,
 			String charset) {
 		return sendParams(url, map, charset, true);
 	}
 
-	static public InputStream queryParams(String url, Map<String, String> map,
+	static public InputStream queryParams(String url, Map<String, ?> map,
 			String charset) {
 		return sendParams(url, map, charset, false);
 	}
 
 	static public final InputStream sendParams4Json(String url,
-			Map<String, String> map, String charset, boolean isPost) {
+			Map<String, ?> map, String charset, boolean isPost) {
 		String query = buildStrByJSON4Obj(map);
 		if (isPost) {
 			return send(url, "", getBytes4Str(query, charset), isPost, 0, 0);
@@ -174,8 +174,8 @@ public class HttpUrlConEx extends HttpBaseEx {
 		}
 	}
 
-	static public InputStream postParams4Json(String url,
-			Map<String, String> map, String charset) {
+	static public InputStream postParams4Json(String url, Map<String, ?> map,
+			String charset) {
 		return sendParams4Json(url, map, charset, true);
 	}
 }

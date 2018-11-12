@@ -26,7 +26,7 @@ public class HttpUriPostEx extends HttpUriEx {
 	static Log log = LogFactory.getLog(HttpUriPostEx.class);
 
 	static public final HttpResponse postMap(String host,
-			Map<String, String> params, String charset) {
+			Map<String, ?> params, String charset) {
 
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
@@ -47,9 +47,9 @@ public class HttpUriPostEx extends HttpUriEx {
 			// long contentLength = 0l;
 			if (!MapEx.isEmpty(params)) {
 				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-				for (Entry<String, String> parame : params.entrySet()) {
-					String name = parame.getKey();
-					String value = parame.getValue();
+				for (Entry<String, ?> ent : params.entrySet()) {
+					String name = ent.getKey();
+					String value = ent.getValue().toString();
 					NameValuePair nvParame = new BasicNameValuePair(name, value);
 					nvps.add(nvParame);
 				}
@@ -127,7 +127,7 @@ public class HttpUriPostEx extends HttpUriEx {
 	}
 
 	static public final HttpResponse postJson4Map(String host,
-			Map<String, String> params, String charset) {
+			Map<String, ?> params, String charset) {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}

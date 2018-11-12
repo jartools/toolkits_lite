@@ -67,7 +67,7 @@ public class HttpUriGetEx extends HttpUriEx {
 	}
 
 	static public final HttpResponse queryMapByStr(String host,
-			Map<String, String> params, String charset) {
+			Map<String, ?> params, String charset) {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}

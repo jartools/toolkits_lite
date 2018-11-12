@@ -85,15 +85,15 @@ public class HttpBaseEx {
 		return ret;
 	}
 	
-	static public final String buildQuery(Map<String, String> data,String charset) {
+	static public final String buildQuery(Map<String, ?> data,String charset) {
 		return buildQuery(data,charset,false);
 	}
 	
-	static public final String buildQuery(Map<String, String> data) {
+	static public final String buildQuery(Map<String, ?> data) {
 		return buildQuery(data,"",false);
 	}
 	
-	static public final String buildQuery(Map<String, String> data,boolean isOrderKey) {
+	static public final String buildQuery(Map<String, ?> data,boolean isOrderKey) {
 		return buildQuery(data,"",isOrderKey);
 	}
 
