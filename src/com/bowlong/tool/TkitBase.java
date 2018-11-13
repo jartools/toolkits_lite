@@ -449,14 +449,14 @@ public class TkitBase extends TkitOrigin {
 
 	static public final ScheduledFuture<?> scheduledFixedDelay(
 			ScheduledExecutorService threadPool, Runnable r, Date d, long delay) {
-		return SchedulerEx.timeScheduledFixedDelay(threadPool, r, d, delay);
+		return SchedulerEx.timeFixedDelay(threadPool, r, d, delay);
 	}
 
 	// 确定时分秒，每日执行
 	static public final ScheduledFuture<?> scheduledEveryDay(
 			ScheduledExecutorService threadPool, Runnable r, int hour,
 			int minute, int sec) {
-		return SchedulerEx.timeScheduledEveryDay(threadPool, r, hour, minute,
+		return SchedulerEx.timeEveryDay(threadPool, r, hour, minute,
 				sec);
 	}
 
@@ -464,7 +464,7 @@ public class TkitBase extends TkitOrigin {
 	static public final ScheduledFuture<?> scheduled8FixedRate(
 			ScheduledExecutorService threadPool, Runnable r, long initialDelay,
 			long delay) {
-		return SchedulerEx.scheduledFixedRateMS(threadPool, r, initialDelay,
+		return SchedulerEx.fixedRateMS(threadPool, r, initialDelay,
 				delay);
 	}
 

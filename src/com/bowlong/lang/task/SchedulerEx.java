@@ -30,44 +30,41 @@ public class SchedulerEx {
 
 	// /////////////////////////////////////////////////////////////////
 	// 使用调度器执行
-	static ScheduledExecutorService _scheduledPool = null;
+	static final int nmax = 16;
+	static ScheduledExecutorService _ses = null;
 
 	// /////////////////////////////////////////////////////////////////
 	// 执行 schedule
-	static public final ScheduledFuture<?> schedule(
-			final ScheduledExecutorService ses, final Runnable r,
+	static public final ScheduledFuture<?> schedule(final ScheduledExecutorService ses, final Runnable r,
 			final long delay, final TimeUnit unit) {
 		return ses.schedule(r, delay, unit);
 	}
 
-	static public final ScheduledFuture<?> schedule(
-			ScheduledExecutorService ses, Callable r, long delay, TimeUnit unit) {
+	static public final ScheduledFuture<?> schedule(ScheduledExecutorService ses, Callable r, long delay,
+			TimeUnit unit) {
 		return ses.schedule(r, delay, unit);
 	}
 
-	static public final ScheduledFuture<?> scheduleMS(
-			ScheduledExecutorService ses, Runnable r, long delay) {
+	static public final ScheduledFuture<?> scheduleMS(ScheduledExecutorService ses, Runnable r, long delay) {
 		return ses.schedule(r, delay, TimeUnit.MILLISECONDS);
 	}
 
-	static public final ScheduledFuture<?> schedule(Runnable r, long delay,
-			TimeUnit unit) {
-		if (_scheduledPool == null)
-			_scheduledPool = ThreadEx.newScheduledPool(32);
+	static public final ScheduledFuture<?> schedule(Runnable r, long delay, TimeUnit unit) {
+		if (_ses == null)
+			_ses = ThreadEx.newScheduledPool(nmax);
 
-		return schedule(_scheduledPool, r, delay, unit);
+		return schedule(_ses, r, delay, unit);
 	}
 
 	static public final ScheduledFuture<?> scheduleMS(Runnable r, long delay) {
 		return schedule(r, delay, TimeUnit.MILLISECONDS);
 	}
 
-	static public final ScheduledFuture<?> schedule(Callable r, long delay,
-			TimeUnit unit) {
-		if (_scheduledPool == null)
-			_scheduledPool = ThreadEx.newScheduledPool(32);
+	static public final ScheduledFuture<?> schedule(Callable r, long delay, TimeUnit unit) {
+		if (_ses == null)
+			_ses = ThreadEx.newScheduledPool(nmax);
 
-		return schedule(_scheduledPool, r, delay, unit);
+		return schedule(_ses, r, delay, unit);
 	}
 
 	static public final ScheduledFuture<?> scheduleMS(Callable r, long delay) {
@@ -75,58 +72,46 @@ public class SchedulerEx {
 	}
 
 	// 定时执行,再间隔调度重复执行,FixedDelay相对固定的延迟后，执行某项计划。
-	static public final ScheduledFuture<?> scheduledFixedDelay(
-			ScheduledExecutorService scheduledPool, Runnable r,
+	static public final ScheduledFuture<?> fixedDelay(ScheduledExecutorService scheduledPool, Runnable r,
 			long initialDelay, long delay, TimeUnit unit) {
-		return scheduledPool.scheduleWithFixedDelay(r, initialDelay, delay,
-				unit);
+		return scheduledPool.scheduleWithFixedDelay(r, initialDelay, delay, unit);
 	}
 
-	static public final ScheduledFuture<?> scheduledFixedDelay(Runnable r,
-			long initialDelay, long delay, TimeUnit unit) {
-		if (_scheduledPool == null)
-			_scheduledPool = ThreadEx.newScheduledPool(32);
+	static public final ScheduledFuture<?> fixedDelay(Runnable r, long initialDelay, long delay, TimeUnit unit) {
+		if (_ses == null)
+			_ses = ThreadEx.newScheduledPool(nmax);
 
-		return scheduledFixedDelay(_scheduledPool, r, initialDelay, delay, unit);
+		return fixedDelay(_ses, r, initialDelay, delay, unit);
 	}
 
-	static public final ScheduledFuture<?> scheduledFixedDelayMS(
-			ScheduledExecutorService scheduledPool, Runnable r,
+	static public final ScheduledFuture<?> fixedDelayMS(ScheduledExecutorService scheduledPool, Runnable r,
 			long initialDelay, long delay) {
-		return scheduledFixedDelay(scheduledPool, r, initialDelay, delay,
-				TimeUnit.MILLISECONDS);
+		return fixedDelay(scheduledPool, r, initialDelay, delay, TimeUnit.MILLISECONDS);
 	}
 
-	static public final ScheduledFuture<?> scheduledFixedDelayMS(Runnable r,
-			long initialDelay, long delay) {
-		return scheduledFixedDelay(r, initialDelay, delay,
-				TimeUnit.MILLISECONDS);
+	static public final ScheduledFuture<?> fixedDelayMS(Runnable r, long initialDelay, long delay) {
+		return fixedDelay(r, initialDelay, delay, TimeUnit.MILLISECONDS);
 	}
 
 	// 已固定的频率来执行某项计划(任务)
-	static public final ScheduledFuture<?> scheduledFixedRate(
-			ScheduledExecutorService threadPool, Runnable r, long initialDelay,
+	static public final ScheduledFuture<?> fixedRate(ScheduledExecutorService threadPool, Runnable r, long initialDelay,
 			long delay, TimeUnit unit) {
 		return threadPool.scheduleAtFixedRate(r, initialDelay, delay, unit);
 	}
 
-	static public final ScheduledFuture<?> scheduledFixedRate(Runnable r,
-			long initialDelay, long delay, TimeUnit unit) {
-		if (_scheduledPool == null)
-			_scheduledPool = ThreadEx.newScheduledPool(32);
-		return scheduledFixedRate(_scheduledPool, r, initialDelay, delay, unit);
+	static public final ScheduledFuture<?> fixedRate(Runnable r, long initialDelay, long delay, TimeUnit unit) {
+		if (_ses == null)
+			_ses = ThreadEx.newScheduledPool(nmax);
+		return fixedRate(_ses, r, initialDelay, delay, unit);
 	}
 
-	static public final ScheduledFuture<?> scheduledFixedRateMS(
-			ScheduledExecutorService threadPool, Runnable r, long initialDelay,
-			long delay) {
-		return scheduledFixedRate(threadPool, r, initialDelay, delay,
-				TimeUnit.MILLISECONDS);
-	}
-
-	static public final ScheduledFuture<?> scheduledFixedRateMS(Runnable r,
+	static public final ScheduledFuture<?> fixedRateMS(ScheduledExecutorService threadPool, Runnable r,
 			long initialDelay, long delay) {
-		return scheduledFixedRate(r, initialDelay, delay, TimeUnit.MILLISECONDS);
+		return fixedRate(threadPool, r, initialDelay, delay, TimeUnit.MILLISECONDS);
+	}
+
+	static public final ScheduledFuture<?> fixedRateMS(Runnable r, long initialDelay, long delay) {
+		return fixedRate(r, initialDelay, delay, TimeUnit.MILLISECONDS);
 	}
 
 	static public final long now() {
@@ -135,36 +120,33 @@ public class SchedulerEx {
 
 	// /////////////////////////////////////////////////////////////////
 	// 定时-执行
-	static public final ScheduledFuture<?> timeScheduled(
-			ScheduledExecutorService threadPool, Runnable r, Date d) {
+	static public final ScheduledFuture<?> timeScheduled(ScheduledExecutorService threadPool, Runnable r, Date d) {
 		long delay = d.getTime() - now();
 		delay = delay <= 0 ? 1 : delay;
 		return scheduleMS(threadPool, r, delay);
 	}
 
 	static public final ScheduledFuture<?> timeScheduled(Runnable r, Date d) {
-		if (_scheduledPool == null)
-			_scheduledPool = ThreadEx.newScheduledPool(32);
-		return timeScheduled(_scheduledPool, r, d);
+		if (_ses == null)
+			_ses = ThreadEx.newScheduledPool(nmax);
+		return timeScheduled(_ses, r, d);
 	}
 
-	static public final ScheduledFuture<?> timeScheduledFixedDelay(
-			ScheduledExecutorService threadPool, Runnable r, Date d, long delay) {
+	static public final ScheduledFuture<?> timeFixedDelay(ScheduledExecutorService threadPool, Runnable r, Date d,
+			long delay) {
 		long initialDelay = d.getTime() - now();
 		initialDelay = initialDelay <= 0 ? 1 : initialDelay;
-		return scheduledFixedDelayMS(threadPool, r, initialDelay, delay);
+		return fixedDelayMS(threadPool, r, initialDelay, delay);
 	}
 
-	static public final ScheduledFuture<?> timeScheduledFixedDelay(Runnable r,
-			Date d, long delay) {
-		if (_scheduledPool == null)
-			_scheduledPool = ThreadEx.newScheduledPool(32);
-		return timeScheduledFixedDelay(_scheduledPool, r, d, delay);
+	static public final ScheduledFuture<?> timeFixedDelay(Runnable r, Date d, long delay) {
+		if (_ses == null)
+			_ses = ThreadEx.newScheduledPool(nmax);
+		return timeFixedDelay(_ses, r, d, delay);
 	}
 
 	// 确定时分秒，每日执行
-	static public final ScheduledFuture<?> timeScheduledEveryDay(
-			ScheduledExecutorService threadPool, Runnable r, int hour,
+	static public final ScheduledFuture<?> timeEveryDay(ScheduledExecutorService threadPool, Runnable r, int hour,
 			int minute, int sec) {
 		long now = now();
 		NewDate dat = new NewDate();
@@ -172,10 +154,8 @@ public class SchedulerEx {
 		long m = dat.getMinute();
 		long s = dat.getSecound();
 		long initialDelay = 0;
-		long e1 = h * DateEx.TIME_HOUR + m * DateEx.TIME_MINUTE + s
-				* DateEx.TIME_SECOND;
-		long e2 = hour * DateEx.TIME_HOUR + minute * DateEx.TIME_MINUTE + sec
-				* DateEx.TIME_SECOND;
+		long e1 = h * DateEx.TIME_HOUR + m * DateEx.TIME_MINUTE + s * DateEx.TIME_SECOND;
+		long e2 = hour * DateEx.TIME_HOUR + minute * DateEx.TIME_MINUTE + sec * DateEx.TIME_SECOND;
 		if (e1 < e2) {
 			initialDelay = e2 - e1;
 		} else {
@@ -183,15 +163,13 @@ public class SchedulerEx {
 			initialDelay = tomorrow - now + e2;
 		}
 		long delay = DateEx.TIME_DAY;
-		return scheduledFixedRate(threadPool, r, initialDelay, delay,
-				TimeUnit.MILLISECONDS);
+		return fixedRateMS(threadPool, r, initialDelay, delay);
 	}
 
 	// 确定时分秒，每日执行
-	static public final ScheduledFuture<?> timeScheduledEveryDay(Runnable r,
-			int hour, int minute, int sec) {
-		if (_scheduledPool == null)
-			_scheduledPool = ThreadEx.newScheduledPool(32);
-		return timeScheduledEveryDay(_scheduledPool, r, hour, minute, sec);
+	static public final ScheduledFuture<?> timeEveryDay(Runnable r, int hour, int minute, int sec) {
+		if (_ses == null)
+			_ses = ThreadEx.newScheduledPool(nmax);
+		return timeEveryDay(_ses, r, hour, minute, sec);
 	}
 }
