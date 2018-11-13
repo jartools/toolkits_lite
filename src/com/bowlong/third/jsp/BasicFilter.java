@@ -66,7 +66,7 @@ public abstract class BasicFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		req.setCharacterEncoding(strEncoding);
 		HttpServletResponse res = (HttpServletResponse) response;
-		Map<String, String> pars = TkitJsp.getMapAllParams(req, true);
+		Map<String, Object> pars = TkitJsp.getAllParams(req, true);
 		String val = req.getRequestURI();
 
 		_print(val, pars);
@@ -92,7 +92,7 @@ public abstract class BasicFilter implements Filter {
 		}
 	}
 	
-	protected boolean onFilter(HttpServletResponse res,String uri, Map<String, String> pars){
+	protected boolean onFilter(HttpServletResponse res,String uri, Map<String, Object> pars){
 		int flagState = 0;
 		boolean isFlag = false;
 		isFlag = isFilter(uri, pars);
@@ -121,7 +121,7 @@ public abstract class BasicFilter implements Filter {
 		return isFlag;
 	}
 
-	protected boolean isFilterTime(Map<String, String> pars, String keyTime) {
+	protected boolean isFilterTime(Map<String, Object> pars, String keyTime) {
 		if (isVTime && pars.containsKey(keyTime)) {
 			long time_ms = MapEx.getLong(pars, keyTime);
 			long curr_ms = CalendarEx.now();
@@ -130,7 +130,7 @@ public abstract class BasicFilter implements Filter {
 		return isVTime;
 	}
 
-	protected boolean isFilterSql(Map<String, String> pars) {
+	protected boolean isFilterSql(Map<String, Object> pars) {
 		boolean isFlag = false;
 		Object[] _arrs = pars.values().toArray();
 		int lens = _arrs.length;
@@ -143,14 +143,14 @@ public abstract class BasicFilter implements Filter {
 		return isFlag;
 	}
 
-	private void _print(String uri, Map<String, String> pars) {
+	private void _print(String uri, Map<String, Object> pars) {
 		if (!isPrint)
 			return;
 		JSONObject jsonData = JsonHelper.toJSON(pars);
 		System.out.println(String.format("%s = %s", uri, jsonData.toString()));
 	}
 
-	protected String cfFilterDef(int state, String uri, Map<String, String> pars) {
+	protected String cfFilterDef(int state, String uri, Map<String, Object> pars) {
 		pars.put("uri", uri);
 		pars.put("code", "fails");
 		pars.put("ftState", String.valueOf(state));
@@ -160,8 +160,8 @@ public abstract class BasicFilter implements Filter {
 
 	public abstract void onInit(FilterConfig arg0);
 
-	public abstract boolean isFilter(String uri, Map<String, String> pars);
+	public abstract boolean isFilter(String uri, Map<String, Object> pars);
 
 	// 过滤掉后需要返回的
-	public abstract String cfFilter(int state, String uri,Map<String, String> pars);
+	public abstract String cfFilter(int state, String uri,Map<String, Object> pars);
 }

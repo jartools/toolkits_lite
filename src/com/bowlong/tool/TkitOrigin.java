@@ -9,147 +9,79 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.bowlong.lang.StrEx;
 import com.bowlong.objpool.StringBufPool;
-import com.bowlong.text.EncodingEx;
 import com.bowlong.third.FastJSON;
 import com.bowlong.util.ListEx;
 import com.bowlong.util.MapEx;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class TkitOrigin {
-	/*** 取得HttpServletRequest全部参数 getParameterNames isNoFitlerEmpty-是否(不过滤空val) **/
-	static public final Map<String, String> getMapAllParams(
-			HttpServletRequest request, String charsetFrom, String charsetTo,boolean isNoFitlerEmpty) {
-		Map<String, String> map = new HashMap<String, String>();
-		Enumeration paramNames = request.getParameterNames();
-		StringBuffer buff = new StringBuffer();
-		boolean isFrom,isTo,isNoEmpty = true;
-		isFrom = !StrEx.isEmptyTrim(charsetFrom);
-		if (isFrom) {
-			isFrom = EncodingEx.isSupported(charsetFrom);
+	static final Map<String, Object> allParams(Map<String, Object> map, StringBuffer buff, String key, String[] vals,
+			boolean isNoFitlerEmpty) {
+		buff.setLength(0);
+		int lens = vals.length;
+		for (int i = 0; i < lens; i++) {
+			buff.append(vals[i]);
+			if (i < lens - 1) {
+				buff.append(",");
+			}
 		}
-
-		isTo = !StrEx.isEmptyTrim(charsetTo);
-		if (isTo) {
-			isTo = EncodingEx.isSupported(charsetTo);
-		}
-		
-		String key,val = "";
-		String[] vals;
-		int lens = 0;
-		while (paramNames.hasMoreElements()) {
-			buff.setLength(0);
-			key = (String) paramNames.nextElement();
-			vals = request.getParameterValues(key);
-			lens = vals.length;
-			for (int i = 0; i < lens; i++) {
-				buff.append(vals[i]);
-				if (i < lens - 1) {
-					buff.append(",");
-				}
-			}
-
-			val = buff.toString();
-			isNoEmpty = !StrEx.isEmptyTrim(val); 
-			if (isNoEmpty) {
-				try {
-					if (isFrom) {
-						if (!isTo) {
-							charsetTo = EncodingEx.UTF_8;
-						}
-						val = new String(val.getBytes(charsetFrom), charsetTo);
-					} else {
-						if (isTo) {
-							val = new String(val.getBytes(), charsetTo);
-						}
-					}
-				} catch (Exception e) {
-				}
-			}
-			if(isNoEmpty || isNoFitlerEmpty){
-				map.put(key, val);
-			}
+		String val = buff.toString();
+		boolean isNoEmpty = !StrEx.isEmptyTrim(val);
+		if (isNoEmpty || isNoFitlerEmpty) {
+			map.put(key, val);
 		}
 		return map;
 	}
-	
-	static public final Map<String, String> getMapAllParams(
-			HttpServletRequest request,boolean isNoFitlerEmpty) {
-		return getMapAllParams(request, "", "",isNoFitlerEmpty);
+
+	/***
+	 * 取得HttpServletRequest全部参数 getParameterNames isNoFitlerEmpty-是否(不过滤空val)
+	 **/
+	static public final Map<String, Object> getAllParams(HttpServletRequest requ, boolean isNoFitlerEmpty) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Enumeration paramNames = requ.getParameterNames();
+		StringBuffer buff = new StringBuffer();
+		String key;
+		String[] vals;
+		while (paramNames.hasMoreElements()) {
+			key = (String) paramNames.nextElement();
+			vals = requ.getParameterValues(key);
+			map = allParams(map, buff, key, vals, isNoFitlerEmpty);
+		}
+		return map;
 	}
-	
+
 	/*** 取得HttpServletRequest全部参数 getParameterNames **/
-	static public final Map<String, String> getMapAllParams(
-			HttpServletRequest request) {
-		return getMapAllParams(request,false);
+	static public final Map<String, Object> getAllParams(HttpServletRequest request) {
+		return getAllParams(request, false);
 	}
 
 	/*** 取得HttpServletRequest全部参数 getParameterNames **/
 	static public final String getStrAllParams(HttpServletRequest request) {
-		Map<String, String> map = getMapAllParams(request);
+		Map<String, Object> map = getAllParams(request);
 		return FastJSON.toJSONString(map);
 	}
 
 	/*** 取得HttpServletRequest全部参数 getParameterMap **/
-	static public final Map<String, String> getMapAllParamsBy(
-			HttpServletRequest request, String charsetFrom, String charsetTo) {
-		Map<String, String> map = new HashMap<String, String>();
-		Map mapPars = request.getParameterMap();
+	static public final Map<String, Object> getAllParamsBy(HttpServletRequest requ, boolean isNoFitlerEmpty) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map mapPars = requ.getParameterMap();
 		List keyList = ListEx.keyToList(mapPars);
 		int size = keyList.size();
 		StringBuffer buff = new StringBuffer();
 
-		boolean isFrom = !StrEx.isEmptyTrim(charsetFrom);
-		if (isFrom) {
-			isFrom = EncodingEx.isSupported(charsetFrom);
-		}
-
-		boolean isTo = !StrEx.isEmptyTrim(charsetTo);
-		if (isTo) {
-			isTo = EncodingEx.isSupported(charsetTo);
-		}
-
 		for (int i = 0; i < size; i++) {
-			buff.setLength(0);
 			String key = (keyList.get(i)).toString();
 			String[] vals = (String[]) mapPars.get(key);
-
-			int lens = vals.length;
-			for (int j = 0; j < lens; j++) {
-				buff.append(vals[j]);
-				if (j < lens - 1) {
-					buff.append(",");
-				}
-			}
-
-			String val = buff.toString();
-			if (!StrEx.isEmptyTrim(val)) {
-
-				try {
-					if (isFrom) {
-						if (!isTo) {
-							charsetTo = EncodingEx.UTF_8;
-						}
-						val = new String(val.getBytes(charsetFrom), charsetTo);
-					} else {
-						if (isTo) {
-							val = new String(val.getBytes(), charsetTo);
-						}
-					}
-				} catch (Exception e) {
-				}
-
-				map.put(key, val);
-			}
+			map = allParams(map, buff, key, vals, isNoFitlerEmpty);
 		}
 		return map;
 	}
 
 	/*** 取得HttpServletRequest全部参数 getParameterMap **/
-	static public final Map<String, String> getMapAllParamsBy(
-			HttpServletRequest request) {
-		return getMapAllParamsBy(request, "", "");
+	static public final Map<String, Object> getAllParamsBy(HttpServletRequest request) {
+		return getAllParamsBy(request, false);
 	}
-	
+
 	/*** 简单拼接取得数量的Sql语句 **/
 	static public final String getSql4Count(String tabName, Map params) {
 		Map queMap = new HashMap();
@@ -176,15 +108,13 @@ public class TkitOrigin {
 		StringBuffer strBuf = StringBufPool.borrowObject();
 		String sql = "";
 		try {
-			strBuf.append("SELECT COUNT(*) FROM ").append(tabName)
-					.append(" WHERE 1 = 1 ");
+			strBuf.append("SELECT COUNT(*) FROM ").append(tabName).append(" WHERE 1 = 1 ");
 			if (!MapEx.isEmpty(params)) {
 				Object val = null;
 				for (Object key : params.keySet()) {
 					val = params.get(key);
 					if (val != null) {
-						strBuf.append("AND ").append(key.toString())
-								.append(val.toString()).append(" ");
+						strBuf.append("AND ").append(key.toString()).append(val.toString()).append(" ");
 					}
 				}
 			}
@@ -197,8 +127,7 @@ public class TkitOrigin {
 	}
 
 	/*** 简单拼接取得列表的Sql语句 **/
-	static public final String getSql4List(String tabName, Map params,
-			int begin, int limit) {
+	static public final String getSql4List(String tabName, Map params, int begin, int limit) {
 		Map queMap = new HashMap();
 		if (!MapEx.isEmpty(params)) {
 			Object val = null;
@@ -219,27 +148,23 @@ public class TkitOrigin {
 	}
 
 	/*** map的key是字段名,val是条件自己封装=，！=， >,<等条件 **/
-	static public final String getSql4ListBy(String tabName, Map params,
-			int begin, int limit) {
+	static public final String getSql4ListBy(String tabName, Map params, int begin, int limit) {
 		StringBuffer strBuf = StringBufPool.borrowObject();
 		String sql = "";
 		try {
-			strBuf.append("SELECT * FROM ").append(tabName)
-					.append(" WHERE 1 = 1 ");
+			strBuf.append("SELECT * FROM ").append(tabName).append(" WHERE 1 = 1 ");
 			if (!MapEx.isEmpty(params)) {
 				Object val = null;
 				for (Object key : params.keySet()) {
 					val = params.get(key);
 					if (val != null) {
-						strBuf.append("AND ").append(key.toString())
-								.append(val.toString()).append(" ");
+						strBuf.append("AND ").append(key.toString()).append(val.toString()).append(" ");
 					}
 				}
 			}
 
 			if (begin >= 0 && limit != 0) {
-				strBuf.append(" LIMIT ").append(begin).append(",")
-						.append(limit);
+				strBuf.append(" LIMIT ").append(begin).append(",").append(limit);
 			}
 			sql = strBuf.toString();
 		} finally {
