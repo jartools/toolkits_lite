@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.logging.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bowlong.bio2.B2InputStream;
@@ -20,6 +22,7 @@ import com.bowlong.text.EncodingEx;
 import com.bowlong.util.DateEx;
 import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.MapEx;
+import com.bowlong.util.Ref;
 
 /**
  * 
@@ -38,12 +41,24 @@ public class HttpBaseEx {
 	/** 回应超时时间, 缺省为30秒钟 */
 	static public final int defaultSoTimeout = 30000;
 
-	/*** GET参数编码 */
-	static public final String buildQuery(Map<String,?> data,String charset,boolean isOrderKey) {
-		if (MapEx.isEmpty(data))
-			return "";
+	static final protected Ref<Boolean> refObj = new Ref<Boolean>(false);
 
-		String ret = "";
+	static final protected void logInfo(Object obj, Log objLog) {
+		objLog.info(obj);
+	}
+
+	static final protected void logError(Exception ex, Log objLog) {
+		objLog.error(ExceptionEx.e2s(ex));
+	}
+	
+	static final public String reCharset(String charset) {
+		charset = reCharset(charset, refObj);
+		if(!refObj.val)
+			charset = EncodingEx.UTF_8;
+		return charset;
+	}
+
+	static final public String reCharset(String charset, Ref<Boolean> refSupport) {
 		boolean isSupported = !StrEx.isEmptyTrim(charset);
 		if (isSupported) {
 			isSupported = EncodingEx.isSupported(charset);
@@ -52,49 +67,62 @@ public class HttpBaseEx {
 				isSupported = true;
 			}
 		}
-		
+		if (refSupport != null)
+			refSupport.val = isSupported;
+		return charset;
+	}
+
+	/*** GET参数编码 */
+	static public final String buildQuery(Map<String, ?> data, String charset, boolean isOrderKey) {
+		if (MapEx.isEmpty(data))
+			return "";
+
+		String ret = "";
+		charset = reCharset(charset, refObj);
+		boolean isSup = refObj.val;
+
 		Object[] keys = data.keySet().toArray();
-		if(isOrderKey)
+		if (isOrderKey)
 			Arrays.sort(keys);
 		StringBuffer buff = new StringBuffer();
 		int lens = keys.length;
 		try {
-			String k,v;
+			String k, v;
 			Object vv;
 			for (int i = 0; i < lens; i++) {
 				k = keys[i].toString();
 				vv = data.get(k);
-				if(vv == null)
+				if (vv == null)
 					continue;
 				v = vv.toString();
-				if(!StrEx.isEmpty(v)){
-					if (isSupported) {
+				if (!StrEx.isEmpty(v)) {
+					if (isSup) {
 						k = URLEncoder.encode(k, charset);
 						v = URLEncoder.encode(v, charset);
 					}
 				}
 				buff.append(k).append("=").append(v);
-				if(i < lens - 1)
+				if (i < lens - 1)
 					buff.append("&");
 			}
 		} catch (Exception e) {
 		}
-		
+
 		ret = buff.toString();
 		buff.setLength(0);
 		return ret;
 	}
-	
-	static public final String buildQuery(Map<String, ?> data,String charset) {
-		return buildQuery(data,charset,false);
+
+	static public final String buildQuery(Map<String, ?> data, String charset) {
+		return buildQuery(data, charset, false);
 	}
-	
+
 	static public final String buildQuery(Map<String, ?> data) {
-		return buildQuery(data,"",false);
+		return buildQuery(data, "", false);
 	}
-	
-	static public final String buildQuery(Map<String, ?> data,boolean isOrderKey) {
-		return buildQuery(data,"",isOrderKey);
+
+	static public final String buildQuery(Map<String, ?> data, boolean isOrderKey) {
+		return buildQuery(data, "", isOrderKey);
 	}
 
 	static public final String buildStrByJSON4Obj(Object data) {
@@ -152,19 +180,11 @@ public class HttpBaseEx {
 		if (ins == null)
 			return "";
 		try {
-
-			boolean isSupported = !StrEx.isEmptyTrim(charset);
-			if (isSupported) {
-				isSupported = EncodingEx.isSupported(charset);
-				if (!isSupported) {
-					charset = EncodingEx.UTF_8;
-					isSupported = true;
-				}
-			}
-
+			charset = reCharset(charset, refObj);
+			boolean isSup = refObj.val;
 			StringBuffer buff = new StringBuffer();
 			BufferedReader br = null;
-			if (isSupported) {
+			if (isSup) {
 				br = new BufferedReader(new InputStreamReader(ins, charset));
 			} else {
 				br = new BufferedReader(new InputStreamReader(ins));
@@ -211,8 +231,7 @@ public class HttpBaseEx {
 		return new byte[0];
 	}
 
-	static public final Object inps2Obj4Stream(InputStream ins)
-			throws Exception {
+	static public final Object inps2Obj4Stream(InputStream ins) throws Exception {
 		byte[] bts = inps2Bytes(ins);
 		try (ByteInStream byteStream = ByteInStream.create(bts)) {
 			return B2InputStream.readObject(byteStream);
@@ -230,18 +249,10 @@ public class HttpBaseEx {
 		if (ins == null)
 			return "";
 		try {
-
-			boolean isSupported = !StrEx.isEmptyTrim(charset);
-			if (isSupported) {
-				isSupported = EncodingEx.isSupported(charset);
-				if (!isSupported) {
-					charset = EncodingEx.UTF_8;
-					isSupported = true;
-				}
-			}
-
+			charset = reCharset(charset, refObj);
+			boolean isSup = refObj.val;
 			byte[] bts = B2InputStream.readStream(ins);
-			if (isSupported) {
+			if (isSup) {
 				return new String(bts, charset);
 			} else {
 				return new String(bts);
@@ -255,16 +266,10 @@ public class HttpBaseEx {
 	static public final byte[] getBytes4Str(String params, String charset) {
 		byte[] btParams = new byte[0];
 		if (!StrEx.isEmptyTrim(params)) {
-			boolean isSupported = !StrEx.isEmptyTrim(charset);
-			if (isSupported) {
-				isSupported = EncodingEx.isSupported(charset);
-				if (!isSupported) {
-					charset = EncodingEx.UTF_8;
-					isSupported = true;
-				}
-			}
+			charset = reCharset(charset, refObj);
+			boolean isSup = refObj.val;
 			try {
-				if (isSupported) {
+				if (isSup) {
 					btParams = params.getBytes(charset);
 				} else {
 					btParams = params.getBytes();
@@ -287,8 +292,7 @@ public class HttpBaseEx {
 	static public String getSpeed(String pingUrl, Charset cset) {
 		try {
 			String line = null;
-			Process pro = Runtime.getRuntime().exec(
-					"ping " + pingUrl + " -l 1000 -n 4");
+			Process pro = Runtime.getRuntime().exec("ping " + pingUrl + " -l 1000 -n 4");
 
 			InputStream inStream = pro.getInputStream();
 			BufferedReader buf = null;
@@ -310,12 +314,10 @@ public class HttpBaseEx {
 				}
 				if (position != -1) {
 					System.out.println(line);
-					String value = line.substring(position + len,
-							line.lastIndexOf("ms"));
+					String value = line.substring(position + len, line.lastIndexOf("ms"));
 					value = value.replaceAll("=", "");
 					value = value.trim();
-					double speed = (1000d / Integer.parseInt(value)) / 1024
-							* DateEx.TIME_SECOND;
+					double speed = (1000d / Integer.parseInt(value)) / 1024 * DateEx.TIME_SECOND;
 					double lineMB = (1024 * 1.25);
 					String v = "";
 					if (speed > lineMB) {

@@ -14,7 +14,6 @@ import org.apache.commons.logging.LogFactory;
 import com.bowlong.lang.StrEx;
 import com.bowlong.net.http.HttpBaseEx;
 import com.bowlong.text.EncodingEx;
-import com.bowlong.util.ExceptionEx;
 
 /**
  * URLConnection,HttpURLConnection <br/>
@@ -96,11 +95,11 @@ public class HttpUrlConEx extends HttpBaseEx {
 			try {
 				return conn.getInputStream();
 			} catch (IOException e) {
-				log.info(ExceptionEx.e2s(e));
+				logError(e, log);
 				return conn.getErrorStream();
 			}
 		} catch (Exception e) {
-			log.info(ExceptionEx.e2s(e));
+			logError(e, log);
 			return null;
 		}
 	}
@@ -139,7 +138,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 
 			return con.getInputStream();
 		} catch (Exception e) {
-			log.error(ExceptionEx.e2s(e));
+			logError(e, log);
 		}
 		return null;
 	}

@@ -19,9 +19,7 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 
 import com.bowlong.bio2.B2InputStream;
-import com.bowlong.lang.StrEx;
 import com.bowlong.net.http.HttpBaseEx;
-import com.bowlong.text.EncodingEx;
 import com.bowlong.util.ExceptionEx;
 
 /**
@@ -34,9 +32,9 @@ public class HttpUriEx extends HttpBaseEx {
 
 	static Log log = LogFactory.getLog(HttpUriEx.class);
 
-	static public final CloseableHttpResponse execute(HttpUriRequest request,
-			int timeOutCon, int timeOutSo) {
+	static public final InputStream execute(HttpUriRequest requ, int tiOutCon, int tiOutSo) {
 		CloseableHttpClient client = null;
+		CloseableHttpResponse res = null;
 		try {
 			client = HttpClients.createDefault();
 			HttpParams params = client.getParams();
@@ -44,39 +42,46 @@ public class HttpUriEx extends HttpBaseEx {
 			params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
 
 			// 请求超时
-			if (timeOutCon <= 0) {
-				timeOutCon = defaultConnectionTimeout;
+			if (tiOutCon <= 0) {
+				tiOutCon = defaultConnectionTimeout;
 			}
-			params.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT,
-					timeOutCon);
+			params.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, tiOutCon);
 
 			// 读取超时
-			if (timeOutSo <= 0) {
-				timeOutSo = defaultSoTimeout;
+			if (tiOutSo <= 0) {
+				tiOutSo = defaultSoTimeout;
 			}
-			params.setParameter(CoreConnectionPNames.SO_TIMEOUT, timeOutSo);
-			return client.execute(request);
+			params.setParameter(CoreConnectionPNames.SO_TIMEOUT, tiOutSo);
+			res = client.execute(requ);
+			if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				return res.getEntity().getContent();
+			}
 		} catch (Exception e) {
-			log.error(ExceptionEx.e2s(e));
+			logError(e, log);
 		} finally {
-			if (client != null) {
-				try {
+			try {
+				if (res != null)
+					res.close();
+			} catch (Exception e) {
+				logError(e, log);
+			}
+			try {
+				if (client != null) {
 					// client.getConnectionManager().shutdown();
 					client.close();
-				} catch (IOException e) {
-					log.error(ExceptionEx.e2s(e));
 				}
+			} catch (IOException e) {
+				logError(e, log);
 			}
 		}
 		return null;
 	}
 
-	static public final CloseableHttpResponse execute(HttpUriRequest request) {
+	static public final InputStream execute(HttpUriRequest request) {
 		return execute(request, 0, 0);
 	}
 
-	static public final InputStream readInStream(HttpResponse response)
-			throws Exception {
+	static public final InputStream readInStream(HttpResponse response) throws Exception {
 		if (response == null)
 			return null;
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
@@ -87,26 +92,18 @@ public class HttpUriEx extends HttpBaseEx {
 	}
 
 	/*** 因为netty服务器是异步的 **/
-	static public final String readStr4Netty(HttpResponse response,
-			String charset) {
+	static public final String readStr4Netty(HttpResponse response, String charset) {
 		if (response == null)
 			return "";
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 			try {
-
-				boolean isSupported = !StrEx.isEmptyTrim(charset);
-				if (isSupported) {
-					isSupported = EncodingEx.isSupported(charset);
-					if (!isSupported) {
-						charset = EncodingEx.UTF_8;
-						isSupported = true;
-					}
-				}
+				charset = reCharset(charset, refObj);
+				boolean isSup = refObj.val;
 
 				HttpEntity en = response.getEntity();
 				InputStream ins = en.getContent();
 				byte[] bts = B2InputStream.readStream(ins);
-				if (isSupported) {
+				if (isSup) {
 					return new String(bts, charset);
 				} else {
 					return new String(bts);
@@ -124,22 +121,15 @@ public class HttpUriEx extends HttpBaseEx {
 			return "";
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 			try {
-
-				boolean isSupported = !StrEx.isEmptyTrim(charset);
-				if (isSupported) {
-					isSupported = EncodingEx.isSupported(charset);
-					if (!isSupported) {
-						charset = EncodingEx.UTF_8;
-						isSupported = true;
-					}
-				}
+				charset = reCharset(charset, refObj);
+				boolean isSup = refObj.val;
 
 				HttpEntity en = response.getEntity();
 				InputStream ins = en.getContent();
 
 				StringBuffer buff = new StringBuffer();
 				BufferedReader br = null;
-				if (isSupported) {
+				if (isSup) {
 					br = new BufferedReader(new InputStreamReader(ins, charset));
 				} else {
 					br = new BufferedReader(new InputStreamReader(ins));

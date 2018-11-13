@@ -1,5 +1,6 @@
 package com.bowlong.net.http.uri;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,6 @@ import java.util.Map.Entry;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -18,28 +18,20 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.bowlong.lang.StrEx;
 import com.bowlong.text.EncodingEx;
-import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.MapEx;
 
 public class HttpUriPostEx extends HttpUriEx {
 
 	static Log log = LogFactory.getLog(HttpUriPostEx.class);
 
-	static public final HttpResponse postMap(String host,
-			Map<String, ?> params, String charset) {
+	static public final InputStream postMap(String host, Map<String, ?> params, String charset) {
 
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}
 
-		boolean isSupported = !StrEx.isEmptyTrim(charset);
-		if (isSupported) {
-			isSupported = EncodingEx.isSupported(charset);
-			if (!isSupported) {
-				charset = EncodingEx.UTF_8;
-				isSupported = true;
-			}
-		}
+		charset = reCharset(charset, refObj);
+		boolean isSup = refObj.val;
 
 		try {
 			URL url = new URL(host);
@@ -55,7 +47,7 @@ public class HttpUriPostEx extends HttpUriEx {
 				}
 
 				UrlEncodedFormEntity urlencode = null;
-				if (isSupported) {
+				if (isSup) {
 					urlencode = new UrlEncodedFormEntity(nvps, charset);
 				} else {
 					urlencode = new UrlEncodedFormEntity(nvps);
@@ -64,7 +56,7 @@ public class HttpUriPostEx extends HttpUriEx {
 				// contentLength = urlencode.getContentLength();
 			}
 			post.setHeader("Accept", "*/*");
-			if (isSupported) {
+			if (isSup) {
 				post.setHeader("Accept-Charset", charset);
 			} else {
 				post.setHeader("Accept-Charset", EncodingEx.UTF_8);
@@ -74,27 +66,19 @@ public class HttpUriPostEx extends HttpUriEx {
 			post.setHeader("User-Agent", UseAgent3);
 			return execute(post);
 		} catch (Exception e) {
-			log.error(ExceptionEx.e2s(e));
+			logError(e, log);
 		}
 
 		return null;
 	}
 
-	static public final HttpResponse postStr(String host, String params,
-			String charset) {
-
+	static public final InputStream postStr(String host, String params, String charset) {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}
 
-		boolean isSupported = !StrEx.isEmptyTrim(charset);
-		if (isSupported) {
-			isSupported = EncodingEx.isSupported(charset);
-			if (!isSupported) {
-				charset = EncodingEx.UTF_8;
-				isSupported = true;
-			}
-		}
+		charset = reCharset(charset, refObj);
+		boolean isSup = refObj.val;
 
 		try {
 			URL url = new URL(host);
@@ -102,7 +86,7 @@ public class HttpUriPostEx extends HttpUriEx {
 			// long contentLength = 0l;
 			if (!StrEx.isEmpty(params)) {
 				HttpEntity httpEn = null;
-				if (isSupported) {
+				if (isSup) {
 					httpEn = new StringEntity(params, charset);
 				} else {
 					httpEn = new StringEntity(params);
@@ -111,7 +95,7 @@ public class HttpUriPostEx extends HttpUriEx {
 				// contentLength = httpEn.getContentLength();
 			}
 			post.setHeader("Accept", "*/*");
-			if (isSupported) {
+			if (isSup) {
 				post.setHeader("Accept-Charset", charset);
 			} else {
 				post.setHeader("Accept-Charset", EncodingEx.UTF_8);
@@ -121,13 +105,12 @@ public class HttpUriPostEx extends HttpUriEx {
 			post.setHeader("User-Agent", UseAgent3);
 			return execute(post);
 		} catch (Exception e) {
-			log.error(ExceptionEx.e2s(e));
+			logError(e, log);
 		}
 		return null;
 	}
 
-	static public final HttpResponse postJson4Map(String host,
-			Map<String, ?> params, String charset) {
+	static public final InputStream postJson4Map(String host, Map<String, ?> params, String charset) {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}

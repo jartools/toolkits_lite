@@ -23,8 +23,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
 import com.bowlong.lang.StrEx;
+import com.bowlong.net.http.HttpBaseEx;
 import com.bowlong.objpool.StringBufPool;
-import com.bowlong.text.EncodingEx;
 import com.bowlong.third.xml.province.entity.XmlCities;
 import com.bowlong.third.xml.province.entity.XmlCity;
 import com.bowlong.third.xml.province.entity.XmlProvinces;
@@ -60,19 +60,10 @@ public class TkitJsp extends TkitBase {
 	}
 
 	/*** 输出文本内容 **/
-	static public final void writeAndClose(OutputStream out, String content,
-			String chaset) {
+	static public final void writeAndClose(OutputStream out, String content, String charset) {
 		try {
-			if (StrEx.isEmptyTrim(chaset)) {
-				chaset = EncodingEx.UTF_8;
-			} else {
-				boolean isU = EncodingEx.isSupported(chaset);
-				if (!isU) {
-					chaset = EncodingEx.UTF_8;
-				}
-			}
-
-			out.write(content.getBytes(chaset));
+			charset = HttpBaseEx.reCharset(charset);
+			out.write(content.getBytes(charset));
 			out.flush();
 			out.close();
 		} catch (Exception e) {
@@ -81,36 +72,26 @@ public class TkitJsp extends TkitBase {
 	}
 
 	/*** 输出文本内容 **/
-	static public final void writeAndClose(HttpServletResponse response,
-			String content, String chaset) {
+	static public final void writeAndClose(HttpServletResponse res, String content, String charset) {
 		try {
-			if (StrEx.isEmptyTrim(chaset)) {
-				chaset = EncodingEx.UTF_8;
-			} else {
-				boolean isU = EncodingEx.isSupported(chaset);
-				if (!isU) {
-					chaset = EncodingEx.UTF_8;
-				}
-			}
+			charset = HttpBaseEx.reCharset(charset);
 
-			response.setCharacterEncoding(chaset);
-			ServletOutputStream out = response.getOutputStream();
-			writeAndClose(out, content, chaset);
+			res.setCharacterEncoding(charset);
+			ServletOutputStream out = res.getOutputStream();
+			writeAndClose(out, content, charset);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	static public final void writeJsonAndClose(OutputStream out, String strJson,
-			String callBackFun) {
+
+	static public final void writeJsonAndClose(OutputStream out, String strJson, String callBackFun) {
 		if (!StrEx.isEmptyTrim(callBackFun)) {
 			strJson = callBackFun + "(" + strJson + ")";
 		}
 		writeAndClose(out, strJson, "");
 	}
-	
-	static public final void writeJsonAndClose(HttpServletResponse response,
-			String strJson, String callBackFun) {
+
+	static public final void writeJsonAndClose(HttpServletResponse response, String strJson, String callBackFun) {
 		try {
 			ServletOutputStream out = response.getOutputStream();
 			writeJsonAndClose(out, strJson, callBackFun);
@@ -120,8 +101,7 @@ public class TkitJsp extends TkitBase {
 	}
 
 	/*** json格式写出map对象 [callfun:为空，就默认方式,不为空，就callFun方式] **/
-	static public final void writeAndClose(OutputStream out, Map map,
-			String callBackFun) {
+	static public final void writeAndClose(OutputStream out, Map map, String callBackFun) {
 		try {
 			String v = JSON.toJSONString(map);
 			writeJsonAndClose(out, v, callBackFun);
@@ -131,8 +111,7 @@ public class TkitJsp extends TkitBase {
 	}
 
 	/*** json格式写出map对象 **/
-	static public final void writeAndClose(HttpServletResponse response,
-			Map map, String callBackFun) {
+	static public final void writeAndClose(HttpServletResponse response, Map map, String callBackFun) {
 		try {
 			ServletOutputStream out = response.getOutputStream();
 			writeAndClose(out, map, callBackFun);
@@ -157,8 +136,7 @@ public class TkitJsp extends TkitBase {
 	}
 
 	/*** 清空httpsession **/
-	static public final void clearHttpSession(HttpSession session,
-			String... excepts) {
+	static public final void clearHttpSession(HttpSession session, String... excepts) {
 		if (session == null)
 			return;
 		List<String> list = ListEx.toList(excepts);
@@ -172,13 +150,11 @@ public class TkitJsp extends TkitBase {
 	}
 
 	/*** 添加Cookie的实现 **/
-	static public final void addCookie(String name, String password,
-			HttpServletResponse response, HttpServletRequest request)
-			throws Exception {
+	static public final void addCookie(String name, String password, HttpServletResponse response,
+			HttpServletRequest request) throws Exception {
 		if (!StrEx.isEmptyTrim(name) && !StrEx.isEmptyTrim(password)) {
 			// 创建Cookie
-			Cookie nameCookie = new Cookie("name", URLEncoder.encode(name,
-					"utf-8"));
+			Cookie nameCookie = new Cookie("name", URLEncoder.encode(name, "utf-8"));
 			Cookie pswCookie = new Cookie("psw", password);
 
 			// 设置Cookie的父路径
@@ -203,8 +179,7 @@ public class TkitJsp extends TkitBase {
 		}
 	}
 
-	static public final void getCookie(HttpServletRequest request)
-			throws Exception {
+	static public final void getCookie(HttpServletRequest request) throws Exception {
 		// <%
 		String name = "";
 		String psw = "";
@@ -225,19 +200,16 @@ public class TkitJsp extends TkitBase {
 				}
 			}
 		}
-		System.out.println("name=" + name + ",pwd=" + psw + ",checked="
-				+ checked);
+		System.out.println("name=" + name + ",pwd=" + psw + ",checked=" + checked);
 		// %>
 	}
 
 	/*** 上传图片demo **/
-	static public void upload(HttpServletRequest request,
-			MultipartHttpServletRequest fileRequest,
+	static public void upload(HttpServletRequest request, MultipartHttpServletRequest fileRequest,
 			HttpServletResponse response) {
 		String pathDir = "";
 		/** 得到图片保存目录的真实路径 **/
-		String logoRealPathDir = request.getSession().getServletContext()
-				.getRealPath(pathDir);
+		String logoRealPathDir = request.getSession().getServletContext().getRealPath(pathDir);
 		/** 根据真实路径创建目录 **/
 		File logoSaveFile = new File(logoRealPathDir);
 		if (!logoSaveFile.exists())
@@ -246,8 +218,8 @@ public class TkitJsp extends TkitBase {
 		MultipartFile multipartFile = fileRequest.getFile("img2Upload");
 		/** 获取文件的后缀 **/
 		System.out.println(multipartFile.getOriginalFilename());
-		String suffix = multipartFile.getOriginalFilename().substring(
-				multipartFile.getOriginalFilename().lastIndexOf("."));
+		String suffix = multipartFile.getOriginalFilename()
+				.substring(multipartFile.getOriginalFilename().lastIndexOf("."));
 
 		/** 拼成完整的文件保存路径加文件 **/
 		String name = +System.currentTimeMillis() + suffix;
@@ -273,8 +245,7 @@ public class TkitJsp extends TkitBase {
 	}
 
 	/*** 根据省ID，取得该省份拥有的市区 **/
-	static public final void getCitiesByPid(String path, int pid,
-			ModelMap modelMap) {
+	static public final void getCitiesByPid(String path, int pid, ModelMap modelMap) {
 		if (path == null)
 			path = "";
 		List<XmlCity> list = XmlCities.getList4Jar(path, pid);
@@ -343,7 +314,7 @@ public class TkitJsp extends TkitBase {
 	static public final String getUrlIPProject(HttpServletRequest request) {
 		return getUrlIP(request).concat(request.getContextPath());
 	}
-	
+
 	/**
 	 * 获取项目的IP+项目名称+请求
 	 * 
@@ -353,14 +324,15 @@ public class TkitJsp extends TkitBase {
 	static public final String getUriAll(HttpServletRequest request) {
 		return getUrlIP(request).concat(request.getRequestURI());
 	}
-	
+
 	static String _dirTmWebRoot = null;
+
 	static public final String getDirTmWebRoot() {
 		if (null == _dirTmWebRoot) {
 			_dirTmWebRoot = getAppRoot().replace("bin", "webapps");
 			_dirTmWebRoot = StrEx.repBackSlash(_dirTmWebRoot, "/");
-			if(!_dirTmWebRoot.endsWith("/")){
-				_dirTmWebRoot = _dirTmWebRoot + "/"; 
+			if (!_dirTmWebRoot.endsWith("/")) {
+				_dirTmWebRoot = _dirTmWebRoot + "/";
 			}
 		}
 		return _dirTmWebRoot;

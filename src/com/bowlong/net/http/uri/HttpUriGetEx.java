@@ -1,17 +1,16 @@
 package com.bowlong.net.http.uri;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 
 import com.bowlong.lang.StrEx;
 import com.bowlong.text.EncodingEx;
-import com.bowlong.util.ExceptionEx;
 
 public class HttpUriGetEx extends HttpUriEx {
 
@@ -22,28 +21,22 @@ public class HttpUriGetEx extends HttpUriEx {
 	 * HttpParams是一种HTTP协议参数。支持HTTP 1.0和HTTP 1.1 HttpParams httpParams = new
 	 * BasicHttpParams();
 	 */
-	static public final HttpResponse queryStr(String host, String params,
+	static public final InputStream queryStr(String host, String params,
 			String charset) {
 
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}
-
-		boolean isSupported = !StrEx.isEmptyTrim(charset);
-		if (isSupported) {
-			isSupported = EncodingEx.isSupported(charset);
-			if (!isSupported) {
-				charset = EncodingEx.UTF_8;
-				isSupported = true;
-			}
-		}
+		
+		charset = reCharset(charset, refObj);
+		boolean isSup = refObj.val;
 
 		try {
 			URL url = null;
 			if (StrEx.isEmptyTrim(params)) {
 				url = new URL(host);
 			} else {
-				if (isSupported) {
+				if (isSup) {
 					params = URLEncoder.encode(params, charset);
 				}
 				url = new URL(host + "?" + params);
@@ -51,7 +44,7 @@ public class HttpUriGetEx extends HttpUriEx {
 
 			HttpGet get = new HttpGet(url.toURI());
 			get.setHeader("Accept", "*/*");
-			if (isSupported) {
+			if (isSup) {
 				get.setHeader("Accept-Charset", charset);
 			} else {
 				get.setHeader("Accept-Charset", EncodingEx.UTF_8);
@@ -61,12 +54,12 @@ public class HttpUriGetEx extends HttpUriEx {
 			get.setHeader("User-Agent", UseAgent3);
 			return execute(get);
 		} catch (Exception e) {
-			log.error(ExceptionEx.e2s(e));
+			logError(e, log);
 		}
 		return null;
 	}
 
-	static public final HttpResponse queryMapByStr(String host,
+	static public final InputStream queryMapByStr(String host,
 			Map<String, ?> params, String charset) {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
