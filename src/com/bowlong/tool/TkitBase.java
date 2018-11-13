@@ -117,11 +117,11 @@ public class TkitBase extends TkitOrigin {
 		int i = RndEx.nextInt(0, objs.size());
 		return (T) objs.get(i);
 	}
-	
+
 	static public final String pn(int n) {
 		return n > 0 ? "+" + n : String.valueOf(n);
 	}
-	
+
 	static public final int compareTo(Object v1, Object v2) {
 		if (v1 == null || v2 == null)
 			return 0;
@@ -146,13 +146,11 @@ public class TkitBase extends TkitOrigin {
 			Long i1 = (Long) v1;
 			Long i2 = (Long) v2;
 			return i1.compareTo(i2);
-		} else if (v1 instanceof java.math.BigInteger
-				&& v2 instanceof java.math.BigInteger) {
+		} else if (v1 instanceof java.math.BigInteger && v2 instanceof java.math.BigInteger) {
 			java.math.BigInteger i1 = (java.math.BigInteger) v1;
 			java.math.BigInteger i2 = (java.math.BigInteger) v2;
 			return i1.compareTo(i2);
-		} else if (v1 instanceof java.math.BigDecimal
-				&& v2 instanceof java.math.BigDecimal) {
+		} else if (v1 instanceof java.math.BigDecimal && v2 instanceof java.math.BigDecimal) {
 			java.math.BigDecimal i1 = (java.math.BigDecimal) v1;
 			java.math.BigDecimal i2 = (java.math.BigDecimal) v2;
 			return i1.compareTo(i2);
@@ -172,8 +170,7 @@ public class TkitBase extends TkitOrigin {
 			java.sql.Date i1 = (java.sql.Date) v1;
 			java.sql.Date i2 = (java.sql.Date) v2;
 			return i1.compareTo(i2);
-		} else if (v1 instanceof java.sql.Timestamp
-				&& v2 instanceof java.sql.Timestamp) {
+		} else if (v1 instanceof java.sql.Timestamp && v2 instanceof java.sql.Timestamp) {
 			java.sql.Timestamp i1 = (java.sql.Timestamp) v1;
 			java.sql.Timestamp i2 = (java.sql.Timestamp) v2;
 			return i1.compareTo(i2);
@@ -233,8 +230,7 @@ public class TkitBase extends TkitOrigin {
 
 	// ///////////////////////////////////////////////////
 	static public final byte[] zip(byte[] b) throws IOException {
-		ByteArrayOutputStream baos = ObjPool
-				.borrowObject(ByteArrayOutputStream.class);
+		ByteArrayOutputStream baos = ObjPool.borrowObject(ByteArrayOutputStream.class);
 		try {
 			GZIPOutputStream gos = new GZIPOutputStream(baos);
 			gos.write(b);
@@ -248,8 +244,7 @@ public class TkitBase extends TkitOrigin {
 	}
 
 	static public final byte[] unzip(byte[] b) throws IOException {
-		ByteArrayOutputStream baos = ObjPool
-				.borrowObject(ByteArrayOutputStream.class);
+		ByteArrayOutputStream baos = ObjPool.borrowObject(ByteArrayOutputStream.class);
 		try {
 			int times = 1000;
 			byte[] buff = new byte[4 * 1024];
@@ -308,7 +303,7 @@ public class TkitBase extends TkitOrigin {
 	static public final void sn(StringBuffer sb, String s, Object... args) {
 		s(sb, s + "\r\n", args);
 	}
-	
+
 	// 带1位小数
 	static public final String n2s(int i) {
 		if (i < 1000)
@@ -437,35 +432,29 @@ public class TkitBase extends TkitOrigin {
 	}
 
 	// ///////////////////////////////////////////////////
-	static public final ScheduledExecutorService newScheduledThreadPool(
-			String name, int n) {
+	static public final ScheduledExecutorService newScheduledThreadPool(String name, int n) {
 		return ThreadEx.newScheduledPool(name, n);
 	}
 
-	static public final ScheduledFuture<?> scheduled(
-			ScheduledExecutorService threadPool, Runnable r, Date d) {
-		return SchedulerEx.timeScheduled(threadPool, r, d);
+	static public final ScheduledFuture<?> scheduleMS(ScheduledExecutorService threadPool, Runnable r, int delayMs) {
+		return SchedulerEx.scheduleMS(threadPool, r, delayMs);
 	}
 
-	static public final ScheduledFuture<?> scheduledFixedDelay(
-			ScheduledExecutorService threadPool, Runnable r, Date d, long delay) {
+	static public final ScheduledFuture<?> scheduledFixedDelay(ScheduledExecutorService threadPool, Runnable r, Date d,
+			long delay) {
 		return SchedulerEx.timeFixedDelay(threadPool, r, d, delay);
 	}
 
 	// 确定时分秒，每日执行
-	static public final ScheduledFuture<?> scheduledEveryDay(
-			ScheduledExecutorService threadPool, Runnable r, int hour,
+	static public final ScheduledFuture<?> scheduledEveryDay(ScheduledExecutorService threadPool, Runnable r, int hour,
 			int minute, int sec) {
-		return SchedulerEx.timeEveryDay(threadPool, r, hour, minute,
-				sec);
+		return SchedulerEx.timeEveryDay(threadPool, r, hour, minute, sec);
 	}
 
 	// 定时执行
-	static public final ScheduledFuture<?> scheduled8FixedRate(
-			ScheduledExecutorService threadPool, Runnable r, long initialDelay,
-			long delay) {
-		return SchedulerEx.fixedRateMS(threadPool, r, initialDelay,
-				delay);
+	static public final ScheduledFuture<?> scheduled8FixedRate(ScheduledExecutorService threadPool, Runnable r,
+			long initialDelay, long delay) {
+		return SchedulerEx.fixedRateMS(threadPool, r, initialDelay, delay);
 	}
 
 	static public final Map getMap(Map map, Object key) {
@@ -527,8 +516,7 @@ public class TkitBase extends TkitOrigin {
 		return B2InputStream.readStream(is);
 	}
 
-	static public final String readFully(File f, String charset)
-			throws IOException {
+	static public final String readFully(File f, String charset) throws IOException {
 		byte[] b = readFully(f);
 		if (b == null)
 			return "";
@@ -539,8 +527,7 @@ public class TkitBase extends TkitOrigin {
 	static public final byte[] serialization(final Object obj) throws Exception {
 		if (obj == null)
 			return new byte[0];
-		try (ByteOutStream out = ByteOutPool.borrowObject();
-				ObjectOutputStream oos = new ObjectOutputStream(out);) {
+		try (ByteOutStream out = ByteOutPool.borrowObject(); ObjectOutputStream oos = new ObjectOutputStream(out);) {
 			oos.writeObject(obj);
 			return out.toByteArray();
 		} catch (Exception e) {
@@ -552,8 +539,7 @@ public class TkitBase extends TkitOrigin {
 	static public final Object deserialization(final byte[] b) throws Exception {
 		if (b == null || b.length <= 0)
 			return null;
-		try (ByteInStream in = ByteInPool.borrowObject(b);
-				ObjectInputStream ois = new ObjectInputStream(in);) {
+		try (ByteInStream in = ByteInPool.borrowObject(b); ObjectInputStream ois = new ObjectInputStream(in);) {
 			return ois.readObject();
 		} catch (Exception e) {
 			throw e;

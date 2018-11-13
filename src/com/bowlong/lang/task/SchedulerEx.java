@@ -120,18 +120,6 @@ public class SchedulerEx {
 
 	// /////////////////////////////////////////////////////////////////
 	// 定时-执行
-	static public final ScheduledFuture<?> timeScheduled(ScheduledExecutorService threadPool, Runnable r, Date d) {
-		long delay = d.getTime() - now();
-		delay = delay <= 0 ? 1 : delay;
-		return scheduleMS(threadPool, r, delay);
-	}
-
-	static public final ScheduledFuture<?> timeScheduled(Runnable r, Date d) {
-		if (_ses == null)
-			_ses = ThreadEx.newScheduledPool(nmax);
-		return timeScheduled(_ses, r, d);
-	}
-
 	static public final ScheduledFuture<?> timeFixedDelay(ScheduledExecutorService threadPool, Runnable r, Date d,
 			long delay) {
 		long initialDelay = d.getTime() - now();
