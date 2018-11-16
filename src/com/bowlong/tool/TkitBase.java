@@ -436,8 +436,12 @@ public class TkitBase extends TkitOrigin {
 		return ThreadEx.newScheduledPool(name, n);
 	}
 
-	static public final ScheduledFuture<?> scheduleMS(ScheduledExecutorService threadPool, Runnable r, int delayMs) {
+	static public final ScheduledFuture<?> scheduleMS(ScheduledExecutorService threadPool, Runnable r, long delayMs) {
 		return SchedulerEx.scheduleMS(threadPool, r, delayMs);
+	}
+	
+	static public final ScheduledFuture<?> scheduleSec(ScheduledExecutorService threadPool, Runnable r, int delaySec) {
+		return SchedulerEx.scheduleSec(threadPool, r, delaySec);
 	}
 
 	static public final ScheduledFuture<?> scheduledFixedDelay(ScheduledExecutorService threadPool, Runnable r, Date d,
