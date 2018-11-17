@@ -149,21 +149,21 @@ public final class RndEx {
 	public static final double nextDouble(final double f, final double t, final int decimal) {
 		if (f == t)
 			return t;
+
+		double lmt = 1;
+		for (int i = 0; i < decimal; i++) {
+			lmt *= 10;
+		}
+
 		double min = f > t ? t : f;
 		double max = f > t ? f : t;
-		double lmt = 1;
-		int lmt1 = 1;
-		for (int i = 0; i < decimal; i++) {
-			lmt *= 0.1;
-			lmt1 *= 10;
-		}
-		if (max - min == lmt)
+		if ((max - min) * lmt <= 1)
 			return min;
 
-		int min1 = (int) (min * lmt1);
-		int max1 = (int) (max * lmt1);
-
-		return (min1 + rnd.nextInt(max1 - min1)) * lmt;
+		int mi = (int) (min * lmt);
+		int ma = (int) (max * lmt);
+		// 经过测试用乘积得的小数会有偏差尤其是保留两位小数0.01以上 始终保持 10的-16次方
+		return (mi + rnd.nextInt(ma - mi)) / lmt;
 	}
 
 	public static final double nextDouble(final double f, final double t) {
