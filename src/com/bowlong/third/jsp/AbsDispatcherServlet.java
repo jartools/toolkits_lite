@@ -41,5 +41,5 @@ public abstract class AbsDispatcherServlet extends HttpServlet {
 	}
 
 	// Handler 处理
-	public abstract String dispatcher(HttpServletRequest req, HttpServletResponse resp);
+	public abstract String dispatcher(HttpServletRequest req, HttpServletResponse resp) throws Exception;
 }
