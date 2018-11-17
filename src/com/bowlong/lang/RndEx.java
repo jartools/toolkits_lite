@@ -21,12 +21,12 @@ public final class RndEx {
 	public static final boolean nextBoolean() {
 		return rnd.nextBoolean();
 	}
-	
+
 	static public final boolean nextBool(int max, int f) {
 		int v = nextInt(max);
 		return (v < f);
 	}
-	
+
 	public static final byte[] nextBytes(byte[] bts) {
 		if (bts == null)
 			return null;
@@ -59,12 +59,14 @@ public final class RndEx {
 	}
 
 	public static final int nextInt(final int f, final int t) {
-		if(f >= t){
-			if(t <= 2)
-				return t;
-			return nextInt(1,t);
-		}
-		return rnd.nextInt(t - f) + f;
+		if (f == t)
+			return t;
+		int min = f > t ? t : f;
+		int max = f > t ? f : t;
+		if (max - min == 1)
+			return min;
+
+		return min + rnd.nextInt(max - min);
 	}
 
 	public static final long nextLong() {
@@ -126,10 +128,10 @@ public final class RndEx {
 			StringBufPool.returnObject(buff);
 		}
 	}
-	
+
 	/*** 随机指定长度数字字符 **/
 	static public final String nextString09(final int rndLen) {
-		if(rndLen <= 0)
+		if (rndLen <= 0)
 			return "";
 		StringBuffer buff = StringBufPool.borrowObject();
 		try {
@@ -142,5 +144,29 @@ public final class RndEx {
 		} finally {
 			StringBufPool.returnObject(buff);
 		}
+	}
+
+	public static final double nextDouble(final double f, final double t, final int decimal) {
+		if (f == t)
+			return t;
+		double min = f > t ? t : f;
+		double max = f > t ? f : t;
+		double lmt = 1;
+		int lmt1 = 1;
+		for (int i = 0; i < decimal; i++) {
+			lmt *= 0.1;
+			lmt1 *= 10;
+		}
+		if (max - min == lmt)
+			return min;
+
+		int min1 = (int) (min * lmt1);
+		int max1 = (int) (max * lmt1);
+
+		return (min1 + rnd.nextInt(max1 - min1)) * lmt;
+	}
+
+	public static final double nextDouble(final double f, final double t) {
+		return nextDouble(f, t, 2);
 	}
 }
