@@ -1209,7 +1209,8 @@ public final class NumEx {
 		return (a <= 0.0D) ? 0.0D - a : a;
 	}
 
-	static final public double round(double org, int acc) {
+	/** 保留acc位小数   */
+	static final public double roundDecimal(double org, int acc) {
 		double pow = 1;
 		for (int i = 0; i < acc; i++) {
 			pow *= 10;
