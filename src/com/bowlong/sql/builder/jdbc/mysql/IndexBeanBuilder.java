@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.bowlong.Toolkit;
-import com.bowlong.lang.StrEx;
 import com.bowlong.sql.SqlEx;
 import com.bowlong.util.StrBuilder;
 
@@ -24,7 +23,7 @@ public class IndexBeanBuilder extends Toolkit {
 
 	public static String build(Connection conn, String pkg, String db,
 			String table) throws Exception {
-		StrBuilder sb = StrEx.builder();
+		StrBuilder sb = StrBuilder.builder();
 
 		Map<String, Map<String, Object>> mapConluns = SqlEx.mapColumns(conn,
 				db, table);

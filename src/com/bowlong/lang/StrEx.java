@@ -3,7 +3,6 @@ package com.bowlong.lang;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -14,24 +13,8 @@ import java.util.regex.Pattern;
 
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.text.EasyTemplate;
-import com.bowlong.util.StrBuilder;
 
 public final class StrEx {
-	public static void main(String[] args) {
-		System.out.println(upperN("bowlong.z@qq.com", 0));
-		System.out.println(removeRight("你好:${2}, 我oo${1}", 3));
-		System.out.println(fixNStr("test", 2));
-		System.out.println(fixNInt(1, 6));
-	}
-
-	public static final StrBuilder builder() {
-		return StrBuilder.builder();
-	}
-
-	public static final StrBuilder builder(final StringBuffer sb) {
-		return StrBuilder.builder(sb);
-	}
-
 	public static final String left(final String s, final int len) {
 		return s.substring(0, len);
 	}
@@ -49,15 +32,15 @@ public final class StrEx {
 		return s.substring(begin);
 	}
 
-	public static final String left(final String s, final String left) {
-		int p1 = s.indexOf(left);
+	public static final String left(final String s, final String endExclude) {
+		int p1 = s.indexOf(endExclude);
 		p1 = p1 < 0 ? 0 : p1;
 		return s.substring(0, p1);
 	}
 
-	public static final String right(final String s, final String right) {
-		int p1 = s.lastIndexOf(right);
-		p1 = p1 < 0 ? 0 : p1 + right.length();
+	public static final String right(final String s, final String begExclude) {
+		int p1 = s.lastIndexOf(begExclude);
+		p1 = p1 < 0 ? 0 : p1 + begExclude.length();
 		return s.substring(p1);
 	}
 
@@ -155,62 +138,56 @@ public final class StrEx {
 		return fmt;
 	}
 
+	static final private String changeN(final String s, final int p, boolean isLowerP, boolean isLowerOther) {
+		int len = s.length();
+		if (len <= 0)
+			return "";
+		if (p >= len)
+			return s;
+
+		StringBuffer sb = StringBufPool.borrowObject();
+		try {
+			String str = "";
+			if (p > 0) {
+				str = s.substring(0, p);
+				if (isLowerOther)
+					str = str.toLowerCase();
+				sb.append(str);
+			}
+			str = s.substring(p, p + 1).toUpperCase();
+			if (isLowerP) {
+				str = str.toLowerCase();
+			}
+			sb.append(str);
+
+			str = s.substring(p + 1, len);
+			if (isLowerOther)
+				str = str.toLowerCase();
+			sb.append(str);
+			return sb.toString();
+		} finally {
+			StringBufPool.returnObject(sb);
+		}
+	}
+
 	public static final String upperN1(final String s) {
-		final int p = 0;
-		return upperN(s, p);
+		return changeN(s, 0, false, false);
 	}
 
 	public static final String upperN(final String s, final int p) {
-		int len = s.length();
-		if (len <= 0)
-			return "";
-		StringBuffer sb = StringBufPool.borrowObject();
-		try {
-			sb.append(s);
-			sb.replace(p, p + 1, s.substring(p, p + 1).toUpperCase());
-			return sb.toString();
-		} finally {
-			StringBufPool.returnObject(sb);
-		}
-	}
-
-	static private final String upperFirst(final String s, boolean isLowerOther) {
-		int len = s.length();
-		if (len <= 0)
-			return "";
-		StringBuffer sb = StringBufPool.borrowObject();
-		try {
-			sb.append(s.substring(0, 1).toUpperCase());
-			String strOth = s.substring(1, len);
-			if (isLowerOther)
-				strOth = strOth.toLowerCase();
-			sb.append(strOth);
-			return sb.toString();
-		} finally {
-			StringBufPool.returnObject(sb);
-		}
+		return changeN(s, p, false, false);
 	}
 
 	static public final String upperFirst(final String s) {
-		return upperFirst(s, false);
+		return upperN1(s);
 	}
 
 	static public final String upperFirstLowerOther(final String s) {
-		return upperFirst(s, true);
+		return changeN(s, 1, false, true);
 	}
 
 	public static final String lowerFirst(final String s) {
-		int len = s.length();
-		if (len <= 0)
-			return "";
-		StringBuffer sb = StringBufPool.borrowObject();
-		try {
-			sb.append(s.substring(0, 1).toLowerCase());
-			sb.append(s.substring(1, len));
-			return sb.toString();
-		} finally {
-			StringBufPool.returnObject(sb);
-		}
+		return changeN(s, 0, true, false);
 	}
 
 	public static final String package2Path(final String pkg) {
@@ -259,15 +236,6 @@ public final class StrEx {
 		}
 	}
 
-	public static final int cNum(final String s) {
-		try {
-			byte[] b = s.getBytes("GBK");
-			return b.length;
-		} catch (Exception e) {
-		}
-		return 0;
-	}
-
 	public static final String toString(final List<?> l) {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
@@ -283,11 +251,11 @@ public final class StrEx {
 		}
 	}
 
-	public static final byte[] toByteArray(final String s, final String charset) throws UnsupportedEncodingException {
+	public static final byte[] toByteArray(final String s, final String charset) throws Exception {
 		return s.getBytes(charset);
 	}
 
-	public static final String createString(final byte[] b, final String charset) throws UnsupportedEncodingException {
+	public static final String createString(final byte[] b, final String charset) throws Exception {
 		return new String(b, charset);
 	}
 
@@ -351,11 +319,6 @@ public final class StrEx {
 			hash = i;
 		}
 		return i;
-	}
-
-	public static final int nextInt(final List<Integer> list) {
-		int index = RndEx.nextInt(list.size());
-		return list.get(index);
 	}
 
 	public static final String removeLeft(final String s, final int n) {

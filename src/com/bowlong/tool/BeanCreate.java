@@ -12,7 +12,7 @@ public class BeanCreate {
 	public static final String createJavaFromListSingleMap(String objectName,
 			ListSingleMap maps) {
 
-		StrBuilder sb = StrEx.builder();
+		StrBuilder sb = StrBuilder.builder();
 
 		sb.pn("import java.io.*;");
 		sb.pn("import java.util.*;");
@@ -128,7 +128,7 @@ public class BeanCreate {
 	public static final String createCSharpFromListSingleMap(String objectName,
 			ListSingleMap maps) {
 
-		StrBuilder sb = StrEx.builder();
+		StrBuilder sb = StrBuilder.builder();
 
 		sb.pn("using System;");
 		sb.pn("using System.Collections;");
