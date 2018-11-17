@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bowlong.tool.TkitJsp;
+import com.bowlong.util.ExceptionEx;
 
 /***
  * jsp servlet基础 类 <br/>
@@ -30,10 +31,15 @@ public abstract class AbsDispatcherServlet extends HttpServlet {
 	}
 
 	protected void _disp(HttpServletRequest req, HttpServletResponse resp) {
-		String outVal = dispatcher(req, resp);
-		TkitJsp.writeAndClose(resp, outVal,BasicFilter.strEncoding);
+		String outVal = "";
+		try {
+			outVal = dispatcher(req, resp);
+		} catch (Exception e) {
+			outVal = ExceptionEx.e2s(e);
+		}
+		TkitJsp.writeAndClose(resp, outVal, BasicFilter.strEncoding);
 	}
-	
+
 	// Handler 处理
 	public abstract String dispatcher(HttpServletRequest req, HttpServletResponse resp);
 }
