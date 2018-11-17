@@ -38,10 +38,10 @@ public final class NumEx {
 	//
 	public static final boolean stringToBool(final String s, final boolean v) {
 		try {
-			if("0".equals(s)){
+			if ("0".equals(s)) {
 				return false;
 			}
-			if("1".equals(s)){
+			if ("1".equals(s)) {
 				return true;
 			}
 			return Boolean.parseBoolean(s);
@@ -448,8 +448,8 @@ public final class NumEx {
 	}
 
 	public static final int readInt(final byte[] data, final int offset) {
-		return (((data[offset + 0] & 0xff) << 24) + ((data[offset + 1] & 0xff) << 16) + ((data[offset + 2] & 0xff) << 8)
-				+ ((data[offset + 3] & 0xff) << 0));
+		return (((data[offset + 0] & 0xff) << 24) + ((data[offset + 1] & 0xff) << 16)
+				+ ((data[offset + 2] & 0xff) << 8) + ((data[offset + 3] & 0xff) << 0));
 	}
 
 	public static final int readInt(final byte[] data, final Offset offset) {
@@ -773,69 +773,31 @@ public final class NumEx {
 	}
 
 	public static final boolean isByte(final String s) {
-		try {
-			Byte.parseByte(s);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+		return StrEx.isByte(s);
 	}
 
 	public static final boolean isShort(final String s) {
-		try {
-			Short.parseShort(s);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+		return StrEx.isShort(s);
 	}
 
 	public static final boolean isInt(final String s) {
-		try {
-			Integer.parseInt(s);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+		return StrEx.isInt(s);
 	}
 
 	public static final boolean isLong(final String s) {
-		try {
-			Long.parseLong(s);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+		return StrEx.isLong(s);
 	}
 
 	public static final boolean isFloat(final String s) {
-		try {
-			Float.parseFloat(s);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+		return StrEx.isFloat(s);
 	}
 
 	public static final boolean isDouble(final String s) {
-		try {
-			Double.parseDouble(s);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	public static final String fix6Int(final int v) {
-		return fixNInt(v, 6);
+		return StrEx.isDouble(s);
 	}
 
 	public static final String fixNInt(final int v, final int n) {
-		return String.format("%0" + n + "d", v);
-	}
-
-	public static final String fix3Int(final int v) {
-		return fixNInt(v, 3);
+		return StrEx.fixNInt(v, n);
 	}
 
 	public static final short swapShort(final short value) {
@@ -936,8 +898,7 @@ public final class NumEx {
 	}
 
 	public static final int readSwappedInteger(final byte[] data, final int offset) {
-		return (((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8) + ((data[offset + 2] & 0xff) << 16)
-				+ ((data[offset + 3] & 0xff) << 24));
+		return (((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8) + ((data[offset + 2] & 0xff) << 16) + ((data[offset + 3] & 0xff) << 24));
 	}
 
 	public static final int readSwappedInteger(final byte[] data, final Offset offset) {
@@ -951,8 +912,7 @@ public final class NumEx {
 	}
 
 	public static final long readSwappedUnsignedInteger(final byte[] data, final int offset) {
-		long low = (((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8)
-				+ ((data[offset + 2] & 0xff) << 16));
+		long low = (((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8) + ((data[offset + 2] & 0xff) << 16));
 		long high = data[offset + 3] & 0xff;
 		return (high << 24) + (0xffffffffL & low);
 	}
@@ -1163,11 +1123,15 @@ public final class NumEx {
 	public static final double readSwappedDouble(final InputStream input) throws IOException {
 		return Double.longBitsToDouble(readSwappedLong(input));
 	}
-	
+
 	// 计算距离
 	public static final int distance(final int x1, final int y1, final int x2, final int y2) {
 		double v = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 		return (int) v;
+	}
+
+	public static final boolean isInMinMax(final double v, final double min, final double max) {
+		return v >= min && v <= max;
 	}
 
 	public static final int limitMinMax(final int v, final int min, final int max) {
@@ -1200,7 +1164,7 @@ public final class NumEx {
 		}
 		return result;
 	}
-	
+
 	public static final int maxPars(int... arr) {
 		int[] v = ListEx.toArrs4Int(arr);
 		return max(v);
@@ -1219,25 +1183,6 @@ public final class NumEx {
 	public static final int minPars(int... arr) {
 		int[] v = ListEx.toArrs4Int(arr);
 		return min(v);
-	}
-
-	public static final String nStr(final int n) {
-		if (n < -1000000)
-			return ((int) (n / 1000000)) + "百万";
-		if (n < -10000)
-			return ((int) (n / 10000)) + "万";
-		if (n < -1000)
-			return ((int) (n / 1000)) + "千";
-		if (n < 0)
-			return "" + n;
-		else if (n < 1000)
-			return "" + n;
-		else if (n < 10000)
-			return ((int) (n / 1000)) + "千";
-		else if (n < 1000000)
-			return ((int) (n / 10000)) + "万";
-		else
-			return ((int) (n / 1000000)) + "百万";
 	}
 
 	public static final double longBitsToDouble(final long bits) {
@@ -1262,6 +1207,16 @@ public final class NumEx {
 
 	public static final double abs(final double a) {
 		return (a <= 0.0D) ? 0.0D - a : a;
+	}
+
+	static final public double round(double org, int acc) {
+		double pow = 1;
+		for (int i = 0; i < acc; i++) {
+			pow *= 10;
+		}
+
+		double temp = (int) (org * pow + 0.5);
+		return temp / pow;
 	}
 
 	public static final long doubleToLongBits(double v) {
