@@ -64,8 +64,9 @@ public abstract class BasicFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
-		req.setCharacterEncoding(strEncoding);
 		HttpServletResponse res = (HttpServletResponse) response;
+		req.setCharacterEncoding(strEncoding);
+		preOnFilter(req, res);
 		Map<String, Object> pars = TkitJsp.getAllParams(req, true);
 		String val = req.getRequestURI();
 
@@ -91,6 +92,9 @@ public abstract class BasicFilter implements Filter {
 			onInit(arg0);
 		}
 	}
+	
+	// 提供参数-头信息设定在 onFilter 之前
+	protected void preOnFilter(HttpServletRequest req,HttpServletResponse res){}
 	
 	protected boolean onFilter(HttpServletResponse res,String uri, Map<String, Object> pars){
 		int flagState = 0;
@@ -158,8 +162,8 @@ public abstract class BasicFilter implements Filter {
 		return jsonData.toString();
 	}
 
-	public abstract void onInit(FilterConfig arg0);
-
+	public abstract void onInit(FilterConfig cfg);
+	
 	public abstract boolean isFilter(String uri, Map<String, Object> pars);
 
 	// 过滤掉后需要返回的
