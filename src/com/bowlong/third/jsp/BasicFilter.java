@@ -147,7 +147,7 @@ public abstract class BasicFilter implements Filter {
 		if (!isPrint)
 			return;
 		JSONObject jsonData = JsonHelper.toJSON(pars);
-		System.out.println(String.format("%s ,%s = %s",CalendarEx.nowStr_YMDHms(),uri, jsonData.toString()));
+		System.out.println(String.format("%s == [%s] = %s",CalendarEx.nowStr_YMDHms(),uri, jsonData.toString()));
 	}
 
 	protected String cfFilterDef(int state, String uri, Map<String, Object> pars) {
