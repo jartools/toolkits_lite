@@ -52,10 +52,10 @@ public class HttpBaseEx {
 	static final protected void logError(Exception ex, Log objLog) {
 		objLog.error(ExceptionEx.e2s(ex));
 	}
-	
+
 	static final public String reCharset(String charset) {
 		charset = reCharset(charset, refObj);
-		if(!refObj.val)
+		if (!refObj.val)
 			charset = EncodingEx.UTF_8;
 		return charset;
 	}
@@ -223,14 +223,25 @@ public class HttpBaseEx {
 		return new HashMap();
 	}
 
-	static public final byte[] inps2Bytes(InputStream ins) {
+	static public final byte[] inps2Bytes(InputStream ins, boolean isCloseIns) {
 		if (ins == null)
 			return new byte[0];
 		try {
 			return B2InputStream.readStream(ins);
 		} catch (Exception e) {
+		} finally {
+			if (isCloseIns) {
+				try {
+					ins.close();
+				} catch (Exception e) {
+				}
+			}
 		}
 		return new byte[0];
+	}
+
+	static public final byte[] inps2Bytes(InputStream ins) {
+		return inps2Bytes(ins, true);
 	}
 
 	static public final Object inps2Obj4Stream(InputStream ins) throws Exception {
@@ -253,7 +264,7 @@ public class HttpBaseEx {
 		try {
 			charset = reCharset(charset, refObj);
 			boolean isSup = refObj.val;
-			byte[] bts = B2InputStream.readStream(ins);
+			byte[] bts = inps2Bytes(ins);
 			if (isSup) {
 				return new String(bts, charset);
 			} else {

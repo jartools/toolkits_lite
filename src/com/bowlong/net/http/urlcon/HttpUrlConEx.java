@@ -1,6 +1,5 @@
 package com.bowlong.net.http.urlcon;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -27,7 +26,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 
 	static Log log = LogFactory.getLog(HttpUrlConEx.class);
 
-	static public final InputStream send(String url, String query,
+	static public final byte[] send(String url, String query,
 			byte[] params, boolean isPost, int timeOutCon, int timeOutSo) {
 		HttpURLConnection conn = null;
 		try {
@@ -92,11 +91,11 @@ public class HttpUrlConEx extends HttpBaseEx {
 
 			// 获取所有响应头字段
 			// Map<String, List<String>> map = conn.getHeaderFields();
-			try {
-				return conn.getInputStream();
-			} catch (IOException e) {
+			try(InputStream ins = conn.getInputStream()){
+				return inps2Bytes(ins);
+			}catch (Exception e) {
 				logError(e, log);
-				return conn.getErrorStream();
+				return inps2Bytes(conn.getErrorStream());
 			}
 		} catch (Exception e) {
 			logError(e, log);
@@ -104,17 +103,17 @@ public class HttpUrlConEx extends HttpBaseEx {
 		}
 	}
 
-	static public final InputStream sendBytes(String url, byte[] params,
+	static public final byte[] sendBytes(String url, byte[] params,
 			boolean isPost, int timeOutCon, int timeOutSo) {
 		return send(url, "", params, isPost, timeOutCon, timeOutSo);
 	}
 
-	static public final InputStream sendBytes(String url, byte[] params,
+	static public final byte[] sendBytes(String url, byte[] params,
 			boolean isPost) {
 		return sendBytes(url, params, isPost, 0, 0);
 	}
 
-	static public final InputStream sendStr(String url, String params,
+	static public final byte[] sendStr(String url, String params,
 			boolean isPost, int timeOutCon, int timeOutSo, String charset) {
 		byte[] btParams = getBytes4Str(params, charset);
 		return sendBytes(url, btParams, isPost, timeOutCon, timeOutSo);
@@ -143,7 +142,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 		return null;
 	}
 
-	static public final InputStream sendParams(String url, Map<String, ?> map,
+	static public final byte[] sendParams(String url, Map<String, ?> map,
 			String charset, boolean isPost) {
 		String query = buildQuery(map, charset);
 		if (isPost) {
@@ -153,17 +152,17 @@ public class HttpUrlConEx extends HttpBaseEx {
 		}
 	}
 
-	static public InputStream postParams(String url, Map<String, ?> map,
+	static public byte[] postParams(String url, Map<String, ?> map,
 			String charset) {
 		return sendParams(url, map, charset, true);
 	}
 
-	static public InputStream queryParams(String url, Map<String, ?> map,
+	static public byte[] queryParams(String url, Map<String, ?> map,
 			String charset) {
 		return sendParams(url, map, charset, false);
 	}
 
-	static public final InputStream sendParams4Json(String url,
+	static public final byte[] sendParams4Json(String url,
 			Map<String, ?> map, String charset, boolean isPost) {
 		String query = buildStrByJSON4Obj(map);
 		if (isPost) {
@@ -173,7 +172,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 		}
 	}
 
-	static public InputStream postParams4Json(String url, Map<String, ?> map,
+	static public byte[] postParams4Json(String url, Map<String, ?> map,
 			String charset) {
 		return sendParams4Json(url, map, charset, true);
 	}
