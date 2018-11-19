@@ -1,6 +1,5 @@
 package com.bowlong.net.http.uri;
 
-import java.io.InputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -21,7 +20,7 @@ public class HttpUriGetEx extends HttpUriEx {
 	 * HttpParams是一种HTTP协议参数。支持HTTP 1.0和HTTP 1.1 HttpParams httpParams = new
 	 * BasicHttpParams();
 	 */
-	static public final InputStream queryStr(String host, String params,
+	static public final byte[] queryStr(String host, String params,
 			String charset) {
 
 		if (StrEx.isEmptyTrim(host)) {
@@ -59,7 +58,7 @@ public class HttpUriGetEx extends HttpUriEx {
 		return null;
 	}
 
-	static public final InputStream queryMapByStr(String host,
+	static public final byte[] queryMapByStr(String host,
 			Map<String, ?> params, String charset) {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;

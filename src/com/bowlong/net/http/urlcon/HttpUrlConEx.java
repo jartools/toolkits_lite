@@ -60,7 +60,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 			conn.setRequestProperty("user-agent", UseAgent3);
 			// 请求超时
 			if (timeOutCon <= 0) {
-				timeOutCon = defaultConnectionTimeout;
+				timeOutCon = defaultConRequTimeout;
 			}
 			conn.setConnectTimeout(timeOutCon);
 			// 读取超时

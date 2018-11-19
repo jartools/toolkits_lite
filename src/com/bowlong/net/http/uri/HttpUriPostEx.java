@@ -1,6 +1,5 @@
 package com.bowlong.net.http.uri;
 
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class HttpUriPostEx extends HttpUriEx {
 
 	static Log log = LogFactory.getLog(HttpUriPostEx.class);
 
-	static public final InputStream postMap(String host, Map<String, ?> params, String charset) {
+	static public final byte[] postMap(String host, Map<String, ?> params, String charset) {
 
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
@@ -72,7 +71,7 @@ public class HttpUriPostEx extends HttpUriEx {
 		return null;
 	}
 
-	static public final InputStream postStr(String host, String params, String charset) {
+	static public final byte[] postStr(String host, String params, String charset) {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}
@@ -110,7 +109,7 @@ public class HttpUriPostEx extends HttpUriEx {
 		return null;
 	}
 
-	static public final InputStream postJson4Map(String host, Map<String, ?> params, String charset) {
+	static public final byte[] postJson4Map(String host, Map<String, ?> params, String charset) {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}

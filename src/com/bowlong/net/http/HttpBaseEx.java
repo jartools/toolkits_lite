@@ -36,9 +36,11 @@ public class HttpBaseEx {
 	static public String UseAgent2 = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)";
 	static public String UseAgent3 = "Mozilla/4.0";
 
-	/** 连接超时时间，缺省为10秒钟 */
-	static public final int defaultConnectionTimeout = 10000;
-	/** 回应超时时间, 缺省为30秒钟 */
+	/** 超时时间为1分钟 */
+	static public final int defaultTimeout = 60000;
+	/** 连接超时时间 */
+	static public final int defaultConRequTimeout = 10000;
+	/** 回应超时时间 */
 	static public final int defaultSoTimeout = 30000;
 
 	static final protected Ref<Boolean> refObj = new Ref<Boolean>(false);

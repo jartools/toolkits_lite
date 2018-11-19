@@ -73,6 +73,15 @@ public final class ByteEx {
 		}
 		return sb.toString().toUpperCase();
 	}
+	
+	static final public String toStr(byte[] b,String chaset){
+		try {
+			return new String(b,chaset);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
 
 	public static final byte[] stringToBytes(String s) {
 		byte[] b = new byte[s.length() / 2];
@@ -530,6 +539,7 @@ public final class ByteEx {
 		byte[] b = "你好，xxx".getBytes();
 		String s = bytesToString(b);
 		System.out.println(s);
+		System.out.println(byteToString(b));
 
 		byte[] b2 = stringToBytes(s);
 		System.out.println(new String(b2));
