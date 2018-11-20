@@ -55,6 +55,8 @@ public abstract class BasicFilter implements Filter {
 		}
 		return false;
 	}
+	
+	protected long curr_ms = 0;
 
 	@Override
 	public void destroy() {
@@ -100,6 +102,7 @@ public abstract class BasicFilter implements Filter {
 		int flagState = 0;
 		boolean isFlag = false;
 		isFlag = isFilter(uri, pars);
+		curr_ms = CalendarEx.now();
 		if (isFlag) {
 			flagState = 1;
 		}else{
@@ -128,7 +131,6 @@ public abstract class BasicFilter implements Filter {
 	protected boolean isFilterTime(Map<String, Object> pars, String keyTime) {
 		if (isVTime && pars.containsKey(keyTime)) {
 			long time_ms = MapEx.getLong(pars, keyTime);
-			long curr_ms = CalendarEx.now();
 			return !(time_ms > curr_ms - ms_bef && time_ms < curr_ms + ms_aft);
 		}
 		return isVTime;
@@ -157,6 +159,7 @@ public abstract class BasicFilter implements Filter {
 	protected String cfFilterDef(int state, String uri, Map<String, Object> pars) {
 		pars.put("uri", uri);
 		pars.put("code", "fails");
+		pars.put("sv_ms", curr_ms);
 		pars.put("ftState", String.valueOf(state));
 		JSONObject jsonData = JsonHelper.toJSON(pars);
 		return jsonData.toString();
