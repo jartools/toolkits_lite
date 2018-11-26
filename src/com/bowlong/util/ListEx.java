@@ -77,12 +77,26 @@ public class ListEx {
 
 	/*** 分隔符，英文逗号(,) **/
 	static public final List<String> toListByComma(String s, boolean isTrim) {
-		return toListByDelimiter(s, ",", isTrim);
+		return toList(s, ",", isTrim);
+	}
+	
+	/*** 分隔符，英文分号逗号(,;,;) **/
+	static public final List<List<String>> toListBySemicolonComma(String s, boolean isTrim) {
+		List<List<String>> ret = newListT();
+		List<String> list = toList(s, ";", isTrim);
+		int lens = list.size();
+		List<String> tmp = null;
+		for (int i = 0; i < lens; i++) {
+			tmp = toListByComma(list.get(i),isTrim);
+			if(isEmpty(tmp))
+				continue;
+			ret.add(tmp);
+		}
+		return ret;
 	}
 
 	/*** 分隔符 **/
-	static public final List<String> toListByDelimiter(String s,
-			String delimiter, boolean isTrim) {
+	static public final List<String> toList(String s,String delimiter, boolean isTrim) {
 		if (StrEx.isEmpty(delimiter))
 			delimiter = ",";
 		List<String> result = newListT();
