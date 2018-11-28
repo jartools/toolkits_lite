@@ -161,12 +161,6 @@ public class MapEx {
 		} else if (v instanceof Long) {
 			return ((Long) v) <= 0 ? false : true;
 		} else if (v instanceof String) {
-			if ("0".equals(v)) {
-				return false;
-			}
-			if ("1".equals(v)) {
-				return true;
-			}
 			return NumEx.stringToBool((String) v);
 		}
 		return false;
