@@ -289,4 +289,28 @@ public class StrNumEx {
 		}
 		return r;
 	}
+
+	static final public String toStr(boolean obj) {
+		return String.valueOf(obj);
+	}
+
+	static final public String toStr(short obj) {
+		return String.valueOf(obj);
+	}
+
+	static final public String toStr(int obj) {
+		return String.valueOf(obj);
+	}
+
+	static final public String toStr(long obj) {
+		return String.valueOf(obj);
+	}
+
+	static final public String toStr(float obj) {
+		return String.valueOf(obj);
+	}
+
+	static final public String toStr(double obj) {
+		return String.valueOf(obj);
+	}
 }
