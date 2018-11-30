@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.text.EasyTemplate;
 
-public final class StrEx {
+public final class StrEx extends StrNumEx {
 	public static final String left(final String s, final int len) {
 		return s.substring(0, len);
 	}
@@ -50,60 +50,6 @@ public final class StrEx {
 		int p2 = s.indexOf(end, p1);
 		p2 = p2 < 0 ? s.length() : p2;
 		return s.substring(p1, p2);
-	}
-
-	public static final boolean isByte(final String s) {
-		try {
-			Byte.parseByte(s);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	public static final boolean isShort(final String s) {
-		try {
-			Short.parseShort(s);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	public static final boolean isInt(final String s) {
-		try {
-			Integer.parseInt(s);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	public static final boolean isLong(final String s) {
-		try {
-			Long.parseLong(s);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	public static final boolean isFloat(final String s) {
-		try {
-			Float.parseFloat(s);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	public static final boolean isDouble(final String s) {
-		try {
-			Double.parseDouble(s);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
 	}
 
 	/** 格式化字符串使其长度为n，不足长度是在前面补上“空格字符” **/
@@ -251,10 +197,6 @@ public final class StrEx {
 		}
 	}
 
-	public static final byte[] toByteArray(final String s, final String charset) throws Exception {
-		return s.getBytes(charset);
-	}
-
 	public static final String createString(final byte[] b, final String charset) throws Exception {
 		return new String(b, charset);
 	}
@@ -296,29 +238,6 @@ public final class StrEx {
 			}
 		}
 		return new String(c);
-	}
-
-	public static int hashCode(final String s) {
-		char[] value = s.toCharArray();
-		return hashCode(value);
-	}
-
-	public static int hashCode(final char[] value) {
-		int hash = 0;
-		int count = value.length;
-		int offset = 0;
-
-		int i = hash;
-		if (i == 0 && count > 0) {
-			int j = offset;
-			char ac[] = value;
-			int k = count;
-			for (int l = 0; l < k; l++)
-				i = 31 * i + ac[j++];
-
-			hash = i;
-		}
-		return i;
 	}
 
 	public static final String removeLeft(final String s, final int n) {
