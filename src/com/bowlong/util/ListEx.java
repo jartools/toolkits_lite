@@ -30,13 +30,6 @@ import com.bowlong.objpool.StringBufPool;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ListEx {
-	
-	public static final List singletonEmptyList = new ArrayList();
-
-	public static final List singletonEmptyList() {
-		return singletonEmptyList;
-	}
-
 	public static final List newList() {
 		return Collections.synchronizedList(new ArrayList());
 	}
@@ -79,7 +72,7 @@ public class ListEx {
 	static public final List<String> toListByComma(String s, boolean isTrim) {
 		return toList(s, ",", isTrim);
 	}
-	
+
 	/*** 分隔符，英文分号逗号(,;,;) **/
 	static public final List<List<String>> toListBySemicolonComma(String s, boolean isTrim) {
 		List<List<String>> ret = newListT();
@@ -87,8 +80,8 @@ public class ListEx {
 		int lens = list.size();
 		List<String> tmp = null;
 		for (int i = 0; i < lens; i++) {
-			tmp = toListByComma(list.get(i),isTrim);
-			if(isEmpty(tmp))
+			tmp = toListByComma(list.get(i), isTrim);
+			if (isEmpty(tmp))
 				continue;
 			ret.add(tmp);
 		}
@@ -96,7 +89,7 @@ public class ListEx {
 	}
 
 	/*** 分隔符 **/
-	static public final List<String> toList(String s,String delimiter, boolean isTrim) {
+	static public final List<String> toList(String s, String delimiter, boolean isTrim) {
 		if (StrEx.isEmpty(delimiter))
 			delimiter = ",";
 		List<String> result = newListT();
@@ -121,6 +114,20 @@ public class ListEx {
 		for (int i = 0; i < len; i++) {
 			int e = NumEx.stringToInt(listStr.get(i));
 			ret.add(e);
+		}
+		return ret;
+	}
+
+	static public final List<List<Integer>> toListInts(String s) {
+		List<List<Integer>> ret = newListT();
+		List<String> list = toList(s, ";", true);
+		int lens = list.size();
+		List<Integer> tmp = null;
+		for (int i = 0; i < lens; i++) {
+			tmp = toListInt(list.get(i));
+			if (isEmpty(tmp))
+				continue;
+			ret.add(tmp);
 		}
 		return ret;
 	}
@@ -166,7 +173,7 @@ public class ListEx {
 		List ret = newList();
 		return add(ret, array);
 	}
-	
+
 	public static final List<Integer> toListArrs(int[] array) {
 		List ret = newList();
 		return add(ret, array);
@@ -198,7 +205,7 @@ public class ListEx {
 	}
 
 	public static final String[] toStrArray(List<String> list) {
-		return toArrs(list,new String[0]);
+		return toArrs(list, new String[0]);
 	}
 
 	public static final List toArrayList(List list) {
@@ -235,7 +242,7 @@ public class ListEx {
 		List list = newList();
 		return add(list, arrs);
 	}
-	
+
 	public static final <T> List<T> toListT(T... arrs) {
 		List<T> list = newListT();
 		return addT(list, arrs);
@@ -266,12 +273,12 @@ public class ListEx {
 		List list = newVector();
 		return add(list, arrs);
 	}
-	
+
 	/*** 转为数组对象 **/
-	static public final <T> T[] toArrs(List<T> list,T[] arrs){
-		if(isEmpty(list))
+	static public final <T> T[] toArrs(List<T> list, T[] arrs) {
+		if (isEmpty(list))
 			return arrs;
-		return (T[])list.toArray(arrs);
+		return (T[]) list.toArray(arrs);
 	}
 
 	public static final List listIt(Object... var) {
@@ -286,18 +293,18 @@ public class ListEx {
 	public static final List add(List list, Object... objs) {
 		if (objs == null || objs.length <= 0)
 			return list;
-		
-		for (int i = 0; i < objs.length; i++) {			
+
+		for (int i = 0; i < objs.length; i++) {
 			list.add(objs[i]);
 		}
 		return list;
 	}
-	
+
 	public static final <T> List<T> addT(List<T> list, T... objs) {
 		if (objs == null || objs.length <= 0)
 			return list;
-		
-		for (int i = 0; i < objs.length; i++) {			
+
+		for (int i = 0; i < objs.length; i++) {
 			list.add(objs[i]);
 		}
 		return list;
@@ -318,7 +325,7 @@ public class ListEx {
 	public static final boolean isEmpty(String... stres) {
 		return (stres == null || stres.length <= 0);
 	}
-	
+
 	static public final boolean isEmpty(byte[]... bts) {
 		return (bts == null || bts.length <= 0);
 	}
@@ -339,7 +346,7 @@ public class ListEx {
 		ls.clear();
 		ls = null;
 	}
-	
+
 	/*** 清空并创建对象 **/
 	static public final List clearOrNew(List ls) {
 		if (ls == null) {
@@ -463,7 +470,7 @@ public class ListEx {
 		}
 		return ret;
 	}
-	
+
 	public static final List subRndList(final List srcList, final int subSize) {
 		if (srcList == null)
 			return srcList;
@@ -479,48 +486,47 @@ public class ListEx {
 		return (List<T>) rndList(srcList);
 	}
 
-	public static final <T> List<T> subRndListT(final List<T> srcList,
-			final int subSize) {
+	public static final <T> List<T> subRndListT(final List<T> srcList, final int subSize) {
 		return (List<T>) subRndList(srcList, subSize);
 	}
-	
+
 	/*** sublist ,Inc:inclusive,Exc:exclusive **/
-	static public final List subList(final List src,int fIndInc,int tIndExc){
-		if(src == null)
+	static public final List subList(final List src, int fIndInc, int tIndExc) {
+		if (src == null)
 			return newList();
-		if(src.isEmpty())
+		if (src.isEmpty())
 			return src;
-		
+
 		int lens = src.size();
-		tIndExc = tIndExc >= lens ? lens : tIndExc; 
+		tIndExc = tIndExc >= lens ? lens : tIndExc;
 		fIndInc = (fIndInc <= 0) ? 0 : (fIndInc >= tIndExc) ? tIndExc : fIndInc;
-		if(fIndInc >= lens)
+		if (fIndInc >= lens)
 			return newList();
 		return src.subList(fIndInc, tIndExc);
 	}
-	
-	static public final List subList(final List src,int fIndInc){
+
+	static public final List subList(final List src, int fIndInc) {
 		int tIndExc = 0;
-		if(src != null){
+		if (src != null) {
 			tIndExc = src.size();
 		}
-		return subList(src, fIndInc,tIndExc);
+		return subList(src, fIndInc, tIndExc);
 	}
-			
-	/*** sublist ,Inc:inclusive,Exc:exclusive  **/
-	static public final <T> List<T> subListT(final List<T> src,int fIndInc,int tIndExc){
-		return subList(src,fIndInc,tIndExc);
+
+	/*** sublist ,Inc:inclusive,Exc:exclusive **/
+	static public final <T> List<T> subListT(final List<T> src, int fIndInc, int tIndExc) {
+		return subList(src, fIndInc, tIndExc);
 	}
-	
-	static public final <T> List<T> subListT(final List<T> src,int fIndInc){
-		return subList(src,fIndInc);
+
+	static public final <T> List<T> subListT(final List<T> src, int fIndInc) {
+		return subList(src, fIndInc);
 	}
 
 	public static final List sort(List src) {
 		Collections.sort(src);
 		return src;
 	}
-	
+
 	public static final List sort(List src, Comparator comparator) {
 		Collections.sort(src, comparator);
 		return src;
