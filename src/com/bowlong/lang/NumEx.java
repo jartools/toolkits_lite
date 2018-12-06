@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import javax.xml.bind.DatatypeConverter;
+
 import com.bowlong.util.ListEx;
 
 public final class NumEx extends StrNumEx {
@@ -1138,6 +1140,20 @@ public final class NumEx extends StrNumEx {
 
 	public static final double toDouble(byte[] v) {
 		return readDouble(v, 0);
+	}
+
+	static final public int toInt32(byte[] bytes, int index, boolean isHigh2Low) {
+		if (isHigh2Low) {
+			return (int) ((int) (0xff & bytes[index]) << 56 | (int) (0xff & bytes[index + 1]) << 48
+					| (int) (0xff & bytes[index + 2]) << 40 | (int) (0xff & bytes[index + 3]) << 32);
+		}
+		return (int) ((int) (0xff & bytes[index]) << 32 | (int) (0xff & bytes[index + 1]) << 40
+				| (int) (0xff & bytes[index + 2]) << 48 | (int) (0xff & bytes[index + 3]) << 56);
+	}
+	
+	static final public int toInt32CShapreBase64(String strCs64){
+		byte[] buf = DatatypeConverter.parseBase64Binary(strCs64);
+		return toInt32(buf, 0, false);
 	}
 
 	// //////////////////////
