@@ -5,8 +5,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -37,11 +39,11 @@ public class HttpBaseEx {
 	static public String UseAgent3 = "Mozilla/4.0";
 
 	/** 超时时间为1分钟 */
-	static public final int defaultTimeout = 60000;
+	static final public int defaultTimeout = 60000;
 	/** 连接超时时间 */
-	static public final int defaultConRequTimeout = 10000;
+	static final public int defaultConRequTimeout = 10000;
 	/** 回应超时时间 */
-	static public final int defaultSoTimeout = 30000;
+	static final public int defaultSoTimeout = 30000;
 
 	static final protected Ref<Boolean> refObj = new Ref<Boolean>(false);
 
@@ -75,7 +77,7 @@ public class HttpBaseEx {
 	}
 
 	/*** GET参数编码 */
-	static public final String buildQuery(Map<String, ?> data, String charset, boolean isOrderKey) {
+	static final public String buildQuery(Map<String, ?> data, String charset, boolean isOrderKey) {
 		if (MapEx.isEmpty(data))
 			return "";
 
@@ -115,19 +117,19 @@ public class HttpBaseEx {
 		return ret;
 	}
 
-	static public final String buildQuery(Map<String, ?> data, String charset) {
+	static final public String buildQuery(Map<String, ?> data, String charset) {
 		return buildQuery(data, charset, false);
 	}
 
-	static public final String buildQuery(Map<String, ?> data) {
+	static final public String buildQuery(Map<String, ?> data) {
 		return buildQuery(data, "", false);
 	}
 
-	static public final String buildQuery(Map<String, ?> data, boolean isOrderKey) {
+	static final public String buildQuery(Map<String, ?> data, boolean isOrderKey) {
 		return buildQuery(data, "", isOrderKey);
 	}
 
-	static public final String buildStrByJSON4Obj(Object data) {
+	static final public String buildStrByJSON4Obj(Object data) {
 		try {
 			return JSON.toJSONString(data);
 		} catch (Exception e) {
@@ -135,7 +137,7 @@ public class HttpBaseEx {
 		return "";
 	}
 
-	static public final String buildStrByJSON4Map(Map data) {
+	static final public String buildStrByJSON4Map(Map data) {
 		try {
 			if (MapEx.isEmpty(data))
 				return "";
@@ -154,7 +156,7 @@ public class HttpBaseEx {
 	}
 
 	/*** GET参数转换为map对象 */
-	static public final Map<String, String> buildMapByQuery(String query) {
+	static final public Map<String, String> buildMapByQuery(String query) {
 		Map<String, String> ret = new HashMap<String, String>();
 		if (!StrEx.isEmptyTrim(query)) {
 			boolean isFirst = query.indexOf("?") == 0;
@@ -178,13 +180,13 @@ public class HttpBaseEx {
 		return ret;
 	}
 
-	static public final String inps2Str(InputStream ins, String charset) {
+	static final public List<String> inps2LineStr(InputStream ins, String charset) {
 		if (ins == null)
-			return "";
+			return null;
 		try {
+			List<String> reList = new ArrayList<String>();
 			charset = reCharset(charset, refObj);
 			boolean isSup = refObj.val;
-			StringBuffer buff = new StringBuffer();
 			BufferedReader br = null;
 			if (isSup) {
 				br = new BufferedReader(new InputStreamReader(ins, charset));
@@ -193,17 +195,33 @@ public class HttpBaseEx {
 			}
 			String readLine = null;
 			while ((readLine = br.readLine()) != null) {
-				buff.append(readLine);
+				reList.add(readLine);
 			}
 			ins.close();
 			br.close();
-			return buff.toString();
+			return reList;
 		} catch (Exception e) {
-			return ExceptionEx.e2s(e);
+			return null;
 		}
 	}
 
-	static public final Object inps2Obj(InputStream ins) {
+	static final public String inps2Str(InputStream ins, String charset) {
+		List<String> list = inps2LineStr(ins, charset);
+		if (list == null)
+			return "";
+		int lens = list.size();
+		if (lens <= 0)
+			return "";
+		StringBuffer buff = new StringBuffer();
+		for (int i = 0; i < lens; i++) {
+			buff.append(list.get(i));
+		}
+		String ret = buff.toString();
+		buff.setLength(0);
+		return ret;
+	}
+
+	static final public Object inps2Obj(InputStream ins) {
 		if (ins == null)
 			return null;
 		try {
@@ -213,7 +231,7 @@ public class HttpBaseEx {
 		return null;
 	}
 
-	static public final Map inps2Map(InputStream ins) {
+	static final public Map inps2Map(InputStream ins) {
 		if (ins == null)
 			return new HashMap();
 		try {
@@ -223,7 +241,7 @@ public class HttpBaseEx {
 		return new HashMap();
 	}
 
-	static public final byte[] inps2Bytes(InputStream ins, boolean isCloseIns) {
+	static final public byte[] inps2Bytes(InputStream ins, boolean isCloseIns) {
 		if (ins == null)
 			return new byte[0];
 		try {
@@ -240,25 +258,25 @@ public class HttpBaseEx {
 		return new byte[0];
 	}
 
-	static public final byte[] inps2Bytes(InputStream ins) {
+	static final public byte[] inps2Bytes(InputStream ins) {
 		return inps2Bytes(ins, true);
 	}
 
-	static public final Object inps2Obj4Stream(InputStream ins) throws Exception {
+	static final public Object inps2Obj4Stream(InputStream ins) throws Exception {
 		byte[] bts = inps2Bytes(ins);
 		try (ByteInStream byteStream = ByteInStream.create(bts)) {
 			return B2InputStream.readObject(byteStream);
 		}
 	}
 
-	static public final Map inps2Map4Stream(InputStream ins) throws Exception {
+	static final public Map inps2Map4Stream(InputStream ins) throws Exception {
 		byte[] bts = inps2Bytes(ins);
 		try (ByteInStream byteStream = ByteInStream.create(bts)) {
 			return B2InputStream.readMap(byteStream);
 		}
 	}
 
-	static public final String inps2Str4Stream(InputStream ins, String charset) {
+	static final public String inps2Str4Stream(InputStream ins, String charset) {
 		if (ins == null)
 			return "";
 		try {
@@ -276,7 +294,7 @@ public class HttpBaseEx {
 	}
 
 	/*** 取得参数的字节流 **/
-	static public final byte[] getBytes4Str(String params, String charset) {
+	static final public byte[] getBytes4Str(String params, String charset) {
 		byte[] btParams = new byte[0];
 		if (!StrEx.isEmptyTrim(params)) {
 			charset = reCharset(charset, refObj);
