@@ -73,6 +73,10 @@ public class InputStreamEx {
 		}
 	}
 
+	static final public List<String> inps2LineStr(InputStream ins) {
+		return inps2LineStr(ins, EncodingEx.UTF_8);
+	}
+
 	static final public String inps2Str(InputStream ins, String charset) {
 		List<String> list = inps2LineStr(ins, charset);
 		if (list == null)
@@ -87,6 +91,10 @@ public class InputStreamEx {
 		String ret = buff.toString();
 		buff.setLength(0);
 		return ret;
+	}
+
+	static final public String inps2Str(InputStream ins) {
+		return inps2Str(ins, EncodingEx.UTF_8);
 	}
 
 	static final public Object inps2Obj(InputStream ins) {
@@ -117,10 +125,7 @@ public class InputStreamEx {
 		} catch (Exception e) {
 		} finally {
 			if (isCloseIns) {
-				try {
-					ins.close();
-				} catch (Exception e) {
-				}
+				close(ins);
 			}
 		}
 		return new byte[0];
@@ -159,6 +164,10 @@ public class InputStreamEx {
 		} catch (Exception e) {
 			return ExceptionEx.e2s(e);
 		}
+	}
+
+	static final public String inps2Str4Stream(InputStream ins) {
+		return inps2Str4Stream(ins, EncodingEx.UTF_8);
 	}
 
 	static final public byte[] readStream(InputStream is, boolean isLmt) throws IOException {
