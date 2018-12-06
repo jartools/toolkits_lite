@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.bowlong.bio2.B2InputStream;
 import com.bowlong.net.http.urlcon.HttpUrlConEx;
 /**
  * @author Canyon
@@ -63,10 +62,6 @@ public class HttpEx extends HttpUrlConEx {
 
 	public static final InputStream openUrl(URL url) throws IOException {
 		return url.openStream();
-	}
-
-	private static byte[] readStream(InputStream is) throws IOException {
-		return B2InputStream.readStream(is);
 	}
 
 	// private static final ByteOutStream newStream(int size) {

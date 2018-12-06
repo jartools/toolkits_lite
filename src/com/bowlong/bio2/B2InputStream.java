@@ -9,9 +9,8 @@ import java.io.Reader;
 import java.net.SocketException;
 import java.util.Arrays;
 
-import com.bowlong.io.ByteOutStream;
+import com.bowlong.lang.InputStreamEx;
 import com.bowlong.lang.NumEx;
-import com.bowlong.objpool.ByteOutPool;
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.util.NewList;
 import com.bowlong.util.NewMap;
@@ -21,7 +20,7 @@ import com.bowlong.util.Ref;
 // 两者在性能上没什么差异。
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class B2InputStream {
+public class B2InputStream extends InputStreamEx{
 
 	public final static byte _readByte(InputStream in) throws IOException {
 		int ch = in.read();
@@ -194,27 +193,6 @@ public class B2InputStream {
 			// System.out.println("still exist bom");
 		}
 		return backInps;
-	}
-
-	public static final byte[] readStream(InputStream is) throws IOException {
-		try (ByteOutStream out = ByteOutPool.borrowObject();) {
-			byte[] buf = new byte[1024];
-			int times = 1024 * 10;
-			while (true) {
-				if (times-- <= 0)
-					break;
-				try {
-					int len = is.read(buf);
-					if (len <= 0)
-						break;
-					out.write(buf, 0, len);
-				} catch (Exception e) {
-					break;
-				}
-			}
-			byte[] b = out.toByteArray();
-			return b;
-		}
 	}
 
 	public static final String readStrByBuffReader(BufferedReader buffRead) {

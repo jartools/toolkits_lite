@@ -30,11 +30,11 @@ import java.util.Properties;
 import java.util.Vector;
 
 import com.bowlong.bio2.B2InputStream;
-import com.bowlong.objpool.ByteOutPool;
+import com.bowlong.lang.InputStreamEx;
 import com.bowlong.objpool.StringBufPool;
 
 @SuppressWarnings("unused")
-public class FileEx implements Serializable {
+public class FileEx extends InputStreamEx implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -331,16 +331,6 @@ public class FileEx implements Serializable {
 	}
 
 	// ///////////////////////////////////////////////////
-	public static final void close(final InputStream input) {
-		if (input == null)
-			return;
-		try {
-			input.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public static final void close(final OutputStream output) {
 		if (output == null)
 			return;
@@ -365,31 +355,6 @@ public class FileEx implements Serializable {
 		}
 		return result;
 	}
-
-	public static final byte[] readFully(final InputStream in) throws IOException {
-		try (ByteOutStream buf = ByteOutPool.borrowObject();) {
-			if (in == null)
-				return null;
-
-			try {
-				int len = 0;
-				byte[] buff = new byte[8 * 1024];
-				do {
-					len = in.read(buff);
-					if (len < 0)
-						break;
-
-					buf.write(buff, 0, len);
-				} while (len > 0);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			return buf.toByteArray();
-		}
-
-	}
-
 	/**
 	 * read
 	 * 

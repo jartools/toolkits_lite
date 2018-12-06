@@ -5,10 +5,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -16,15 +14,12 @@ import org.apache.commons.logging.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.bowlong.bio2.B2InputStream;
-import com.bowlong.io.ByteInStream;
+import com.bowlong.lang.InputStreamEx;
 import com.bowlong.lang.NumFmtEx;
 import com.bowlong.lang.StrEx;
-import com.bowlong.text.EncodingEx;
 import com.bowlong.util.DateEx;
 import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.MapEx;
-import com.bowlong.util.Ref;
 
 /**
  * 
@@ -32,7 +27,7 @@ import com.bowlong.util.Ref;
  * @version createtime：2015年8月17日下午7:50:55
  */
 @SuppressWarnings({ "rawtypes" })
-public class HttpBaseEx {
+public class HttpBaseEx extends InputStreamEx{
 
 	static public String UseAgent1 = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; QQDownload 1.7; .NET CLR 1.1.4322; CIBA; .NET CLR 2.0.50727)";
 	static public String UseAgent2 = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)";
@@ -45,35 +40,12 @@ public class HttpBaseEx {
 	/** 回应超时时间 */
 	static final public int defaultSoTimeout = 30000;
 
-	static final protected Ref<Boolean> refObj = new Ref<Boolean>(false);
-
 	static final protected void logInfo(Object obj, Log objLog) {
 		objLog.info(obj);
 	}
 
 	static final protected void logError(Exception ex, Log objLog) {
 		objLog.error(ExceptionEx.e2s(ex));
-	}
-
-	static final public String reCharset(String charset) {
-		charset = reCharset(charset, refObj);
-		if (!refObj.val)
-			charset = EncodingEx.UTF_8;
-		return charset;
-	}
-
-	static final public String reCharset(String charset, Ref<Boolean> refSupport) {
-		boolean isSupported = !StrEx.isEmptyTrim(charset);
-		if (isSupported) {
-			isSupported = EncodingEx.isSupported(charset);
-			if (!isSupported) {
-				charset = EncodingEx.UTF_8;
-				isSupported = true;
-			}
-		}
-		if (refSupport != null)
-			refSupport.val = isSupported;
-		return charset;
 	}
 
 	/*** GET参数编码 */
@@ -178,119 +150,6 @@ public class HttpBaseEx {
 			}
 		}
 		return ret;
-	}
-
-	static final public List<String> inps2LineStr(InputStream ins, String charset) {
-		if (ins == null)
-			return null;
-		try {
-			List<String> reList = new ArrayList<String>();
-			charset = reCharset(charset, refObj);
-			boolean isSup = refObj.val;
-			BufferedReader br = null;
-			if (isSup) {
-				br = new BufferedReader(new InputStreamReader(ins, charset));
-			} else {
-				br = new BufferedReader(new InputStreamReader(ins));
-			}
-			String readLine = null;
-			while ((readLine = br.readLine()) != null) {
-				reList.add(readLine);
-			}
-			ins.close();
-			br.close();
-			return reList;
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	static final public String inps2Str(InputStream ins, String charset) {
-		List<String> list = inps2LineStr(ins, charset);
-		if (list == null)
-			return "";
-		int lens = list.size();
-		if (lens <= 0)
-			return "";
-		StringBuffer buff = new StringBuffer();
-		for (int i = 0; i < lens; i++) {
-			buff.append(list.get(i));
-		}
-		String ret = buff.toString();
-		buff.setLength(0);
-		return ret;
-	}
-
-	static final public Object inps2Obj(InputStream ins) {
-		if (ins == null)
-			return null;
-		try {
-			return B2InputStream.readObject(ins);
-		} catch (Exception e) {
-		}
-		return null;
-	}
-
-	static final public Map inps2Map(InputStream ins) {
-		if (ins == null)
-			return new HashMap();
-		try {
-			return B2InputStream.readMap(ins);
-		} catch (Exception e) {
-		}
-		return new HashMap();
-	}
-
-	static final public byte[] inps2Bytes(InputStream ins, boolean isCloseIns) {
-		if (ins == null)
-			return new byte[0];
-		try {
-			return B2InputStream.readStream(ins);
-		} catch (Exception e) {
-		} finally {
-			if (isCloseIns) {
-				try {
-					ins.close();
-				} catch (Exception e) {
-				}
-			}
-		}
-		return new byte[0];
-	}
-
-	static final public byte[] inps2Bytes(InputStream ins) {
-		return inps2Bytes(ins, true);
-	}
-
-	static final public Object inps2Obj4Stream(InputStream ins) throws Exception {
-		byte[] bts = inps2Bytes(ins);
-		try (ByteInStream byteStream = ByteInStream.create(bts)) {
-			return B2InputStream.readObject(byteStream);
-		}
-	}
-
-	static final public Map inps2Map4Stream(InputStream ins) throws Exception {
-		byte[] bts = inps2Bytes(ins);
-		try (ByteInStream byteStream = ByteInStream.create(bts)) {
-			return B2InputStream.readMap(byteStream);
-		}
-	}
-
-	static final public String inps2Str4Stream(InputStream ins, String charset) {
-		if (ins == null)
-			return "";
-		try {
-			charset = reCharset(charset, refObj);
-			boolean isSup = refObj.val;
-			byte[] bts = inps2Bytes(ins);
-			if (isSup) {
-				return new String(bts, charset);
-			} else {
-				return new String(bts);
-			}
-		} catch (Exception e) {
-			return ExceptionEx.e2s(e);
-		}
 	}
 
 	/*** 取得参数的字节流 **/
