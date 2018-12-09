@@ -27,12 +27,10 @@ import com.bowlong.util.MapEx;
  * @author Canyon 2017-04-16 23:30
  */
 public abstract class BasicFilter implements Filter {
-	static protected String[] badSqlStrs = { " and ", "insert ", "select ",
-			"delete ", "update ", "count", "drop table ", " or ", "char ",
-			"declare", "sitename", "net user", "xp_cmdshell", " like'",
-			" like '", "create ", " from ", "grant ", "use ", "group_concat",
-			"column_name", "truncate table ", "information_schema.columns",
-			"table_schema", "union", " where ", " order by" };
+	static protected String[] badSqlStrs = { " and ", "insert ", "select ", "delete ", "update ", "count",
+			"drop table ", " or ", "char ", "declare", "sitename", "net user", "xp_cmdshell", " like'", " like '",
+			"create ", " from ", "grant ", "use ", "group_concat", "column_name", "truncate table ",
+			"information_schema.columns", "table_schema", "union", " where ", " order by" };
 
 	static protected long ms_bef = CalendarEx.TIME_SECOND * 15;
 	static protected long ms_aft = CalendarEx.TIME_SECOND * 15;
@@ -55,7 +53,7 @@ public abstract class BasicFilter implements Filter {
 		}
 		return false;
 	}
-	
+
 	protected long curr_ms = 0;
 
 	@Override
@@ -63,11 +61,12 @@ public abstract class BasicFilter implements Filter {
 	}
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+			ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		req.setCharacterEncoding(strEncoding);
+		res.setCharacterEncoding(strEncoding);
 		preOnFilter(req, res);
 		Map<String, Object> pars = TkitJsp.getAllParams(req, true);
 		String val = req.getRequestURI();
@@ -94,24 +93,25 @@ public abstract class BasicFilter implements Filter {
 			onInit(arg0);
 		}
 	}
-	
+
 	// 提供参数-头信息设定在 onFilter 之前
-	protected void preOnFilter(HttpServletRequest req,HttpServletResponse res){}
-	
-	protected boolean onFilter(HttpServletResponse res,String uri, Map<String, Object> pars){
+	protected void preOnFilter(HttpServletRequest req, HttpServletResponse res) {
+	}
+
+	protected boolean onFilter(HttpServletResponse res, String uri, Map<String, Object> pars) {
 		int flagState = 0;
 		boolean isFlag = false;
 		isFlag = isFilter(uri, pars);
 		curr_ms = CalendarEx.now();
 		if (isFlag) {
 			flagState = 1;
-		}else{
+		} else {
 			isFlag = isFilterTime(pars, key_time);
 			if (isFlag) {
 				flagState = 2;
 			}
 		}
-		
+
 		if (!isFlag) {
 			isFlag = isFilterSql(pars);
 			if (isFlag)
@@ -153,7 +153,7 @@ public abstract class BasicFilter implements Filter {
 		if (!isPrint)
 			return;
 		JSONObject jsonData = JsonHelper.toJSON(pars);
-		System.out.println(String.format("%s == [%s] = %s",CalendarEx.nowStr_YMDHms(),uri, jsonData.toString()));
+		System.out.println(String.format("%s == [%s] = %s", CalendarEx.nowStr_YMDHms(), uri, jsonData.toString()));
 	}
 
 	protected String cfFilterDef(int state, String uri, Map<String, Object> pars) {
@@ -166,9 +166,9 @@ public abstract class BasicFilter implements Filter {
 	}
 
 	public abstract void onInit(FilterConfig cfg);
-	
+
 	public abstract boolean isFilter(String uri, Map<String, Object> pars);
 
 	// 过滤掉后需要返回的
-	public abstract String cfFilter(int state, String uri,Map<String, Object> pars);
+	public abstract String cfFilter(int state, String uri, Map<String, Object> pars);
 }
