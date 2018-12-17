@@ -35,12 +35,14 @@ public abstract class AbsDispatcherServlet extends HttpServlet {
 
 	protected void _disp(HttpServletRequest req, HttpServletResponse resp) {
 		String outVal = "";
+		boolean isError = false;
 		try {
 			outVal = dispatcher(req, resp);
 		} catch (Exception e) {
 			outVal = ExceptionEx.e2s(e);
+			isError = true;
 		}
-		if (isLogOut) {
+		if (isLogOut || isError) {
 			System.out.println(String.format("%s == outVal = [%s]", CalendarEx.nowStr_YMDHms(), outVal));
 		}
 		TkitJsp.writeAndClose(resp, outVal, BasicFilter.strEncoding);
