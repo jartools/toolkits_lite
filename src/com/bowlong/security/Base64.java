@@ -488,7 +488,7 @@ public class Base64 {
      *         <code>null</code> if the legal characters (including '=') isn't
      *         divideable by 4. (I.e. definitely corrupted).
      */
-    public final static byte[] decode(String str) {
+    public final static byte[] decode2Bytes(String str) {
         // Check special case
         int sLen = str != null ? str.length() : 0;
         if (sLen == 0)
@@ -544,7 +544,7 @@ public class Base64 {
 
     /**
      * Decodes a BASE64 encoded string that is known to be resonably well
-     * formatted. The method is about twice as fast as {@link #decode(String)}.
+     * formatted. The method is about twice as fast as {@link #decode2Bytes(String)}.
      * The preconditions are:<br>
      * + The array must have a line length of 76 chars OR no line separators at
      * all (one line).<br>
@@ -620,7 +620,7 @@ public class Base64 {
         return dArr;
     }
 
-    static final public String decodeToStr(String s) {
+    static final public String decode(String s) {
         try {
 			return new String(decodeFast(s), "UTF-8");
 		} catch (Exception e) {
@@ -632,6 +632,6 @@ public class Base64 {
         String s = "房地产";
         String encodeS = Base64.encode(s);
         System.out.println(encodeS);
-        System.out.println(Base64.decodeToStr(encodeS));
+        System.out.println(Base64.decode(encodeS));
     }
 }

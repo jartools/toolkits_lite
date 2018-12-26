@@ -96,7 +96,7 @@ public class RSAEncrypt {
 			if (keyFactory == null)
 				keyFactory = KeyFactory.getInstance("RSA");
 
-			byte[] buffer = Base64.decode(publicKey);
+			byte[] buffer = Base64.decode2Bytes(publicKey);
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
 			return (RSAPublicKey) keyFactory.generatePublic(keySpec);
 		} catch (Exception e) {
@@ -289,7 +289,7 @@ public class RSAEncrypt {
 	public boolean verify(String content, String sign, PublicKey rsaPubKey, String input_charset) {
 		try {
 			Signature signature = sign(content, rsaPubKey, input_charset);
-			return signature.verify(Base64.decode(sign));
+			return signature.verify(Base64.decode2Bytes(sign));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -299,7 +299,7 @@ public class RSAEncrypt {
 	public boolean verify(String content, String sign, String publicKey, String input_charset) {
 		try {
 			Signature signature = sign(content, publicKey, input_charset);
-			return signature.verify(Base64.decode(sign));
+			return signature.verify(Base64.decode2Bytes(sign));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -341,7 +341,7 @@ public class RSAEncrypt {
 		String testDataStr = "d7C8ph77SaqWsSk+T2KpHXKuhplBdZOosP9a7XnQAziC4A0aO8yQG0RdyMz/Ya2G77V0ufOq0QyHdv25dONOwuCGrq+fUMrn+l8D5fdIsGI0mIvbVVum2A3arxuG0toMhqIlxKD88CIs2hyEMit6exRRMnFgHFjcDh1KVajHC7DecfmhRunQctPFX9Z2JxIpLMGYsqb6qKqSaO0sdfamnFpl2ozwSKBTijAECj7Xx354SiLJTqbsERWx1b5dLR/iuZpODSY9IY3RHdEJ60e+ggk1q+n5MHEdL+M9tnbqw7kYsiLYSVvFJ7YTyqSR4qGC/GyGUAJdNiiNjB8MOGsUBQ==";
 
 		try {
-			byte[] dcDataStr = Base64.decode(testDataStr);
+			byte[] dcDataStr = Base64.decode2Bytes(testDataStr);
 			byte[] plainData = rsaEncrypt.decrypt(rsaEncrypt.getPublicKey(), dcDataStr);
 			System.out.println("文档测试数据明文长度:" + plainData.length);
 			System.out.println(RSAEncrypt.byteArrayToString(plainData));
