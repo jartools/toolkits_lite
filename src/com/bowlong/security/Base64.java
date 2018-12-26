@@ -453,19 +453,19 @@ public class Base64 {
      *            specifies max 76 per line but will be a little faster.
      * @return A BASE64 encoded array. Never <code>null</code>.
      */
-    public final static String encodeToString(byte[] sArr, boolean lineSep) {
+    public final static String encode(byte[] sArr, boolean lineSep) {
         return new String(encodeToChar(sArr, lineSep));
     }
     
     public final static String encode(byte[] sArr) {
-        return encodeToString(sArr, true);
+        return encode(sArr, false);
     }
 
     public final static String encode(String s) {
         // Reuse char[] since we can't create a String incrementally anyway and
         // StringBuffer/Builder would be slower.
         try {
-            return new String(encodeToChar(s.getBytes("UTF-8"), false));
+            return encode(s.getBytes("UTF-8"));
         } catch (Exception e) {
             e.printStackTrace();
         }
