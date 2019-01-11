@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.text.EasyTemplate;
+import com.bowlong.util.ListEx;
 
 public final class StrEx extends StrNumEx {
 	public static final String left(final String s, final int len) {
@@ -510,5 +511,24 @@ public final class StrEx extends StrNumEx {
 			return str;
 		}
 		return str.replaceAll("[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]", "");
+	}
+	
+	static public final String join(String sep,List<Object> list){
+		if(ListEx.isEmpty(list))
+			return "";
+		int lens = list.size();
+		StringBuffer buff = StringBufPool.borrowObject();
+		for (int i = 0; i < lens; i++) {
+			buff.append(list.get(i));
+			if(i < lens - 1)
+				buff.append(sep);
+		}
+		String ret = buff.toString();
+		StringBufPool.returnObject(buff);
+		return ret;
+	}
+	
+	static public final String join(String sep,Object... objects){
+		return join(sep, ListEx.toListT(objects));
 	}
 }
