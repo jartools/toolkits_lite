@@ -121,7 +121,7 @@ public class InputStreamEx {
 		if (ins == null)
 			return new byte[0];
 		try {
-			return readStream(ins);
+			return readFully(ins);
 		} catch (Exception e) {
 		} finally {
 			if (isCloseIns) {
@@ -175,7 +175,7 @@ public class InputStreamEx {
 			return null;
 		try (ByteOutStream out = ByteOutPool.borrowObject();) {
 			byte[] buf = new byte[1024];
-			int times = 1024 * 50;
+			int times = 1024 * 1024 * 100;
 			while (true) {
 				if (isLmt) {
 					if (times-- <= 0)
