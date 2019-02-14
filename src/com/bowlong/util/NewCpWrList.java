@@ -1,7 +1,5 @@
 package com.bowlong.util;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.bowlong.lang.NumEx;
+import com.bowlong.ExOrigin;
 
 @SuppressWarnings({ "serial", "rawtypes", "unchecked" })
 public class NewCpWrList<E> extends CopyOnWriteArrayList<E> {
@@ -92,123 +90,27 @@ public class NewCpWrList<E> extends CopyOnWriteArrayList<E> {
 	}
 
 	public boolean getBoolean(int i) {
-		Object obj = get(i);
-		if (obj == null)
-			return false;
-
-		if (obj instanceof Boolean)
-			return ((Boolean) obj).booleanValue();
-		else if (obj instanceof Integer)
-			return ((Integer) obj).intValue() <= 0 ? false : true;
-		else if (obj instanceof String)
-			return NumEx.stringToBool((String) obj);
-
-		return false;
+		return ExOrigin.toBoolean(get(i));
 	}
 
 	public int getInt(int i) {
-		Object obj = get(i);
-		if (obj == null)
-			return 0;
-
-		if (obj instanceof Boolean)
-			return ((Boolean) obj).booleanValue() ? 1 : 0;
-		else if (obj instanceof Integer)
-			return ((Integer) obj).intValue();
-		else if (obj instanceof String)
-			return NumEx.stringToInt((String) obj);
-		else if (obj instanceof Long)
-			return ((Long) obj).intValue();
-		else if (obj instanceof Float)
-			return ((Float) obj).intValue();
-		else if (obj instanceof Double)
-			return ((Double) obj).intValue();
-		else if (obj instanceof BigInteger)
-			return ((BigInteger) obj).intValue();
-		else if (obj instanceof BigDecimal)
-			return ((BigDecimal) obj).intValue();
-
-		return 0;
+		return ExOrigin.toInt(get(i));
 	}
 
 	public long getLong(int i) {
-		Object obj = get(i);
-		if (obj == null)
-			return 0;
-
-		if (obj instanceof Boolean)
-			return ((Boolean) obj).booleanValue() ? 1 : 0;
-		else if (obj instanceof Integer)
-			return ((Integer) obj).longValue();
-		else if (obj instanceof String)
-			return NumEx.stringToLong((String) obj);
-		else if (obj instanceof Long)
-			return ((Long) obj).longValue();
-		else if (obj instanceof Float)
-			return ((Float) obj).longValue();
-		else if (obj instanceof Double)
-			return ((Double) obj).longValue();
-		else if (obj instanceof BigInteger)
-			return ((BigInteger) obj).longValue();
-		else if (obj instanceof BigDecimal)
-			return ((BigDecimal) obj).longValue();
-
-		return 0;
+		return ExOrigin.toLong(get(i));
 	}
 
 	public double getDouble(int i) {
-		Object obj = get(i);
-		if (obj == null)
-			return 0.0;
-
-		if (obj instanceof Boolean)
-			return ((Boolean) obj).booleanValue() ? 1.0 : 0.0;
-		else if (obj instanceof Integer)
-			return ((Integer) obj).doubleValue();
-		else if (obj instanceof String)
-			return NumEx.stringToDouble((String) obj);
-		else if (obj instanceof Long)
-			return ((Long) obj).doubleValue();
-		else if (obj instanceof Float)
-			return ((Float) obj).doubleValue();
-		else if (obj instanceof Double)
-			return ((Double) obj).doubleValue();
-		else if (obj instanceof BigInteger)
-			return ((BigInteger) obj).doubleValue();
-		else if (obj instanceof BigDecimal)
-			return ((BigDecimal) obj).doubleValue();
-
-		return 0;
+		return ExOrigin.toDouble(get(i));
 	}
 
 	public String getString(int i) {
-		Object obj = get(i);
-		if (obj == null)
-			return "";
-		if (obj instanceof String)
-			return (String) obj;
-
-		return String.valueOf(obj);
+		return ExOrigin.toString(get(i));
 	}
 
 	public Date getDate(int i) {
-		Object obj = get(i);
-		if (obj == null)
-			return null;
-		if (obj instanceof NewDate)
-			return (NewDate) obj;
-		else if (obj instanceof Date)
-			return (Date) obj;
-		else if (obj instanceof java.sql.Date)
-			return new Date(((java.sql.Date) obj).getTime());
-		else if (obj instanceof java.sql.Timestamp)
-			return new Date(((java.sql.Timestamp) obj).getTime());
-		else if (obj instanceof Long)
-			return new Date((Long) obj);
-		else if (obj instanceof String)
-			return NewDate.parse2((String) obj, DateEx.fmt_yyyy_MM_dd_HH_mm_ss);
-
-		return null;
+		return ExOrigin.toDate(get(i));
 	}
 
 	public NewDate getNewDate(int i) {

@@ -37,29 +37,26 @@ import org.apache.commons.collections4.map.MultiValueMap;
 import org.apache.commons.collections4.map.StaticBucketMap;
 
 import com.alibaba.fastjson.JSON;
+import com.bowlong.ExOrigin;
 import com.bowlong.lang.NumEx;
 import com.bowlong.lang.StrEx;
 import com.bowlong.objpool.StringBufPool;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class MapEx {
+public class MapEx extends ExOrigin {
 
 	public static final Map singletonEmptyMap = new Hashtable();
 
 	public static final Map singletonEmptyMap() {
 		return singletonEmptyMap;
 	}
-	
-	public static final Map newMap() {
-		return new Hashtable();
+
+	public static final <K, V> Map<K, V> newMap() {
+		return new Hashtable<K, V>();// 线程安全的
 	}
 
 	public static final <K, V> Map<K, V> newHashMap() {
 		return new HashMap<K, V>();
-	}
-
-	public static final Hashtable newHashtable() {
-		return new Hashtable();
 	}
 
 	public static final <K, V> Map<K, V> newSortedMap() {
@@ -116,26 +113,14 @@ public class MapEx {
 		map.clear();
 	}
 
-	static public final void clearNull(Map map) {
-		if (map == null)
-			return;
-		map.clear();
-		map = null;
-	}
-
 	/*** 清空并创建对象 **/
-	static public final Map clear4Map(Map map) {
+	static public final <K, V> Map<K, V> clearOrNew(Map map) {
 		if (map == null) {
-			map = new HashMap();
+			map = newMap();
 			return map;
 		}
 		map.clear();
 		return map;
-	}
-
-	/*** 清空并创建对象 **/
-	static public final <K, V> Map<K, V> clear4MapKV(Map<K, V> map) {
-		return (Map<K, V>) clear4Map(map);
 	}
 
 	public static final <T> T copyValue(Map from, Map to, Object key) {
@@ -146,166 +131,51 @@ public class MapEx {
 		return v;
 	}
 
+	public static final Map copy(Map from, Map to, boolean isReplace) {
+		if (isEmpty(from))
+			return to;
+		if (to == null)
+			to = newMap();
+		for (Object key : from.keySet()) {
+			if (to.containsKey(key)) {
+				if (!isReplace)
+					continue;
+			}
+			to.put(key, from.get(key));
+		}
+		return to;
+	}
+
 	public static final <T> T get(Map map, Object key) {
 		return (T) map.get(key);
 	}
 
 	public static final boolean getBoolean(Map map, Object key) {
-		Object v = map.get(key);
-		if (v == null)
-			return false;
-		if (v instanceof Boolean) {
-			return ((Boolean) v).booleanValue();
-		} else if (v instanceof Integer) {
-			return ((Integer) v) <= 0 ? false : true;
-		} else if (v instanceof Long) {
-			return ((Long) v) <= 0 ? false : true;
-		} else if (v instanceof String) {
-			return NumEx.stringToBool((String) v);
-		}
-		return false;
+		return toBoolean(map.get(key));
 	}
 
 	public static final byte getByte(Map map, Object key) {
-		Object v = map.get(key);
-		if (v == null)
-			return 0;
-		if (v instanceof Byte) {
-			return ((Byte) v).byteValue();
-		} else if (v instanceof String) {
-			return NumEx.stringToByte((String) v);
-		}
-		return 0;
+		return toByte(map.get(key));
 	}
 
 	public static final short getShort(Map map, Object key) {
-		Object v = map.get(key);
-		if (v == null)
-			return 0;
-		if (v instanceof Byte) {
-			return ((Byte) v).shortValue();
-		} else if (v instanceof Short) {
-			return ((Short) v).shortValue();
-		} else if (v instanceof Integer) {
-			return ((Integer) v).shortValue();
-		} else if (v instanceof Long) {
-			return ((Long) v).shortValue();
-		} else if (v instanceof Float) {
-			return ((Float) v).shortValue();
-		} else if (v instanceof Double) {
-			return ((Double) v).shortValue();
-		} else if (v instanceof String) {
-			return NumEx.stringToShort((String) v);
-		} else if (v instanceof BigInteger) {
-			return ((BigInteger) v).shortValue();
-		} else if (v instanceof BigDecimal) {
-			return ((BigDecimal) v).shortValue();
-		}
-		return 0;
+		return toShort(map.get(key));
 	}
 
 	public static final int getInt(Map map, Object key) {
-		Object v = map.get(key);
-		if (v == null)
-			return 0;
-		if (v instanceof Byte) {
-			return ((Byte) v).intValue();
-		} else if (v instanceof Short) {
-			return ((Short) v).intValue();
-		} else if (v instanceof Integer) {
-			return ((Integer) v).intValue();
-		} else if (v instanceof Long) {
-			return ((Long) v).intValue();
-		} else if (v instanceof Float) {
-			return ((Float) v).intValue();
-		} else if (v instanceof Double) {
-			return ((Double) v).intValue();
-		} else if (v instanceof String) {
-			return NumEx.stringToInt((String) v);
-		} else if (v instanceof BigInteger) {
-			return ((BigInteger) v).intValue();
-		} else if (v instanceof BigDecimal) {
-			return ((BigDecimal) v).intValue();
-		}
-		return 0;
+		return toInt(map.get(key));
 	}
 
 	public static final long getLong(Map map, Object key) {
-		Object v = map.get(key);
-		if (v == null)
-			return 0;
-		if (v instanceof Byte) {
-			return ((Byte) v).longValue();
-		} else if (v instanceof Short) {
-			return ((Short) v).longValue();
-		} else if (v instanceof Integer) {
-			return ((Integer) v).longValue();
-		} else if (v instanceof Long) {
-			return ((Long) v).longValue();
-		} else if (v instanceof Float) {
-			return ((Float) v).longValue();
-		} else if (v instanceof Double) {
-			return ((Double) v).longValue();
-		} else if (v instanceof String) {
-			return NumEx.stringToLong((String) v);
-		} else if (v instanceof BigInteger) {
-			return ((BigInteger) v).longValue();
-		} else if (v instanceof BigDecimal) {
-			return ((BigDecimal) v).longValue();
-		}
-		return 0;
+		return toLong(map.get(key));
 	}
 
 	public static final float getFloat(Map map, Object key) {
-		Object v = map.get(key);
-		if (v == null)
-			return (float) 0.0;
-		if (v instanceof Byte) {
-			return ((Byte) v).floatValue();
-		} else if (v instanceof Short) {
-			return ((Short) v).floatValue();
-		} else if (v instanceof Integer) {
-			return ((Integer) v).floatValue();
-		} else if (v instanceof Long) {
-			return ((Long) v).floatValue();
-		} else if (v instanceof Float) {
-			return ((Float) v).floatValue();
-		} else if (v instanceof Double) {
-			return ((Double) v).floatValue();
-		} else if (v instanceof String) {
-			return NumEx.stringToFloat((String) v);
-		} else if (v instanceof BigInteger) {
-			return ((BigInteger) v).floatValue();
-		} else if (v instanceof BigDecimal) {
-			return ((BigDecimal) v).floatValue();
-		}
-		return 0;
+		return toFloat(map.get(key));
 	}
 
 	public static final double getDouble(Map map, Object key) {
-		Object v = map.get(key);
-		if (v == null)
-			return 0.0;
-		if (v instanceof Byte) {
-			return ((Byte) v).doubleValue();
-		} else if (v instanceof Short) {
-			return ((Short) v).floatValue();
-		} else if (v instanceof Integer) {
-			return ((Integer) v).doubleValue();
-		} else if (v instanceof Long) {
-			return ((Long) v).doubleValue();
-		} else if (v instanceof Float) {
-			return ((Float) v).doubleValue();
-		} else if (v instanceof Double) {
-			return ((Double) v).doubleValue();
-		} else if (v instanceof String) {
-			return NumEx.stringToDouble((String) v);
-		} else if (v instanceof BigInteger) {
-			return ((BigInteger) v).doubleValue();
-		} else if (v instanceof BigDecimal) {
-			return ((BigDecimal) v).doubleValue();
-		}
-		return 0;
+		return toDouble(map.get(key));
 	}
 
 	public static final BigInteger getBigInteger(Map map, Object key) {
@@ -317,13 +187,7 @@ public class MapEx {
 	}
 
 	public static final String getStringNoTrim(Map map, Object key) {
-		Object obj = map.get(key);
-		if (obj == null)
-			return "";
-		else if (obj instanceof String)
-			return (String) obj;
-
-		return String.valueOf(obj);
+		return toString(map.get(key));
 	}
 
 	public static final String getString(Map map, Object key) {
@@ -332,25 +196,7 @@ public class MapEx {
 	}
 
 	public static final Date getDate(Map map, Object key) {
-		Object obj = map.get(key);
-		if (obj == null)
-			return null;
-		if (obj instanceof Date)
-			return (Date) obj;
-		else if (obj instanceof NewDate)
-			return (NewDate) obj;
-		else if (obj instanceof java.sql.Date)
-			return new Date(((java.sql.Date) obj).getTime());
-		else if (obj instanceof java.sql.Timestamp)
-			return new Date(((java.sql.Timestamp) obj).getTime());
-		else if (obj instanceof Integer)
-			return new Date((Integer) obj);
-		else if (obj instanceof Long)
-			return new Date((Long) obj);
-		else if (obj instanceof String)
-			return NewDate.parse2((String) obj, DateEx.fmt_yyyy_MM_dd_HH_mm_ss);
-
-		return null;
+		return toDate(map.get(key));
 	}
 
 	public static final NewDate getNewDate(Map map, Object key) {
@@ -476,7 +322,7 @@ public class MapEx {
 	}
 
 	public static final Map toHashtable(Map map) {
-		Map ret = newHashtable();
+		Map ret = newMap();
 		ret.putAll(map);
 		return ret;
 	}
@@ -500,13 +346,12 @@ public class MapEx {
 			} else if (object instanceof Object[]) {
 				Object[] entry = (Object[]) object;
 				if (entry.length < 2) {
-					throw new IllegalArgumentException("Array element " + i
-							+ ", '" + object + "', has a length less than 2");
+					throw new IllegalArgumentException("Array element " + i + ", '" + object
+							+ "', has a length less than 2");
 				}
 				map.put(entry[0], entry[1]);
 			} else {
-				throw new IllegalArgumentException("Array element " + i + ", '"
-						+ object
+				throw new IllegalArgumentException("Array element " + i + ", '" + object
 						+ "', is neither of type Map.Entry nor an Array");
 			}
 		}
@@ -549,8 +394,7 @@ public class MapEx {
 			return ret;
 		Object keyObj, valObj;
 		String key, val;
-		for (Entry<Object, Object> entry : ((Map<Object, Object>) map)
-				.entrySet()) {
+		for (Entry<Object, Object> entry : ((Map<Object, Object>) map).entrySet()) {
 			keyObj = entry.getKey();
 			valObj = entry.getValue();
 			if (keyObj == null || valObj == null)
@@ -571,8 +415,7 @@ public class MapEx {
 		String key;
 		Integer val;
 
-		for (Entry<Object, Object> entry : ((Map<Object, Object>) map)
-				.entrySet()) {
+		for (Entry<Object, Object> entry : ((Map<Object, Object>) map).entrySet()) {
 			keyObj = entry.getKey();
 			valObj = entry.getValue();
 			if (keyObj == null || valObj == null)
@@ -593,8 +436,7 @@ public class MapEx {
 		Integer key;
 		String val;
 
-		for (Entry<Object, Object> entry : ((Map<Object, Object>) map)
-				.entrySet()) {
+		for (Entry<Object, Object> entry : ((Map<Object, Object>) map).entrySet()) {
 			keyObj = entry.getKey();
 			valObj = entry.getValue();
 			if (keyObj == null || valObj == null)
@@ -614,8 +456,7 @@ public class MapEx {
 		Object keyObj, valObj;
 		Integer key;
 		Integer val;
-		for (Entry<Object, Object> entry : ((Map<Object, Object>) map)
-				.entrySet()) {
+		for (Entry<Object, Object> entry : ((Map<Object, Object>) map).entrySet()) {
 			keyObj = entry.getKey();
 			valObj = entry.getValue();
 			if (keyObj == null || valObj == null)
@@ -667,8 +508,7 @@ public class MapEx {
 		}
 	}
 
-	public static final void save(OutputStream os, Properties p)
-			throws Exception {
+	public static final void save(OutputStream os, Properties p) throws Exception {
 		p.store(os, "");
 	}
 
@@ -729,21 +569,19 @@ public class MapEx {
 	public static <T> T getKey(Map map) throws Exception {
 		if (map == null || map.isEmpty())
 			return null;
-		Entry<Object, Object> E = ((Map<Object, Object>) map).entrySet()
-				.iterator().next();
+		Entry<Object, Object> E = ((Map<Object, Object>) map).entrySet().iterator().next();
 		return (T) E.getKey();
 	}
 
 	public static <T> T getValue(Map map) throws Exception {
 		if (map == null || map.isEmpty())
 			return null;
-		Entry<Object, Object> E = ((Map<Object, Object>) map).entrySet()
-				.iterator().next();
+		Entry<Object, Object> E = ((Map<Object, Object>) map).entrySet().iterator().next();
 		return (T) E.getValue();
 	}
 
 	public static Map toMapKv(Object... objs) {
-		Map r2 = new HashMap();
+		Map r2 = newMap();
 		return putKvs4Map(r2, objs);
 	}
 
@@ -779,9 +617,8 @@ public class MapEx {
 			return null;
 		Object keyObj, valObj;
 		String key;
-		Map<String, Object> ret = new HashMap<String, Object>();
-		for (Entry<Object, Object> entry : ((Map<Object, Object>) origin)
-				.entrySet()) {
+		Map<String, Object> ret = newMap();
+		for (Entry<Object, Object> entry : ((Map<Object, Object>) origin).entrySet()) {
 			keyObj = entry.getKey();
 			valObj = entry.getValue();
 			if (keyObj == null || valObj == null)
@@ -791,58 +628,51 @@ public class MapEx {
 		}
 		return ret;
 	}
-	
+
 	// 清除空的，包含数字小于0的
 	static public Map toMapClear(Map map) {
-		return toMapClear(map,true);
+		return toMapClear(map, true);
 	}
-	
-	static public Map toMapClear(Map map,boolean isLessZeroNum) {
+
+	static public Map toMapClear(Map map, boolean isLessZeroNum) {
 		List listKeys = new ArrayList();
 		listKeys.addAll(map.keySet());
 		int lens = listKeys.size();
+		double v = 1;
 		for (int i = 0; i < lens; i++) {
 			Object key = listKeys.get(i);
-			if(key == null){
+			if (key == null) {
 				map.remove(key);
 				continue;
 			}
-			
+
 			Object val = map.get(key);
 			if (val == null) {
 				map.remove(key);
 				continue;
 			}
-			
+
 			String valStr = val.toString().trim();
 			if (valStr.isEmpty()) {
 				map.remove(key);
 				continue;
 			}
-			
-			if(!isLessZeroNum)
+
+			if (!isLessZeroNum)
 				continue;
 			
+			v = 1;
 			if (val instanceof Double) {
-				double v = (double) val;
-				if (v <= 0) {
-					map.remove(key);
-				}
+				v = (double) val;
 			} else if (val instanceof Float) {
-				Float v = (Float) val;
-				if (v <= 0) {
-					map.remove(key);
-				}
-			}else if (val instanceof Long) {
-				Long v = (Long) val;
-				if (v <= 0) {
-					map.remove(key);
-				}
-			}else if (val instanceof Integer) {
-				int v = (int) val;
-				if (v <= 0) {
-					map.remove(key);
-				}
+				v = (Float) val;
+			} else if (val instanceof Long) {
+				v = (Long) val;
+			} else if (val instanceof Integer) {
+				v = (int) val;
+			}
+			if (v <= 0) {
+				map.remove(key);
 			}
 		}
 		return map;
