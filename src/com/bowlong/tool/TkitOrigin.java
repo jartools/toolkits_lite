@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.bowlong.ExOrigin;
 import com.bowlong.lang.StrEx;
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.third.FastJSON;
@@ -14,7 +15,7 @@ import com.bowlong.util.ListEx;
 import com.bowlong.util.MapEx;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class TkitOrigin {
+public class TkitOrigin extends ExOrigin {
 	static final Map<String, Object> allParams(Map<String, Object> map, StringBuffer buff, String key, String[] vals,
 			boolean isNoFitlerEmpty) {
 		buff.setLength(0);

@@ -10,15 +10,15 @@ import com.bowlong.tool.TkitJsp;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class Toolkit extends TkitJsp {
 
-	static public Map<String, Object> RedisMap() {
-		return JedisTookits.getOrgRedisCfg();
+	static public Map<String, Object> redisMap() {
+		return JedisTookits.getCfgMap();
 	}
 
 	static public JedisPool getJedisPool(Map orgRedis) {
-		return JedisTookits.getJedisPool(orgRedis);
+		return JedisTookits.getPool(orgRedis);
 	}
 
 	static public void closeJedisPool() {
-		JedisTookits.closeJedisPool();
+		JedisTookits.closePool();
 	}
 }
