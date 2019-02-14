@@ -2,20 +2,20 @@ package com.bowlong;
 
 import java.util.Map;
 
-import redis.clients.jedis.JedisPool;
-
 import com.bowlong.third.redis.JedisTookits;
 import com.bowlong.tool.TkitJsp;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
+import redis.clients.jedis.JedisPool;
+
+@SuppressWarnings({ "unchecked" })
 public class Toolkit extends TkitJsp {
 
 	static public Map<String, Object> redisMap() {
 		return JedisTookits.getCfgMap();
 	}
 
-	static public JedisPool getJedisPool(Map orgRedis) {
-		return JedisTookits.getPool(orgRedis);
+	static public JedisPool getJedisPool() {
+		return JedisTookits.getPool();
 	}
 
 	static public void closeJedisPool() {
