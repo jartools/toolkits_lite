@@ -1381,7 +1381,6 @@ public class BeanBuilder extends Toolkit {
 		return sb.toString();
 	}
 
-	@SuppressWarnings("unchecked")
 	public static String indexCoulmns(List<Map<String, Object>> columns, Map<String, List<Map<String, Object>>> indexs)
 			throws Exception {
 		StringBuffer result = new StringBuffer();
@@ -1540,7 +1539,6 @@ public class BeanBuilder extends Toolkit {
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static boolean columnsDuplicate(List<Map<String, Object>> columns) {
 		List<String> szColumns = newList();
 		for (Map<String, Object> map : columns) {
