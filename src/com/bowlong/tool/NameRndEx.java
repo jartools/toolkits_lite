@@ -9,16 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import com.bowlong.basic.ExOrigin;
 import com.bowlong.io.FileRw;
 import com.bowlong.lang.RndEx;
 
-public class NameRndEx implements Serializable {
-	private static final long serialVersionUID = 1L;
-	static Log log = LogFactory.getLog(NameRndEx.class);
-
+public class NameRndEx extends ExOrigin {
 	private NameRndEx() {
 	}
 
@@ -40,7 +35,6 @@ public class NameRndEx implements Serializable {
 	// 简体
 	static final String Path_Zh_FirName = "names/zh_fir.txt";
 	static final String Path_Zh_EndName = "names/zh_end.txt";
-
 	List<String> zh_firname = new ArrayList<String>();
 	List<String> zh_secname = new ArrayList<String>();
 	List<String> zh_endname = new ArrayList<String>();
@@ -55,20 +49,23 @@ public class NameRndEx implements Serializable {
 	// 英文名字
 	static final String Path_En_FirName = "names/en_fir.txt";
 	static final String Path_En_EndName = "names/en_end.txt";
-
 	List<String> en_firname = new ArrayList<String>();
-	// List<String> en_secname = new ArrayList<String>();
 	List<String> en_endname = new ArrayList<String>();
+
+	private int lenFir = 0;
+	private int lenSec = 0;
+	private int lenEnd = 0;
+	private int index = 0;
+	private String strFir = "";
+	private String strSec = "";
+	private String strEnd = "";
 
 	void initDate() {
 		try {
 			System.out.println("======名字加载 begin=======");
-			Names.init(false, Path_Zh_FirName, Path_Zh_EndName, zh_firname,
-					zh_secname, zh_endname);
-			Names.init(false, Path_ZhFt_FirName, Path_ZhFt_EndName, zhft_fir,
-					zhft_sec, zhft_end);
-			Names.init(true, Path_En_FirName, Path_En_EndName, en_firname,
-					null, en_endname);
+			Names.init(false, Path_Zh_FirName, Path_Zh_EndName, zh_firname, zh_secname, zh_endname);
+			Names.init(false, Path_ZhFt_FirName, Path_ZhFt_EndName, zhft_fir, zhft_sec, zhft_end);
+			Names.init(true, Path_En_FirName, Path_En_EndName, en_firname, null, en_endname);
 			System.out.println("======名字加载 end=======");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,15 +76,8 @@ public class NameRndEx implements Serializable {
 		getInstance();
 	}
 
-	private String newNameByEn() {
+	private String newEn() {
 		StringBuilder build = new StringBuilder();
-		int lenFir = 0;
-		// int lenSec = 0;
-		int lenEnd = 0;
-		int index = 0;
-		String strFir = "";
-		String strSec = "";
-		String strEnd = "";
 		strSec = ".";
 		lenFir = en_firname.size();
 		lenEnd = en_endname.size();
@@ -100,21 +90,15 @@ public class NameRndEx implements Serializable {
 		return r;
 	}
 
-	private String newNameByZh() {
+	private String newZh() {
 		StringBuilder build = new StringBuilder();
-		int lenFir = 0;
-		int lenSec = 0;
-		int lenEnd = 0;
-		int index = 0;
-		String strFir = "";
-		String strSec = "";
-		String strEnd = "";
-
 		int randK = RndEx.nextInt(1000);
 
 		lenFir = zh_firname.size();
 		index = RndEx.nextInt(lenFir);
 		strFir = zh_firname.get(index);
+		strSec = "";
+		strEnd = "";
 
 		if (randK < 750) {
 			lenSec = zh_secname.size();
@@ -133,21 +117,15 @@ public class NameRndEx implements Serializable {
 		return r;
 	}
 
-	private String newNameByZhFt() {
+	private String newZhFt() {
 		StringBuilder build = new StringBuilder();
-		int lenFir = 0;
-		int lenSec = 0;
-		int lenEnd = 0;
-		int index = 0;
-		String strFir = "";
-		String strSec = "";
-		String strEnd = "";
-
 		int randK = RndEx.nextInt(1000);
 
 		lenFir = zhft_fir.size();
 		index = RndEx.nextInt(lenFir);
 		strFir = zhft_fir.get(index);
+		strSec = "";
+		strEnd = "";
 
 		if (randK < 750) {
 			lenSec = zhft_sec.size();
@@ -166,23 +144,19 @@ public class NameRndEx implements Serializable {
 		return r;
 	}
 
-	static public String newName(int type) {
-		return getInstance().newRndName(type);
-	}
-
-	public String newNameCn() {
-		return newName(Laguage_Type_CN);
-	}
-
-	public String newRndName(int type) {
+	public String newNameBy(int type) {
 		switch (type) {
 		case Laguage_Type_CNFT:
-			return newNameByZhFt();
+			return newZhFt();
 		case Laguage_Type_EN:
-			return newNameByEn();
+			return newEn();
 		default:
-			return newNameByZh();
+			return newZh();
 		}
+	}
+
+	static public String newName(int type) {
+		return getInstance().newNameBy(type);
 	}
 
 	private static class Names implements Serializable {
@@ -220,8 +194,8 @@ public class NameRndEx implements Serializable {
 			return r;
 		}
 
-		static public void init(boolean isEn, String pathBeg, String pathEnd,
-				List<String> first, List<String> second, List<String> three) {
+		static public void init(boolean isEn, String pathBeg, String pathEnd, List<String> first, List<String> second,
+				List<String> three) {
 			// ============ 第一个名字
 			String fisrtName = FileRw.readStr(pathBeg);
 			String[] fnes = fisrtName.split("\r");
@@ -278,5 +252,9 @@ public class NameRndEx implements Serializable {
 			if (three != null)
 				three.addAll(sortListEnd);
 		}
+	}
+
+	public String newNameCn() {
+		return newName(Laguage_Type_CN);
 	}
 }
