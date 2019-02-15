@@ -2,8 +2,10 @@ package com.bowlong.util;
 
 import java.util.Calendar;
 
+import com.bowlong.basic.ExOrigin;
+
 /*** 日历对象数据操作 **/
-public class CalendarEx extends DateFmtEx {
+public class CalendarEx extends ExOrigin {
 
 	static public final int year() {
 		return year(nowCalendar());

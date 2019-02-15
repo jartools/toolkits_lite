@@ -3,10 +3,11 @@ package com.bowlong.util;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.bowlong.basic.ExOrigin;
 import com.bowlong.lang.NumEx;
 
 /*** 日期对象数据操作 **/
-public class DateEx extends DateFmtEx {
+public class DateEx extends ExOrigin {
 
 	static public final int year() {
 		return year(nowDate());

@@ -9,9 +9,10 @@ import java.util.List;
 
 import javax.xml.bind.DatatypeConverter;
 
+import com.bowlong.basic.ExOrigin;
 import com.bowlong.util.ListEx;
 
-public final class NumEx extends StrNumEx {
+public final class NumEx extends ExOrigin {
 	// byte
 	public static final byte BYTE_MIN_VALUE = -128;
 	public static final byte BYTE_MAX_VALUE = 127;

@@ -22,22 +22,14 @@ import org.apache.commons.collections4.list.FixedSizeList;
 import org.apache.commons.collections4.list.TreeList;
 
 import com.alibaba.fastjson.JSON;
-import com.bowlong.Toolkit;
+import com.bowlong.basic.ExOrigin;
 import com.bowlong.lang.NumEx;
 import com.bowlong.lang.RndEx;
 import com.bowlong.lang.StrEx;
 import com.bowlong.objpool.StringBufPool;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class ListEx {
-	public static final List newList() {
-		return Collections.synchronizedList(new ArrayList());
-	}
-
-	public static final <T> List<T> newListT() {
-		return Collections.synchronizedList(new ArrayList<T>());
-	}
-
+public class ListEx extends ExOrigin {
 	public static final List newArrayList() {
 		return new ArrayList();
 	}
@@ -310,53 +302,6 @@ public class ListEx {
 		return list;
 	}
 
-	public static final boolean isEmpty(List l) {
-		return (l == null || l.isEmpty());
-	}
-
-	public static final boolean isEmpty(Set s) {
-		return (s == null || s.isEmpty());
-	}
-
-	public static final boolean isEmpty(Object... objs) {
-		return (objs == null || objs.length <= 0);
-	}
-
-	public static final boolean isEmpty(String... stres) {
-		return (stres == null || stres.length <= 0);
-	}
-
-	static public final boolean isEmpty(byte[]... bts) {
-		return (bts == null || bts.length <= 0);
-	}
-
-	public static final boolean notEmpty(List l) {
-		return (l != null && !l.isEmpty());
-	}
-
-	static public final void clear(List ls) {
-		if (ls == null)
-			return;
-		ls.clear();
-	}
-
-	static public final void clearNull(List ls) {
-		if (ls == null)
-			return;
-		ls.clear();
-		ls = null;
-	}
-
-	/*** 清空并创建对象 **/
-	static public final List clearOrNew(List ls) {
-		if (ls == null) {
-			ls = newArrayList();
-			return ls;
-		}
-		ls.clear();
-		return ls;
-	}
-
 	static public final boolean have(List list, Object obj) {
 		if (isEmpty(list) || obj == null)
 			return false;
@@ -547,10 +492,6 @@ public class ListEx {
 			}
 		});
 		return m1;
-	}
-
-	public static final int compareTo(Object v1, Object v2) {
-		return Toolkit.compareTo(v1, v2);
 	}
 
 	/*** 交换位置 **/

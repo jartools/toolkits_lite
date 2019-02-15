@@ -1,11 +1,8 @@
-package com.bowlong;
+package com.bowlong.basic;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-
-import com.bowlong.lang.NumEx;
-import com.bowlong.util.DateEx;
 
 /**
  * Ex扩展类的起源<br/>
@@ -14,12 +11,7 @@ import com.bowlong.util.DateEx;
  * @author Canyon
  * @time 2019-02-14 19:32
  */
-@SuppressWarnings("unchecked")
-public class ExOrigin {
-	static public final <T> T toT(Object obj) {
-		return (T) obj;
-	}
-
+public class ExOrigin extends EODateFmt {
 	public static final boolean toBoolean(Object v) {
 		if (v == null)
 			return false;
@@ -30,7 +22,7 @@ public class ExOrigin {
 		} else if (v instanceof Long) {
 			return ((Long) v) <= 0 ? false : true;
 		} else if (v instanceof String) {
-			return NumEx.stringToBool((String) v);
+			return stringToBool((String) v);
 		}
 		return false;
 	}
@@ -41,7 +33,7 @@ public class ExOrigin {
 		if (v instanceof Byte) {
 			return ((Byte) v).byteValue();
 		} else if (v instanceof String) {
-			return NumEx.stringToByte((String) v);
+			return stringToByte((String) v);
 		}
 		return 0;
 	}
@@ -62,7 +54,7 @@ public class ExOrigin {
 		} else if (v instanceof Double) {
 			return ((Double) v).shortValue();
 		} else if (v instanceof String) {
-			return NumEx.stringToShort((String) v);
+			return stringToShort((String) v);
 		} else if (v instanceof BigInteger) {
 			return ((BigInteger) v).shortValue();
 		} else if (v instanceof BigDecimal) {
@@ -87,7 +79,7 @@ public class ExOrigin {
 		} else if (v instanceof Double) {
 			return ((Double) v).intValue();
 		} else if (v instanceof String) {
-			return NumEx.stringToInt((String) v);
+			return stringToInt((String) v);
 		} else if (v instanceof BigInteger) {
 			return ((BigInteger) v).intValue();
 		} else if (v instanceof BigDecimal) {
@@ -112,7 +104,7 @@ public class ExOrigin {
 		} else if (v instanceof Double) {
 			return ((Double) v).longValue();
 		} else if (v instanceof String) {
-			return NumEx.stringToLong((String) v);
+			return stringToLong((String) v);
 		} else if (v instanceof BigInteger) {
 			return ((BigInteger) v).longValue();
 		} else if (v instanceof BigDecimal) {
@@ -137,7 +129,7 @@ public class ExOrigin {
 		} else if (v instanceof Double) {
 			return ((Double) v).floatValue();
 		} else if (v instanceof String) {
-			return NumEx.stringToFloat((String) v);
+			return stringToFloat((String) v);
 		} else if (v instanceof BigInteger) {
 			return ((BigInteger) v).floatValue();
 		} else if (v instanceof BigDecimal) {
@@ -162,22 +154,13 @@ public class ExOrigin {
 		} else if (v instanceof Double) {
 			return ((Double) v).doubleValue();
 		} else if (v instanceof String) {
-			return NumEx.stringToDouble((String) v);
+			return stringToDouble((String) v);
 		} else if (v instanceof BigInteger) {
 			return ((BigInteger) v).doubleValue();
 		} else if (v instanceof BigDecimal) {
 			return ((BigDecimal) v).doubleValue();
 		}
 		return 0;
-	}
-
-	public static final String toString(Object v) {
-		if (v == null)
-			return "";
-		if (v instanceof String)
-			return (String) v;
-
-		return String.valueOf(v);
 	}
 
 	public static final Date toDate(Object v) {
@@ -192,7 +175,7 @@ public class ExOrigin {
 		else if (v instanceof Long)
 			return new Date((Long) v);
 		else if (v instanceof String)
-			return DateEx.parse2Date((String) v, DateEx.fmt_yyyy_MM_dd_HH_mm_ss);
+			return parse2Date((String) v, fmt_yyyy_MM_dd_HH_mm_ss);
 		return new Date();
 	}
 }

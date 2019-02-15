@@ -37,7 +37,7 @@ import org.apache.commons.collections4.map.MultiValueMap;
 import org.apache.commons.collections4.map.StaticBucketMap;
 
 import com.alibaba.fastjson.JSON;
-import com.bowlong.ExOrigin;
+import com.bowlong.basic.ExOrigin;
 import com.bowlong.lang.NumEx;
 import com.bowlong.lang.StrEx;
 import com.bowlong.objpool.StringBufPool;
@@ -49,10 +49,6 @@ public class MapEx extends ExOrigin {
 
 	public static final Map singletonEmptyMap() {
 		return singletonEmptyMap;
-	}
-
-	public static final <K, V> Map<K, V> newMap() {
-		return new Hashtable<K, V>();// 线程安全的
 	}
 
 	public static final <K, V> Map<K, V> newHashMap() {
@@ -97,30 +93,6 @@ public class MapEx extends ExOrigin {
 
 	public static final StaticBucketMap newStaticBucketMap() {
 		return new StaticBucketMap();
-	}
-
-	public static final boolean isEmpty(Map map) {
-		return (map == null || map.isEmpty());
-	}
-
-	public static final boolean notEmpty(Map map) {
-		return (map != null && !map.isEmpty());
-	}
-
-	static public final void clear(Map map) {
-		if (map == null)
-			return;
-		map.clear();
-	}
-
-	/*** 清空并创建对象 **/
-	static public final <K, V> Map<K, V> clearOrNew(Map map) {
-		if (map == null) {
-			map = newMap();
-			return map;
-		}
-		map.clear();
-		return map;
 	}
 
 	public static final <T> T copyValue(Map from, Map to, Object key) {
@@ -187,7 +159,7 @@ public class MapEx extends ExOrigin {
 	}
 
 	public static final String getStringNoTrim(Map map, Object key) {
-		return toString(map.get(key));
+		return toStr(map.get(key));
 	}
 
 	public static final String getString(Map map, Object key) {
@@ -346,13 +318,13 @@ public class MapEx extends ExOrigin {
 			} else if (object instanceof Object[]) {
 				Object[] entry = (Object[]) object;
 				if (entry.length < 2) {
-					throw new IllegalArgumentException("Array element " + i + ", '" + object
-							+ "', has a length less than 2");
+					throw new IllegalArgumentException(
+							"Array element " + i + ", '" + object + "', has a length less than 2");
 				}
 				map.put(entry[0], entry[1]);
 			} else {
-				throw new IllegalArgumentException("Array element " + i + ", '" + object
-						+ "', is neither of type Map.Entry nor an Array");
+				throw new IllegalArgumentException(
+						"Array element " + i + ", '" + object + "', is neither of type Map.Entry nor an Array");
 			}
 		}
 		return map;
@@ -660,7 +632,7 @@ public class MapEx extends ExOrigin {
 
 			if (!isLessZeroNum)
 				continue;
-			
+
 			v = 1;
 			if (val instanceof Double) {
 				v = (double) val;

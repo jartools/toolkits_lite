@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.bowlong.ExOrigin;
+import com.bowlong.basic.ExOrigin;
 
 @SuppressWarnings({ "serial", "rawtypes", "unchecked" })
 public class NewCpWrList<E> extends CopyOnWriteArrayList<E> {
@@ -106,7 +106,7 @@ public class NewCpWrList<E> extends CopyOnWriteArrayList<E> {
 	}
 
 	public String getString(int i) {
-		return ExOrigin.toString(get(i));
+		return ExOrigin.toStr(get(i));
 	}
 
 	public Date getDate(int i) {

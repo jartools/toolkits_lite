@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.bowlong.ExOrigin;
+import com.bowlong.basic.ExOrigin;
 import com.bowlong.lang.StrEx;
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.third.FastJSON;

@@ -1,16 +1,19 @@
-package com.bowlong.util;
+package com.bowlong.basic;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.bowlong.lang.StrEx;
 import com.bowlong.objpool.StringBufPool;
-import com.bowlong.tool.TkitBase;
 
-/*** 时间格式转换 **/
-public class DateFmtEx {
+/**
+ * 时间格式转换<br/>
+ * 
+ * @author Canyon
+ * @time 2019-02-14 19:32
+ */
+public class EODateFmt extends EOStrNum {
 	// 字母 日期或时间元素 表示 示例
 	// ------------------------------------------------------------------
 	// G Era 标志符 Text AD
@@ -86,10 +89,6 @@ public class DateFmtEx {
 	/*** 1900年的时间 **/
 	static public final long TIME_1900 = TIME_YEAR * 1900;
 
-	static public final long now() {
-		return System.currentTimeMillis();
-	}
-
 	static public final Date nowDate() {
 		return new Date();
 	}
@@ -97,7 +96,7 @@ public class DateFmtEx {
 	static public final Calendar nowCalendar() {
 		return Calendar.getInstance();// 默认时区(TimeZone)，默认语音环境(Locale)
 	}
-	
+
 	static public final String format(Date v, String fmt) {
 		return new SimpleDateFormat(fmt).format(v);
 	}
@@ -168,12 +167,12 @@ public class DateFmtEx {
 	static public final String nowStrYMDHms() {
 		return nowStr(fmt_yyyyMMddHHmmss);
 	}
-	
+
 	/*** 当前系统时间字符串(yyyyMMdd_HHmmss) **/
 	static public final String nowStrYMD_Hms() {
 		return nowStr(fmt_yyyyMMdd_HHmmss);
 	}
-	
+
 	/*** 当前系统时间字符串(yyyyMMdd_HHmm) **/
 	static public final String nowStrYMD_Hm() {
 		return nowStr(fmt_yyyyMMdd_HHmm);
@@ -328,7 +327,7 @@ public class DateFmtEx {
 	}
 
 	static public final boolean isAfter(Date d1, String d2, String pattern) {
-		if (d1 == null || StrEx.isEmpty(d2))
+		if (d1 == null || isEmpty(d2))
 			return false;
 		Date dd2 = parse2Date(d2, pattern);
 		return isAfter(d1, dd2);
@@ -347,7 +346,7 @@ public class DateFmtEx {
 	}
 
 	static public final boolean isBefore(Date d1, String d2, String pattern) {
-		if (d1 == null || StrEx.isEmpty(d2))
+		if (d1 == null || isEmpty(d2))
 			return false;
 		Date dd2 = parse2Date(d2, pattern);
 		return isBefore(d1, dd2);
@@ -355,37 +354,36 @@ public class DateFmtEx {
 
 	/*** d1在d2时间之后,或相等 **/
 	static public final boolean isNotBefore(Date d1, String d2, String pattern) {
-		if (d1 == null || StrEx.isEmpty(d2))
+		if (d1 == null || isEmpty(d2))
 			return false;
 		Date dd2 = parse2Date(d2, pattern);
-		return TkitBase.compareTo(d1, dd2) >= 0;
+		return compareTo(d1, dd2) >= 0;
 	}
 
 	/*** d1在d2时间之后,或相等 **/
 	static public final boolean isNotBefore(Date d1, Date d2) {
 		if (d1 == null || d2 == null)
 			return false;
-		return TkitBase.compareTo(d1, d2) >= 0;
+		return compareTo(d1, d2) >= 0;
 	}
 
 	/*** d1在d2时间之前,或相等 **/
 	static public final boolean isNotAfter(Date d1, String d2, String pattern) {
-		if (d1 == null || StrEx.isEmpty(d2))
+		if (d1 == null || isEmpty(d2))
 			return false;
 		Date dd2 = parse2Date(d2, pattern);
-		return TkitBase.compareTo(d1, dd2) <= 0;
+		return compareTo(d1, dd2) <= 0;
 	}
 
 	/*** d1在d2时间之前,或相等 **/
 	static public final boolean isNotAfter(Date d1, Date d2) {
 		if (d1 == null || d2 == null)
 			return false;
-		return TkitBase.compareTo(d1, d2) <= 0;
+		return compareTo(d1, d2) <= 0;
 	}
 
 	/*** [subtractor:减数],[minuend:被减数] **/
-	static public final boolean isTimeout(long subtractor, long minuend,
-			long timeout) {
+	static public final boolean isTimeout(long subtractor, long minuend, long timeout) {
 		if (timeout <= 0)
 			return false;
 		long t = subtractor - minuend;
@@ -409,7 +407,7 @@ public class DateFmtEx {
 	/*** 比较对象 [parttern为空时，直接比较两个对象] **/
 	static public final int compareTo(Date d1, Date d2, String parttern) {
 		try {
-			if (StrEx.isEmptyTrim(parttern))
+			if (isEmptyTrim(parttern))
 				return d1.compareTo(d2);
 			String str1 = format(d1, parttern);
 			String str2 = format(d2, parttern);
@@ -421,7 +419,7 @@ public class DateFmtEx {
 
 	/*** 判断是否一样 parttern 默认格式yyyyMMdd **/
 	static public final boolean isSame(Date d1, Date d2, String parttern) {
-		if (StrEx.isEmptyTrim(parttern))
+		if (isEmptyTrim(parttern))
 			parttern = "yyyyMMdd";
 		int v = compareTo(d1, d2, parttern);
 		return v == 0;
@@ -429,10 +427,10 @@ public class DateFmtEx {
 
 	/*** 判断字符串是不是时间字符串，格式是 parttern 默认格式yyyyMMdd **/
 	static public final boolean isTime(String timeStr, String parttern) {
-		if (StrEx.isEmptyTrim(timeStr)) {
+		if (isEmptyTrim(timeStr)) {
 			return false;
 		}
-		if (StrEx.isEmptyTrim(parttern))
+		if (isEmptyTrim(parttern))
 			parttern = fmt_yyyyMMdd;
 		Date v = parse2Date(timeStr, parttern);
 		return (v != null);

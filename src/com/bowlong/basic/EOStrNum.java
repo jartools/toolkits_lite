@@ -1,4 +1,4 @@
-package com.bowlong.lang;
+package com.bowlong.basic;
 
 import com.bowlong.util.Ref;
 
@@ -8,34 +8,7 @@ import com.bowlong.util.Ref;
  * @author Canyon
  * @version createtime：2015年8月21日下午3:33:23
  */
-public class StrNumEx {
-	static final public byte[] toByteArray(final String s, final String charset) throws Exception {
-		return s.getBytes(charset);
-	}
-
-	static final public int hashCode(final String s) {
-		char[] value = s.toCharArray();
-		return hashCode(value);
-	}
-
-	static final public int hashCode(final char[] value) {
-		int hash = 0;
-		int count = value.length;
-		int offset = 0;
-
-		int i = hash;
-		if (i == 0 && count > 0) {
-			int j = offset;
-			char ac[] = value;
-			int k = count;
-			for (int l = 0; l < k; l++)
-				i = 31 * i + ac[j++];
-
-			hash = i;
-		}
-		return i;
-	}
-
+public class EOStrNum extends EOBasic {
 	static final private Ref<Byte> refByte = new Ref<Byte>((byte) 0);
 	static final private Ref<Short> refShort = new Ref<Short>((short) 0);
 	static final private Ref<Integer> refInt = new Ref<Integer>(0);
@@ -290,27 +263,12 @@ public class StrNumEx {
 		return r;
 	}
 
-	static final public String toStr(boolean obj) {
-		return String.valueOf(obj);
-	}
+	static final public String toStr(Object v) {
+		if (v == null)
+			return "";
+		if (v instanceof String)
+			return (String) v;
 
-	static final public String toStr(short obj) {
-		return String.valueOf(obj);
-	}
-
-	static final public String toStr(int obj) {
-		return String.valueOf(obj);
-	}
-
-	static final public String toStr(long obj) {
-		return String.valueOf(obj);
-	}
-
-	static final public String toStr(float obj) {
-		return String.valueOf(obj);
-	}
-
-	static final public String toStr(double obj) {
-		return String.valueOf(obj);
+		return String.valueOf(v);
 	}
 }

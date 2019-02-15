@@ -11,11 +11,12 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.bowlong.basic.ExOrigin;
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.text.EasyTemplate;
 import com.bowlong.util.ListEx;
 
-public final class StrEx extends StrNumEx {
+public final class StrEx extends ExOrigin {
 	public static final String left(final String s, final int len) {
 		return s.substring(0, len);
 	}
@@ -265,16 +266,6 @@ public final class StrEx extends StrNumEx {
 		return s;
 	}
 
-	public static final boolean isEmpty(String type) {
-		return type == null || type.length() <= 0;
-	}
-
-	public static final boolean isEmptyTrim(String val) {
-		if (val != null)
-			val = val.trim();
-		return isEmpty(val);
-	}
-
 	public static String[] toArray(List<String> list) {
 		if (list == null || list.size() <= 0)
 			return new String[0];
@@ -512,23 +503,23 @@ public final class StrEx extends StrNumEx {
 		}
 		return str.replaceAll("[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]", "");
 	}
-	
-	static public final String join(String sep,List<Object> list){
-		if(ListEx.isEmpty(list))
+
+	static public final String join(String sep, List<Object> list) {
+		if (ListEx.isEmpty(list))
 			return "";
 		int lens = list.size();
 		StringBuffer buff = StringBufPool.borrowObject();
 		for (int i = 0; i < lens; i++) {
 			buff.append(list.get(i));
-			if(i < lens - 1)
+			if (i < lens - 1)
 				buff.append(sep);
 		}
 		String ret = buff.toString();
 		StringBufPool.returnObject(buff);
 		return ret;
 	}
-	
-	static public final String join(String sep,Object... objects){
+
+	static public final String join(String sep, Object... objects) {
 		return join(sep, ListEx.toListT(objects));
 	}
 }

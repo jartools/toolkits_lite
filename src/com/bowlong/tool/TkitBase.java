@@ -8,10 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -75,16 +73,8 @@ public class TkitBase extends TkitOrigin {
 	}
 
 	// ///////////////////////////////////////////////////
-	static public final Map newMap() {
-		return Collections.synchronizedMap(new HashMap());
-	}
-
 	static public final Set newSet() {
 		return Collections.synchronizedSet(new HashSet());
-	}
-
-	static public final List newList() {
-		return Collections.synchronizedList(new ArrayList());
 	}
 
 	static public final boolean intersectedPoints(List<Point> list, Point p) {
@@ -120,74 +110,6 @@ public class TkitBase extends TkitOrigin {
 
 	static public final String pn(int n) {
 		return n > 0 ? "+" + n : String.valueOf(n);
-	}
-
-	static public final int compareTo(Object v1, Object v2) {
-		if (v1 == null || v2 == null)
-			return 0;
-
-		if (v1 instanceof Byte && v2 instanceof Byte) {
-			Boolean i1 = (Boolean) v1;
-			Boolean i2 = (Boolean) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof Byte && v2 instanceof Byte) {
-			Byte i1 = (Byte) v1;
-			Byte i2 = (Byte) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof Short && v2 instanceof Short) {
-			Short i1 = (Short) v1;
-			Short i2 = (Short) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof Integer && v2 instanceof Integer) {
-			Integer i1 = (Integer) v1;
-			Integer i2 = (Integer) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof Long && v2 instanceof Long) {
-			Long i1 = (Long) v1;
-			Long i2 = (Long) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof java.math.BigInteger && v2 instanceof java.math.BigInteger) {
-			java.math.BigInteger i1 = (java.math.BigInteger) v1;
-			java.math.BigInteger i2 = (java.math.BigInteger) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof java.math.BigDecimal && v2 instanceof java.math.BigDecimal) {
-			java.math.BigDecimal i1 = (java.math.BigDecimal) v1;
-			java.math.BigDecimal i2 = (java.math.BigDecimal) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof Float && v2 instanceof Float) {
-			Float i1 = (Float) v1;
-			Float i2 = (Float) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof Double && v2 instanceof Double) {
-			Double i1 = (Double) v1;
-			Double i2 = (Double) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof Date && v2 instanceof Date) {
-			Date i1 = (Date) v1;
-			Date i2 = (Date) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof java.sql.Date && v2 instanceof java.sql.Date) {
-			java.sql.Date i1 = (java.sql.Date) v1;
-			java.sql.Date i2 = (java.sql.Date) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof java.sql.Timestamp && v2 instanceof java.sql.Timestamp) {
-			java.sql.Timestamp i1 = (java.sql.Timestamp) v1;
-			java.sql.Timestamp i2 = (java.sql.Timestamp) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof java.sql.Time && v2 instanceof java.sql.Time) {
-			java.sql.Time i1 = (java.sql.Time) v1;
-			java.sql.Time i2 = (java.sql.Time) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof String && v2 instanceof String) {
-			String i1 = (String) v1;
-			String i2 = (String) v2;
-			return i1.compareTo(i2);
-		} else if (v1 instanceof java.lang.Enum && v2 instanceof java.lang.Enum) {
-			java.lang.Enum i1 = (java.lang.Enum) v1;
-			java.lang.Enum i2 = (java.lang.Enum) v2;
-			return i1.compareTo(i2);
-		}
-		return 0;
 	}
 
 	static public final int compareTo4More(Object v1, Object v2, String parttern) {
@@ -275,10 +197,6 @@ public class TkitBase extends TkitOrigin {
 	}
 
 	// ///////////////////////////////////////////////////
-	static public final long now() {
-		return System.currentTimeMillis();
-	}
-
 	static public final String tFmt(long ms) {
 		return DateEx.format_YMDHms(ms);
 	}
@@ -365,60 +283,6 @@ public class TkitBase extends TkitOrigin {
 	}
 
 	// ///////////////////////////////////////////////////
-
-	static public final String trim(String o) {
-		if (o == null)
-			return "";
-		return o.trim();
-	}
-
-	static public final boolean isNull(Object o) {
-		return o == null;
-	}
-
-	static public final boolean isNull(String o) {
-		if (o == null)
-			return true;
-		o = o.trim();
-		return o.isEmpty();
-	}
-
-	static public final boolean isEmpty(byte[] o) {
-		return o == null || o.length <= 0;
-	}
-
-	static public final boolean isEmpty(List o) {
-		return o == null || o.isEmpty();
-	}
-
-	static public final boolean isEmpty(Map o) {
-		return o == null || o.isEmpty();
-	}
-
-	static public final boolean isEmpty(String o) {
-		return o == null || o.isEmpty();
-	}
-
-	static public final boolean notNull(Object o) {
-		return o != null;
-	}
-
-	static public final boolean notEmpty(byte[] o) {
-		return o != null && o.length > 0;
-	}
-
-	static public final boolean notEmpty(List o) {
-		return o != null && !o.isEmpty();
-	}
-
-	static public final boolean notEmpty(Map o) {
-		return o != null && !o.isEmpty();
-	}
-
-	static public final boolean notEmpty(String o) {
-		return o != null && !o.isEmpty();
-	}
-
 	static public final String e2s(Throwable e) {
 		return e2s(e, null, new Object[0]);
 	}
@@ -439,7 +303,7 @@ public class TkitBase extends TkitOrigin {
 	static public final ScheduledFuture<?> scheduleMS(ScheduledExecutorService threadPool, Runnable r, long delayMs) {
 		return SchedulerEx.scheduleMS(threadPool, r, delayMs);
 	}
-	
+
 	static public final ScheduledFuture<?> scheduleSec(ScheduledExecutorService threadPool, Runnable r, int delaySec) {
 		return SchedulerEx.scheduleSec(threadPool, r, delaySec);
 	}
