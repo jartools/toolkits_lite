@@ -1,6 +1,16 @@
 package com.bowlong.third.netty4.socket;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.bowlong.Toolkit;
+import com.bowlong.util.MapEx;
+
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -9,61 +19,38 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
-import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.bowlong.Toolkit;
-import com.bowlong.lang.StrEx;
-
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class N4BootstrapSocketClient {
+public class N4BootstrapSocketClient extends N4Socket {
 	static Log log = LogFactory.getLog(N4BootstrapSocketClient.class);
 
 	/** 异步的netty */
-	static public Map start(String host, int port, boolean nodelay,
-			boolean alive, ChannelInitializer<SocketChannel> handler) {
+	static public Map start(String host, int port, boolean nodelay, boolean alive,
+			ChannelInitializer<SocketChannel> handler) {
 		return begin(host, port, nodelay, alive, handler, false);
 	}
 
 	/** 同步的netty */
-	static public Map startSync(String host, int port, boolean nodelay,
-			boolean alive, ChannelInitializer<SocketChannel> handler) {
+	static public Map startSync(String host, int port, boolean nodelay, boolean alive,
+			ChannelInitializer<SocketChannel> handler) {
 		return begin(host, port, nodelay, alive, handler, true);
 	}
 
-	static private Map begin(String host, int port, boolean nodelay,
-			boolean alive, ChannelInitializer<SocketChannel> handler,
-			boolean isSync) {
-		Map map = new HashMap();
+	static private Map begin(String host, int port, boolean nodelay, boolean alive,
+			ChannelInitializer<SocketChannel> handler, boolean isSync) {
 		EventLoopGroup group = new NioEventLoopGroup();// 用于接收发来的连接请求
 		Bootstrap bstrap = initServer(group, handler, nodelay, alive);
-		ChannelFuture chnFu = null;
-		try {
-			chnFu = connectServerSocketAddress(host, port, bstrap);
-			// 同步
-			// chnFu.channel().closeFuture().sync();
-			if (isSync) {
-				chnFu.sync();
-			}
-		} catch (Exception e) {
-			log.error(Toolkit.e2s(e));
-		} finally {
-			// group.shutdownGracefully();
-			map.put("group", group);
-		}
-		if (chnFu != null) {
-			map.put("chnFuture", chnFu);
-		}
+		Map map = new HashMap();
+		map.put("host", host);
+		map.put("port", port);
+		map.put("isSync", isSync);
+		map.put("bstrap", bstrap);
+		map.put("group", group);
+		map = reconnect(map);
 		return map;
 	}
 
-	private static Bootstrap initServer(EventLoopGroup group,
-			ChannelInitializer<SocketChannel> handler, boolean nodelay,
-			boolean alive) {
+	private static Bootstrap initServer(EventLoopGroup group, ChannelInitializer<SocketChannel> handler,
+			boolean nodelay, boolean alive) {
 		Bootstrap bstrap = new Bootstrap();
 
 		bstrap.group(group);
@@ -75,22 +62,30 @@ public class N4BootstrapSocketClient {
 		return bstrap;
 	}
 
-	private static ChannelFuture connectServerSocketAddress(final String host,
-			final int port, Bootstrap bstrap) throws Exception {
-		InetSocketAddress address = getAddress(host, port);
-		ChannelFuture chn = bstrap.connect(address);
-		// 同步
-		// chn.sync();
-		return chn;
-	}
-
-	static public InetSocketAddress getAddress(final String host, final int port) {
-		InetSocketAddress address = null;
-		if (StrEx.isEmpty(host)) {
-			address = new InetSocketAddress(port);
-		} else {
-			address = new InetSocketAddress(host, port);
+	static public Map reconnect(Map map) {
+		ChannelFuture chnFu = (ChannelFuture) map.get("chnFuture");
+		boolean isCanCon = chnFu == null;
+		if (!isCanCon) {
+			Channel chn = chnFu.channel();
+			isCanCon = (chn == null) || !chn.isOpen();
 		}
-		return address;
+		if (isCanCon) {
+			String host = MapEx.getString(map, "host");
+			int port = MapEx.getInt(map, "port");
+			boolean isSync = MapEx.getBoolean(map, "isSync");
+			Bootstrap bstrap = (Bootstrap) map.get("chnFuture");
+			try {
+				chnFu = clientConnect(host, port, bstrap);
+				if (isSync) {
+					chnFu.sync();
+				}
+			} catch (Exception e) {
+				log.error(Toolkit.e2s(e));
+			}
+			if (chnFu != null) {
+				map.put("chnFuture", chnFu);
+			}
+		}
+		return map;
 	}
 }
