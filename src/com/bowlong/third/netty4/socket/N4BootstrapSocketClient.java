@@ -73,7 +73,7 @@ public class N4BootstrapSocketClient extends N4Socket {
 			String host = MapEx.getString(map, "host");
 			int port = MapEx.getInt(map, "port");
 			boolean isSync = MapEx.getBoolean(map, "isSync");
-			Bootstrap bstrap = (Bootstrap) map.get("chnFuture");
+			Bootstrap bstrap = (Bootstrap) map.get("bstrap");
 			try {
 				chnFu = clientConnect(host, port, bstrap);
 				if (isSync) {
