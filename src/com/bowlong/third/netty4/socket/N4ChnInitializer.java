@@ -25,7 +25,7 @@ import com.bowlong.third.netty4.codec.LengthByteArrayEncoder;
 /** 数据处理 */
 public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 	public int ntype = 0;
-	public boolean isFramer = true;
+	public boolean isFramer = false;
 	public ChannelInboundHandlerAdapter hander;
 	private Charset utf8 = Encoding.UTF8;
 
@@ -48,7 +48,7 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 	}
 
 	public N4ChnInitializer(int ntype, ChannelInboundHandlerAdapter hander) {
-		this(0, true, hander);
+		this(0, false, hander);
 	}
 
 	public N4ChnInitializer(ChannelInboundHandlerAdapter hander) {
@@ -87,7 +87,7 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 		ChannelPipeline p = chn.pipeline();
 		// 以("\n")为结尾分割的 解码器
 		if (isFramer)
-			p.addLast("framer", framer);
+			p.addLast("frameDecoder", framer);
 		// 解码 和 编码
 		p.addLast("decoder", new StringDecoder(utf8));
 		p.addLast("encoder", new StringEncoder(utf8));
@@ -101,8 +101,8 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 		if (isFramer)
 			p.addLast("framer", framer);
 		// 解码 和 编码
-		p.addLast("decoder", new Base64Encoder());
-		p.addLast("encoder", new Base64Decoder());
+		p.addLast("decoder", new Base64Decoder());
+		p.addLast("encoder", new Base64Encoder());
 
 		// hander接受到的是:String
 		p.addLast("handler", this.hander);
