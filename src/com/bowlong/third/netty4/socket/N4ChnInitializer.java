@@ -48,7 +48,7 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 	}
 
 	public N4ChnInitializer(int ntype, ChannelInboundHandlerAdapter hander) {
-		this(0, false, hander);
+		this(ntype, false, hander);
 	}
 
 	public N4ChnInitializer(ChannelInboundHandlerAdapter hander) {
@@ -73,7 +73,7 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 		}
 	}
 
-	void initType_1(SocketChannel chn) throws Exception {
+	void initType_2(SocketChannel chn) throws Exception {
 		ChannelPipeline pipeline = chn.pipeline();
 		// 解码 和 编码
 		pipeline.addLast("decoder", new LengthByteArrayDecoder(40 * 1024, 0, 4, 0, 4));
@@ -83,11 +83,11 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 		pipeline.addLast("handler", this.hander);
 	}
 
-	void initType_2(SocketChannel chn) throws Exception {
+	void initType_1(SocketChannel chn) throws Exception {
 		ChannelPipeline p = chn.pipeline();
 		// 以("\n")为结尾分割的 解码器
 		if (isFramer)
-			p.addLast("frameDecoder", framer);
+			p.addLast("framer", framer);
 		// 解码 和 编码
 		p.addLast("decoder", new StringDecoder(utf8));
 		p.addLast("encoder", new StringEncoder(utf8));
