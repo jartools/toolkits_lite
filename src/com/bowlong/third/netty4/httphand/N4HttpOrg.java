@@ -35,11 +35,11 @@ import com.bowlong.util.MapEx;
  * N4(netty 4)请求相应父类 处理过来的请求，解析请求参数，取得请求传送的数据 此处的res 是 response 的简称. 此处的req 是
  * request 的简称. ByPost 表示post 请求传参 ByGet 表示 get 请求传参
  ****/
-public class N4HttpResp implements Serializable {
+public class N4HttpOrg implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	static Log log = LogFactory.getLog(N4HttpResp.class);
+	static Log log = LogFactory.getLog(N4HttpOrg.class);
 
 	// =============== get 请求传参
 	public static String getParamsVal(String query, String key) {

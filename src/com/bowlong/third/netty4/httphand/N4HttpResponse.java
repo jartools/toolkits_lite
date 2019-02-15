@@ -23,7 +23,7 @@ import com.bowlong.lang.StrEx;
  * N4(netty 4)请求相应类 其父N4HttpResp类处理其他过来的请求， 该类进行响应(返回对应的数据)
  ****/
 @SuppressWarnings({ "rawtypes" })
-public class N4HttpResponse extends N4HttpResp {
+public class N4HttpResponse extends N4HttpOrg {
 
 	private static final long serialVersionUID = 1L;
 
