@@ -5,7 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 //SHUTDOWN
-@SuppressWarnings("resource")
 public class Shutdown extends Thread {
 	public ServerSocket ssocket = null;
 

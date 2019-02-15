@@ -1,18 +1,12 @@
 package com.bowlong.third.netty4.socket;
 
-import java.nio.charset.Charset;
-
-import com.bowlong.text.Encoding;
-import com.bowlong.third.netty4.codec.LengthByteArrayDecoder;
-import com.bowlong.third.netty4.codec.LengthByteArrayEncoder;
-
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
-import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.base64.Base64Decoder;
 import io.netty.handler.codec.base64.Base64Encoder;
 import io.netty.handler.codec.http.HttpContentCompressor;
@@ -22,17 +16,39 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
+import java.nio.charset.Charset;
+
+import com.bowlong.text.Encoding;
+import com.bowlong.third.netty4.codec.LengthByteArrayDecoder;
+import com.bowlong.third.netty4.codec.LengthByteArrayEncoder;
+
 /** 数据处理 */
 public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 	public int ntype = 0;
+	public boolean isFramer = true;
 	public ChannelInboundHandlerAdapter hander;
-	Charset utf8 = Encoding.UTF8;
-	DelimiterBasedFrameDecoder dbfd1 = new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter());
+	private Charset utf8 = Encoding.UTF8;
 
-	public N4ChnInitializer(int ntype, ChannelInboundHandlerAdapter hander) {
+	// 为了解决TCP粘包／拆包导致的半包读写问题
+	private int size = 1024;
+	// 以回车换行符("\n")作为消息结束符
+	// private ByteBuf delimiter = Unpooled.copiedBuffer("\n".getBytes());
+	private ByteBuf[] delimiter = Delimiters.lineDelimiter();
+	// 将特殊的分隔符作为消息分隔符，回车换行符是他的一种
+	private DelimiterBasedFrameDecoder framer = new DelimiterBasedFrameDecoder(size, delimiter);
+
+	// 将回车换行符作为消息结束符
+	// private LineBasedFrameDecoder framer = new LineBasedFrameDecoder(size);
+
+	public N4ChnInitializer(int ntype, boolean isFramer, ChannelInboundHandlerAdapter hander) {
 		super();
 		this.ntype = ntype;
+		this.isFramer = isFramer;
 		this.hander = hander;
+	}
+
+	public N4ChnInitializer(int ntype, ChannelInboundHandlerAdapter hander) {
+		this(0, true, hander);
 	}
 
 	public N4ChnInitializer(ChannelInboundHandlerAdapter hander) {
@@ -49,10 +65,7 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 			initType_3(chn);
 			break;
 		case 4:
-			initType_4(chn);
-			break;
-		case 5:
-			initType_5http(chn);
+			initType_4http(chn);
 			break;
 		default:
 			initType_1(chn);
@@ -73,7 +86,8 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 	void initType_2(SocketChannel chn) throws Exception {
 		ChannelPipeline p = chn.pipeline();
 		// 以("\n")为结尾分割的 解码器
-		p.addLast("framer", dbfd1);
+		if (isFramer)
+			p.addLast("framer", framer);
 		// 解码 和 编码
 		p.addLast("decoder", new StringDecoder(utf8));
 		p.addLast("encoder", new StringEncoder(utf8));
@@ -84,8 +98,8 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 
 	void initType_3(SocketChannel chn) throws Exception {
 		ChannelPipeline p = chn.pipeline();
-		// 以("\n")为结尾分割的 解码器
-		p.addLast("framer", dbfd1);
+		if (isFramer)
+			p.addLast("framer", framer);
 		// 解码 和 编码
 		p.addLast("decoder", new Base64Encoder());
 		p.addLast("encoder", new Base64Decoder());
@@ -94,18 +108,7 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 		p.addLast("handler", this.hander);
 	}
 
-	void initType_4(SocketChannel chn) throws Exception {
-		ChannelPipeline p = chn.pipeline();
-		// 解码 和 编码
-		LineBasedFrameDecoder coder = new LineBasedFrameDecoder(1024 * 1024 * 5);
-		p.addLast("decoder", coder);
-		p.addLast("encoder", coder);
-
-		// hander接受到的是:String
-		p.addLast("handler", this.hander);
-	}
-
-	void initType_5http(SocketChannel chn) throws Exception {
+	void initType_4http(SocketChannel chn) throws Exception {
 		ChannelPipeline p = chn.pipeline();
 		// 解码 和 编码
 		p.addLast("decoder", new HttpRequestDecoder());
@@ -118,7 +121,7 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 		int maxContentLength = 1024 * 1024 * 3;
 		p.addLast("aggregator", new HttpObjectAggregator(maxContentLength));
 
-		// 自己的逻辑Handler
+		// hander接受到的是:HttpRequest
 		p.addLast("handler", this.hander);
 	}
 }

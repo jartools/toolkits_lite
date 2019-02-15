@@ -40,6 +40,12 @@ public class N4Socket {
 		if (map == null) {
 			return;
 		}
+		ChannelFuture chnFu = (ChannelFuture) map.get("chnFuture");
+		if(chnFu != null){
+			chnFu.channel().close();
+			chnFu.channel().closeFuture();
+			chnFu.cancel(true);
+		}
 		EventLoopGroup group = null;
 		if (map.containsKey("parentGroup")) {
 			group = (EventLoopGroup) map.get("parentGroup");
