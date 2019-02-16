@@ -21,23 +21,22 @@ public class InternalBuilder extends Toolkit {
 		String db = "test";
 		String bpackage = "fych.db";
 		String appContext = "fych.context.AppContext";
-		String clazzName = "AppContext";
 		try (Connection conn = SqlEx.newMysqlConnection(host, db);) {
 			boolean batch = true;
 			boolean sorted = true;
 
 			ResultSet rs = SqlEx.executeQuery(conn, sql);
 
-			String xml = build(conn, rs, bpackage, appContext, batch, sorted,
-					clazzName);
+			String xml = build(conn, rs, bpackage, appContext, batch, sorted);
 			System.out.println(xml);
 		}
 
 	}
 
 	public static String build(Connection conn, ResultSet rs, String pkg,
-			String appContext, boolean batch, boolean sorted, String clazzName)
+			String appContext, boolean batch, boolean sorted)
 			throws Exception {
+		// String appName = StrEx.right(appContext, ".");
 		StringBuffer sb = new StringBuffer();
 
 		ResultSetMetaData rsmd = rs.getMetaData();

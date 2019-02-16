@@ -19,12 +19,11 @@ public class EntityBuilder extends Toolkit {
 		String db = "fych";
 		String bpackage = "fych.db";
 		String appContext = "fych.context.AppContext";
-		String clazzName = "AppContext";
 		try (Connection conn = SqlEx.newMysqlConnection(host, db);) {
 
 			ResultSet rs = SqlEx.executeQuery(conn, sql);
 
-			String xml = build(conn, rs, bpackage, appContext, clazzName);
+			String xml = build(conn, rs, bpackage, appContext);
 			System.out.println(xml);
 		}
 
@@ -32,7 +31,8 @@ public class EntityBuilder extends Toolkit {
 
 	@SuppressWarnings("rawtypes")
 	public static String build(Connection conn, ResultSet rs, String pkg,
-			String appContext, String clazzName) throws Exception {
+			String appContext) throws Exception {
+		String appName = StrEx.right(appContext, ".");
 		StringBuffer sb = new StringBuffer();
 
 		System.out.println("-----------------------");
@@ -79,7 +79,7 @@ public class EntityBuilder extends Toolkit {
 		sn(sb, "    public static %sDAO %sDAO() {", tableUEn, tableUEn);
 		sn(sb, "        if( %sDAO == null)", tableUEn);
 		sn(sb, "            %sDAO = new %sDAO(%s.dsData());", tableUEn,
-				tableUEn, clazzName);
+				tableUEn, appName);
 		sn(sb, "        return %sDAO;", tableUEn);
 		sn(sb, "    }");
 		sn(sb, "");

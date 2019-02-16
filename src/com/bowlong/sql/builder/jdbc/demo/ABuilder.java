@@ -36,8 +36,7 @@ public class ABuilder {
 
 		List<String> tb = ListEx.toVector(tbs);
 		boolean src = FileEx.exists("src");
-		String appcontext = "";// AppContext.class.getName();
-		String clazzName4AppCont = "AppContext";
+		String appcontext = "x.x.AppContext";// AppContext.class.getName();
 		System.out.println(appcontext);
 		boolean batch = true;
 
@@ -46,10 +45,8 @@ public class ABuilder {
 			System.out.println(tablename);
 			BeanBuild(ds.getConnection(), tablename, pkg, src);
 			DaoBuild(ds.getConnection(), tablename, pkg, src, batch);
-			InternalBuild(ds.getConnection(), tablename, appcontext, pkg, src,
-					batch, clazzName4AppCont);
-			EntityBuild(ds.getConnection(), tablename, appcontext, pkg, src,
-					clazzName4AppCont);
+			InternalBuild(ds.getConnection(), tablename, appcontext, pkg, src, batch);
+			EntityBuild(ds.getConnection(), tablename, appcontext, pkg, src);
 			// RMIBuild(ds.getConnection(), tablename, appcontext, pkg, src,
 			// batch);
 			// RemoteBuild(ds.getConnection(), tablename, appcontext, pkg, src,
@@ -65,8 +62,7 @@ public class ABuilder {
 		return tbs;
 	}
 
-	public static void BeanBuild(Connection conn, String tablename, String pkg,
-			boolean src) throws Exception {
+	public static void BeanBuild(Connection conn, String tablename, String pkg, boolean src) throws Exception {
 
 		String sql = String.format("SELECT * FROM `%s` LIMIT 1", tablename);
 
@@ -87,8 +83,7 @@ public class ABuilder {
 		conn.close();
 	}
 
-	public static void DaoBuild(Connection conn, String tablename, String pkg,
-			boolean src, boolean batch) throws Exception {
+	static void DaoBuild(Connection conn, String tablename, String pkg, boolean src, boolean batch) throws Exception {
 
 		String sql = String.format("SELECT * FROM `%s` LIMIT 1", tablename);
 
@@ -106,13 +101,10 @@ public class ABuilder {
 			parent.mkdir();
 		}
 		writeFile(filename, xml);
-		conn.close();
-
 	}
 
-	public static void InternalBuild(Connection conn, String tablename,
-			String appcontext, String pkg, boolean src, boolean batch,
-			String clazzName4AppCont) throws Exception {
+	static void InternalBuild(Connection conn, String tablename, String appcontext, String pkg, boolean src,
+			boolean batch) throws Exception {
 		boolean sorted = true;
 
 		String sql = String.format("SELECT * FROM `%s` LIMIT 1", tablename);
@@ -123,22 +115,18 @@ public class ABuilder {
 		// InternalBuilder builder = new InternalBuilder();
 		// String xml = builder.build(conn, rs, pkg + "internal", pkg + "bean",
 		// pkg + "dao", pkg + "entity", appcontext, immediately);
-		String xml = InternalBuilder.build(conn, rs, pkg, appcontext, batch,
-				sorted, clazzName4AppCont);
+		String xml = InternalBuilder.build(conn, rs, pkg, appcontext, batch, sorted);
 		System.out.println(xml);
-		String filename = file(pkg, src, "internal", tablename + "Internal",
-				"java");
+		String filename = file(pkg, src, "internal", tablename + "Internal", "java");
 		File f = new File(filename);
 		File parent = f.getParentFile();
 		if (!parent.exists() || !parent.isDirectory()) {
 			parent.mkdir();
 		}
 		writeFile(filename, xml);
-		conn.close();
 	}
 
-	public static void EntityBuild(Connection conn, String tablename,
-			String appContext, String pkg, boolean src, String clazzName4AppCont)
+	static void EntityBuild(Connection conn, String tablename, String appContext, String pkg, boolean src)
 			throws Exception {
 		String filename = file(pkg, src, "entity", tablename + "Entity", "java");
 		File f = new File(filename);
@@ -158,19 +146,16 @@ public class ABuilder {
 		// String xml = builder.build(conn, rs, pkg + "entity", pkg + "bean",
 		// pkg
 		// + "dao", pkg + "internal", appcontext, immediately);
-		String xml = EntityBuilder.build(conn, rs, pkg, appContext,
-				clazzName4AppCont);
+		String xml = EntityBuilder.build(conn, rs, pkg, appContext);
 		System.out.println(xml);
 		// String filename = file(pkg, src, "entity", tablename + "Entity",
 		// "java");
 		// File f = new File(filename);
 		// if (!f.exists())
 		writeFile(filename, xml);
-		conn.close();
 	}
 
-	public static void RMIBuild(Connection conn, String tablename,
-			String appContext, String pkg, boolean src, boolean batch)
+	static void RMIBuild(Connection conn, String tablename, String appContext, String pkg, boolean src, boolean batch)
 			throws Exception {
 		String filename = file(pkg, src, "rmi", tablename + "RMI", "java");
 		File f = new File(filename);
@@ -201,11 +186,9 @@ public class ABuilder {
 		// File f = new File(filename);
 		// if (!f.exists())
 		writeFile(filename, xml);
-		conn.close();
 	}
 
-	public static void RemoteBuild(Connection conn, String tablename,
-			String appContext, String pkg, boolean src, boolean batch)
+	static void RemoteBuild(Connection conn, String tablename, String appContext, String pkg, boolean src, boolean batch)
 			throws Exception {
 		String filename = file(pkg, src, "remote", tablename + "Remote", "java");
 		File f = new File(filename);
@@ -236,16 +219,13 @@ public class ABuilder {
 		// File f = new File(filename);
 		// if (!f.exists())
 		writeFile(filename, xml);
-		conn.close();
 	}
 
-	public static String file(String pkg, boolean src, String type,
-			String tablename, String ext) {
+	public static String file(String pkg, boolean src, String type, String tablename, String ext) {
 		String path = pkg2Path(pkg);
 		if (src)
 			path = "src/" + path;
-		path = path + "/" + type + "/"
-				+ upperFirst(PinYin.getShortPinYin(tablename)) + "." + ext;
+		path = path + "/" + type + "/" + upperFirst(PinYin.getShortPinYin(tablename)) + "." + ext;
 		return path;
 	}
 
