@@ -1300,6 +1300,8 @@ public class SqlEx extends Toolkit {
 				for (int i = 1; i <= cols; i++) {
 					String c = rsmd.getColumnName(i);
 					Object v = rs.getObject(i);
+					if(v == null)
+						continue;
 					result.put(c, v);
 
 					if (mcols != null)
