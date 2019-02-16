@@ -29,6 +29,7 @@ public class ABuilder {
 	public static void main(String[] args) throws Exception {
 		// 该ds就是设计数据库的的source源
 		DataSource ds = new DruidDataSource();// AppContext.ds2();
+		Connection con = ds.getConnection();
 		String pkg = ABuilder.class.getPackage().getName();
 		// pkg = "com.war.db";
 		System.out.println(pkg);
@@ -43,14 +44,12 @@ public class ABuilder {
 		for (String tablename : tb) {
 			System.out.println("====================");
 			System.out.println(tablename);
-			BeanBuild(ds.getConnection(), tablename, pkg, src);
-			DaoBuild(ds.getConnection(), tablename, pkg, src, batch);
-			InternalBuild(ds.getConnection(), tablename, appcontext, pkg, src, batch);
-			EntityBuild(ds.getConnection(), tablename, appcontext, pkg, src);
-			// RMIBuild(ds.getConnection(), tablename, appcontext, pkg, src,
-			// batch);
-			// RemoteBuild(ds.getConnection(), tablename, appcontext, pkg, src,
-			// batch);
+			BeanBuild(con, tablename, pkg, src);
+			DaoBuild(con, tablename, pkg, src, batch);
+			InternalBuild(con, tablename, appcontext, pkg, src, batch);
+			EntityBuild(con, tablename, appcontext, pkg, src);
+			// RMIBuild(con, tablename, appcontext, pkg, src,batch);
+			// RemoteBuild(con), tablename, appcontext, pkg, src,batch);
 		}
 		System.exit(1);
 	}
@@ -80,7 +79,6 @@ public class ABuilder {
 			parent.mkdir();
 		}
 		writeFile(filename, xml);
-		conn.close();
 	}
 
 	static void DaoBuild(Connection conn, String tablename, String pkg, boolean src, boolean batch) throws Exception {
@@ -230,7 +228,7 @@ public class ABuilder {
 	}
 
 	public static void writeFile(String f, String s) throws Exception {
-		FileRw.write(f, s.getBytes());
+		FileRw.write(FileRw.getFile(f), s.getBytes());
 	}
 
 	public static String pkg2Path(String pkg) {
