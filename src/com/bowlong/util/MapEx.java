@@ -602,11 +602,7 @@ public class MapEx extends ExOrigin {
 	}
 
 	// 清除空的，包含数字小于0的
-	static public Map toMapClear(Map map) {
-		return toMapClear(map, true);
-	}
-
-	static public Map toMapClear(Map map, boolean isLessZeroNum) {
+	static public <K, V> Map<K, V> toMapClear(Map<K, V> map, boolean isLessZeroNum) {
 		List listKeys = new ArrayList();
 		listKeys.addAll(map.keySet());
 		int lens = listKeys.size();
@@ -649,41 +645,8 @@ public class MapEx extends ExOrigin {
 		}
 		return map;
 	}
-
-	public static void main(String[] args) {
-		// Map colorMap = toMap(new Object[][] { { "RED", 0xFF0000 }, { "GREEN",
-		// 0x00FF00 }, { "BLUE", 0x0000FF } });
-		//
-		// System.out.println(colorMap);
-		//
-		// int[] vars = { 1, 2, 3, 4, 5, 6 };
-		//
-		// String s = "";
-		// s = setInt(s, "1", 111);
-		// s = setString(s, "2", "222");
-		// s = setString(s, 3, "333");
-		// s = setString(s, "4", "444");
-		// s = setInt(s, 5, 555);
-		// s = setInt(s, 6, vars, ",");
-		// System.out.println(s);
-		//
-		// System.out.println(getInt(s, "1"));
-		// System.out.println(getInt(s, "2"));
-		// System.out.println(getInt(s, 3));
-		// System.out.println(getInt(s, "4"));
-		// System.out.println(getInt(s, "5"));
-		// int[] vars2 = getInt(s, 6, ",");
-		// for (int i : vars2) {
-		// System.out.print(i + ",");
-		// }
-		//
-		// System.out.println("-------------------");
-		// Iterator it = iterator(s);
-		// while (it.hasNext()) {
-		// String key = (String) it.next();
-		// String var = getString(s, key);
-		// System.out.println(key + " = " + var);
-		// }
-
+	
+	static public <K, V> Map<K, V> toMapClear(Map<K, V> map) {
+		return toMapClear(map, true);
 	}
 }
