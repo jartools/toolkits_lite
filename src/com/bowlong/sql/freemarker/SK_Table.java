@@ -29,7 +29,8 @@ import com.bowlong.sql.freemarker.jdbc.SK_Query;
 import com.bowlong.third.redis.JedisTookits;
 import com.bowlong.util.ListEx;
 import com.bowlong.util.MapEx;
-import com.bowlong.util.NewListLock;
+//import com.bowlong.util.NewListLock;
+import com.bowlong.util.NewList;
 
 /**
  * @UserName : SandKing
@@ -161,7 +162,7 @@ public class SK_Table extends SK_ITable {
 
 			// 用于加锁ReentrantReadWriteLock
 			cacheImports.add(ConcurrentHashMap.class.getName());
-			cacheImports.add(NewListLock.class.getName());
+			cacheImports.add(NewList.class.getName());
 		}
 		return cacheImports;
 	}

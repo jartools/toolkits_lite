@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -219,32 +218,6 @@ public class MapEx extends ExOrigin {
 			return NewMap.create((Map) obj);
 
 		return new NewMap();
-	}
-
-	public static final Set getSet(Map map, Object key) {
-		Object obj = map.get(key);
-		if (obj == null)
-			return new HashSet();
-
-		if (obj instanceof NewSet)
-			return (NewSet) map.get(key);
-		else if (obj instanceof Set)
-			return (Set) map.get(key);
-
-		return new HashSet();
-	}
-
-	public static final NewSet getNewSet(Map map, Object key) {
-		Object obj = map.get(key);
-		if (obj == null)
-			return new NewSet();
-
-		if (obj instanceof NewSet)
-			return (NewSet) obj;
-		else if (obj instanceof NewSet)
-			return NewSet.create((Set) obj);
-
-		return new NewSet();
 	}
 
 	public static final List getList(Map map, Object key) {

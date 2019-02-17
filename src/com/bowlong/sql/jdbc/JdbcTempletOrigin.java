@@ -8,10 +8,11 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -29,13 +30,12 @@ import com.bowlong.third.FastJSON;
 import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.ListEx;
 import com.bowlong.util.MapEx;
-import com.bowlong.util.NewSet;
 import com.sun.rowset.CachedRowSetImpl;
 
 @SuppressWarnings("all")
 public class JdbcTempletOrigin {
 	/*** 记录数据连接对象目录下的所有表名称 **/
-	private static final Map<String, NewSet<String>> TABLES = newMap();
+	private static final Map<String, Set<String>> TABLES = newMap();
 	// 数据库连接模式[conn如果不为空，则只有一个连接]
 	Connection conn; // 单链接模式
 	DataSource ds_r; // 读写分离模式(读数据源)
@@ -557,12 +557,12 @@ public class JdbcTempletOrigin {
 		Connection conn = null;
 		try {
 			String catalog = catalog_r();
-			NewSet<String> tables = TABLES.get(catalog);
+			Set<String> tables = TABLES.get(catalog);
 			if (tables != null) {
 				if (tables.contains(TABLENAME2))
 					return true;
 			} else {
-				tables = new NewSet<String>();
+				tables = new CopyOnWriteArraySet<String>();
 				TABLES.put(catalog, tables);
 			}
 
@@ -572,7 +572,7 @@ public class JdbcTempletOrigin {
 				String str = MapEx.getString(map, "TABLE_NAME");
 				if (tables.contains(str))
 					continue;
-				tables.Add(str);
+				tables.add(str);
 				ret = ret || (str.equals(TABLENAME2));
 			}
 		} catch (Exception e) {
@@ -588,12 +588,12 @@ public class JdbcTempletOrigin {
 		Connection conn = null;
 		try {
 			String catalog = catalog_w();
-			NewSet<String> tables = TABLES.get(catalog);
+			Set<String> tables = TABLES.get(catalog);
 			if (tables != null) {
 				if (tables.contains(TABLENAME2))
 					return true;
 			} else {
-				tables = new NewSet<String>();
+				tables = new CopyOnWriteArraySet<String>();
 				TABLES.put(catalog, tables);
 			}
 
@@ -603,7 +603,7 @@ public class JdbcTempletOrigin {
 				String str = MapEx.getString(map, "TABLE_NAME");
 				if (tables.contains(str))
 					continue;
-				tables.Add(str);
+				tables.add(str);
 				ret = ret || (str.equals(TABLENAME2));
 			}
 		} catch (Exception e) {

@@ -7,10 +7,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.bowlong.lang.NumEx;
 
@@ -254,32 +252,6 @@ public class NewList<E> extends ArrayList<E> {
 			return NewMap.create((Map) obj);
 
 		return new NewMap();
-	}
-
-	public Set getSet(int i) {
-		Object obj = get(i);
-		if (obj == null)
-			return new HashSet();
-
-		if (obj instanceof NewSet)
-			return (NewSet) obj;
-		else if (obj instanceof Set)
-			return (Set) obj;
-
-		return new HashSet();
-	}
-
-	public NewSet getNewSet(int i) {
-		Object obj = get(i);
-		if (obj == null)
-			return new NewSet();
-
-		if (obj instanceof NewSet)
-			return (NewSet) obj;
-		if (obj instanceof Map)
-			return NewSet.create((Set) obj);
-
-		return new NewSet();
 	}
 
 	public List getList(int i) {

@@ -167,6 +167,19 @@ public class CalendarEx extends ExOrigin {
 		c.add(Calendar.MILLISECOND, v);
 		return c;
 	}
+	
+	static final public Calendar setYearMonthDay(Calendar c,int year, int month, int day) {
+		c.set(year, month - 1, day);
+		return c;
+	}
+	
+	static final public Calendar setHourMinuteSec(Calendar c,int hour, int min, int sec) {
+		c.set(Calendar.HOUR_OF_DAY, hour);
+		c.set(Calendar.MINUTE, min);
+		c.set(Calendar.SECOND, sec);
+		c.set(Calendar.MILLISECOND, 0);
+		return c;
+	}
 
 	/*** 此时间内当月共有多少天 **/
 	static public final int dayNumInMonth(Calendar calendar,int year,int month) {

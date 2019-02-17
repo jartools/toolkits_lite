@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.sql.DataSource;
 
@@ -37,7 +38,6 @@ import com.bowlong.objpool.StringBufPool;
 import com.bowlong.text.Encoding;
 import com.bowlong.util.ListEx;
 import com.bowlong.util.MapEx;
-import com.bowlong.util.NewSet;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class SqlEx extends Toolkit {
@@ -986,7 +986,7 @@ public class SqlEx extends Toolkit {
 		try {
 			Set<String> tables = TABLES.get(db);
 			if (tables == null) {
-				tables = new NewSet<String>();
+				tables = new CopyOnWriteArraySet<String>();
 				TABLES.put(db, tables);
 			}
 			if (tables.contains(table))

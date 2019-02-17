@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings({ "serial", "rawtypes", "unchecked" })
@@ -134,14 +133,6 @@ public class NewMap<K, V> extends ConcurrentHashMap<K, V> {
 
 	public NewList getNewList(K key) {
 		return MapEx.getNewList(this, key);
-	}
-
-	public Set getNewSet(K key) {
-		return MapEx.getNewSet(this, key);
-	}
-
-	public Set getSet(K key) {
-		return MapEx.getSet(this, key);
 	}
 
 	public Object getKey() {

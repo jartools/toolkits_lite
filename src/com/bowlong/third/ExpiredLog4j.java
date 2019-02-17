@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.apache.commons.logging.Log;
 
 import com.bowlong.Toolkit;
-import com.bowlong.util.NewSet;
 
 //Log4j日志清理器
 public class ExpiredLog4j extends Toolkit implements Runnable {
@@ -35,7 +36,7 @@ public class ExpiredLog4j extends Toolkit implements Runnable {
 
 	private void removeExpiredLog4j() throws Exception {
 		File f = new File(path + "/");
-		NewSet<String> backupFiles = new NewSet<String>();
+		Set<String> backupFiles = new CopyOnWriteArraySet<String>();
 		backupFiles.add(path + "/log");
 		{
 			File[] fs = f.listFiles(new DayFilenameFilter("log", day));
