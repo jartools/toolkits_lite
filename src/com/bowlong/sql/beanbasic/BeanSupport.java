@@ -2,8 +2,6 @@ package com.bowlong.sql.beanbasic;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,10 +34,6 @@ public abstract class BeanSupport extends BeanBasic {
 
 	public static final Log getLog(Class<?> clazz) {
 		return LogFactory.getLog(clazz);
-	}
-
-	public <T> T handle(ResultSet rs) throws SQLException {
-		return createFor(rs);
 	}
 
 	private NewMap ex;
@@ -157,10 +151,6 @@ public abstract class BeanSupport extends BeanBasic {
 		} finally {
 			StringBufPool.returnObject(sb);
 		}
-	}
-
-	public <T> T createFor(ResultSet rs) throws SQLException {
-		return null;
 	}
 
 	public Map toBasicMap() {

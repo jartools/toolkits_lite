@@ -10,7 +10,7 @@ import javax.sql.RowSet;
 import javax.sql.rowset.CachedRowSet;
 
 import com.bowlong.sql.beanbasic.BeanSupport;
-import com.bowlong.sql.beanbasic.ResultSetHandler;
+import com.bowlong.sql.beanbasic.RsHandler;
 
 @SuppressWarnings("all")
 public class JdbcTemplet extends JdbcBasic {
@@ -47,11 +47,11 @@ public class JdbcTemplet extends JdbcBasic {
 	}
 
 	public final <T> T query(final String sql, final BeanSupport x, final Class c) throws Exception {
-		ResultSetHandler rsh = getRsh(c);
+		RsHandler rsh = getRsh(c);
 		return query(sql, x, rsh);
 	}
 
-	public <T> T query(final String sql, final BeanSupport x, final ResultSetHandler rsh) throws SQLException {
+	public <T> T query(final String sql, final BeanSupport x, final RsHandler rsh) throws SQLException {
 		return query(sql, x.toBasicMap(), rsh);
 	}
 
@@ -59,7 +59,7 @@ public class JdbcTemplet extends JdbcBasic {
 		return query(sql, x, getRsh(c));
 	}
 
-	public final <T> T queryForObject(final String sql, final BeanSupport x, final ResultSetHandler rsh)
+	public final <T> T queryForObject(final String sql, final BeanSupport x, final RsHandler rsh)
 			throws SQLException {
 		return query(sql, x.toBasicMap(), rsh);
 	}
@@ -76,7 +76,7 @@ public class JdbcTemplet extends JdbcBasic {
 		return queryForList(sql, x, getRsh(c));
 	}
 
-	public <T> List<T> queryForList(final String sql, final BeanSupport x, final ResultSetHandler rsh)
+	public <T> List<T> queryForList(final String sql, final BeanSupport x, final RsHandler rsh)
 			throws SQLException {
 		return queryForList(sql, x.toBasicMap(), rsh);
 	}

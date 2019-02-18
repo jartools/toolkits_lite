@@ -26,7 +26,7 @@ import org.apache.commons.logging.LogFactory;
 import com.bowlong.lang.StrEx;
 import com.bowlong.lang.task.MyThreadFactory;
 import com.bowlong.sql.SqlEx;
-import com.bowlong.sql.beanbasic.ResultSetHandler;
+import com.bowlong.sql.beanbasic.RsHandler;
 import com.bowlong.third.FastJSON;
 import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.ListEx;
@@ -187,7 +187,7 @@ public class JdbcOrigin {
 	// return query(sql, rsh);
 	// }
 
-	public final <T> T query(final String sql, final Map params, final ResultSetHandler rsh) throws SQLException {
+	public final <T> T query(final String sql, final Map params, final RsHandler rsh) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			T r2 = null;
@@ -207,12 +207,12 @@ public class JdbcOrigin {
 		}
 	}
 
-	public <T> T query(String sql, ResultSetHandler rsh) throws SQLException {
+	public <T> T query(String sql, RsHandler rsh) throws SQLException {
 		Map params = null;
 		return query(sql, params, rsh);
 	}
 
-	public final <T> T queryForObject(final String sql, final ResultSetHandler rsh) throws SQLException {
+	public final <T> T queryForObject(final String sql, final RsHandler rsh) throws SQLException {
 		return query(sql, rsh);
 	}
 
@@ -268,7 +268,7 @@ public class JdbcOrigin {
 		}
 	}
 
-	public final <T> List<T> queryForList(final String sql, final Map params, final ResultSetHandler rsh)
+	public final <T> List<T> queryForList(final String sql, final Map params, final RsHandler rsh)
 			throws SQLException {
 		Connection conn = conn_r();
 		try {
@@ -291,7 +291,7 @@ public class JdbcOrigin {
 		}
 	}
 
-	public <T> List<T> queryForList(final String sql, final ResultSetHandler rsh) throws SQLException {
+	public <T> List<T> queryForList(final String sql, final RsHandler rsh) throws SQLException {
 		Map params = null;
 		return queryForList(sql, params, rsh);
 	}

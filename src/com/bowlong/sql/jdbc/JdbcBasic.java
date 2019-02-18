@@ -12,19 +12,19 @@ import javax.sql.DataSource;
 import javax.sql.RowSet;
 import javax.sql.rowset.CachedRowSet;
 
-import com.bowlong.sql.beanbasic.ResultSetHandler;
+import com.bowlong.sql.beanbasic.RsHandler;
 import com.sun.rowset.CachedRowSetImpl;
 
 @SuppressWarnings("all")
 public class JdbcBasic extends JdbcOrigin {
 	// /////////////////////////
 	/*** 处理查询结果 **/
-	private static final Map<Class, ResultSetHandler> RSHCHCHE = newMap();
+	private static final Map<Class, RsHandler> RSHCHCHE = newMap();
 
-	static final ResultSetHandler getRsh(Class c) throws Exception {
-		ResultSetHandler rsh = RSHCHCHE.get(c);
+	static final RsHandler getRsh(Class c) throws Exception {
+		RsHandler rsh = RSHCHCHE.get(c);
 		if (rsh == null) {
-			rsh = (ResultSetHandler) c.newInstance();
+			rsh = (RsHandler) c.newInstance();
 			RSHCHCHE.put(c, rsh);
 		}
 
@@ -44,12 +44,12 @@ public class JdbcBasic extends JdbcOrigin {
 	}
 
 	public <T> T queryForObject(final String sql, final Class c) throws Exception {
-		ResultSetHandler rsh = getRsh(c);
+		RsHandler rsh = getRsh(c);
 		return queryForObject(sql, rsh);
 	}
 
 	public <T> List<T> queryForList(final String sql, final Class c) throws Exception {
-		ResultSetHandler rsh = getRsh(c);
+		RsHandler rsh = getRsh(c);
 		return queryForList(sql, rsh);
 	}
 
@@ -133,16 +133,16 @@ public class JdbcBasic extends JdbcOrigin {
 	}
 
 	public final <T> T query(final String sql, final Map params, final Class c) throws Exception {
-		ResultSetHandler rsh = getRsh(c);
+		RsHandler rsh = getRsh(c);
 		return query(sql, params, rsh);
 	}
 
 	public final <T> T queryForObject(final String sql, final Map params, final Class c) throws Exception {
-		ResultSetHandler rsh = getRsh(c);
+		RsHandler rsh = getRsh(c);
 		return queryForObject(sql, params, rsh);
 	}
 
-	public final <T> T queryForObject(final String sql, final Map params, final ResultSetHandler rsh)
+	public final <T> T queryForObject(final String sql, final Map params, final RsHandler rsh)
 			throws SQLException {
 		return query(sql, params, rsh);
 	}
@@ -206,7 +206,7 @@ public class JdbcBasic extends JdbcOrigin {
 	}
 
 	public final <T> List<T> queryForList(final String sql, final Map params, final Class c) throws Exception {
-		ResultSetHandler rsh = getRsh(c);
+		RsHandler rsh = getRsh(c);
 		return queryForList(sql, params, rsh);
 	}
 

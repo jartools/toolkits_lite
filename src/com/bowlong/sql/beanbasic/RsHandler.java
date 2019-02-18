@@ -7,6 +7,6 @@ import java.sql.SQLException;
  * @author Canyon
  *
  */
-public interface ResultSetHandler {
+public interface RsHandler {
     public <T> T handle(ResultSet rs) throws SQLException;
 }
