@@ -164,7 +164,7 @@ public class JdbcBasic extends JdbcOrigin {
 		return 0;
 	}
 
-	public int[] batchInsert4LMap(final String sql, final List<Map> list) throws SQLException {
+	public int[] batchInsert(final String sql, final List<Map> list) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			int[] r2 = new int[list.size()];
@@ -414,7 +414,7 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public int[] batchUpdate4LMap(final String sql, final List<Map> list) throws SQLException {
+	public int[] batchUpdate(final String sql, final List<Map> list) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			int r2[] = null;
