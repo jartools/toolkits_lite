@@ -13,6 +13,8 @@ import javax.sql.DataSource;
 import javax.sql.RowSet;
 import javax.sql.rowset.CachedRowSet;
 
+import com.bowlong.lang.StrEx;
+import com.bowlong.util.ListEx;
 import com.sun.rowset.CachedRowSetImpl;
 
 @SuppressWarnings("all")
@@ -63,35 +65,18 @@ public class JdbcBasic extends JdbcOrigin {
 
 		PrepareSQLResult result = new PrepareSQLResult();
 
-		List<String> keys = new Vector<String>();
-		// 没有缓存,则从头获取
 		String sql2 = sql;
-		int index = 0;
-		int times = 10000;
-		while (true) {
-			if (times-- <= 0)
-				break;
-
-			index++;
-			int p1 = sql2.indexOf(":");
-			if (p1 < 0)
-				break;
-			p1 = p1 + ":".length();
-			int p2 = sql2.indexOf(",", p1);
-			int p3 = sql2.indexOf(" ", p1);
-			int p4 = sql2.indexOf(")", p1);
-			int p5 = sql2.length();
-			if (p3 > 0)
-				p2 = (p2 >= 0 && p2 < p3) ? p2 : p3;
-			if (p4 > 0)
-				p2 = (p2 >= 0 && p2 < p4) ? p2 : p4;
-			if (p5 > 0)
-				p2 = (p2 >= 0 && p2 < p5) ? p2 : p5;
-
-			String key = sql2.substring(p1, p2).trim();
-			String okey = String.format(":%s", key);
-			sql2 = sql2.replaceFirst(okey, "?");
-			keys.add(key);
+		String sqlKey = StrEx.left(sql, ")");
+		sqlKey = StrEx.right(sqlKey, "(");
+		List<String> keys = ListEx.toListByComma(sqlKey, true);
+		// 没有缓存,则从头获取
+		if (!ListEx.isEmpty(keys) && sql2.indexOf(":") != -1) {
+			int lens = keys.size();
+			String key = "";
+			for (int i = 0; i < lens; i++) {
+				key = String.format(":%s", keys.get(i));
+				sql2 = sql2.replaceFirst(key, "?");
+			}
 		}
 
 		result.setSql(sql2);
