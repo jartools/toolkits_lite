@@ -26,6 +26,7 @@ import org.apache.commons.logging.LogFactory;
 import com.bowlong.lang.StrEx;
 import com.bowlong.lang.task.MyThreadFactory;
 import com.bowlong.sql.SqlEx;
+import com.bowlong.sql.beanbasic.ResultSetHandler;
 import com.bowlong.third.FastJSON;
 import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.ListEx;
@@ -157,10 +158,12 @@ public class JdbcOrigin {
 		}
 	}
 
-	public CachedRowSet query(final String sql) throws SQLException {
+	public final CachedRowSet query(final String sql, final Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			PrepareSQLResult sr = prepareKeys(sql);
+			PreparedStatement stmt = conn.prepareStatement(sr.sql);
+			prepareMap(stmt, sr.keys, params);
 			ResultSet rs = stmt.executeQuery();
 			CachedRowSet crs = new CachedRowSetImpl();
 			crs.populate(rs);
@@ -168,10 +171,15 @@ public class JdbcOrigin {
 			stmt.close();
 			return crs;
 		} catch (SQLException e) {
-			throw rethrow(e, sql);
+			throw rethrow(e, sql, params);
 		} finally {
 			close(conn);
 		}
+	}
+
+	public CachedRowSet query(final String sql) throws SQLException {
+		Map params = null;
+		return query(sql, params);
 	}
 
 	// private <T> T query(String sql, Class c) throws Exception {
@@ -179,11 +187,13 @@ public class JdbcOrigin {
 	// return query(sql, rsh);
 	// }
 
-	public <T> T query(final String sql, final ResultSetHandler rsh) throws SQLException {
+	public final <T> T query(final String sql, final Map params, final ResultSetHandler rsh) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			T r2 = null;
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			PrepareSQLResult sr = prepareKeys(sql);
+			PreparedStatement stmt = conn.prepareStatement(sr.sql);
+			prepareMap(stmt, sr.keys, params);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next())
 				r2 = (T) rsh.handle(rs);
@@ -191,10 +201,15 @@ public class JdbcOrigin {
 			stmt.close();
 			return r2;
 		} catch (SQLException e) {
-			throw rethrow(e, sql);
+			throw rethrow(e, sql, params);
 		} finally {
 			close(conn);
 		}
+	}
+
+	public <T> T query(String sql, ResultSetHandler rsh) throws SQLException {
+		Map params = null;
+		return query(sql, params, rsh);
 	}
 
 	public final <T> T queryForObject(final String sql, final ResultSetHandler rsh) throws SQLException {
@@ -253,10 +268,13 @@ public class JdbcOrigin {
 		}
 	}
 
-	public <T> List<T> queryForList(final String sql, final ResultSetHandler rsh) throws SQLException {
+	public final <T> List<T> queryForList(final String sql, final Map params, final ResultSetHandler rsh)
+			throws SQLException {
 		Connection conn = conn_r();
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			PrepareSQLResult sr = prepareKeys(sql);
+			PreparedStatement stmt = conn.prepareStatement(sr.sql);
+			prepareMap(stmt, sr.keys, params);
 			ResultSet rs = stmt.executeQuery();
 			List<T> result = newList();
 			while (rs.next()) {
@@ -267,10 +285,15 @@ public class JdbcOrigin {
 			stmt.close();
 			return result;
 		} catch (SQLException e) {
-			throw rethrow(e, sql);
+			throw rethrow(e, sql, params);
 		} finally {
 			close(conn);
 		}
+	}
+
+	public <T> List<T> queryForList(final String sql, final ResultSetHandler rsh) throws SQLException {
+		Map params = null;
+		return queryForList(sql, params, rsh);
 	}
 
 	public long queryForLong(final String sql) throws SQLException {
@@ -417,8 +440,44 @@ public class JdbcOrigin {
 		}
 	}
 
-	private static final PreparedStatement prepareMap(final PreparedStatement stmt, final List<String> keys,
-			final Map m) throws SQLException {
+	/*** 缓存查询过后的字段 **/
+	private static final Map<String, PrepareSQLResult> SQLCHCHE = newMap();
+
+	static final public PrepareSQLResult prepareKeys(final String sql) {
+		if (SQLCHCHE.containsKey(sql)) {
+			// 从缓存中读取
+			return SQLCHCHE.get(sql);
+		}
+
+		PrepareSQLResult result = new PrepareSQLResult();
+
+		String sql2 = sql;
+		String sqlKey = StrEx.left(sql, ")");
+		sqlKey = StrEx.right(sqlKey, "(");
+		List<String> keys = ListEx.toListByComma(sqlKey, true);
+		// 没有缓存,则从头获取
+		if (!ListEx.isEmpty(keys) && sql2.indexOf(":") != -1) {
+			int lens = keys.size();
+			String key = "";
+			for (int i = 0; i < lens; i++) {
+				key = String.format(":%s", keys.get(i));
+				sql2 = sql2.replaceFirst(key, "?");
+			}
+		}
+
+		result.setSql(sql2);
+		result.setKeys(keys);
+
+		// 写入缓存
+		SQLCHCHE.put(sql, result);
+
+		return result;
+	}
+
+	static final public PreparedStatement prepareMap(PreparedStatement stmt, List<String> keys, Map m)
+			throws SQLException {
+		if (ListEx.isEmpty(keys) || MapEx.isEmpty(m))
+			return stmt;
 		int index = 0;
 		for (String key : keys) {
 			index++;

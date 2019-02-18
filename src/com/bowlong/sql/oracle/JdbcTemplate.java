@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import com.bowlong.sql.jdbc.BeanSupport;
+import com.bowlong.sql.beanbasic.BeanSupport;
 import com.bowlong.sql.jdbc.PrepareSQLResult;
 
 @SuppressWarnings("all")

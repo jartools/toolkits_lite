@@ -1,4 +1,4 @@
-package com.bowlong.sql.jdbc;
+package com.bowlong.sql.beanbasic;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

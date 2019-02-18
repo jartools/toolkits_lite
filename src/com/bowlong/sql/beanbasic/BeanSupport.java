@@ -1,8 +1,7 @@
-package com.bowlong.sql.jdbc;
+package com.bowlong.sql.beanbasic;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,12 +25,12 @@ import com.bowlong.lang.PStr;
 import com.bowlong.objpool.ByteOutPool;
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.pinyin.PinYin;
+import com.bowlong.sql.jdbc.Runner;
 import com.bowlong.util.MapEx;
 import com.bowlong.util.NewMap;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public abstract class BeanSupport implements ResultSetHandler, Cloneable,
-		Serializable {
+public abstract class BeanSupport extends BeanBasic {
 
 	private static final long serialVersionUID = 1L;
 
@@ -169,8 +168,6 @@ public abstract class BeanSupport implements ResultSetHandler, Cloneable,
 	}
 
 	public abstract <T> T vZh(String fieldZh);
-
-	public abstract Map toMap();
 
 	public abstract Map toOriginalMap();
 
@@ -349,8 +346,7 @@ public abstract class BeanSupport implements ResultSetHandler, Cloneable,
 		B2OutputStream.writeMapTag(out, len);
 	}
 
-	public static final void writeMapEntry(OutputStream out, Object key,
-			Object var) throws Exception {
+	public static final void writeMapEntry(OutputStream out, Object key, Object var) throws Exception {
 		if (out == null || key == null)
 			return;
 		B2OutputStream.writeMapEntry(out, key, var);

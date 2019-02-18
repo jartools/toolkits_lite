@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import com.bowlong.objpool.StringBufPool;
+import com.bowlong.sql.beanbasic.BeanSupport;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class DataSet extends JdbcTemplet {

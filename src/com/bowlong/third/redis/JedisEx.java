@@ -15,7 +15,7 @@ import com.bowlong.Toolkit;
 import com.bowlong.bio2.B2Helper;
 import com.bowlong.json.MyJson;
 import com.bowlong.lang.task.ThreadEx;
-import com.bowlong.sql.jdbc.BeanSupport;
+import com.bowlong.sql.beanbasic.BeanSupport;
 import com.bowlong.util.NewMap;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })

@@ -10,7 +10,7 @@ import redis.clients.jedis.Pipeline;
 
 import com.bowlong.Toolkit;
 import com.bowlong.lang.StrEx;
-import com.bowlong.sql.jdbc.BeanSupport;
+import com.bowlong.sql.beanbasic.BeanSupport;
 import com.bowlong.util.MapEx;
 
 /**

@@ -7,21 +7,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.sql.DataSource;
 import javax.sql.RowSet;
 import javax.sql.rowset.CachedRowSet;
 
-import com.bowlong.lang.StrEx;
-import com.bowlong.util.ListEx;
+import com.bowlong.sql.beanbasic.ResultSetHandler;
 import com.sun.rowset.CachedRowSetImpl;
 
 @SuppressWarnings("all")
 public class JdbcBasic extends JdbcOrigin {
 	// /////////////////////////
-	/*** 缓存查询过后的字段 **/
-	private static final Map<String, PrepareSQLResult> SQLCHCHE = newMap();
 	/*** 处理查询结果 **/
 	private static final Map<Class, ResultSetHandler> RSHCHCHE = newMap();
 
@@ -55,48 +51,6 @@ public class JdbcBasic extends JdbcOrigin {
 	public <T> List<T> queryForList(final String sql, final Class c) throws Exception {
 		ResultSetHandler rsh = getRsh(c);
 		return queryForList(sql, rsh);
-	}
-
-	static public final PrepareSQLResult prepareKeys(final String sql) {
-		if (SQLCHCHE.containsKey(sql)) {
-			// 从缓存中读取
-			return SQLCHCHE.get(sql);
-		}
-
-		PrepareSQLResult result = new PrepareSQLResult();
-
-		String sql2 = sql;
-		String sqlKey = StrEx.left(sql, ")");
-		sqlKey = StrEx.right(sqlKey, "(");
-		List<String> keys = ListEx.toListByComma(sqlKey, true);
-		// 没有缓存,则从头获取
-		if (!ListEx.isEmpty(keys) && sql2.indexOf(":") != -1) {
-			int lens = keys.size();
-			String key = "";
-			for (int i = 0; i < lens; i++) {
-				key = String.format(":%s", keys.get(i));
-				sql2 = sql2.replaceFirst(key, "?");
-			}
-		}
-
-		result.setSql(sql2);
-		result.setKeys(keys);
-
-		// 写入缓存
-		SQLCHCHE.put(sql, result);
-
-		return result;
-	}
-
-	static public final PreparedStatement prepareMap(final PreparedStatement stmt, final List<String> keys, final Map m)
-			throws SQLException {
-		int index = 0;
-		for (String key : keys) {
-			index++;
-			Object var = m.get(key);
-			stmt.setObject(index, var);
-		}
-		return stmt;
 	}
 
 	// /////////////////////////
@@ -178,48 +132,9 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public CachedRowSet query(final String sql, final Map params) throws SQLException {
-		Connection conn = conn_r();
-		try {
-			PrepareSQLResult sr = prepareKeys(sql);
-			PreparedStatement stmt = conn.prepareStatement(sr.sql);
-			prepareMap(stmt, sr.keys, params);
-			ResultSet rs = stmt.executeQuery();
-			CachedRowSet crs = new CachedRowSetImpl();
-			crs.populate(rs);
-			rs.close();
-			stmt.close();
-			return crs;
-		} catch (SQLException e) {
-			throw rethrow(e, sql, params);
-		} finally {
-			close(conn);
-		}
-	}
-
 	public final <T> T query(final String sql, final Map params, final Class c) throws Exception {
 		ResultSetHandler rsh = getRsh(c);
 		return query(sql, params, rsh);
-	}
-
-	public <T> T query(final String sql, final Map params, final ResultSetHandler rsh) throws SQLException {
-		Connection conn = conn_r();
-		try {
-			T r2 = null;
-			PrepareSQLResult sr = prepareKeys(sql);
-			PreparedStatement stmt = conn.prepareStatement(sr.sql);
-			prepareMap(stmt, sr.keys, params);
-			ResultSet rs = stmt.executeQuery();
-			if (rs.next())
-				r2 = (T) rsh.handle(rs);
-			rs.close();
-			stmt.close();
-			return r2;
-		} catch (SQLException e) {
-			throw rethrow(e, sql, params);
-		} finally {
-			close(conn);
-		}
 	}
 
 	public final <T> T queryForObject(final String sql, final Map params, final Class c) throws Exception {
@@ -293,29 +208,6 @@ public class JdbcBasic extends JdbcOrigin {
 	public final <T> List<T> queryForList(final String sql, final Map params, final Class c) throws Exception {
 		ResultSetHandler rsh = getRsh(c);
 		return queryForList(sql, params, rsh);
-	}
-
-	public <T> List<T> queryForList(final String sql, final Map params, final ResultSetHandler rsh)
-			throws SQLException {
-		Connection conn = conn_r();
-		try {
-			PrepareSQLResult sr = prepareKeys(sql);
-			PreparedStatement stmt = conn.prepareStatement(sr.sql);
-			prepareMap(stmt, sr.keys, params);
-			ResultSet rs = stmt.executeQuery();
-			List<T> result = newList();
-			while (rs.next()) {
-				T v = (T) rsh.handle(rs);
-				result.add(v);
-			}
-			rs.close();
-			stmt.close();
-			return result;
-		} catch (SQLException e) {
-			throw rethrow(e, sql, params);
-		} finally {
-			close(conn);
-		}
 	}
 
 	public long queryForLong(final String sql, final Map params) throws SQLException {

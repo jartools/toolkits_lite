@@ -9,6 +9,9 @@ import javax.sql.DataSource;
 import javax.sql.RowSet;
 import javax.sql.rowset.CachedRowSet;
 
+import com.bowlong.sql.beanbasic.BeanSupport;
+import com.bowlong.sql.beanbasic.ResultSetHandler;
+
 @SuppressWarnings("all")
 public class JdbcTemplet extends JdbcBasic {
 	public JdbcTemplet(final Connection conn) {
