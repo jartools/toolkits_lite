@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Ex扩展类的起源<br/>
@@ -129,9 +130,13 @@ public class EOBasic {
 	static final public <K, V> Map<K, V> newMap2() {
 		return Collections.synchronizedMap(new HashMap<K, V>());
 	}
-	
+
 	static final public <K, V> Map<K, V> newMap3() {
 		return new Hashtable<K, V>();// 线程安全的 等价于 newMap2
+	}
+
+	static final public <K, V> Map<K, V> newMapKV() {
+		return new HashMap<K, V>();
 	}
 
 	static final public void clear(Map map) {
@@ -151,11 +156,15 @@ public class EOBasic {
 	}
 
 	static public final <T> List<T> newList() {
-		return Collections.synchronizedList(new ArrayList<T>());
+		return new CopyOnWriteArrayList<T>(); // 线程性能 : get > add
+	}
+
+	static public final <T> List<T> newList2() {
+		return Collections.synchronizedList(new ArrayList<T>()); // add > get
 	}
 
 	public static final <T> List<T> newListT() {
-		return newList();
+		return new ArrayList<T>();
 	}
 
 	static public final void clear(List ls) {
