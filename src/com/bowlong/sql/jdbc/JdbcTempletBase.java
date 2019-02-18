@@ -45,14 +45,12 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		super(ds_r, ds_w);
 	}
 
-	public <T> T queryForObject(final String sql, final Class c)
-			throws Exception {
+	public <T> T queryForObject(final String sql, final Class c) throws Exception {
 		ResultSetHandler rsh = getRsh(c);
 		return queryForObject(sql, rsh);
 	}
 
-	public <T> List<T> queryForList(final String sql, final Class c)
-			throws Exception {
+	public <T> List<T> queryForList(final String sql, final Class c) throws Exception {
 		ResultSetHandler rsh = getRsh(c);
 		return queryForList(sql, rsh);
 	}
@@ -105,8 +103,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		return result;
 	}
 
-	static public final PreparedStatement prepareMap(
-			final PreparedStatement stmt, final List<String> keys, final Map m)
+	static public final PreparedStatement prepareMap(final PreparedStatement stmt, final List<String> keys, final Map m)
 			throws SQLException {
 		int index = 0;
 		for (String key : keys) {
@@ -136,10 +133,9 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 	public Map insert(final String sql, final Map params) throws SQLException {
 		Connection conn = conn_w();
 		try {
-			Map r2 = null;
+			Map<String, Object> r2 = null;
 			PrepareSQLResult sr = prepareKeys(sql);
-			PreparedStatement stmt = conn.prepareStatement(sr.sql,
-					PreparedStatement.RETURN_GENERATED_KEYS);
+			PreparedStatement stmt = conn.prepareStatement(sr.sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			prepareMap(stmt, sr.keys, params);
 			int r = stmt.executeUpdate();
 			if (r < 0)
@@ -159,39 +155,22 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 	}
 
 	public int insert2(final String sql, final Map params) throws SQLException {
-		Connection conn = conn_w();
-		try {
-			int r2 = 0;
-			PrepareSQLResult sr = prepareKeys(sql);
-			PreparedStatement stmt = conn.prepareStatement(sr.sql,
-					PreparedStatement.RETURN_GENERATED_KEYS);
-			prepareMap(stmt, sr.keys, params);
-			int r = stmt.executeUpdate();
-			if (r < 0)
-				throw new SQLException(" r = 0");
-
-			ResultSet rs = stmt.getGeneratedKeys();
-			if (rs.next())
-				r2 = rs.getInt(1);
-			rs.close();
-			stmt.close();
-			return r2;
-		} catch (SQLException e) {
-			throw rethrow(e, sql, params);
-		} finally {
-			close(conn);
+		Map<String, Object> map = insert(sql, params);
+		if (map != null && !map.isEmpty()) {
+			for (Object val : map.values()) {
+				return (int) val;
+			}
 		}
+		return 0;
 	}
 
-	public int[] batchInsert4LMap(final String sql, final List<Map> list)
-			throws SQLException {
+	public int[] batchInsert4LMap(final String sql, final List<Map> list) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			int[] r2 = new int[list.size()];
 			PrepareSQLResult sr = prepareKeys(sql);
 			// PreparedStatement stmt = conn.prepareStatement(sr.sql);
-			PreparedStatement stmt = conn.prepareStatement(sr.sql,
-					PreparedStatement.RETURN_GENERATED_KEYS);
+			PreparedStatement stmt = conn.prepareStatement(sr.sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
 			for (Map map : list) {
 				prepareMap(stmt, sr.keys, map);
@@ -214,8 +193,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public CachedRowSet query(final String sql, final Map params)
-			throws SQLException {
+	public CachedRowSet query(final String sql, final Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			PrepareSQLResult sr = prepareKeys(sql);
@@ -234,14 +212,12 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public final <T> T query(final String sql, final Map params, final Class c)
-			throws Exception {
+	public final <T> T query(final String sql, final Map params, final Class c) throws Exception {
 		ResultSetHandler rsh = getRsh(c);
 		return query(sql, params, rsh);
 	}
 
-	public <T> T query(final String sql, final Map params,
-			final ResultSetHandler rsh) throws SQLException {
+	public <T> T query(final String sql, final Map params, final ResultSetHandler rsh) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			T r2 = null;
@@ -261,19 +237,17 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public final <T> T queryForObject(final String sql, final Map params,
-			final Class c) throws Exception {
+	public final <T> T queryForObject(final String sql, final Map params, final Class c) throws Exception {
 		ResultSetHandler rsh = getRsh(c);
 		return queryForObject(sql, params, rsh);
 	}
 
-	public final <T> T queryForObject(final String sql, final Map params,
-			final ResultSetHandler rsh) throws SQLException {
+	public final <T> T queryForObject(final String sql, final Map params, final ResultSetHandler rsh)
+			throws SQLException {
 		return query(sql, params, rsh);
 	}
 
-	public Map queryForMap(final String sql, final Map params)
-			throws SQLException {
+	public Map queryForMap(final String sql, final Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			Map r2 = null;
@@ -293,8 +267,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public List<Map> queryForList(final String sql, final Map params)
-			throws SQLException {
+	public List<Map> queryForList(final String sql, final Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			List<Map> r2 = null;
@@ -313,8 +286,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public <T> List<T> queryForKeys(final String sql, final Map params)
-			throws SQLException {
+	public <T> List<T> queryForKeys(final String sql, final Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			List<T> r2 = null;
@@ -333,14 +305,13 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public final <T> List<T> queryForList(final String sql, final Map params,
-			final Class c) throws Exception {
+	public final <T> List<T> queryForList(final String sql, final Map params, final Class c) throws Exception {
 		ResultSetHandler rsh = getRsh(c);
 		return queryForList(sql, params, rsh);
 	}
 
-	public <T> List<T> queryForList(final String sql, final Map params,
-			final ResultSetHandler rsh) throws SQLException {
+	public <T> List<T> queryForList(final String sql, final Map params, final ResultSetHandler rsh)
+			throws SQLException {
 		Connection conn = conn_r();
 		try {
 			PrepareSQLResult sr = prepareKeys(sql);
@@ -362,8 +333,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public long queryForLong(final String sql, final Map params)
-			throws SQLException {
+	public long queryForLong(final String sql, final Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			long r2 = 0;
@@ -383,8 +353,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public int queryForInt(final String sql, final Map params)
-			throws SQLException {
+	public int queryForInt(final String sql, final Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			int r2 = 0;
@@ -404,8 +373,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public double queryForDouble(final String sql, final Map params)
-			throws SQLException {
+	public double queryForDouble(final String sql, final Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			double r2 = 0;
@@ -425,8 +393,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public final RowSet queryForRowSet(final String sql, final Map params)
-			throws SQLException {
+	public final RowSet queryForRowSet(final String sql, final Map params) throws SQLException {
 		return query(sql, params);
 	}
 
@@ -447,8 +414,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public int[] batchUpdate4LMap(final String sql, final List<Map> list)
-			throws SQLException {
+	public int[] batchUpdate4LMap(final String sql, final List<Map> list) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			int r2[] = null;
@@ -483,8 +449,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public List<Map> queryByCall(final String sql, final Map params)
-			throws SQLException {
+	public List<Map> queryByCall(final String sql, final Map params) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			List<Map> r2 = null;
@@ -504,8 +469,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 	}
 
 	// /////////////////////////
-	public void execute(final String sql, final BeanSupport x)
-			throws SQLException {
+	public void execute(final String sql, final BeanSupport x) throws SQLException {
 		Connection conn = conn_w();
 		Map params = null;
 		try {
@@ -522,44 +486,14 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public Map insert(final String sql, final BeanSupport x)
-			throws SQLException {
-		Connection conn = conn_w();
-		Map r2 = null;
-		Map params = null;
-		try {
-			params = x.toBasicMap();
-			PrepareSQLResult sr = prepareKeys(sql);
-			PreparedStatement stmt = conn.prepareStatement(sr.sql,
-					PreparedStatement.RETURN_GENERATED_KEYS);
-			prepareMap(stmt, sr.keys, params);
-			int r = stmt.executeUpdate();
-			if (r < 0)
-				throw new SQLException(" r = 0");
-
-			ResultSet rs = stmt.getGeneratedKeys();
-			if (rs.next())
-				r2 = toMap(rs);
-			rs.close();
-			stmt.close();
-			return r2;
-		} catch (SQLException e) {
-			throw rethrow(e, sql, params);
-		} finally {
-			close(conn);
-		}
-	}
-
-	public int insert2(final String sql, final BeanSupport x)
-			throws SQLException {
+	public int insert(final String sql, final BeanSupport x) throws SQLException {
 		Connection conn = conn_w();
 		Map params = null;
 		try {
 			int r2 = 0;
 			params = x.toBasicMap();
 			PrepareSQLResult sr = prepareKeys(sql);
-			PreparedStatement stmt = conn.prepareStatement(sr.sql,
-					PreparedStatement.RETURN_GENERATED_KEYS);
+			PreparedStatement stmt = conn.prepareStatement(sr.sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			prepareMap(stmt, sr.keys, params);
 			int r = stmt.executeUpdate();
 			if (r < 0)
@@ -578,15 +512,13 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public int[] batchInsert4LBean(final String sql, final List<BeanSupport> list)
-			throws SQLException {
+	public int[] batchInsert4LBean(final String sql, final List<BeanSupport> list) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			int[] r2 = new int[list.size()];
 			PrepareSQLResult sr = prepareKeys(sql);
 			// PreparedStatement stmt = conn.prepareStatement(sr.sql);
-			PreparedStatement stmt = conn.prepareStatement(sr.sql,
-					PreparedStatement.RETURN_GENERATED_KEYS);
+			PreparedStatement stmt = conn.prepareStatement(sr.sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
 			for (BeanSupport x : list) {
 				Map params = x.toBasicMap();
@@ -608,8 +540,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public CachedRowSet query(final String sql, final BeanSupport x)
-			throws SQLException {
+	public CachedRowSet query(final String sql, final BeanSupport x) throws SQLException {
 		Map params = null;
 		try {
 			params = x.toBasicMap();
@@ -619,14 +550,12 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public final <T> T query(final String sql, final BeanSupport x,
-			final Class c) throws Exception {
+	public final <T> T query(final String sql, final BeanSupport x, final Class c) throws Exception {
 		ResultSetHandler rsh = getRsh(c);
 		return query(sql, x, rsh);
 	}
 
-	public <T> T query(final String sql, final BeanSupport x,
-			final ResultSetHandler rsh) throws SQLException {
+	public <T> T query(final String sql, final BeanSupport x, final ResultSetHandler rsh) throws SQLException {
 		Map params = null;
 		try {
 			params = x.toBasicMap();
@@ -636,20 +565,18 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public final <T> T queryForObject(final String sql, final BeanSupport x,
-			final Class c) throws Exception {
+	public final <T> T queryForObject(final String sql, final BeanSupport x, final Class c) throws Exception {
 		ResultSetHandler rsh = getRsh(c);
 		return query(sql, x, rsh);
 	}
 
-	public final <T> T queryForObject(final String sql, final BeanSupport x,
-			final ResultSetHandler rsh) throws SQLException {
+	public final <T> T queryForObject(final String sql, final BeanSupport x, final ResultSetHandler rsh)
+			throws SQLException {
 		Map params = x.toBasicMap();
 		return query(sql, params, rsh);
 	}
 
-	public Map queryForMap(final String sql, final BeanSupport x)
-			throws SQLException {
+	public Map queryForMap(final String sql, final BeanSupport x) throws SQLException {
 		Map params = null;
 		try {
 			params = x.toBasicMap();
@@ -659,8 +586,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public List<Map> queryForList(final String sql, final BeanSupport x)
-			throws SQLException {
+	public List<Map> queryForList(final String sql, final BeanSupport x) throws SQLException {
 		Map params = null;
 		try {
 			params = x.toBasicMap();
@@ -670,14 +596,13 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public final <T> List<T> queryForList(final String sql,
-			final BeanSupport x, final Class c) throws Exception {
+	public final <T> List<T> queryForList(final String sql, final BeanSupport x, final Class c) throws Exception {
 		ResultSetHandler rsh = getRsh(c);
 		return queryForList(sql, x, rsh);
 	}
 
-	public <T> List<T> queryForList(final String sql, final BeanSupport x,
-			final ResultSetHandler rsh) throws SQLException {
+	public <T> List<T> queryForList(final String sql, final BeanSupport x, final ResultSetHandler rsh)
+			throws SQLException {
 		Map params = null;
 		try {
 			params = x.toBasicMap();
@@ -687,8 +612,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public long queryForLong(final String sql, final BeanSupport x)
-			throws SQLException {
+	public long queryForLong(final String sql, final BeanSupport x) throws SQLException {
 		Map params = null;
 		try {
 			params = x.toBasicMap();
@@ -698,8 +622,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public int queryForInt(final String sql, final BeanSupport x)
-			throws SQLException {
+	public int queryForInt(final String sql, final BeanSupport x) throws SQLException {
 		Map params = null;
 		try {
 			params = x.toBasicMap();
@@ -709,8 +632,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public double queryForDouble(final String sql, final BeanSupport x)
-			throws SQLException {
+	public double queryForDouble(final String sql, final BeanSupport x) throws SQLException {
 		Map params = null;
 		try {
 			params = x.toBasicMap();
@@ -720,14 +642,12 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public final RowSet queryForRowSet(final String sql, final BeanSupport x)
-			throws SQLException {
+	public final RowSet queryForRowSet(final String sql, final BeanSupport x) throws SQLException {
 		Map params = x.toBasicMap();
 		return query(sql, params);
 	}
 
-	public int update(final String sql, final BeanSupport x)
-			throws SQLException {
+	public int update(final String sql, final BeanSupport x) throws SQLException {
 		Connection conn = conn_w();
 		Map params = null;
 		try {
@@ -746,8 +666,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public int[] batchUpdate4LBean(final String sql, final List<BeanSupport> list)
-			throws SQLException {
+	public int[] batchUpdate4LBean(final String sql, final List<BeanSupport> list) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			int r2[] = null;
@@ -785,8 +704,7 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		}
 	}
 
-	public List<Map> queryBycall(final String sql, final BeanSupport x)
-			throws SQLException {
+	public List<Map> queryBycall(final String sql, final BeanSupport x) throws SQLException {
 		Connection conn = conn_w();
 		Map params = null;
 		try {
@@ -805,9 +723,5 @@ public class JdbcTempletBase extends JdbcTempletOrigin {
 		} finally {
 			close(conn);
 		}
-	}
-
-	public static void main(String[] args) throws Exception {
-
 	}
 }

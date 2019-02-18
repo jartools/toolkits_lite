@@ -179,8 +179,7 @@ public class JdbcTempletOrigin {
 	// return query(sql, rsh);
 	// }
 
-	public <T> T query(final String sql, final ResultSetHandler rsh)
-			throws SQLException {
+	public <T> T query(final String sql, final ResultSetHandler rsh) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			T r2 = null;
@@ -198,8 +197,7 @@ public class JdbcTempletOrigin {
 		}
 	}
 
-	public final <T> T queryForObject(final String sql,
-			final ResultSetHandler rsh) throws SQLException {
+	public final <T> T queryForObject(final String sql, final ResultSetHandler rsh) throws SQLException {
 		return query(sql, rsh);
 	}
 
@@ -255,8 +253,7 @@ public class JdbcTempletOrigin {
 		}
 	}
 
-	public <T> List<T> queryForList(final String sql, final ResultSetHandler rsh)
-			throws SQLException {
+	public <T> List<T> queryForList(final String sql, final ResultSetHandler rsh) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -312,7 +309,7 @@ public class JdbcTempletOrigin {
 			close(conn);
 		}
 	}
-	
+
 	public double queryForDouble(final String sql) throws SQLException {
 		Connection conn = conn_r();
 		try {
@@ -382,9 +379,8 @@ public class JdbcTempletOrigin {
 	 * ps.execute() ; <br/>
 	 * insertResult = ps.getInt(4); <br/>
 	 * 返回结果参数的过程的语法:{? = call 过程名[(?, ?, ...)]}
-	 * **/
-	public void call(final String sql, final Object... params)
-			throws SQLException {
+	 **/
+	public void call(final String sql, final Object... params) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			CallableStatement stmt = conn.prepareCall(sql);
@@ -421,9 +417,8 @@ public class JdbcTempletOrigin {
 		}
 	}
 
-	private static final PreparedStatement prepareMap(
-			final PreparedStatement stmt, final List<String> keys, final Map m)
-			throws SQLException {
+	private static final PreparedStatement prepareMap(final PreparedStatement stmt, final List<String> keys,
+			final Map m) throws SQLException {
 		int index = 0;
 		for (String key : keys) {
 			index++;
@@ -441,14 +436,12 @@ public class JdbcTempletOrigin {
 		return e2s(e, String.valueOf(obj), new Object[0]);
 	}
 
-	public static String e2s(final Throwable e, final String fmt,
-			final Object... args) {
+	public static String e2s(final Throwable e, final String fmt, final Object... args) {
 		return ExceptionEx.e2s(e, fmt, args);
 	}
 
 	// ///////////////////////////////////////////////////
-	public static final List<Map> toMaps(final ResultSet rs)
-			throws SQLException {
+	public static final List<Map> toMaps(final ResultSet rs) throws SQLException {
 		List<Map> result = new Vector();
 		while (rs.next()) {
 			Map m = toMap(rs);
@@ -457,8 +450,7 @@ public class JdbcTempletOrigin {
 		return result;
 	}
 
-	public static final <T> List<T> toKeys(final ResultSet rs)
-			throws SQLException {
+	public static final <T> List<T> toKeys(final ResultSet rs) throws SQLException {
 		List<T> result = new Vector();
 		while (rs.next()) {
 			Object o = rs.getObject(1);
@@ -467,8 +459,8 @@ public class JdbcTempletOrigin {
 		return result;
 	}
 
-	public static final Map toMap(final ResultSet rs) throws SQLException {
-		Map result = newMap();
+	public static final Map<String, Object> toMap(final ResultSet rs) throws SQLException {
+		Map<String, Object> result = newMap();
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int cols = rsmd.getColumnCount();
 		for (int i = 1; i <= cols; i++)
@@ -481,8 +473,7 @@ public class JdbcTempletOrigin {
 		return ListEx.pageCount(count, pageSize);
 	}
 
-	public static final List getPage(final List v, final int page,
-			final int pageSize) {
+	public static final List getPage(final List v, final int page, final int pageSize) {
 		return ListEx.getPage(v, page, pageSize);
 	}
 
@@ -545,9 +536,7 @@ public class JdbcTempletOrigin {
 
 	protected synchronized ScheduledExecutorService executor(final String name) {
 		if (_single_executor == null)
-			_single_executor = Executors
-					.newSingleThreadScheduledExecutor(new MyThreadFactory(name,
-							false));
+			_single_executor = Executors.newSingleThreadScheduledExecutor(new MyThreadFactory(name, false));
 		return _single_executor;
 	}
 
@@ -615,29 +604,7 @@ public class JdbcTempletOrigin {
 		return ret;
 	}
 
-	protected SQLException rethrow(SQLException cause, String sql)
-			throws SQLException {
-
-		String causeMessage = cause.getMessage();
-		if (causeMessage == null) {
-			causeMessage = "";
-		}
-		StringBuffer msg = new StringBuffer(causeMessage);
-		msg.append("\r\n");
-		msg.append(" Query: ");
-		msg.append("\r\n");
-		msg.append(sql);
-		msg.append("\r\n");
-
-		SQLException e = new SQLException(msg.toString(), cause.getSQLState(),
-				cause.getErrorCode());
-		e.setNextException(cause);
-
-		return e;
-	}
-
-	public static SQLException rethrow(SQLException cause, String sql,
-			Object... params) {
+	public static SQLException rethrow(SQLException cause, String sql, Object... params) {
 
 		String causeMessage = cause.getMessage();
 		if (causeMessage == null) {
@@ -657,70 +624,34 @@ public class JdbcTempletOrigin {
 			msg.append(Arrays.deepToString(params));
 		}
 		msg.append("\r\n");
-		SQLException e = new SQLException(msg.toString(), cause.getSQLState(),
-				cause.getErrorCode());
+		SQLException e = new SQLException(msg.toString(), cause.getSQLState(), cause.getErrorCode());
 		e.setNextException(cause);
 
 		return e;
 	}
 
-	protected SQLException rethrow(SQLException cause, String sql, Map params)
-			throws SQLException {
-
-		String causeMessage = cause.getMessage();
-		if (causeMessage == null) {
-			causeMessage = "";
-		}
-		StringBuffer msg = new StringBuffer(causeMessage);
-		msg.append("\r\n");
-		msg.append(" Query: ");
-		msg.append("\r\n");
-		msg.append(sql);
-		msg.append("\r\n");
-		msg.append(" Parameters: ");
-		msg.append("\r\n");
-		if (params == null) {
-			msg.append("{}");
-		} else {
-			msg.append(FastJSON.prettyFormat(params));
-			// msg.append(JSON.toJSONStringNotExcept(params));
-		}
-		msg.append("\r\n");
-		SQLException e = new SQLException(msg.toString(), cause.getSQLState(),
-				cause.getErrorCode());
-		e.setNextException(cause);
-
-		return e;
+	protected SQLException rethrow(SQLException cause, String sql) throws SQLException {
+		return rethrow(cause, sql, null);
 	}
 
-	protected SQLException rethrow(SQLException cause, String sql, List params)
-			throws SQLException {
-
-		String causeMessage = cause.getMessage();
-		if (causeMessage == null) {
-			causeMessage = "";
-		}
-		StringBuffer msg = new StringBuffer(causeMessage);
-
-		msg.append("\r\n");
-		msg.append(" Query: ");
-		msg.append("\r\n");
-		msg.append(sql);
-		msg.append("\r\n");
-		msg.append(" Parameters: ");
-		msg.append("\r\n");
+	protected SQLException rethrowMap(SQLException cause, String sql, Map params) throws SQLException {
+		String str = null;
 		if (params == null) {
-			msg.append("[]");
+			str = "{}";
 		} else {
-			msg.append(FastJSON.prettyFormat(params));
-			// msg.append(JSON.toJSONStringNotExcept(params));
+			str = FastJSON.prettyFormat(params);
 		}
-		msg.append("\r\n");
-		SQLException e = new SQLException(msg.toString(), cause.getSQLState(),
-				cause.getErrorCode());
-		e.setNextException(cause);
+		return rethrow(cause, sql, str);
+	}
 
-		return e;
+	protected SQLException rethrowList(SQLException cause, String sql, List params) throws SQLException {
+		String str = null;
+		if (params == null) {
+			str = "[]";
+		} else {
+			str = FastJSON.prettyFormat(params);
+		}
+		return rethrow(cause, sql, str);
 	}
 
 	public static void main(String[] args) throws Exception {
