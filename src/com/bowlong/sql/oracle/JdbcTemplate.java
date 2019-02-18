@@ -13,18 +13,18 @@ import com.bowlong.sql.jdbc.BeanSupport;
 import com.bowlong.sql.jdbc.PrepareSQLResult;
 
 @SuppressWarnings("all")
-public class JdbcTemplate extends com.bowlong.sql.jdbc.JdbcTemplet {
+public class JdbcTemplate extends com.bowlong.sql.jdbc.DataSet {
 
-	public JdbcTemplate(Connection conn) {
-		super(conn);
-	}
-	
-	public JdbcTemplate(final DataSource ds) {
-		super(ds);
+	public JdbcTemplate(Connection conn, String TABLENAME) {
+		super(conn, TABLENAME);
 	}
 
-	public JdbcTemplate(final DataSource ds_r, final DataSource ds_w) {
-		super(ds_r, ds_w);
+	public JdbcTemplate(DataSource ds, String TABLENAME) {
+		super(ds, TABLENAME);
+	}
+
+	public JdbcTemplate(DataSource ds_r, DataSource ds_w, String TABLENAME) {
+		super(ds_r, ds_w, TABLENAME);
 	}
 
 	public Map insert(String sql, String sqlId, Map params) throws SQLException {
@@ -32,8 +32,7 @@ public class JdbcTemplate extends com.bowlong.sql.jdbc.JdbcTemplet {
 		try {
 			Map r2 = null;
 			PrepareSQLResult sr = prepareKeys(sql);
-			PreparedStatement stmt = conn.prepareStatement(sr.sql,
-					PreparedStatement.RETURN_GENERATED_KEYS);
+			PreparedStatement stmt = conn.prepareStatement(sr.sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			prepareMap(stmt, sr.keys, params);
 			int r = stmt.executeUpdate();
 			if (r < 0)
@@ -58,15 +57,13 @@ public class JdbcTemplate extends com.bowlong.sql.jdbc.JdbcTemplet {
 		}
 	}
 
-	public Map insert(String sql, String sqlId, BeanSupport x)
-			throws SQLException {
+	public Map insert(String sql, String sqlId, BeanSupport x) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			Map r2 = null;
 			Map params = x.toBasicMap();
 			PrepareSQLResult sr = prepareKeys(sql);
-			PreparedStatement stmt = conn.prepareStatement(sr.sql,
-					PreparedStatement.RETURN_GENERATED_KEYS);
+			PreparedStatement stmt = conn.prepareStatement(sr.sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			prepareMap(stmt, sr.keys, params);
 			int r = stmt.executeUpdate();
 			if (r < 0)
@@ -90,7 +87,7 @@ public class JdbcTemplate extends com.bowlong.sql.jdbc.JdbcTemplet {
 			close(conn);
 		}
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 	}
 }

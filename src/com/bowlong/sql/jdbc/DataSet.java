@@ -12,7 +12,7 @@ import com.bowlong.objpool.StringBufPool;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class DataSet extends JdbcTemplet {
 
-	private String TABLENAME;
+	protected String TABLENAME;
 
 	public DataSet(Connection conn, String TABLENAME) {
 		super(conn);

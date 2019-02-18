@@ -7,18 +7,18 @@ import javax.sql.DataSource;
 import com.bowlong.sql.AtomicInt;
 
 @SuppressWarnings("all")
-public class JdbcTemplate extends com.bowlong.sql.jdbc.JdbcTemplet {
+public class JdbcTemplate extends com.bowlong.sql.jdbc.DataSet {
 
-	public JdbcTemplate(Connection conn) {
-		super(conn);
+	public JdbcTemplate(Connection conn, String TABLENAME) {
+		super(conn, TABLENAME);
 	}
 
-	public JdbcTemplate(final DataSource ds) {
-		super(ds);
+	public JdbcTemplate(DataSource ds, String TABLENAME) {
+		super(ds, TABLENAME);
 	}
 
-	public JdbcTemplate(final DataSource ds_r, final DataSource ds_w) {
-		super(ds_r, ds_w);
+	public JdbcTemplate(DataSource ds_r, DataSource ds_w, String TABLENAME) {
+		super(ds_r, ds_w, TABLENAME);
 	}
 
 	static final AtomicInt asyncNum = new AtomicInt();
