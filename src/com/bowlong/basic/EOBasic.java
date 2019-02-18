@@ -12,6 +12,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Ex扩展类的起源<br/>
@@ -122,11 +123,15 @@ public class EOBasic {
 	}
 
 	static final public <K, V> Map<K, V> newMap() {
-		return new Hashtable<K, V>();// 线程安全的
+		return new ConcurrentHashMap<K, V>();// 线程安全的,它是HashTable的替代，比HashTable的扩展性更好。
 	}
 
-	static final public Map newMap2() {
-		return Collections.synchronizedMap(new HashMap());
+	static final public <K, V> Map<K, V> newMap2() {
+		return Collections.synchronizedMap(new HashMap<K, V>());
+	}
+	
+	static final public <K, V> Map<K, V> newMap3() {
+		return new Hashtable<K, V>();// 线程安全的 等价于 newMap2
 	}
 
 	static final public void clear(Map map) {
