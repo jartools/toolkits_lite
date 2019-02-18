@@ -33,7 +33,7 @@ import com.bowlong.util.MapEx;
 import com.sun.rowset.CachedRowSetImpl;
 
 @SuppressWarnings("all")
-public class JdbcTempletOrigin {
+public class JdbcOrigin {
 	/*** 记录数据连接对象目录下的所有表名称 **/
 	private static final Map<String, Set<String>> TABLES = newMap();
 	// 数据库连接模式[conn如果不为空，则只有一个连接]
@@ -50,16 +50,16 @@ public class JdbcTempletOrigin {
 		return LogFactory.getLog(clazz);
 	}
 
-	public JdbcTempletOrigin(final Connection conn) {
+	public JdbcOrigin(final Connection conn) {
 		this.conn = conn;
 	}
 
-	public JdbcTempletOrigin(final DataSource ds) {
+	public JdbcOrigin(final DataSource ds) {
 		this.ds_r = ds;
 		this.ds_w = ds;
 	}
 
-	public JdbcTempletOrigin(final DataSource ds_r, final DataSource ds_w) {
+	public JdbcOrigin(final DataSource ds_r, final DataSource ds_w) {
 		this.ds_r = ds_r;
 		this.ds_w = ds_w;
 	}

@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 import com.bowlong.objpool.StringBufPool;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class DataSet extends JdbcTempletBase {
+public class DataSet extends JdbcTemplet {
 
 	private String TABLENAME;
 

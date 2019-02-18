@@ -10,11 +10,10 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import com.bowlong.sql.jdbc.BeanSupport;
-import com.bowlong.sql.jdbc.JdbcTempletBase;
 import com.bowlong.sql.jdbc.PrepareSQLResult;
 
 @SuppressWarnings("all")
-public class JdbcTemplate extends JdbcTempletBase {
+public class JdbcTemplate extends com.bowlong.sql.jdbc.JdbcTemplet {
 
 	public JdbcTemplate(Connection conn) {
 		super(conn);

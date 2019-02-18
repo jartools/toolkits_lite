@@ -5,10 +5,9 @@ import java.sql.Connection;
 import javax.sql.DataSource;
 
 import com.bowlong.sql.AtomicInt;
-import com.bowlong.sql.jdbc.JdbcTempletBase;
 
 @SuppressWarnings("all")
-public class JdbcTemplate extends JdbcTempletBase {
+public class JdbcTemplate extends com.bowlong.sql.jdbc.JdbcTemplet {
 
 	public JdbcTemplate(Connection conn) {
 		super(conn);

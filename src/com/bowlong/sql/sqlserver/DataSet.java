@@ -9,10 +9,10 @@ import javax.sql.DataSource;
 
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.sql.jdbc.BeanSupport;
-import com.bowlong.sql.jdbc.JdbcTempletBase;
+import com.bowlong.sql.jdbc.JdbcTemplet;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class DataSet extends JdbcTempletBase {
+public class DataSet extends JdbcTemplet {
 
 	private String TABLENAME;
 
