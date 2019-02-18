@@ -33,7 +33,7 @@ public abstract class BeanBasic implements ResultSetHandler, Cloneable, Serializ
 
 	protected Map<String, Object> map = new ConcurrentHashMap<String, Object>();
 
-	public Map<String, Object> toMap(Map<String, Object> map) {
+	protected Map<String, Object> toMap(Map<String, Object> map) {
 		return map;
 	}
 
