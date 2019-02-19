@@ -1020,17 +1020,6 @@ public final class NumEx extends ExOrigin {
 		return (a <= 0.0D) ? 0.0D - a : a;
 	}
 
-	/** 保留acc位小数 */
-	static final public double roundDecimal(double org, int acc) {
-		double pow = 1;
-		for (int i = 0; i < acc; i++) {
-			pow *= 10;
-		}
-
-		double temp = (int) (org * pow + 0.5);
-		return temp / pow;
-	}
-
 	public static final long doubleToLongBits(double v) {
 		long bits = (long) v;
 		long total = 0;

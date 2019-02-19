@@ -7,9 +7,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.bowlong.lang.NumEx;
+import com.bowlong.basic.ExOrigin;
 import com.bowlong.sql.SqlEx;
-import com.bowlong.util.CalendarEx;
 import com.bowlong.util.MapEx;
 
 /**
@@ -19,23 +18,11 @@ import com.bowlong.util.MapEx;
  * @time 2019-02-18 17:24
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public abstract class BeanBasic implements RsTHandler<BeanBasic>, Cloneable, Serializable {
+public abstract class BeanBasic extends ExOrigin implements RsTHandler<BeanBasic>, Cloneable, Serializable {
 	private static final long serialVersionUID = 1L;
 	static final public String insFmt = "INSERT INTO `%s` (%s) VALUES (%s)";
 	static final public String selFmt = "SELECT * FROM `%s` WHERE ";
 	static final public String upFmt = "UPDATE `%s` SET %s WHERE %s";
-
-	static final public long now() {
-		return CalendarEx.now();
-	}
-
-	static final public double round(double org, int acc) {
-		return NumEx.roundDecimal(org, acc);
-	}
-
-	static final public double round2(double org) {
-		return round(org, 2);
-	}
 
 	protected Map<String, Object> map = new ConcurrentHashMap<String, Object>();
 

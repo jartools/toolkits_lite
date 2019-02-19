@@ -178,4 +178,23 @@ public class ExOrigin extends EODateFmt {
 			return parse2Date((String) v, fmt_yyyy_MM_dd_HH_mm_ss);
 		return new Date();
 	}
+
+	/** 保留acc位小数 */
+	static final public double roundDecimal(double org, int acc) {
+		double pow = 1;
+		for (int i = 0; i < acc; i++) {
+			pow *= 10;
+		}
+
+		double temp = (int) (org * pow + 0.5);
+		return temp / pow;
+	}
+
+	static final public double round(double org, int acc) {
+		return roundDecimal(org, acc);
+	}
+
+	static final public double round2(double org) {
+		return round(org, 2);
+	}
 }

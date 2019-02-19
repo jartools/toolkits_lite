@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.bowlong.Toolkit;
 import com.bowlong.bio2.B2OutputStream;
 import com.bowlong.io.ByteOutStream;
 import com.bowlong.json.MyJson;
@@ -297,11 +296,6 @@ public abstract class BeanSupport extends BeanBasic {
 	public abstract boolean asyncUpdate();
 
 	// //////////////////////////////////////////////////////////
-
-	public static final int compareTo(Object v1, Object v2) {
-		return Toolkit.compareTo(v1, v2);
-	}
-
 	public void setTimeout(ScheduledExecutorService ses, Runner r, long delay) {
 		if (ses == null || r == null)
 			return;
