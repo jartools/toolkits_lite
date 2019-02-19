@@ -30,20 +30,20 @@ import com.bowlong.objpool.StringBufPool;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ListEx extends ExOrigin {
-	public static final List newArrayList() {
-		return new ArrayList();
+	public static final <T> List<T> newArrayList() {
+		return new ArrayList<T>();
 	}
 
-	public static final List newLinkedList() {
-		return new LinkedList();
+	public static final <T> List<T> newLinkedList() {
+		return new LinkedList<T>();
 	}
 
-	public static final List newVector() {
-		return new Vector();
+	public static final <T> List<T> newVector() {
+		return new Vector<T>();
 	}
 
-	public static final TreeList newTreeList() {
-		return new TreeList();
+	public static final <T> TreeList<T> newTreeList() {
+		return new TreeList<T>();
 	}
 
 	public static final FixedSizeList newFixedSizeList(List<?> list) {
