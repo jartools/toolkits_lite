@@ -43,18 +43,18 @@ public class JdbcBasic extends JdbcOrigin {
 		super(ds_r, ds_w);
 	}
 
-	public <T> T queryForObject(final String sql, final Class c) throws Exception {
+	public <T> T queryForObject(String sql, Class c) throws Exception {
 		RsHandler rsh = getRsh(c);
 		return queryForObject(sql, rsh);
 	}
 
-	public <T> List<T> queryForList(final String sql, final Class c) throws Exception {
+	public <T> List<T> queryForList(String sql, Class c) throws Exception {
 		RsHandler rsh = getRsh(c);
 		return queryForList(sql, rsh);
 	}
 
 	// /////////////////////////
-	public void execute(final String sql, final Map params) throws SQLException {
+	public void execute(String sql, Map params) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			PrepareSQLResult sr = prepareKeys(sql);
@@ -69,7 +69,7 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public Map insert(final String sql, final Map params) throws SQLException {
+	public Map insert(String sql, Map params) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			Map<String, Object> r2 = null;
@@ -93,7 +93,7 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public int insert2(final String sql, final Map params) throws SQLException {
+	public int insert2(String sql, Map params) throws SQLException {
 		Map<String, Object> map = insert(sql, params);
 		if (map != null && !map.isEmpty()) {
 			for (Object val : map.values()) {
@@ -103,7 +103,7 @@ public class JdbcBasic extends JdbcOrigin {
 		return 0;
 	}
 
-	public int[] batchInsert(final String sql, final List<Map> list) throws SQLException {
+	public int[] batchInsert(String sql, List<Map> list) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			int[] r2 = new int[list.size()];
@@ -132,22 +132,26 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public final <T> T query(final String sql, final Map params, final Class c) throws Exception {
+	public final <T> T query(String sql, Map params, Class c) throws Exception {
 		RsHandler rsh = getRsh(c);
 		return query(sql, params, rsh);
 	}
 
-	public final <T> T queryForObject(final String sql, final Map params, final Class c) throws Exception {
+	public final <T> T query(String sql, Class c) throws Exception {
+		RsHandler rsh = getRsh(c);
+		return query(sql, rsh);
+	}
+
+	public final <T> T queryForObject(String sql, Map params, Class c) throws Exception {
 		RsHandler rsh = getRsh(c);
 		return queryForObject(sql, params, rsh);
 	}
 
-	public final <T> T queryForObject(final String sql, final Map params, final RsHandler rsh)
-			throws SQLException {
+	public final <T> T queryForObject(String sql, Map params, RsHandler rsh) throws SQLException {
 		return query(sql, params, rsh);
 	}
 
-	public Map queryForMap(final String sql, final Map params) throws SQLException {
+	public Map queryForMap(String sql, Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			Map r2 = null;
@@ -167,7 +171,7 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public List<Map> queryForList(final String sql, final Map params) throws SQLException {
+	public List<Map> queryForList(String sql, Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			List<Map> r2 = null;
@@ -186,7 +190,7 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public <T> List<T> queryForKeys(final String sql, final Map params) throws SQLException {
+	public <T> List<T> queryForKeys(String sql, Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			List<T> r2 = null;
@@ -205,12 +209,12 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public final <T> List<T> queryForList(final String sql, final Map params, final Class c) throws Exception {
+	public final <T> List<T> queryForList(String sql, Map params, Class c) throws Exception {
 		RsHandler rsh = getRsh(c);
 		return queryForList(sql, params, rsh);
 	}
 
-	public long queryForLong(final String sql, final Map params) throws SQLException {
+	public long queryForLong(String sql, Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			long r2 = 0;
@@ -230,7 +234,7 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public int queryForInt(final String sql, final Map params) throws SQLException {
+	public int queryForInt(String sql, Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			int r2 = 0;
@@ -250,7 +254,7 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public double queryForDouble(final String sql, final Map params) throws SQLException {
+	public double queryForDouble(String sql, Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			double r2 = 0;
@@ -270,11 +274,11 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public final RowSet queryForRowSet(final String sql, final Map params) throws SQLException {
+	public final RowSet queryForRowSet(String sql, Map params) throws SQLException {
 		return query(sql, params);
 	}
 
-	public int update(final String sql, final Map params) throws SQLException {
+	public int update(String sql, Map params) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			int r2 = 0;
@@ -291,7 +295,7 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public int[] batchUpdate(final String sql, final List<Map> list) throws SQLException {
+	public int[] batchUpdate(String sql, List<Map> list) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			int r2[] = null;
@@ -311,7 +315,7 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public void call(final String sql, final Map params) throws SQLException {
+	public void call(String sql, Map params) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			PrepareSQLResult sr = prepareKeys(sql);
@@ -326,7 +330,7 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public List<Map> queryByCall(final String sql, final Map params) throws SQLException {
+	public List<Map> queryByCall(String sql, Map params) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			List<Map> r2 = null;

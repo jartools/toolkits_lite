@@ -48,13 +48,13 @@ public class DataSet extends JdbcTemplet {
 		return count("");
 	}
 
-	public final int pageCount(final String c, final int size)
+	public final int pageCount(String c, int size)
 			throws SQLException {
 		int count = count(c);
 		return super.pageCount(count, size);
 	}
 
-	public final int pageCount(final int size) throws SQLException {
+	public final int pageCount(int size) throws SQLException {
 		return pageCount("", size);
 	}
 
@@ -62,11 +62,11 @@ public class DataSet extends JdbcTemplet {
 		return queryForList("");
 	}
 
-	public final <T> List<T> queryAll(final Class c2) throws Exception {
+	public final <T> List<T> queryAll(Class c2) throws Exception {
 		return queryForList("", c2);
 	}
 
-	public final <T> T queryForObject(final String c, final Class c2)
+	public final <T> T queryForObject(String c, Class c2)
 			throws Exception {
 		List<T> dataset = queryForList(c, c2);
 		if (dataset == null || dataset.isEmpty())
@@ -74,14 +74,14 @@ public class DataSet extends JdbcTemplet {
 		return dataset.get(0);
 	}
 
-	public final Map queryForMap(final String c) throws SQLException {
+	public final Map queryForMap(String c) throws SQLException {
 		List<Map> dataset = queryForList(c);
 		if (dataset == null || dataset.isEmpty())
 			return null;
 		return dataset.get(0);
 	}
 
-	public final List<Map> queryForList(final String c) throws SQLException {
+	public final List<Map> queryForList(String c) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			sb.append("SELECT * FROM ").append(TABLENAME);
@@ -95,7 +95,7 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final <T> List<T> queryForList(final String c, final Class c2)
+	public final <T> List<T> queryForList(String c, Class c2)
 			throws Exception {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
@@ -110,8 +110,8 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final List<Map> queryForList(final String c, final int begin,
-			final int num) throws SQLException {
+	public final List<Map> queryForList(String c, int begin,
+			int num) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			sb.append("SELECT * FROM ").append(TABLENAME);
@@ -126,8 +126,8 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final <T> List<T> queryForList(final String c, final Class c2,
-			final int begin, final int num) throws Exception {
+	public final <T> List<T> queryForList(String c, Class c2,
+			int begin, int num) throws Exception {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			sb.append("SELECT * FROM ").append(TABLENAME);
@@ -142,13 +142,13 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final List<Map> queryForList(final int begin, final int num)
+	public final List<Map> queryForList(int begin, int num)
 			throws SQLException {
 		return queryForList("", begin, num);
 	}
 
-	public final <T> List<T> queryForList(final Class c2, final int begin,
-			final int num) throws Exception {
+	public final <T> List<T> queryForList(Class c2, int begin,
+			int num) throws Exception {
 		return queryForList("", c2, begin, num);
 	}
 
@@ -156,7 +156,7 @@ public class DataSet extends JdbcTemplet {
 		return insert(x.toBasicMap());
 	}
 
-	public final int insert(final Map<String, Object> m) throws SQLException {
+	public final int insert(Map<String, Object> m) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			List<String> keys = newList();
@@ -187,12 +187,12 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final int update(final BeanSupport x, final String c)
+	public final int update(BeanSupport x, String c)
 			throws SQLException {
 		return update(x.toBasicMap(), c);
 	}
 
-	public final int update(final Map<String, Object> m, final String c)
+	public final int update(Map<String, Object> m, String c)
 			throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
@@ -217,7 +217,7 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final int delete(final Map<String, Object> m, final String c)
+	public final int delete(Map<String, Object> m, String c)
 			throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
@@ -234,12 +234,12 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final int delete(final BeanSupport x, final String c)
+	public final int delete(BeanSupport x, String c)
 			throws SQLException {
 		return delete(x.toBasicMap(), c);
 	}
 
-	public final int delete(final String c) throws SQLException {
+	public final int delete(String c) throws SQLException {
 		return delete(newMap(), c);
 	}
 

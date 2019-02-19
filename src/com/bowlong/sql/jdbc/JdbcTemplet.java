@@ -26,15 +26,15 @@ public class JdbcTemplet extends JdbcBasic {
 		super(ds_r, ds_w);
 	}
 
-	public void execute(final String sql, final BeanSupport x) throws SQLException {
+	public void execute(String sql, BeanSupport x) throws SQLException {
 		execute(sql, x.toBasicMap());
 	}
 
-	public int insert(final String sql, final BeanSupport x) throws SQLException {
+	public int insert(String sql, BeanSupport x) throws SQLException {
 		return insert2(sql, x.toBasicMap());
 	}
 
-	public int[] batchInsert4LBean(final String sql, final List<BeanSupport> list) throws SQLException {
+	public int[] batchInsert4LBean(String sql, List<BeanSupport> list) throws SQLException {
 		List<Map> listMap = newList();
 		for (BeanSupport x : list) {
 			listMap.add(x.toBasicMap());
@@ -42,66 +42,66 @@ public class JdbcTemplet extends JdbcBasic {
 		return batchInsert(sql, listMap);
 	}
 
-	public CachedRowSet query(final String sql, final BeanSupport x) throws SQLException {
+	public CachedRowSet query(String sql, BeanSupport x) throws SQLException {
 		return query(sql, x.toBasicMap());
 	}
 
-	public final <T> T query(final String sql, final BeanSupport x, final Class c) throws Exception {
+	public final <T> T query(String sql, BeanSupport x, Class c) throws Exception {
 		RsHandler rsh = getRsh(c);
 		return query(sql, x, rsh);
 	}
 
-	public <T> T query(final String sql, final BeanSupport x, final RsHandler rsh) throws SQLException {
+	public <T> T query(String sql, BeanSupport x, RsHandler rsh) throws SQLException {
 		return query(sql, x.toBasicMap(), rsh);
 	}
 
-	public final <T> T queryForObject(final String sql, final BeanSupport x, final Class c) throws Exception {
+	public final <T> T queryForObject(String sql, BeanSupport x, Class c) throws Exception {
 		return query(sql, x, getRsh(c));
 	}
 
-	public final <T> T queryForObject(final String sql, final BeanSupport x, final RsHandler rsh)
+	public final <T> T queryForObject(String sql, BeanSupport x, RsHandler rsh)
 			throws SQLException {
 		return query(sql, x.toBasicMap(), rsh);
 	}
 
-	public Map queryForMap(final String sql, final BeanSupport x) throws SQLException {
+	public Map queryForMap(String sql, BeanSupport x) throws SQLException {
 		return queryForMap(sql, x.toBasicMap());
 	}
 
-	public List<Map> queryForList(final String sql, final BeanSupport x) throws SQLException {
+	public List<Map> queryForList(String sql, BeanSupport x) throws SQLException {
 		return queryForList(sql, x.toBasicMap());
 	}
 
-	public final <T> List<T> queryForList(final String sql, final BeanSupport x, final Class c) throws Exception {
+	public final <T> List<T> queryForList(String sql, BeanSupport x, Class c) throws Exception {
 		return queryForList(sql, x, getRsh(c));
 	}
 
-	public <T> List<T> queryForList(final String sql, final BeanSupport x, final RsHandler rsh)
+	public <T> List<T> queryForList(String sql, BeanSupport x, RsHandler rsh)
 			throws SQLException {
 		return queryForList(sql, x.toBasicMap(), rsh);
 	}
 
-	public long queryForLong(final String sql, final BeanSupport x) throws SQLException {
+	public long queryForLong(String sql, BeanSupport x) throws SQLException {
 		return queryForLong(sql, x.toBasicMap());
 	}
 
-	public int queryForInt(final String sql, final BeanSupport x) throws SQLException {
+	public int queryForInt(String sql, BeanSupport x) throws SQLException {
 		return queryForInt(sql, x.toBasicMap());
 	}
 
-	public double queryForDouble(final String sql, final BeanSupport x) throws SQLException {
+	public double queryForDouble(String sql, BeanSupport x) throws SQLException {
 		return queryForDouble(sql, x.toBasicMap());
 	}
 
-	public final RowSet queryForRowSet(final String sql, final BeanSupport x) throws SQLException {
+	public final RowSet queryForRowSet(String sql, BeanSupport x) throws SQLException {
 		return query(sql, x.toBasicMap());
 	}
 
-	public int update(final String sql, final BeanSupport x) throws SQLException {
+	public int update(String sql, BeanSupport x) throws SQLException {
 		return update(sql, x.toBasicMap());
 	}
 
-	public int[] batchUpdate4LBean(final String sql, final List<BeanSupport> list) throws SQLException {
+	public int[] batchUpdate4LBean(String sql, List<BeanSupport> list) throws SQLException {
 		List<Map> listMap = newList();
 		for (BeanSupport x : list) {
 			listMap.add(x.toBasicMap());
@@ -109,11 +109,11 @@ public class JdbcTemplet extends JdbcBasic {
 		return batchUpdate(sql, listMap);
 	}
 
-	public void call(final String sql, final BeanSupport x) throws SQLException {
+	public void call(String sql, BeanSupport x) throws SQLException {
 		call(sql, x.toBasicMap());
 	}
 
-	public List<Map> queryByCall(final String sql, final BeanSupport x) throws SQLException {
+	public List<Map> queryByCall(String sql, BeanSupport x) throws SQLException {
 		return queryByCall(sql, x.toBasicMap());
 	}
 }

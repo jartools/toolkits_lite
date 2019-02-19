@@ -20,9 +20,6 @@ import javax.sql.DataSource;
 import javax.sql.RowSet;
 import javax.sql.rowset.CachedRowSet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.bowlong.lang.StrEx;
 import com.bowlong.lang.task.MyThreadFactory;
 import com.bowlong.sql.SqlEx;
@@ -46,10 +43,6 @@ public class JdbcOrigin {
 	private String catalog_r;
 	// 检索此 Connection 对象的当前目录名称。
 	private String catalog_w;
-
-	public static final Log getLog(Class<?> clazz) {
-		return LogFactory.getLog(clazz);
-	}
 
 	public JdbcOrigin(final Connection conn) {
 		this.conn = conn;
@@ -145,7 +138,7 @@ public class JdbcOrigin {
 
 	// /////////////////////////
 
-	public void execute(final String sql) throws SQLException {
+	public void execute(String sql) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -158,7 +151,7 @@ public class JdbcOrigin {
 		}
 	}
 
-	public final CachedRowSet query(final String sql, final Map params) throws SQLException {
+	public final CachedRowSet query(String sql, Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			PrepareSQLResult sr = prepareKeys(sql);
@@ -177,17 +170,12 @@ public class JdbcOrigin {
 		}
 	}
 
-	public CachedRowSet query(final String sql) throws SQLException {
+	public CachedRowSet query(String sql) throws SQLException {
 		Map params = null;
 		return query(sql, params);
 	}
 
-	// private <T> T query(String sql, Class c) throws Exception {
-	// ResultSetHandler rsh = getRsh(c);
-	// return query(sql, rsh);
-	// }
-
-	public final <T> T query(final String sql, final Map params, final RsHandler rsh) throws SQLException {
+	public final <T> T query(String sql, Map params, RsHandler rsh) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			T r2 = null;
@@ -212,11 +200,11 @@ public class JdbcOrigin {
 		return query(sql, params, rsh);
 	}
 
-	public final <T> T queryForObject(final String sql, final RsHandler rsh) throws SQLException {
+	public final <T> T queryForObject(String sql, RsHandler rsh) throws SQLException {
 		return query(sql, rsh);
 	}
 
-	public Map queryForMap(final String sql) throws SQLException {
+	public Map queryForMap(String sql) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			Map r2 = null;
@@ -234,7 +222,7 @@ public class JdbcOrigin {
 		}
 	}
 
-	public List<Map> queryForList(final String sql) throws SQLException {
+	public List<Map> queryForList(String sql) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			List<Map> r2 = null;
@@ -251,7 +239,7 @@ public class JdbcOrigin {
 		}
 	}
 
-	public <T> List<T> queryForKeys(final String sql) throws SQLException {
+	public <T> List<T> queryForKeys(String sql) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			List<T> r2 = null;
@@ -268,8 +256,7 @@ public class JdbcOrigin {
 		}
 	}
 
-	public final <T> List<T> queryForList(final String sql, final Map params, final RsHandler rsh)
-			throws SQLException {
+	public final <T> List<T> queryForList(String sql, Map params, RsHandler rsh) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			PrepareSQLResult sr = prepareKeys(sql);
@@ -291,12 +278,12 @@ public class JdbcOrigin {
 		}
 	}
 
-	public <T> List<T> queryForList(final String sql, final RsHandler rsh) throws SQLException {
+	public <T> List<T> queryForList(String sql, RsHandler rsh) throws SQLException {
 		Map params = null;
 		return queryForList(sql, params, rsh);
 	}
 
-	public long queryForLong(final String sql) throws SQLException {
+	public long queryForLong(String sql) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			long r2 = 0;
@@ -314,7 +301,7 @@ public class JdbcOrigin {
 		}
 	}
 
-	public int queryForInt(final String sql) throws SQLException {
+	public int queryForInt(String sql) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			int r2 = 0;
@@ -333,7 +320,7 @@ public class JdbcOrigin {
 		}
 	}
 
-	public double queryForDouble(final String sql) throws SQLException {
+	public double queryForDouble(String sql) throws SQLException {
 		Connection conn = conn_r();
 		try {
 			double r2 = 0;
@@ -352,11 +339,11 @@ public class JdbcOrigin {
 		}
 	}
 
-	public final RowSet queryForRowSet(final String sql) throws SQLException {
+	public final RowSet queryForRowSet(String sql) throws SQLException {
 		return query(sql);
 	}
 
-	public int update(final String sql) throws SQLException {
+	public int update(String sql) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			int r2 = 0;
@@ -371,7 +358,7 @@ public class JdbcOrigin {
 		}
 	}
 
-	public int[] batch4Sqls(final String sqls[]) throws SQLException {
+	public int[] batch4Sqls(String sqls[]) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			int r2[] = null;
@@ -403,7 +390,7 @@ public class JdbcOrigin {
 	 * insertResult = ps.getInt(4); <br/>
 	 * 返回结果参数的过程的语法:{? = call 过程名[(?, ?, ...)]}
 	 **/
-	public void call(final String sql, final Object... params) throws SQLException {
+	public void call(String sql, Object... params) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			CallableStatement stmt = conn.prepareCall(sql);
@@ -423,7 +410,7 @@ public class JdbcOrigin {
 		}
 	}
 
-	public List<Map> queryByCall(final String sql) throws SQLException {
+	public List<Map> queryByCall(String sql) throws SQLException {
 		Connection conn = conn_w();
 		try {
 			List<Map> r2 = null;
@@ -443,7 +430,7 @@ public class JdbcOrigin {
 	/*** 缓存查询过后的字段 **/
 	private static final Map<String, PrepareSQLResult> SQLCHCHE = newMap();
 
-	static final public PrepareSQLResult prepareKeys(final String sql) {
+	static final public PrepareSQLResult prepareKeys(String sql) {
 		if (SQLCHCHE.containsKey(sql)) {
 			// 从缓存中读取
 			return SQLCHCHE.get(sql);
@@ -487,21 +474,21 @@ public class JdbcOrigin {
 		return stmt;
 	}
 
-	public static final String e2s(final Throwable e) {
+	public static final String e2s(Throwable e) {
 		return e2s(e, null, new Object[0]);
 	}
 
-	public static final String e2s(final Throwable e, final Object obj) {
+	public static final String e2s(Throwable e, Object obj) {
 		return e2s(e, String.valueOf(obj), new Object[0]);
 	}
 
-	public static String e2s(final Throwable e, final String fmt, final Object... args) {
+	public static String e2s(Throwable e, String fmt, Object... args) {
 		return ExceptionEx.e2s(e, fmt, args);
 	}
 
 	// ///////////////////////////////////////////////////
-	public static final List<Map> toMaps(final ResultSet rs) throws SQLException {
-		List<Map> result = new Vector();
+	static final public List<Map> toMaps(ResultSet rs) throws SQLException {
+		List<Map> result = newList();
 		while (rs.next()) {
 			Map m = toMap(rs);
 			result.add(m);
@@ -509,8 +496,8 @@ public class JdbcOrigin {
 		return result;
 	}
 
-	public static final <T> List<T> toKeys(final ResultSet rs) throws SQLException {
-		List<T> result = new Vector();
+	public static final <T> List<T> toKeys(ResultSet rs) throws SQLException {
+		List<T> result = newList();
 		while (rs.next()) {
 			Object o = rs.getObject(1);
 			result.add((T) o);
@@ -545,29 +532,29 @@ public class JdbcOrigin {
 	}
 
 	static public final <T> List<T> newList() {
-		return ListEx.newListT();
+		return ListEx.newList();
 	}
 
 	static public final Map newMap() {
 		return MapEx.newMap();
 	}
 
-	public void truncate(final String TABLENAME2) throws SQLException {
+	public void truncate(String TABLENAME2) throws SQLException {
 		String sql = "TRUNCATE TABLE `" + TABLENAME2 + "`";
 		this.update(sql);
 	}
 
-	public void repair(final String TABLENAME2) throws SQLException {
+	public void repair(String TABLENAME2) throws SQLException {
 		String sql = "REPAIR TABLE `" + TABLENAME2 + "`";
 		this.update(sql);
 	}
 
-	public void optimize(final String TABLENAME2) throws SQLException {
+	public void optimize(String TABLENAME2) throws SQLException {
 		String sql = "OPTIMIZE TABLE `" + TABLENAME2 + "`";
 		this.update(sql);
 	}
 
-	public void dropTable(final String TABLENAME2) throws SQLException {
+	public void dropTable(String TABLENAME2) throws SQLException {
 		String sql = "DROP TABLE IF EXISTS `" + TABLENAME2 + "`";
 		this.update(sql);
 	}
@@ -593,7 +580,7 @@ public class JdbcOrigin {
 		this._single_executor = ses;
 	}
 
-	protected synchronized ScheduledExecutorService executor(final String name) {
+	protected synchronized ScheduledExecutorService executor(String name) {
 		if (_single_executor == null)
 			_single_executor = Executors.newSingleThreadScheduledExecutor(new MyThreadFactory(name, false));
 		return _single_executor;
