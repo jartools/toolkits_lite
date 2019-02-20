@@ -263,6 +263,19 @@ public class EOStrNum extends EOBasic {
 		return r;
 	}
 
+	static final public String toStr(byte[] b, String chaset) {
+		try {
+			return new String(b, chaset);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	static final public String toStr(byte[] b) {
+		return toStr(b, "utf-8");
+	}
+
 	static final public String toStr(Object v) {
 		if (v == null)
 			return "";

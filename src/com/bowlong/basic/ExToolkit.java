@@ -46,10 +46,6 @@ import com.bowlong.util.MapEx;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ExToolkit extends ExOrigin {
 
-	static final public org.apache.commons.logging.Log getLog(Class<?> clazz) {
-		return org.apache.commons.logging.LogFactory.getLog(clazz);
-	}
-
 	static final public void println(Object... args) {
 		print(args);
 		System.out.println();

@@ -12,6 +12,7 @@ import java.util.Date;
  * @time 2019-02-14 19:32
  */
 public class ExOrigin extends EODateFmt {
+
 	public static final boolean toBoolean(Object v) {
 		if (v == null)
 			return false;
@@ -215,5 +216,9 @@ public class ExOrigin extends EODateFmt {
 
 	static final public double round2(double org) {
 		return round(org, 2);
+	}
+	
+	static final public org.apache.commons.logging.Log getLog(Class<?> clazz) {
+		return org.apache.commons.logging.LogFactory.getLog(clazz);
 	}
 }

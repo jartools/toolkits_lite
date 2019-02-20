@@ -75,7 +75,7 @@ public class Encrypt {
 	}
 
 	public static String decode(String v) throws Exception {
-		byte[] decd = ByteEx.stringToByte(v);
+		byte[] decd = ByteEx.strToByte(v);
 		byte[] ub = decode(decd);
 		return new String(ub);
 	}
