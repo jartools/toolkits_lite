@@ -26,8 +26,8 @@ public class HttpUrlConEx extends HttpBaseEx {
 
 	static Log log = LogFactory.getLog(HttpUrlConEx.class);
 
-	static public final byte[] send(String url, String query,
-			byte[] params, boolean isPost, int timeOutCon, int timeOutSo) {
+	static public final byte[] send(String url, String query, byte[] params, boolean isPost, int timeOutCon,
+			int timeOutSo) {
 		HttpURLConnection conn = null;
 		try {
 			int lens4params = 0;
@@ -53,8 +53,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 			// Keep-Alive
 			conn.setRequestProperty("Connection", "close");
 			if (isOut) {
-				conn.setRequestProperty("Content-Length",
-						String.valueOf(lens4params));
+				conn.setRequestProperty("Content-Length", String.valueOf(lens4params));
 			}
 			conn.setRequestProperty("user-agent", UseAgent3);
 			// 请求超时
@@ -91,9 +90,9 @@ public class HttpUrlConEx extends HttpBaseEx {
 
 			// 获取所有响应头字段
 			// Map<String, List<String>> map = conn.getHeaderFields();
-			try(InputStream ins = conn.getInputStream()){
+			try (InputStream ins = conn.getInputStream()) {
 				return inps2Bytes(ins);
-			}catch (Exception e) {
+			} catch (Exception e) {
 				logError(e, log);
 				return inps2Bytes(conn.getErrorStream());
 			}
@@ -103,18 +102,16 @@ public class HttpUrlConEx extends HttpBaseEx {
 		}
 	}
 
-	static public final byte[] sendBytes(String url, byte[] params,
-			boolean isPost, int timeOutCon, int timeOutSo) {
+	static public final byte[] sendBytes(String url, byte[] params, boolean isPost, int timeOutCon, int timeOutSo) {
 		return send(url, "", params, isPost, timeOutCon, timeOutSo);
 	}
 
-	static public final byte[] sendBytes(String url, byte[] params,
-			boolean isPost) {
+	static public final byte[] sendBytes(String url, byte[] params, boolean isPost) {
 		return sendBytes(url, params, isPost, 0, 0);
 	}
 
-	static public final byte[] sendStr(String url, String params,
-			boolean isPost, int timeOutCon, int timeOutSo, String charset) {
+	static public final byte[] sendStr(String url, String params, boolean isPost, int timeOutCon, int timeOutSo,
+			String charset) {
 		byte[] btParams = getBytes4Str(params, charset);
 		return sendBytes(url, btParams, isPost, timeOutCon, timeOutSo);
 	}
@@ -142,8 +139,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 		return null;
 	}
 
-	static public final byte[] sendParams(String url, Map<String, ?> map,
-			String charset, boolean isPost) {
+	static public final byte[] sendParams(String url, Map<String, ?> map, String charset, boolean isPost) {
 		String query = buildQuery(map, charset);
 		if (isPost) {
 			return send(url, "", query.getBytes(), isPost, 0, 0);
@@ -152,18 +148,23 @@ public class HttpUrlConEx extends HttpBaseEx {
 		}
 	}
 
-	static public byte[] postParams(String url, Map<String, ?> map,
-			String charset) {
+	static final public byte[] postParams(String url, Map<String, ?> map, String charset) {
 		return sendParams(url, map, charset, true);
 	}
 
-	static public byte[] queryParams(String url, Map<String, ?> map,
-			String charset) {
+	static final public byte[] postParams(String url, Map<String, ?> map) {
+		return postParams(url, map, "utf-8");
+	}
+
+	static final public byte[] queryParams(String url, Map<String, ?> map, String charset) {
 		return sendParams(url, map, charset, false);
 	}
 
-	static public final byte[] sendParams4Json(String url,
-			Map<String, ?> map, String charset, boolean isPost) {
+	static final public byte[] queryParams(String url, Map<String, ?> map) {
+		return queryParams(url, map, "utf-8");
+	}
+
+	static final public byte[] sendParams4Json(String url, Map<String, ?> map, String charset, boolean isPost) {
 		String query = buildStrByJSON4Obj(map);
 		if (isPost) {
 			return send(url, "", getBytes4Str(query, charset), isPost, 0, 0);
@@ -172,8 +173,11 @@ public class HttpUrlConEx extends HttpBaseEx {
 		}
 	}
 
-	static public byte[] postParams4Json(String url, Map<String, ?> map,
-			String charset) {
+	static final public byte[] postParams4Json(String url, Map<String, ?> map, String charset) {
 		return sendParams4Json(url, map, charset, true);
+	}
+
+	static final public byte[] postParams4Json(String url, Map<String, ?> map) {
+		return postParams4Json(url, map, "utf-8");
 	}
 }
