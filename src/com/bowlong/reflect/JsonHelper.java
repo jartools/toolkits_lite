@@ -79,16 +79,17 @@ public class JsonHelper {
 	public static JSONObject toJSON(Object bean) {
 		return toJSON(toMap(bean));
 	}
-	
+
 	public static JSONObject toJSON(Map<?, ?> map) {
 		return new JSONObject(map);
 	}
-	
+
 	/***
 	 * 将json字符串转换org.json的JSONObject对象
+	 * 
 	 * @param json
 	 * @return
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
 	public static JSONObject toJSON(String json) throws JSONException {
 		return new JSONObject(json);
@@ -119,6 +120,11 @@ public class JsonHelper {
 		return javabean;
 	}
 
+	public static <T> T toJavaBean(Class<T> clazz, Map data) throws Exception {
+		T javabean = clazz.newInstance();
+		return (T) toJavaBean(javabean, data);
+	}
+
 	/**
 	 * JSONObject到JavaBean
 	 * 
@@ -129,13 +135,15 @@ public class JsonHelper {
 	 *             json解析异常
 	 * @throws JSONException
 	 */
-	public static Object toJavaBean(Object javabean, String jsonString)
-			throws ParseException, JSONException {
-
+	public static Object toJavaBean(Object javabean, String jsonString) throws Exception {
 		JSONObject jsonObject = new JSONObject(jsonString);
 		Map map = toMap(jsonObject.toString());
-		
 		return toJavaBean(javabean, map);
+	}
+
+	public static <T> T toJavaBean(Class<T> clazz, String jsonString) throws Exception {
+		T javabean = clazz.newInstance();
+		return (T) toJavaBean(javabean, jsonString);
 	}
 
 }
