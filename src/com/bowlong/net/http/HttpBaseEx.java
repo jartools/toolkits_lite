@@ -54,8 +54,8 @@ public class HttpBaseEx extends InputStreamEx{
 			return "";
 
 		String ret = "";
-		charset = reCharset(charset, refObj);
-		boolean isSup = refObj.val;
+		charset = reCharset(charset, refBl);
+		boolean isSup = refBl.val;
 
 		Object[] keys = data.keySet().toArray();
 		if (isOrderKey)
@@ -156,8 +156,8 @@ public class HttpBaseEx extends InputStreamEx{
 	static final public byte[] getBytes4Str(String params, String charset) {
 		byte[] btParams = new byte[0];
 		if (!StrEx.isEmptyTrim(params)) {
-			charset = reCharset(charset, refObj);
-			boolean isSup = refObj.val;
+			charset = reCharset(charset, refBl);
+			boolean isSup = refBl.val;
 			try {
 				if (isSup) {
 					btParams = params.getBytes(charset);

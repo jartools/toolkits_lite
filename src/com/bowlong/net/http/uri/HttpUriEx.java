@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -33,7 +32,7 @@ import com.bowlong.util.ExceptionEx;
  */
 public class HttpUriEx extends HttpBaseEx {
 
-	static Log log = LogFactory.getLog(HttpUriEx.class);
+	static Log log = getLog(HttpUriEx.class);
 
 	// 4.3版本的超时
 	static final HttpClient httpclient4_3(int tiOutCon, int tiOutSo) {
@@ -127,8 +126,8 @@ public class HttpUriEx extends HttpBaseEx {
 			return "";
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 			try {
-				charset = reCharset(charset, refObj);
-				boolean isSup = refObj.val;
+				charset = reCharset(charset, refBl);
+				boolean isSup = refBl.val;
 
 				HttpEntity en = response.getEntity();
 				InputStream ins = en.getContent();
@@ -151,8 +150,8 @@ public class HttpUriEx extends HttpBaseEx {
 			return "";
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 			try {
-				charset = reCharset(charset, refObj);
-				boolean isSup = refObj.val;
+				charset = reCharset(charset, refBl);
+				boolean isSup = refBl.val;
 
 				HttpEntity en = response.getEntity();
 				InputStream ins = en.getContent();

@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -21,7 +20,7 @@ import com.bowlong.util.MapEx;
 
 public class HttpUriPostEx extends HttpUriEx {
 
-	static Log log = LogFactory.getLog(HttpUriPostEx.class);
+	static Log log = getLog(HttpUriPostEx.class);
 
 	static public final byte[] postMap(String host, Map<String, ?> params, String charset) {
 
@@ -29,8 +28,8 @@ public class HttpUriPostEx extends HttpUriEx {
 			return null;
 		}
 
-		charset = reCharset(charset, refObj);
-		boolean isSup = refObj.val;
+		charset = reCharset(charset, refBl);
+		boolean isSup = refBl.val;
 
 		try {
 			URL url = new URL(host);
@@ -76,8 +75,8 @@ public class HttpUriPostEx extends HttpUriEx {
 			return null;
 		}
 
-		charset = reCharset(charset, refObj);
-		boolean isSup = refObj.val;
+		charset = reCharset(charset, refBl);
+		boolean isSup = refBl.val;
 
 		try {
 			URL url = new URL(host);

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bowlong.basic.ExOrigin;
 import com.bowlong.bio2.B2InputStream;
 import com.bowlong.io.ByteInStream;
 import com.bowlong.io.ByteOutStream;
@@ -23,13 +24,10 @@ import com.bowlong.util.Ref;
  * @version createtime：2015年8月17日下午7:50:55
  */
 @SuppressWarnings({ "rawtypes" })
-public class InputStreamEx {
-
-	static final protected Ref<Boolean> refObj = new Ref<Boolean>(false);
-
+public class InputStreamEx extends ExOrigin {
 	static final public String reCharset(String charset) {
-		charset = reCharset(charset, refObj);
-		if (!refObj.val)
+		charset = reCharset(charset, refBl);
+		if (!refBl.val)
 			charset = EncodingEx.UTF_8;
 		return charset;
 	}
@@ -53,8 +51,8 @@ public class InputStreamEx {
 			return null;
 		try {
 			List<String> reList = new ArrayList<String>();
-			charset = reCharset(charset, refObj);
-			boolean isSup = refObj.val;
+			charset = reCharset(charset, refBl);
+			boolean isSup = refBl.val;
 			BufferedReader br = null;
 			if (isSup) {
 				br = new BufferedReader(new InputStreamReader(ins, charset));
@@ -153,8 +151,8 @@ public class InputStreamEx {
 		if (ins == null)
 			return "";
 		try {
-			charset = reCharset(charset, refObj);
-			boolean isSup = refObj.val;
+			charset = reCharset(charset, refBl);
+			boolean isSup = refBl.val;
 			byte[] bts = inps2Bytes(ins);
 			if (isSup) {
 				return new String(bts, charset);

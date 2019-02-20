@@ -8,7 +8,6 @@ import java.net.URLConnection;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.bowlong.lang.StrEx;
 import com.bowlong.net.http.HttpBaseEx;
@@ -24,7 +23,7 @@ import com.bowlong.text.EncodingEx;
  */
 public class HttpUrlConEx extends HttpBaseEx {
 
-	static Log log = LogFactory.getLog(HttpUrlConEx.class);
+	static Log log = getLog(HttpUrlConEx.class);
 
 	static public final byte[] send(String url, String query, byte[] params, boolean isPost, int timeOutCon,
 			int timeOutSo) {
