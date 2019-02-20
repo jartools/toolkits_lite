@@ -207,6 +207,16 @@ public class EODateFmt extends EOStrNum {
 		return format(v, fmt_yyyy_MM_dd_HH_mm_ss);
 	}
 
+	/*** 默认-(yyyy-MM-dd HH:mm:ss) **/
+	static final public String tFmt(long ms) {
+		return format_YMDHms(ms);
+	}
+
+	/*** 默认-(yyyy-MM-dd HH:mm:ss) **/
+	static final public String tFmt(Date d) {
+		return format_YMDHms(d);
+	}
+
 	/*** [0]=天，[1]=时，[2]=分，[3]=秒，[4]=毫秒 **/
 	static public final int[] toDiffArray(final long diff) {
 		long tmpMs = diff;

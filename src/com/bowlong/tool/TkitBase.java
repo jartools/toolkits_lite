@@ -26,8 +26,6 @@ import com.bowlong.bio2.B2InputStream;
 import com.bowlong.io.ByteInStream;
 import com.bowlong.io.ByteOutStream;
 import com.bowlong.io.FileRw;
-import com.bowlong.lang.NumEx;
-import com.bowlong.lang.RndEx;
 import com.bowlong.lang.StrEx;
 import com.bowlong.lang.task.SchedulerEx;
 import com.bowlong.lang.task.ThreadEx;
@@ -36,7 +34,6 @@ import com.bowlong.objpool.ByteOutPool;
 import com.bowlong.objpool.ObjPool;
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.pinyin.PinYin;
-import com.bowlong.util.DateEx;
 import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.MapEx;
 
@@ -98,56 +95,8 @@ public class TkitBase extends TkitOrigin {
 	}
 
 	// ///////////////////////////////////////////////////
-	static public final <T> T rand(List objs) {
-		if (objs == null || objs.isEmpty())
-			return null;
-		else if (objs.size() == 1)
-			return (T) objs.get(0);
-
-		int i = RndEx.nextInt(0, objs.size());
-		return (T) objs.get(i);
-	}
-
 	static public final String pn(int n) {
 		return n > 0 ? "+" + n : String.valueOf(n);
-	}
-
-	static public final int compareTo4More(Object v1, Object v2, String parttern) {
-		if (v1 == null || v2 == null)
-			return 0;
-		boolean isDate1 = (v1 instanceof Date);
-		boolean isDate2 = (v2 instanceof Date);
-		if ((isDate1 && isDate2) || (!isDate1 && !isDate2)) {
-			return compareTo(v1, v2);
-		}
-
-		if (isDate1) {
-			Date d1 = (Date) v1;
-			Date d2 = null;
-			if (v2 instanceof String) {
-				long time = NumEx.stringToLong(v2.toString());
-				if (time > DateEx.TIME_1900) {
-					d2 = DateEx.parse2Date(time);
-				} else {
-					d2 = DateEx.parse2Date(v2.toString(), parttern);
-				}
-			} else if (v2 instanceof Long || v2 instanceof Integer) {
-				long time = 0l;
-				if (v2 instanceof Long)
-					time = (long) v2;
-				else
-					time = (int) v2;
-
-				if (time > DateEx.TIME_1900) {
-					d2 = DateEx.parse2Date(time);
-				} else {
-					return 0;
-				}
-			}
-			return compareTo(d1, d2);
-		}
-
-		return compareTo4More(v2, v1, parttern);
 	}
 
 	// ///////////////////////////////////////////////////
@@ -197,14 +146,6 @@ public class TkitBase extends TkitOrigin {
 	}
 
 	// ///////////////////////////////////////////////////
-	static public final String tFmt(long ms) {
-		return DateEx.format_YMDHms(ms);
-	}
-
-	static public final String tFmt(Date d) {
-		return DateEx.format_YMDHms(d);
-	}
-
 	static public final String s(String s, Object... args) {
 		return String.format(s, args);
 	}
@@ -412,13 +353,5 @@ public class TkitBase extends TkitOrigin {
 		} catch (Exception e) {
 			throw e;
 		}
-	}
-
-	static public final String getAppRoot() {
-		return System.getProperty("user.dir");
-	}
-
-	static public final String getAppPath() {
-		return TkitBase.class.getClassLoader().getResource("").getPath();
 	}
 }

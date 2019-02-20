@@ -24,12 +24,20 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class EOBasic {
-	static final protected String kf_2 = "%s_%s";
-	static final protected String kf_3 = "%s_%s_%s";
-	static final protected String kf_4 = "%s_%s_%s_%s";
-	
+	static final public String kf_2 = "%s_%s";
+	static final public String kf_3 = "%s_%s_%s";
+	static final public String kf_4 = "%s_%s_%s_%s";
+
 	static final public <T> T toT(Object obj) {
 		return (T) obj;
+	}
+
+	static final public String getAppRoot() {
+		return System.getProperty("user.dir");
+	}
+
+	static final public String getAppPath() {
+		return EOBasic.class.getClassLoader().getResource("").getPath();
 	}
 
 	static final public byte[] toByteArray(final String s, final String charset) throws Exception {
