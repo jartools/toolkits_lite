@@ -9,12 +9,12 @@ import com.bowlong.util.Ref;
  * @version createtime：2015年8月21日下午3:33:23
  */
 public class EOStrNum extends EOBasic {
-	static final private Ref<Byte> refByte = new Ref<Byte>((byte) 0);
-	static final private Ref<Short> refShort = new Ref<Short>((short) 0);
-	static final private Ref<Integer> refInt = new Ref<Integer>(0);
-	static final private Ref<Long> refLong = new Ref<Long>(0L);
-	static final private Ref<Float> refFloat = new Ref<Float>(0F);
-	static final private Ref<Double> refDouble = new Ref<Double>(0D);
+	static final protected Ref<Byte> refByte = new Ref<Byte>((byte) 0);
+	static final protected Ref<Short> refShort = new Ref<Short>((short) 0);
+	static final protected Ref<Integer> refInt = new Ref<Integer>(0);
+	static final protected Ref<Long> refLong = new Ref<Long>(0L);
+	static final protected Ref<Float> refFloat = new Ref<Float>(0F);
+	static final protected Ref<Double> refDouble = new Ref<Double>(0D);
 
 	static final public boolean isByte(final String s, final Ref<Byte> ref) {
 		try {
@@ -270,5 +270,54 @@ public class EOStrNum extends EOBasic {
 			return (String) v;
 
 		return String.valueOf(v);
+	}
+
+	static final public String getAppRoot() {
+		return System.getProperty("user.dir");
+	}
+
+	static final public String getAppPath() {
+		return EOStrNum.class.getClassLoader().getResource("").getPath();
+	}
+
+	static final public String dirTmWebRoot() {
+		String root = getAppRoot();
+		String dir = root.replace("bin", "webapps");
+		dir = repBackSlash(dir, "/");
+		if (!dir.endsWith("/")) {
+			dir = dir + "/";
+		}
+		return dir;
+	}
+
+	static final public String package2Path(String pkg) {
+		return pkg.replaceAll("\\.", "/");
+	}
+
+	/*** \反斜杠替换成空白 **/
+	static final public String repBackSlash(String str) {
+		return repBackSlash(str, "");
+	}
+
+	/*** \反斜杠替换 **/
+	static final public String repBackSlash(String str, String reval) {
+		if (reval == null)
+			reval = "";
+		return str.replaceAll("\\\\", reval);
+	}
+
+	/*** 斜杠/替换 **/
+	static final public String repSlash(String str, String reval) {
+		if (reval == null)
+			reval = "";
+		return str.replaceAll("/", reval);
+	}
+
+	/*** 斜杠/与\反斜杠都替换 **/
+	static public final String repSlashAll(String str, String reval) {
+		if (reval == null)
+			reval = "";
+		str = repSlash(str, reval);
+		return repBackSlash(str, reval);
 	}
 }

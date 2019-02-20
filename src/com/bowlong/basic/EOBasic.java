@@ -32,55 +32,6 @@ public class EOBasic {
 		return (T) obj;
 	}
 
-	static final public String getAppRoot() {
-		return System.getProperty("user.dir");
-	}
-
-	static final public String getAppPath() {
-		return EOBasic.class.getClassLoader().getResource("").getPath();
-	}
-
-	static final public String dirTmWebRoot() {
-		String root = getAppRoot();
-		String dir = root.replace("bin", "webapps");
-		dir = repBackSlash(dir, "/");
-		if (!dir.endsWith("/")) {
-			dir = dir + "/";
-		}
-		return dir;
-	}
-
-	static final public String package2Path(String pkg) {
-		return pkg.replaceAll("\\.", "/");
-	}
-
-	/*** \反斜杠替换成空白 **/
-	static final public String repBackSlash(String str) {
-		return repBackSlash(str, "");
-	}
-
-	/*** \反斜杠替换 **/
-	static final public String repBackSlash(String str, String reval) {
-		if (reval == null)
-			reval = "";
-		return str.replaceAll("\\\\", reval);
-	}
-
-	/*** 斜杠/替换 **/
-	static final public String repSlash(String str, String reval) {
-		if (reval == null)
-			reval = "";
-		return str.replaceAll("/", reval);
-	}
-
-	/*** 斜杠/与\反斜杠都替换 **/
-	static public final String repSlashAll(String str, String reval) {
-		if (reval == null)
-			reval = "";
-		str = repSlash(str, reval);
-		return repBackSlash(str, reval);
-	}
-
 	static final public byte[] toByteArray(String s, String charset) throws Exception {
 		return s.getBytes(charset);
 	}
