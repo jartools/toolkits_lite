@@ -9,10 +9,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -127,6 +130,73 @@ public class EOBasic {
 		return 0;
 	}
 
+	static final public long now() {
+		return System.currentTimeMillis();
+	}
+
+	static final public String trim(String o) {
+		if (o == null)
+			return "";
+		return o.trim();
+	}
+
+	static final public boolean isEmpty(String type) {
+		return type == null || type.length() <= 0;
+	}
+
+	static final public boolean isEmptyTrim(String val) {
+		if (val != null)
+			val = val.trim();
+		return isEmpty(val);
+	}
+
+	static final public boolean isNull(Object o) {
+		return o == null;
+	}
+
+	static final public boolean isNull(String o) {
+		if (o == null)
+			return true;
+		o = o.trim();
+		return o.isEmpty();
+	}
+
+	static final public boolean isEmpty(byte[] o) {
+		return o == null || o.length <= 0;
+	}
+
+	static final public boolean notNull(Object o) {
+		return o != null;
+	}
+
+	static final public boolean notEmpty(byte[] o) {
+		return o != null && o.length > 0;
+	}
+
+	static final public boolean notEmpty(String o) {
+		return o != null && !o.isEmpty();
+	}
+
+	static final public boolean isEmpty(String... stres) {
+		return (stres == null || stres.length <= 0);
+	}
+
+	static public final boolean isEmpty(byte[]... bts) {
+		return (bts == null || bts.length <= 0);
+	}
+
+	static final public boolean isEmpty(Object... objs) {
+		return (objs == null || objs.length <= 0);
+	}
+
+	static final public boolean isEmpty(Map o) {
+		return o == null || o.isEmpty();
+	}
+
+	static final public boolean notEmpty(Map o) {
+		return o != null && !o.isEmpty();
+	}
+
 	static final public <K, V> Map<K, V> newMap() {
 		return new ConcurrentHashMap<K, V>();// 线程安全的,它是HashTable的替代，比HashTable的扩展性更好。
 	}
@@ -139,7 +209,7 @@ public class EOBasic {
 		return new Hashtable<K, V>();// 线程安全的 等价于 newMap2
 	}
 
-	static final public <K, V> Map<K, V> newMapKV() {
+	static final public <K, V> Map<K, V> newMapT() {
 		return new HashMap<K, V>();
 	}
 
@@ -157,6 +227,18 @@ public class EOBasic {
 		}
 		map.clear();
 		return map;
+	}
+
+	static final public boolean isEmpty(List o) {
+		return o == null || o.isEmpty();
+	}
+
+	static final public boolean isEmpty(Set s) {
+		return (s == null || s.isEmpty());
+	}
+
+	static final public boolean notEmpty(List o) {
+		return o != null && !o.isEmpty();
 	}
 
 	static public final <T> List<T> newList() {
@@ -194,82 +276,15 @@ public class EOBasic {
 		return ls;
 	}
 
-	static final public String trim(String o) {
-		if (o == null)
-			return "";
-		return o.trim();
+	static final public <E> Queue<E> newQueue() {
+		return new ConcurrentLinkedQueue<E>();
 	}
 
-	static final public boolean isEmpty(String type) {
-		return type == null || type.length() <= 0;
+	static final public <E> Queue<E> newQueueT() {
+		return new LinkedList<E>();
 	}
 
-	static final public boolean isEmptyTrim(String val) {
-		if (val != null)
-			val = val.trim();
-		return isEmpty(val);
-	}
-
-	static final public boolean isNull(Object o) {
-		return o == null;
-	}
-
-	static final public boolean isNull(String o) {
-		if (o == null)
-			return true;
-		o = o.trim();
-		return o.isEmpty();
-	}
-
-	static final public boolean isEmpty(byte[] o) {
-		return o == null || o.length <= 0;
-	}
-
-	static final public boolean isEmpty(List o) {
-		return o == null || o.isEmpty();
-	}
-
-	static final public boolean isEmpty(Map o) {
-		return o == null || o.isEmpty();
-	}
-
-	static final public boolean notNull(Object o) {
-		return o != null;
-	}
-
-	static final public boolean notEmpty(byte[] o) {
-		return o != null && o.length > 0;
-	}
-
-	static final public boolean notEmpty(List o) {
-		return o != null && !o.isEmpty();
-	}
-
-	static final public boolean notEmpty(Map o) {
-		return o != null && !o.isEmpty();
-	}
-
-	static final public boolean notEmpty(String o) {
-		return o != null && !o.isEmpty();
-	}
-
-	static final public boolean isEmpty(Set s) {
+	static final public boolean isEmpty(Queue s) {
 		return (s == null || s.isEmpty());
-	}
-
-	static final public boolean isEmpty(String... stres) {
-		return (stres == null || stres.length <= 0);
-	}
-
-	static public final boolean isEmpty(byte[]... bts) {
-		return (bts == null || bts.length <= 0);
-	}
-
-	static final public boolean isEmpty(Object... objs) {
-		return (objs == null || objs.length <= 0);
-	}
-
-	static final public long now() {
-		return System.currentTimeMillis();
 	}
 }
