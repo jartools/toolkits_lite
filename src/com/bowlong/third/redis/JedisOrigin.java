@@ -3,15 +3,15 @@ package com.bowlong.third.redis;
 import java.io.Serializable;
 import java.util.Map;
 
+import com.bowlong.basic.ExToolkit;
+import com.bowlong.lang.StrEx;
+import com.bowlong.sql.beanbasic.BeanSupport;
+import com.bowlong.util.MapEx;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Pipeline;
-
-import com.bowlong.Toolkit;
-import com.bowlong.lang.StrEx;
-import com.bowlong.sql.beanbasic.BeanSupport;
-import com.bowlong.util.MapEx;
 
 /**
  * jedis -- redis 的config与pool
@@ -372,14 +372,14 @@ public class JedisOrigin implements Serializable {
 		if (val instanceof BeanSupport) {
 			BeanSupport tt = ((BeanSupport) val);
 			try {
-				return Toolkit.serialization(tt.toBasicMap());
+				return ExToolkit.serialization(tt.toBasicMap());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return null;
 		}
 		try {
-			return Toolkit.serialization(val);
+			return ExToolkit.serialization(val);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

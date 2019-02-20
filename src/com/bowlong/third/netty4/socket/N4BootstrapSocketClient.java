@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.bowlong.Toolkit;
+import com.bowlong.basic.ExToolkit;
 import com.bowlong.util.MapEx;
 
 import io.netty.bootstrap.Bootstrap;
@@ -80,7 +80,7 @@ public class N4BootstrapSocketClient extends N4Socket {
 					chnFu.sync();
 				}
 			} catch (Exception e) {
-				log.error(Toolkit.e2s(e));
+				log.error(ExToolkit.e2s(e));
 			}
 			if (chnFu != null) {
 				map.put("chnFuture", chnFu);

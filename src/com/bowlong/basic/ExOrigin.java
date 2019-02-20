@@ -3,10 +3,6 @@ package com.bowlong.basic;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import java.util.List;
-
-import com.bowlong.lang.RndEx;
-import com.bowlong.util.DateEx;
 
 /**
  * Ex扩展类的起源<br/>
@@ -194,7 +190,7 @@ public class ExOrigin extends EODateFmt {
 
 		Date d2 = null;
 		long time = stringToLong(v2.toString());
-		if (time > DateEx.TIME_1900) {
+		if (time > TIME_1900) {
 			d2 = parse2Date(time);
 		} else {
 			d2 = parse2Date(v2.toString(), parttern);
@@ -219,15 +215,5 @@ public class ExOrigin extends EODateFmt {
 
 	static final public double round2(double org) {
 		return round(org, 2);
-	}
-
-	static final public <T> T rand(List<T> objs) {
-		if (objs == null || objs.isEmpty())
-			return null;
-		else if (objs.size() == 1)
-			return (T) objs.get(0);
-
-		int i = RndEx.nextInt(0, objs.size());
-		return (T) objs.get(i);
 	}
 }

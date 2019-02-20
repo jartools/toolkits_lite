@@ -33,14 +33,13 @@ import org.apache.commons.dbcp.BasicDataSource;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidPooledConnection;
-import com.bowlong.Toolkit;
+import com.bowlong.basic.ExToolkit;
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.text.Encoding;
-import com.bowlong.util.ListEx;
 import com.bowlong.util.MapEx;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class SqlEx extends Toolkit {
+public class SqlEx extends ExToolkit {
 	public static enum TableType {
 		TABLE, VIEW, SYSTEM_TABLE, GLOBAL_TEMPORARY, LOCAL_TEMPORARY, ALIAS, SYNONYM
 	}
@@ -107,8 +106,7 @@ public class SqlEx extends Toolkit {
 
 	// ///////////////////////////////////////////////////////////////////////
 	// JavaDB derby
-	public static final Connection newDerbyConnectiion(String db)
-			throws SQLException, ClassNotFoundException {
+	public static final Connection newDerbyConnectiion(String db) throws SQLException, ClassNotFoundException {
 		String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 		Class.forName(driver);
 		String s = "jdbc:derby:%s;create=true";
@@ -129,9 +127,8 @@ public class SqlEx extends Toolkit {
 		return DriverManager.getConnection(url);
 	}
 
-	public static final Connection newOdbcMsAccessConnectiion(String filename,
-			String user, String password) throws SQLException,
-			ClassNotFoundException {
+	public static final Connection newOdbcMsAccessConnectiion(String filename, String user, String password)
+			throws SQLException, ClassNotFoundException {
 		String driver = ("sun.jdbc.odbc.JdbcOdbcDriver");
 		String s = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=%s";
 		String url = s(s, filename);
@@ -152,8 +149,7 @@ public class SqlEx extends Toolkit {
 
 	// ///////////////////////////////////////////////////////////////////////
 	// Csv
-	public static final Connection newOdbcCsvConnectiion(String filename)
-			throws SQLException, ClassNotFoundException {
+	public static final Connection newOdbcCsvConnectiion(String filename) throws SQLException, ClassNotFoundException {
 		String driver = ("sun.jdbc.odbc.JdbcOdbcDriver");
 		String s = "jdbc:odbc:Driver={Microsoft Access Text Driver (*.txt,*.csv)};DBQ=%s";
 		String url = s(s, filename);
@@ -163,22 +159,20 @@ public class SqlEx extends Toolkit {
 
 	// ///////////////////////////////////////////////////////////////////////
 	// Odbc Ms Sql
-	public static final Connection newOdbcMsSqlConnectiion(String db)
-			throws SQLException, ClassNotFoundException {
+	public static final Connection newOdbcMsSqlConnectiion(String db) throws SQLException, ClassNotFoundException {
 		String host = "127.0.0.1";
 		return newOdbcMsSqlConnectiion(host, db);
 	}
 
-	public static final Connection newOdbcMsSqlConnectiion(String host,
-			String db) throws SQLException, ClassNotFoundException {
+	public static final Connection newOdbcMsSqlConnectiion(String host, String db)
+			throws SQLException, ClassNotFoundException {
 		String user = "sa";
 		String password = "";
 		return newOdbcMsSqlConnectiion(host, db, user, password);
 	}
 
-	public static final Connection newOdbcMsSqlConnectiion(String host,
-			String db, String user, String password) throws SQLException,
-			ClassNotFoundException {
+	public static final Connection newOdbcMsSqlConnectiion(String host, String db, String user, String password)
+			throws SQLException, ClassNotFoundException {
 		String driver = ("sun.jdbc.odbc.JdbcOdbcDriver");
 		String s = "jdbc:odbc:Driver={SQL Server};Server=%s;Database=%s";
 		String url = s(s, host, db);
@@ -188,28 +182,26 @@ public class SqlEx extends Toolkit {
 
 	// ///////////////////////////////////////////////////////////////////////
 	// Jtds
-	public static final Connection newJtdsSqlserverConnection(String db)
-			throws ClassNotFoundException, SQLException {
+	public static final Connection newJtdsSqlserverConnection(String db) throws ClassNotFoundException, SQLException {
 		String host = "127.0.0.1";
 		return newJtdsSqlserverConnection(host, db);
 	}
 
-	public static final Connection newJtdsSqlserverConnection(String host,
-			String db) throws ClassNotFoundException, SQLException {
+	public static final Connection newJtdsSqlserverConnection(String host, String db)
+			throws ClassNotFoundException, SQLException {
 		int port = 1433;
 		return newJtdsSqlserverConnection(host, port, db);
 	}
 
-	public static final Connection newJtdsSqlserverConnection(String host,
-			int port, String db) throws ClassNotFoundException, SQLException {
+	public static final Connection newJtdsSqlserverConnection(String host, int port, String db)
+			throws ClassNotFoundException, SQLException {
 		String user = "sa";
 		String password = "";
 		return newJtdsSqlserverConnection(host, port, db, user, password);
 	}
 
-	public static final Connection newJtdsSqlserverConnection(String host,
-			int port, String db, String user, String password)
-			throws ClassNotFoundException, SQLException {
+	public static final Connection newJtdsSqlserverConnection(String host, int port, String db, String user,
+			String password) throws ClassNotFoundException, SQLException {
 		String driver = ("net.sourceforge.jtds.jdbc.Driver");
 		String s = "jdbc:jtds:sqlserver://%s:%d/%s";
 		String url = s(s, host, port, db);
@@ -271,17 +263,14 @@ public class SqlEx extends Toolkit {
 		int maxPoolPreparedStatementPerConnectionSize = 0;
 		boolean removeAbandoned = true;
 		int removeAbandonedTimeout = 1800;
-		return newDruidDataSource(driver, jdbcUrl, username, password,
-				maxActive, initialSize, maxWait, minIdle,
-				timeBetweenEvictionRunsMillis, minEvictableIdleTimeMillis,
-				validationQuery, testWhileIdle, testOnBorrow, testOnReturn,
-				poolPreparedStatements,
-				maxPoolPreparedStatementPerConnectionSize, removeAbandoned,
+		return newDruidDataSource(driver, jdbcUrl, username, password, maxActive, initialSize, maxWait, minIdle,
+				timeBetweenEvictionRunsMillis, minEvictableIdleTimeMillis, validationQuery, testWhileIdle, testOnBorrow,
+				testOnReturn, poolPreparedStatements, maxPoolPreparedStatementPerConnectionSize, removeAbandoned,
 				removeAbandonedTimeout);
 	}
 
-	public static final DruidDataSource newDruidMysqlDataSource(String host,
-			int port, String db, String username, String password) {
+	public static final DruidDataSource newDruidMysqlDataSource(String host, int port, String db, String username,
+			String password) {
 		String encoding = Encoding.UTF_8;
 		int maxActive = 64;
 		int initialSize = 2;
@@ -301,17 +290,13 @@ public class SqlEx extends Toolkit {
 		int maxPoolPreparedStatementPerConnectionSize = 0;
 		boolean removeAbandoned = true;
 		int removeAbandonedTimeout = 1800;
-		return newDruidDataSource(driver, jdbcUrl, username, password,
-				maxActive, initialSize, maxWait, minIdle,
-				timeBetweenEvictionRunsMillis, minEvictableIdleTimeMillis,
-				validationQuery, testWhileIdle, testOnBorrow, testOnReturn,
-				poolPreparedStatements,
-				maxPoolPreparedStatementPerConnectionSize, removeAbandoned,
+		return newDruidDataSource(driver, jdbcUrl, username, password, maxActive, initialSize, maxWait, minIdle,
+				timeBetweenEvictionRunsMillis, minEvictableIdleTimeMillis, validationQuery, testWhileIdle, testOnBorrow,
+				testOnReturn, poolPreparedStatements, maxPoolPreparedStatementPerConnectionSize, removeAbandoned,
 				removeAbandonedTimeout);
 	}
 
-	public static final DruidDataSource newDruidMysqlDataSource(String host,
-			int port, String db) {
+	public static final DruidDataSource newDruidMysqlDataSource(String host, int port, String db) {
 		String encoding = Encoding.UTF_8;
 		String username = "root";
 		String password = "";
@@ -333,19 +318,14 @@ public class SqlEx extends Toolkit {
 		int maxPoolPreparedStatementPerConnectionSize = 0;
 		boolean removeAbandoned = true;
 		int removeAbandonedTimeout = 1800;
-		return newDruidDataSource(driver, jdbcUrl, username, password,
-				maxActive, initialSize, maxWait, minIdle,
-				timeBetweenEvictionRunsMillis, minEvictableIdleTimeMillis,
-				validationQuery, testWhileIdle, testOnBorrow, testOnReturn,
-				poolPreparedStatements,
-				maxPoolPreparedStatementPerConnectionSize, removeAbandoned,
+		return newDruidDataSource(driver, jdbcUrl, username, password, maxActive, initialSize, maxWait, minIdle,
+				timeBetweenEvictionRunsMillis, minEvictableIdleTimeMillis, validationQuery, testWhileIdle, testOnBorrow,
+				testOnReturn, poolPreparedStatements, maxPoolPreparedStatementPerConnectionSize, removeAbandoned,
 				removeAbandonedTimeout);
 	}
 
-	public static final DruidDataSource newDruidMysqlDataSource(String host,
-			int port, String db, String encoding, String username,
-			String password, int maxActive, int initialSize, int maxWait,
-			int minIdle) {
+	public static final DruidDataSource newDruidMysqlDataSource(String host, int port, String db, String encoding,
+			String username, String password, int maxActive, int initialSize, int maxWait, int minIdle) {
 		String driver = ("com.mysql.jdbc.Driver");
 		String s = "jdbc:mysql://%s:%d/%s?autoReconnect=%s&characterEncoding=%s";
 		String jdbcUrl = s(s, host, port, db, "true", encoding);
@@ -359,18 +339,14 @@ public class SqlEx extends Toolkit {
 		int maxPoolPreparedStatementPerConnectionSize = 0;
 		boolean removeAbandoned = true;
 		int removeAbandonedTimeout = 1800;
-		return newDruidDataSource(driver, jdbcUrl, username, password,
-				maxActive, initialSize, maxWait, minIdle,
-				timeBetweenEvictionRunsMillis, minEvictableIdleTimeMillis,
-				validationQuery, testWhileIdle, testOnBorrow, testOnReturn,
-				poolPreparedStatements,
-				maxPoolPreparedStatementPerConnectionSize, removeAbandoned,
+		return newDruidDataSource(driver, jdbcUrl, username, password, maxActive, initialSize, maxWait, minIdle,
+				timeBetweenEvictionRunsMillis, minEvictableIdleTimeMillis, validationQuery, testWhileIdle, testOnBorrow,
+				testOnReturn, poolPreparedStatements, maxPoolPreparedStatementPerConnectionSize, removeAbandoned,
 				removeAbandonedTimeout);
 	}
 
-	public static final DruidDataSource newDruidDataSource(String driver,
-			String jdbcUrl, String username, String password, int maxActive,
-			int initialSize, int maxWait, int minIdle) {
+	public static final DruidDataSource newDruidDataSource(String driver, String jdbcUrl, String username,
+			String password, int maxActive, int initialSize, int maxWait, int minIdle) {
 		int timeBetweenEvictionRunsMillis = 60000;
 		int minEvictableIdleTimeMillis = 300000;
 		String validationQuery = "SELECT 'x'";
@@ -381,24 +357,17 @@ public class SqlEx extends Toolkit {
 		int maxPoolPreparedStatementPerConnectionSize = 128;
 		boolean removeAbandoned = true;
 		int removeAbandonedTimeout = 1800;
-		return newDruidDataSource(driver, jdbcUrl, username, password,
-				maxActive, initialSize, maxWait, minIdle,
-				timeBetweenEvictionRunsMillis, minEvictableIdleTimeMillis,
-				validationQuery, testWhileIdle, testOnBorrow, testOnReturn,
-				poolPreparedStatements,
-				maxPoolPreparedStatementPerConnectionSize, removeAbandoned,
+		return newDruidDataSource(driver, jdbcUrl, username, password, maxActive, initialSize, maxWait, minIdle,
+				timeBetweenEvictionRunsMillis, minEvictableIdleTimeMillis, validationQuery, testWhileIdle, testOnBorrow,
+				testOnReturn, poolPreparedStatements, maxPoolPreparedStatementPerConnectionSize, removeAbandoned,
 				removeAbandonedTimeout);
 	}
 
-	public static final DruidDataSource newDruidDataSource(String driver,
-			String jdbcUrl, String username, String password, int maxActive,
-			int initialSize, int maxWait, int minIdle,
-			int timeBetweenEvictionRunsMillis, int minEvictableIdleTimeMillis,
-			String validationQuery, boolean testWhileIdle,
-			boolean testOnBorrow, boolean testOnReturn,
-			boolean poolPreparedStatements,
-			int maxPoolPreparedStatementPerConnectionSize,
-			boolean removeAbandoned, int removeAbandonedTimeout) {
+	public static final DruidDataSource newDruidDataSource(String driver, String jdbcUrl, String username,
+			String password, int maxActive, int initialSize, int maxWait, int minIdle,
+			int timeBetweenEvictionRunsMillis, int minEvictableIdleTimeMillis, String validationQuery,
+			boolean testWhileIdle, boolean testOnBorrow, boolean testOnReturn, boolean poolPreparedStatements,
+			int maxPoolPreparedStatementPerConnectionSize, boolean removeAbandoned, int removeAbandonedTimeout) {
 		DruidDataSource ds = new DruidDataSource();
 		ds.setDriverClassName(driver);
 		ds.setUrl(jdbcUrl);
@@ -423,61 +392,51 @@ public class SqlEx extends Toolkit {
 		return ds;
 	}
 
-	public static final BasicDataSource newMysqlDataSource(String db)
-			throws ClassNotFoundException, SQLException {
+	public static final BasicDataSource newMysqlDataSource(String db) throws ClassNotFoundException, SQLException {
 		int maxActive = 8;
 		return newMysqlDataSource(db, maxActive);
 	}
 
-	public static final BasicDataSource newMysqlDataSource(String db,
-			int maxActive) throws ClassNotFoundException, SQLException {
+	public static final BasicDataSource newMysqlDataSource(String db, int maxActive)
+			throws ClassNotFoundException, SQLException {
 		int maxIdle = 1;
 		return newMysqlDataSource(db, maxActive, maxIdle);
 	}
 
-	public static final BasicDataSource newMysqlDataSource(String db,
-			int maxActive, int maxIdle) throws ClassNotFoundException,
-			SQLException {
+	public static final BasicDataSource newMysqlDataSource(String db, int maxActive, int maxIdle)
+			throws ClassNotFoundException, SQLException {
 		String host = "127.0.0.1";
 		return newMysqlDataSource(host, db, maxActive, maxIdle);
 	}
 
-	public static final BasicDataSource newMysqlDataSource(String host,
-			String db, int maxActive, int maxIdle)
+	public static final BasicDataSource newMysqlDataSource(String host, String db, int maxActive, int maxIdle)
 			throws ClassNotFoundException, SQLException {
 		String user = "root";
 		String password = "";
 		return newMysqlDataSource(host, db, user, password, maxActive, maxIdle);
 	}
 
-	public static final BasicDataSource newMysqlDataSource(int port, String db,
-			String user, String password, int maxActive, int maxIdle)
-			throws ClassNotFoundException, SQLException {
+	public static final BasicDataSource newMysqlDataSource(int port, String db, String user, String password,
+			int maxActive, int maxIdle) throws ClassNotFoundException, SQLException {
 		String host = "127.0.0.1";
-		return newMysqlDataSource(host, port, db, user, password, maxActive,
-				maxIdle);
+		return newMysqlDataSource(host, port, db, user, password, maxActive, maxIdle);
 	}
 
-	public static final BasicDataSource newMysqlDataSource(String host,
-			String db, String user, String password, int maxActive, int maxIdle)
-			throws ClassNotFoundException, SQLException {
+	public static final BasicDataSource newMysqlDataSource(String host, String db, String user, String password,
+			int maxActive, int maxIdle) throws ClassNotFoundException, SQLException {
 		int port = 3306;
-		return newMysqlDataSource(host, port, db, user, password, maxActive,
-				maxIdle);
+		return newMysqlDataSource(host, port, db, user, password, maxActive, maxIdle);
 	}
 
-	public static final BasicDataSource newMysqlDataSource(String host,
-			int port, String db, String user, String password, int maxActive,
-			int maxIdle) throws ClassNotFoundException, SQLException {
+	public static final BasicDataSource newMysqlDataSource(String host, int port, String db, String user,
+			String password, int maxActive, int maxIdle) throws ClassNotFoundException, SQLException {
 		boolean reconnect = true;
 		String encoding = "utf-8";
-		return newMysqlDataSource(host, port, db, reconnect, encoding, user,
-				password, maxActive, maxIdle);
+		return newMysqlDataSource(host, port, db, reconnect, encoding, user, password, maxActive, maxIdle);
 	}
 
-	public static final BasicDataSource newMysqlDataSource(String host,
-			int port, String db, boolean reconnect, String encoding,
-			String user, String password, int maxActive, int maxIdle)
+	public static final BasicDataSource newMysqlDataSource(String host, int port, String db, boolean reconnect,
+			String encoding, String user, String password, int maxActive, int maxIdle)
 			throws ClassNotFoundException, SQLException {
 		String driver = ("com.mysql.jdbc.Driver");
 		String s = "jdbc:mysql://%s:%d/%s?autoReconnect=%s&characterEncoding=%s";
@@ -496,13 +455,10 @@ public class SqlEx extends Toolkit {
 		return ds;
 	}
 
-	public static final BasicDataSource newBasicDataSource(String driver,
-			String url, String username, String password, int maxActive,
-			int maxIdle, int initialSize, int maxWait, int minIdle,
-			int timeBetweenEvictionRunsMillis, int minEvictableIdleTimeMillis,
-			String validationQuery, boolean testWhileIdle,
-			boolean testOnBorrow, boolean testOnReturn,
-			boolean poolPreparedStatements, int maxOpenStatements) {
+	public static final BasicDataSource newBasicDataSource(String driver, String url, String username, String password,
+			int maxActive, int maxIdle, int initialSize, int maxWait, int minIdle, int timeBetweenEvictionRunsMillis,
+			int minEvictableIdleTimeMillis, String validationQuery, boolean testWhileIdle, boolean testOnBorrow,
+			boolean testOnReturn, boolean poolPreparedStatements, int maxOpenStatements) {
 		BasicDataSource ds = new BasicDataSource();
 		ds.setDriverClassName(driver);
 		ds.setUrl(url);
@@ -526,8 +482,7 @@ public class SqlEx extends Toolkit {
 
 	// ///////////////////////////////////////////////////////////////////////
 	// Mysql
-	public static final Connection newMysqlConnection(String db)
-			throws ClassNotFoundException, SQLException {
+	public static final Connection newMysqlConnection(String db) throws ClassNotFoundException, SQLException {
 		String host = "127.0.0.1";
 		return newMysqlConnection(host, db);
 	}
@@ -539,32 +494,27 @@ public class SqlEx extends Toolkit {
 		return newMysqlConnection(host, db, user, password);
 	}
 
-	public static final Connection newMysqlConnection(int port, String db,
-			String user, String password) throws ClassNotFoundException,
-			SQLException {
+	public static final Connection newMysqlConnection(int port, String db, String user, String password)
+			throws ClassNotFoundException, SQLException {
 		String host = "127.0.0.1";
 		return newMysqlConnection(host, port, db, user, password);
 	}
 
-	public static final Connection newMysqlConnection(String host, String db,
-			String user, String password) throws ClassNotFoundException,
-			SQLException {
+	public static final Connection newMysqlConnection(String host, String db, String user, String password)
+			throws ClassNotFoundException, SQLException {
 		int port = 3306;
 		return newMysqlConnection(host, port, db, user, password);
 	}
 
-	public static final Connection newMysqlConnection(String host, int port,
-			String db, String user, String password)
+	public static final Connection newMysqlConnection(String host, int port, String db, String user, String password)
 			throws ClassNotFoundException, SQLException {
 		boolean reconnect = true;
 		String encoding = "utf-8";
-		return newMysqlConnection(host, port, db, reconnect, encoding, user,
-				password);
+		return newMysqlConnection(host, port, db, reconnect, encoding, user, password);
 	}
 
-	public static final Connection newMysqlConnection(String host, int port,
-			String db, boolean reconnect, String encoding, String user,
-			String password) throws ClassNotFoundException, SQLException {
+	public static final Connection newMysqlConnection(String host, int port, String db, boolean reconnect,
+			String encoding, String user, String password) throws ClassNotFoundException, SQLException {
 		String driver = ("com.mysql.jdbc.Driver");
 		String s = "jdbc:mysql://%s:%d/%s?autoReconnect=%s&characterEncoding=%s";
 		String url = s(s, host, port, db, String.valueOf(reconnect), encoding);
@@ -574,8 +524,7 @@ public class SqlEx extends Toolkit {
 
 	// ///////////////////////////////////////////////////////////////////////
 	// Oracle
-	public static final Connection newOracleConnection(String host, int port,
-			String db, String user, String password)
+	public static final Connection newOracleConnection(String host, int port, String db, String user, String password)
 			throws ClassNotFoundException, SQLException {
 		String driver = ("oracle.jdbc.driver.OracleDriver");
 		String s = "jdbc:oracle:thin:@%s:%d:%s";
@@ -586,20 +535,17 @@ public class SqlEx extends Toolkit {
 
 	// ///////////////////////////////////////////////////////////////////////
 	// VFP
-	public Connection newVFPDbcConnection(String file)
-			throws ClassNotFoundException, SQLException {
+	public Connection newVFPDbcConnection(String file) throws ClassNotFoundException, SQLException {
 		String type = "dbc";
 		return newVFPConnection(type, file);
 	}
 
-	public Connection newVFPDbfConnection(String file)
-			throws ClassNotFoundException, SQLException {
+	public Connection newVFPDbfConnection(String file) throws ClassNotFoundException, SQLException {
 		String type = "dbf";
 		return newVFPConnection(type, file);
 	}
 
-	public Connection newVFPConnection(String type, String file)
-			throws ClassNotFoundException, SQLException {
+	public Connection newVFPConnection(String type, String file) throws ClassNotFoundException, SQLException {
 		String driver = ("sun.jdbc.odbc.JdbcOdbcDriver");
 		String s = "jdbc:odbc:Driver={Microsoft Visual FoxPro Driver};SourceType=%s;Exclusive=No;SourceDB=%s;";
 		String url = s(s, type, file);
@@ -609,8 +555,8 @@ public class SqlEx extends Toolkit {
 
 	// ///////////////////////////////////////////////////////////////////////
 	// Sybase
-	public Connection newJtdsSybaseConnection(String host, int port, String db,
-			String charset) throws ClassNotFoundException, SQLException {
+	public Connection newJtdsSybaseConnection(String host, int port, String db, String charset)
+			throws ClassNotFoundException, SQLException {
 		String driver = ("net.sourceforge.jtds.jdbc.Driver");
 		// jdbc:jtds:Sybase://192.168.2.200:5000/taxiupload;charset=cp936
 		String s = "jdbc:jtds:Sybase://%s:%d/%s;charset=%s";
@@ -621,21 +567,20 @@ public class SqlEx extends Toolkit {
 
 	// ///////////////////////////////////////////////////////////////////////
 	// PostgreSQL
-	public Connection newPostgreSQLConnection(String db)
-			throws ClassNotFoundException, SQLException {
+	public Connection newPostgreSQLConnection(String db) throws ClassNotFoundException, SQLException {
 		String host = "127.0.0.1";
 		String charset = "UTF-8";
 		return newPostgreSQLConnection(host, db, charset);
 	}
 
-	public Connection newPostgreSQLConnection(String host, String db,
-			String charset) throws ClassNotFoundException, SQLException {
+	public Connection newPostgreSQLConnection(String host, String db, String charset)
+			throws ClassNotFoundException, SQLException {
 		int port = 5432;
 		return newPostgreSQLConnection(host, port, db, charset);
 	}
 
-	public Connection newPostgreSQLConnection(String host, int port, String db,
-			String charset) throws ClassNotFoundException, SQLException {
+	public Connection newPostgreSQLConnection(String host, int port, String db, String charset)
+			throws ClassNotFoundException, SQLException {
 		String driver = ("org.postgresql.Driver");
 		// jdbc:postgresql://hostname:port/dbname
 		String s = "jdbc:postgresql://%s:%d/%s?charset=%s";
@@ -644,8 +589,7 @@ public class SqlEx extends Toolkit {
 		return DriverManager.getConnection(url);
 	}
 
-	public static final void execute(Connection conn, DoInTransaction diTran)
-			throws SQLException {
+	public static final void execute(Connection conn, DoInTransaction diTran) throws SQLException {
 		try {
 			openCommit(conn);
 			diTran.exec(conn);
@@ -656,8 +600,7 @@ public class SqlEx extends Toolkit {
 		}
 	}
 
-	public static final ResultSet executeQuery(Connection conn,
-			DoInTransaction diTran) throws SQLException {
+	public static final ResultSet executeQuery(Connection conn, DoInTransaction diTran) throws SQLException {
 		try {
 			openCommit(conn);
 			ResultSet rs = diTran.exec(conn);
@@ -703,8 +646,7 @@ public class SqlEx extends Toolkit {
 		close(rs);
 	}
 
-	public static final void close(final Connection conn, final Statement stmt,
-			final ResultSet rs) {
+	public static final void close(final Connection conn, final Statement stmt, final ResultSet rs) {
 		close(conn);
 		close(stmt);
 		close(rs);
@@ -761,8 +703,7 @@ public class SqlEx extends Toolkit {
 	}
 
 	// ///////////////////////////////////////////////////////////////////////
-	public static final List<Map> getDatabases(Connection conn)
-			throws SQLException {
+	public static final List<Map> getDatabases(Connection conn) throws SQLException {
 		DatabaseMetaData dme = conn.getMetaData();
 		try (ResultSet rs = dme.getCatalogs();) {
 			return SqlEx.toMaps(rs);
@@ -770,8 +711,7 @@ public class SqlEx extends Toolkit {
 	}
 
 	// ///////////////////////////////////////////////////////////////////////
-	public static final List<Map> getPrimaryKeys(Connection conn, String table)
-			throws SQLException {
+	public static final List<Map> getPrimaryKeys(Connection conn, String table) throws SQLException {
 		DatabaseMetaData dmd = conn.getMetaData();
 		try (ResultSet rs = dmd.getPrimaryKeys(null, null, table);) {
 			List<Map> ret = toMaps(rs);
@@ -779,8 +719,7 @@ public class SqlEx extends Toolkit {
 		}
 	}
 
-	public static final List<Map> getImportedKeys(Connection conn, String table)
-			throws SQLException {
+	public static final List<Map> getImportedKeys(Connection conn, String table) throws SQLException {
 		DatabaseMetaData dmd = conn.getMetaData();
 		try (ResultSet rs = dmd.getImportedKeys(null, null, table);) {
 			List<Map> ret = toMaps(rs);
@@ -788,8 +727,7 @@ public class SqlEx extends Toolkit {
 		}
 	}
 
-	public static final List<Map> getExportedKeys(Connection conn, String table)
-			throws SQLException {
+	public static final List<Map> getExportedKeys(Connection conn, String table) throws SQLException {
 		DatabaseMetaData dmd = conn.getMetaData();
 		try (ResultSet rs = dmd.getExportedKeys(null, null, table);) {
 			List<Map> ret = toMaps(rs);
@@ -797,8 +735,7 @@ public class SqlEx extends Toolkit {
 		}
 	}
 
-	public static final List<String> indexColumns(Connection conn, String table)
-			throws SQLException {
+	public static final List<String> indexColumns(Connection conn, String table) throws SQLException {
 		List<String> ret = newList();
 
 		Map<String, List<Map<String, Object>>> map = getIndexs(conn, table);
@@ -823,8 +760,8 @@ public class SqlEx extends Toolkit {
 	}
 
 	// 唯一单索引
-	public static final Map<String, List<Map<String, Object>>> getUniqueSingleIx(
-			Connection conn, String table) throws SQLException {
+	public static final Map<String, List<Map<String, Object>>> getUniqueSingleIx(Connection conn, String table)
+			throws SQLException {
 		Map<String, List<Map<String, Object>>> r2 = new HashMap<>();
 		Map<String, List<Map<String, Object>>> indexs = getIndexs(conn, table);
 		Set<Entry<String, List<Map<String, Object>>>> ens = indexs.entrySet();
@@ -845,10 +782,10 @@ public class SqlEx extends Toolkit {
 		}
 		return r2;
 	}
-	
+
 	// 唯一多索引
-	public static final Map<String, List<Map<String, Object>>> getUniqueMutliIx(
-			Connection conn, String table) throws SQLException {
+	public static final Map<String, List<Map<String, Object>>> getUniqueMutliIx(Connection conn, String table)
+			throws SQLException {
 		Map<String, List<Map<String, Object>>> r2 = new HashMap<>();
 		Map<String, List<Map<String, Object>>> indexs = getIndexs(conn, table);
 		Set<Entry<String, List<Map<String, Object>>>> ens = indexs.entrySet();
@@ -869,9 +806,9 @@ public class SqlEx extends Toolkit {
 		}
 		return r2;
 	}
-	
-	public static final Map<String, List<Map<String, Object>>> getIndexs(
-			Connection conn, String table) throws SQLException {
+
+	public static final Map<String, List<Map<String, Object>>> getIndexs(Connection conn, String table)
+			throws SQLException {
 		Map ret = newMap();
 		boolean unique = false;
 		List<Map> indexs = getIndexInfo(conn, table, unique);
@@ -880,8 +817,7 @@ public class SqlEx extends Toolkit {
 			if (INDEX_NAME == null || INDEX_NAME.isEmpty())
 				continue;
 
-			List<Map<String, Object>> es = (List<Map<String, Object>>) ret
-					.get(INDEX_NAME);
+			List<Map<String, Object>> es = (List<Map<String, Object>>) ret.get(INDEX_NAME);
 			if (es == null) {
 				es = newList();
 				ret.put(INDEX_NAME, es);
@@ -891,20 +827,17 @@ public class SqlEx extends Toolkit {
 		return ret;
 	}
 
-	public static final List<Map> getIndexInfo(Connection conn, String table,
-			boolean unique) throws SQLException {
+	public static final List<Map> getIndexInfo(Connection conn, String table, boolean unique) throws SQLException {
 		boolean approximate = true;
 		DatabaseMetaData dmd = conn.getMetaData();
-		try (ResultSet rs = dmd.getIndexInfo(null, null, table, unique,
-				approximate);) {
+		try (ResultSet rs = dmd.getIndexInfo(null, null, table, unique, approximate);) {
 			return toMaps(rs);
 		}
 	}
 
 	// ///////////////////////////////////////////////////////////////////////
 
-	public static final List<String> getTableNames(DataSource ds)
-			throws Exception {
+	public static final List<String> getTableNames(DataSource ds) throws Exception {
 		List<String> result = newList();
 		try (Connection conn = ds.getConnection();) {
 			String db = conn.getCatalog();
@@ -918,8 +851,7 @@ public class SqlEx extends Toolkit {
 		}
 	}
 
-	public static final List<String> getTableNames(Connection conn)
-			throws Exception {
+	public static final List<String> getTableNames(Connection conn) throws Exception {
 		List<String> result = newList();
 		String db = conn.getCatalog();
 		TableType type = TableType.TABLE;
@@ -931,8 +863,7 @@ public class SqlEx extends Toolkit {
 		return result;
 	}
 
-	public static final List<String> getTables(final DataSource ds,
-			final String startsWith) throws Exception {
+	public static final List<String> getTables(final DataSource ds, final String startsWith) throws Exception {
 		List<String> result = newList();
 		List<String> tables = getTableNames(ds);
 		for (String t : tables)
@@ -941,8 +872,7 @@ public class SqlEx extends Toolkit {
 		return result;
 	}
 
-	public static final List<String> getTableNames(final Connection conn,
-			final String startsWith) throws Exception {
+	public static final List<String> getTableNames(final Connection conn, final String startsWith) throws Exception {
 		List<String> result = newList();
 		List<String> tables = getTableNames(conn);
 		for (String t : tables)
@@ -951,8 +881,7 @@ public class SqlEx extends Toolkit {
 		return result;
 	}
 
-	public static final List<String> getTables(DataSource ds) 
-			throws Exception {
+	public static final List<String> getTables(DataSource ds) throws Exception {
 		List<String> result = newList();
 		Connection conn = ds.getConnection();
 		List<Map> tables = getTables(conn);
@@ -962,27 +891,23 @@ public class SqlEx extends Toolkit {
 		}
 		return result;
 	}
-	
-	public static final List<Map> getTables(Connection conn)
-			throws SQLException {
+
+	public static final List<Map> getTables(Connection conn) throws SQLException {
 		String db = conn.getCatalog();
 		TableType type = TableType.TABLE;
 		return getTables(conn, db, type);
 	}
 
-	public static final List<Map> getTables(Connection conn, String db,
-			TableType type) throws SQLException {
+	public static final List<Map> getTables(Connection conn, String db, TableType type) throws SQLException {
 		DatabaseMetaData dme = conn.getMetaData();
-		try (ResultSet rs = dme.getTables(db, "", "",
-				new String[] { type.toString() });) {
+		try (ResultSet rs = dme.getTables(db, "", "", new String[] { type.toString() });) {
 			return SqlEx.toMaps(rs);
 		}
 	}
 
 	private static final Map<String, Set<String>> TABLES = new HashMap<String, Set<String>>();
 
-	public static final boolean isTableExist(Connection conn, String db,
-			String table) {
+	public static final boolean isTableExist(Connection conn, String db, String table) {
 		try {
 			Set<String> tables = TABLES.get(db);
 			if (tables == null) {
@@ -1009,22 +934,20 @@ public class SqlEx extends Toolkit {
 
 	// ///////////////////////////////////////////////////////////////////////
 
-	public static final List<Map> getColumns(Connection conn, String table)
-			throws SQLException {
+	public static final List<Map> getColumns(Connection conn, String table) throws SQLException {
 		String db = conn.getCatalog();
 		return getColumns(conn, db, table);
 	}
 
-	public static final List<Map> getColumns(Connection conn, String db,
-			String table) throws SQLException {
+	public static final List<Map> getColumns(Connection conn, String db, String table) throws SQLException {
 		DatabaseMetaData dme = conn.getMetaData();
 		try (ResultSet rs = dme.getColumns(db, "", table, "");) {
 			return SqlEx.toMaps(rs);
 		}
 	}
 
-	public static final Map<String, Map<String, Object>> mapColumns(
-			Connection conn, String db, String table) throws SQLException {
+	public static final Map<String, Map<String, Object>> mapColumns(Connection conn, String db, String table)
+			throws SQLException {
 		Map<String, Map<String, Object>> ret = newMap();
 		List<Map> m1 = getColumns(conn, db, table);
 		for (Map<String, Object> map : m1) {
@@ -1034,8 +957,7 @@ public class SqlEx extends Toolkit {
 		return ret;
 	}
 
-	public static final List<Map<String, Object>> getColumns(ResultSet rs)
-			throws SQLException {
+	public static final List<Map<String, Object>> getColumns(ResultSet rs) throws SQLException {
 		List<Map<String, Object>> ret = newList();
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int count = rsmd.getColumnCount();
@@ -1094,28 +1016,24 @@ public class SqlEx extends Toolkit {
 	// return conn.prepareStatement(sql);
 	// }
 
-	public static final boolean execute(Connection conn, String sql)
-			throws SQLException {
+	public static final boolean execute(Connection conn, String sql) throws SQLException {
 		try (PreparedStatement ps = conn.prepareStatement(sql);) {
 			boolean r2 = ps.execute();
 			return r2;
 		}
 	}
 
-	public static final boolean execute(Connection conn, File f)
-			throws SQLException, IOException {
+	public static final boolean execute(Connection conn, File f) throws SQLException, IOException {
 		String charset = "UTF-8";
 		return execute(conn, f, charset);
 	}
 
-	public static final boolean execute(Connection conn, File f, String charset)
-			throws SQLException, IOException {
+	public static final boolean execute(Connection conn, File f, String charset) throws SQLException, IOException {
 		String sql = readFully(f, charset);
 		return execute(conn, sql);
 	}
 
-	public static final ResultSet executeQuery(Connection conn, String sql)
-			throws SQLException {
+	public static final ResultSet executeQuery(Connection conn, String sql) throws SQLException {
 		try (PreparedStatement ps = conn.prepareStatement(sql);) {
 			ResultSet rs = ps.executeQuery();
 			return rs;
@@ -1124,8 +1042,7 @@ public class SqlEx extends Toolkit {
 		}
 	}
 
-	public static final int executeUpdate(Connection conn, String sql)
-			throws SQLException {
+	public static final int executeUpdate(Connection conn, String sql) throws SQLException {
 		try (PreparedStatement ps = conn.prepareStatement(sql);) {
 			int r2 = ps.executeUpdate();
 			return r2;
@@ -1143,8 +1060,7 @@ public class SqlEx extends Toolkit {
 	// }
 	// }
 
-	public static final boolean call(Connection conn, String sql)
-			throws SQLException {
+	public static final boolean call(Connection conn, String sql) throws SQLException {
 		try (CallableStatement stmt = conn.prepareCall(sql);) {
 			boolean r2 = stmt.execute();
 			return r2;
@@ -1153,8 +1069,7 @@ public class SqlEx extends Toolkit {
 		}
 	}
 
-	public static final ResultSet callQuery(Connection conn, String sql)
-			throws SQLException {
+	public static final ResultSet callQuery(Connection conn, String sql) throws SQLException {
 		try (CallableStatement stmt = conn.prepareCall(sql);) {
 			ResultSet rs = stmt.executeQuery();
 			return rs;
@@ -1163,8 +1078,7 @@ public class SqlEx extends Toolkit {
 		}
 	}
 
-	public static final int callUpdate(Connection conn, String sql)
-			throws SQLException {
+	public static final int callUpdate(Connection conn, String sql) throws SQLException {
 		try (CallableStatement stmt = conn.prepareCall(sql);) {
 			int r2 = stmt.executeUpdate();
 			return r2;
@@ -1203,32 +1117,7 @@ public class SqlEx extends Toolkit {
 	// return stmt.executeUpdate();
 	// }
 
-	// ///////////////////////////////////////////////////////////////////////
-	public static final int pageCount(int count, int pageSize) {
-		return (int) pageCount((long) count, (long) pageSize);
-	}
-
-	public static final List getPage(List v, int page, int pageSize) {
-		return getPage(v, (long) page, (long) pageSize);
-	}
-
 	// //////////////////////////////////
-	public static final long pageCount(long count, long pageSize) {
-		return ListEx.pageCount(count, pageSize);
-	}
-
-	public static final List getPage(List v, long page, long pageSize) {
-		int count = v.size();
-		int begin = (int) (page * pageSize);
-		int end = (int) (begin + pageSize);
-		if (begin > count || begin < 0 || end < 0)
-			return newList();
-		end = count < end ? count : end;
-		if (end <= begin)
-			return newList();
-		return v.subList(begin, end);
-	}
-
 	public static final List<Map> toMaps(ResultSet rs) throws SQLException {
 		List<Map> result = newList();
 
@@ -1282,8 +1171,7 @@ public class SqlEx extends Toolkit {
 		return result;
 	}
 
-	public static final synchronized Map toMap(ResultSet rs,
-			final Map<Integer, String> mcols) throws SQLException {
+	public static final synchronized Map toMap(ResultSet rs, final Map<Integer, String> mcols) throws SQLException {
 		if (mcols != null) {
 			Map result = newMap();
 			if (!mcols.isEmpty()) {
@@ -1300,7 +1188,7 @@ public class SqlEx extends Toolkit {
 				for (int i = 1; i <= cols; i++) {
 					String c = rsmd.getColumnName(i);
 					Object v = rs.getObject(i);
-					if(v == null)
+					if (v == null)
 						continue;
 					result.put(c, v);
 
@@ -1325,8 +1213,7 @@ public class SqlEx extends Toolkit {
 	}
 
 	// ///////////////////////////////////////////////////////////////////////
-	public static final String createMysqlTable(Connection conn, ResultSet rs,
-			String tableName) throws SQLException {
+	public static final String createMysqlTable(Connection conn, ResultSet rs, String tableName) throws SQLException {
 		List<Map<String, Object>> columns = SqlEx.getColumns(rs);
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
@@ -1361,23 +1248,17 @@ public class SqlEx extends Toolkit {
 				sb.append("  ");
 				if (columnTypeName.equals("VARCHAR") && precision >= 715827882) {
 					sb.append("LONGTEXT");
-				} else if (columnTypeName.equals("VARCHAR")
-						&& precision >= 5592405) {
+				} else if (columnTypeName.equals("VARCHAR") && precision >= 5592405) {
 					sb.append("MEDIUMTEXT");
-				} else if (columnTypeName.equals("VARCHAR")
-						&& precision >= 21845) {
+				} else if (columnTypeName.equals("VARCHAR") && precision >= 21845) {
 					sb.append("TEXT");
 				} else if (columnTypeName.equals("VARCHAR") && precision >= 255) {
 					sb.append("TINYTEXT");
-				} else if (columnTypeName.equals("MEDIUMBLOB")
-						|| columnTypeName.equals("LONGBLOB")
-						|| columnTypeName.equals("BLOB")
-						|| columnTypeName.equals("TINYBLOB")) {
+				} else if (columnTypeName.equals("MEDIUMBLOB") || columnTypeName.equals("LONGBLOB")
+						|| columnTypeName.equals("BLOB") || columnTypeName.equals("TINYBLOB")) {
 					sb.append(columnTypeName);
-				} else if (columnTypeName.equals("DATETIME")
-						|| columnTypeName.equals("DATE")
-						|| columnTypeName.equals("TIME")
-						|| columnTypeName.equals("TIMESTAMP")) {
+				} else if (columnTypeName.equals("DATETIME") || columnTypeName.equals("DATE")
+						|| columnTypeName.equals("TIME") || columnTypeName.equals("TIMESTAMP")) {
 					sb.append(columnTypeName);
 				} else if (columnTypeName.equals("DOUBLE")) {
 					sb.append(columnTypeName);
@@ -1430,8 +1311,7 @@ public class SqlEx extends Toolkit {
 				String INDEX_NAME = MapEx.get(mapx, "INDEX_NAME");
 				if (_doit.containsKey(KEY))
 					continue;
-				List<Map<String, Object>> v = (List<Map<String, Object>>) _temp
-						.get(INDEX_NAME);
+				List<Map<String, Object>> v = (List<Map<String, Object>>) _temp.get(INDEX_NAME);
 				if (v == null || v.size() <= 0)
 					continue;
 				String COLUMN_NAME = MapEx.get(v.get(0), "COLUMN_NAME");
@@ -1480,8 +1360,8 @@ public class SqlEx extends Toolkit {
 		}
 	}
 
-	public static final String createMysqlNoUniqueTable(Connection conn,
-			ResultSet rs, String tableName) throws Exception {
+	public static final String createMysqlNoUniqueTable(Connection conn, ResultSet rs, String tableName)
+			throws Exception {
 		List<Map<String, Object>> columns = SqlEx.getColumns(rs);
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
@@ -1516,23 +1396,17 @@ public class SqlEx extends Toolkit {
 				sb.append("  ");
 				if (columnTypeName.equals("VARCHAR") && precision >= 715827882) {
 					sb.append("LONGTEXT");
-				} else if (columnTypeName.equals("VARCHAR")
-						&& precision >= 5592405) {
+				} else if (columnTypeName.equals("VARCHAR") && precision >= 5592405) {
 					sb.append("MEDIUMTEXT");
-				} else if (columnTypeName.equals("VARCHAR")
-						&& precision >= 21845) {
+				} else if (columnTypeName.equals("VARCHAR") && precision >= 21845) {
 					sb.append("TEXT");
 				} else if (columnTypeName.equals("VARCHAR") && precision >= 255) {
 					sb.append("TINYTEXT");
-				} else if (columnTypeName.equals("MEDIUMBLOB")
-						|| columnTypeName.equals("LONGBLOB")
-						|| columnTypeName.equals("BLOB")
-						|| columnTypeName.equals("TINYBLOB")) {
+				} else if (columnTypeName.equals("MEDIUMBLOB") || columnTypeName.equals("LONGBLOB")
+						|| columnTypeName.equals("BLOB") || columnTypeName.equals("TINYBLOB")) {
 					sb.append(columnTypeName);
-				} else if (columnTypeName.equals("DATETIME")
-						|| columnTypeName.equals("DATE")
-						|| columnTypeName.equals("TIME")
-						|| columnTypeName.equals("TIMESTAMP")) {
+				} else if (columnTypeName.equals("DATETIME") || columnTypeName.equals("DATE")
+						|| columnTypeName.equals("TIME") || columnTypeName.equals("TIMESTAMP")) {
 					sb.append(columnTypeName);
 				} else if (columnTypeName.equals("DOUBLE")) {
 					sb.append(columnTypeName);
@@ -1585,8 +1459,7 @@ public class SqlEx extends Toolkit {
 				String INDEX_NAME = MapEx.get(mapx, "INDEX_NAME");
 				if (_doit.containsKey(KEY))
 					continue;
-				List<Map<String, Object>> v = (List<Map<String, Object>>) _temp
-						.get(INDEX_NAME);
+				List<Map<String, Object>> v = (List<Map<String, Object>>) _temp.get(INDEX_NAME);
 				if (v == null || v.size() <= 0)
 					continue;
 				String COLUMN_NAME = MapEx.get(v.get(0), "COLUMN_NAME");
@@ -1638,8 +1511,7 @@ public class SqlEx extends Toolkit {
 	}
 
 	// ///////////////////////////////////////////////////////////////////////
-	public static final String getType(ResultSetMetaData rsmd, String columnName)
-			throws SQLException {
+	public static final String getType(ResultSetMetaData rsmd, String columnName) throws SQLException {
 		int count = rsmd.getColumnCount();
 		for (int i = 1; i <= count; i++) {
 			String key = rsmd.getColumnName(i);
@@ -1651,8 +1523,7 @@ public class SqlEx extends Toolkit {
 		return "";
 	}
 
-	public static final String getType(ResultSetMetaData rsmd, int i)
-			throws SQLException {
+	public static final String getType(ResultSetMetaData rsmd, int i) throws SQLException {
 		int count = rsmd.getColumnCount();
 		if (i > count)
 			return "";
@@ -1788,124 +1659,88 @@ public class SqlEx extends Toolkit {
 	}
 
 	public static final int toJdbcType(String type) {
-		if (type.equals("boolean")
-				|| type.equals(Boolean.class.getSimpleName())
+		if (type.equals("boolean") || type.equals(Boolean.class.getSimpleName())
 				|| type.equals(Boolean.class.getName()))
 			return java.sql.Types.BIT;
-		else if (type.equals("byte") || type.equals(Byte.class.getSimpleName())
-				|| type.equals(Byte.class.getName()))
+		else if (type.equals("byte") || type.equals(Byte.class.getSimpleName()) || type.equals(Byte.class.getName()))
 			return java.sql.Types.TINYINT;
-		else if (type.equals("short")
-				|| type.equals(Short.class.getSimpleName())
-				|| type.equals(Short.class.getName()))
+		else if (type.equals("short") || type.equals(Short.class.getSimpleName()) || type.equals(Short.class.getName()))
 			return java.sql.Types.SMALLINT;
-		else if (type.equals("int")
-				|| type.equals(Integer.class.getSimpleName())
+		else if (type.equals("int") || type.equals(Integer.class.getSimpleName())
 				|| type.equals(Integer.class.getName()))
 			return java.sql.Types.INTEGER;
-		else if (type.equals("float")
-				|| type.equals(Float.class.getSimpleName())
-				|| type.equals(Float.class.getName()))
+		else if (type.equals("float") || type.equals(Float.class.getSimpleName()) || type.equals(Float.class.getName()))
 			return java.sql.Types.REAL;
-		else if (type.equals("double")
-				|| type.equals(Double.class.getSimpleName())
+		else if (type.equals("double") || type.equals(Double.class.getSimpleName())
 				|| type.equals(Double.class.getName()))
 			return java.sql.Types.DOUBLE;
-		else if (type.equals(BigDecimal.class.getSimpleName())
-				|| type.equals(BigDecimal.class.getName()))
+		else if (type.equals(BigDecimal.class.getSimpleName()) || type.equals(BigDecimal.class.getName()))
 			return java.sql.Types.NUMERIC;
-		else if (type.equals(String.class.getSimpleName())
-				|| type.equals(String.class.getName()))
+		else if (type.equals(String.class.getSimpleName()) || type.equals(String.class.getName()))
 			return java.sql.Types.VARCHAR; // LONGVARCHAR
 		else if (type.equals("byte[]"))
 			return java.sql.Types.VARBINARY; // LONGVARBINARY
-		else if (type.equals(java.util.Date.class.getSimpleName())
-				|| type.equals(java.util.Date.class.getName())
-				|| type.equals(java.sql.Date.class.getSimpleName())
-				|| type.equals(java.sql.Date.class.getName()))
+		else if (type.equals(java.util.Date.class.getSimpleName()) || type.equals(java.util.Date.class.getName())
+				|| type.equals(java.sql.Date.class.getSimpleName()) || type.equals(java.sql.Date.class.getName()))
 			return java.sql.Types.DATE;
-		else if (type.equals(java.sql.Time.class.getSimpleName())
-				|| type.equals(java.sql.Time.class.getName()))
+		else if (type.equals(java.sql.Time.class.getSimpleName()) || type.equals(java.sql.Time.class.getName()))
 			return java.sql.Types.TIME;
 		else if (type.equals(java.sql.Timestamp.class.getSimpleName())
 				|| type.equals(java.sql.Timestamp.class.getName()))
 			return java.sql.Types.TIMESTAMP;
-		else if (type.equals(java.sql.Blob.class.getSimpleName())
-				|| type.equals(java.sql.Blob.class.getName()))
+		else if (type.equals(java.sql.Blob.class.getSimpleName()) || type.equals(java.sql.Blob.class.getName()))
 			return java.sql.Types.BLOB;
-		else if (type.equals(java.sql.Clob.class.getSimpleName())
-				|| type.equals(java.sql.Clob.class.getName()))
+		else if (type.equals(java.sql.Clob.class.getSimpleName()) || type.equals(java.sql.Clob.class.getName()))
 			return java.sql.Types.CLOB;
-		else if (type.equals(java.sql.Array.class.getSimpleName())
-				|| type.equals(java.sql.Array.class.getName()))
+		else if (type.equals(java.sql.Array.class.getSimpleName()) || type.equals(java.sql.Array.class.getName()))
 			return java.sql.Types.ARRAY;
-		else if (type.equals(java.sql.Ref.class.getSimpleName())
-				|| type.equals(java.sql.Ref.class.getName()))
+		else if (type.equals(java.sql.Ref.class.getSimpleName()) || type.equals(java.sql.Ref.class.getName()))
 			return java.sql.Types.REF;
-		else if (type.equals(java.sql.Struct.class.getSimpleName())
-				|| type.equals(java.sql.Struct.class.getName()))
+		else if (type.equals(java.sql.Struct.class.getSimpleName()) || type.equals(java.sql.Struct.class.getName()))
 			return java.sql.Types.STRUCT;
 
 		return 0;
 	}
 
 	public static final String toJdbcType2(String type) {
-		if (type.equals("boolean")
-				|| type.equals(Boolean.class.getSimpleName())
+		if (type.equals("boolean") || type.equals(Boolean.class.getSimpleName())
 				|| type.equals(Boolean.class.getName()))
 			return "BIT";
-		else if (type.equals("byte") || type.equals(Byte.class.getSimpleName())
-				|| type.equals(Byte.class.getName()))
+		else if (type.equals("byte") || type.equals(Byte.class.getSimpleName()) || type.equals(Byte.class.getName()))
 			return "TINYINT";
-		else if (type.equals("short")
-				|| type.equals(Short.class.getSimpleName())
-				|| type.equals(Short.class.getName()))
+		else if (type.equals("short") || type.equals(Short.class.getSimpleName()) || type.equals(Short.class.getName()))
 			return "SMALLINT";
-		else if (type.equals("int")
-				|| type.equals(Integer.class.getSimpleName())
+		else if (type.equals("int") || type.equals(Integer.class.getSimpleName())
 				|| type.equals(Integer.class.getName()))
 			return "INTEGER";
-		else if (type.equals("float")
-				|| type.equals(Float.class.getSimpleName())
-				|| type.equals(Float.class.getName()))
+		else if (type.equals("float") || type.equals(Float.class.getSimpleName()) || type.equals(Float.class.getName()))
 			return "REAL";
-		else if (type.equals("double")
-				|| type.equals(Double.class.getSimpleName())
+		else if (type.equals("double") || type.equals(Double.class.getSimpleName())
 				|| type.equals(Double.class.getName()))
 			return "DOUBLE";
-		else if (type.equals(BigDecimal.class.getSimpleName())
-				|| type.equals(BigDecimal.class.getName()))
+		else if (type.equals(BigDecimal.class.getSimpleName()) || type.equals(BigDecimal.class.getName()))
 			return "NUMERIC";
-		else if (type.equals(String.class.getSimpleName())
-				|| type.equals(String.class.getName()))
+		else if (type.equals(String.class.getSimpleName()) || type.equals(String.class.getName()))
 			return "VARCHAR"; // LONGVARCHAR
 		else if (type.equals("byte[]"))
 			return "VARBINARY"; // LONGVARBINARY
-		else if (type.equals(java.util.Date.class.getSimpleName())
-				|| type.equals(java.util.Date.class.getName())
-				|| type.equals(java.sql.Date.class.getSimpleName())
-				|| type.equals(java.sql.Date.class.getName()))
+		else if (type.equals(java.util.Date.class.getSimpleName()) || type.equals(java.util.Date.class.getName())
+				|| type.equals(java.sql.Date.class.getSimpleName()) || type.equals(java.sql.Date.class.getName()))
 			return "DATE";
-		else if (type.equals(java.sql.Time.class.getSimpleName())
-				|| type.equals(java.sql.Time.class.getName()))
+		else if (type.equals(java.sql.Time.class.getSimpleName()) || type.equals(java.sql.Time.class.getName()))
 			return "TIME";
 		else if (type.equals(java.sql.Timestamp.class.getSimpleName())
 				|| type.equals(java.sql.Timestamp.class.getName()))
 			return "TIMESTAMP";
-		else if (type.equals(java.sql.Blob.class.getSimpleName())
-				|| type.equals(java.sql.Blob.class.getName()))
+		else if (type.equals(java.sql.Blob.class.getSimpleName()) || type.equals(java.sql.Blob.class.getName()))
 			return "BLOB";
-		else if (type.equals(java.sql.Clob.class.getSimpleName())
-				|| type.equals(java.sql.Clob.class.getName()))
+		else if (type.equals(java.sql.Clob.class.getSimpleName()) || type.equals(java.sql.Clob.class.getName()))
 			return "CLOB";
-		else if (type.equals(java.sql.Array.class.getSimpleName())
-				|| type.equals(java.sql.Array.class.getName()))
+		else if (type.equals(java.sql.Array.class.getSimpleName()) || type.equals(java.sql.Array.class.getName()))
 			return "ARRAY";
-		else if (type.equals(java.sql.Ref.class.getSimpleName())
-				|| type.equals(java.sql.Ref.class.getName()))
+		else if (type.equals(java.sql.Ref.class.getSimpleName()) || type.equals(java.sql.Ref.class.getName()))
 			return "REF";
-		else if (type.equals(java.sql.Struct.class.getSimpleName())
-				|| type.equals(java.sql.Struct.class.getName()))
+		else if (type.equals(java.sql.Struct.class.getSimpleName()) || type.equals(java.sql.Struct.class.getName()))
 			return "STRUCT";
 
 		return "";
@@ -1914,17 +1749,14 @@ public class SqlEx extends Toolkit {
 	public static final String getDefaultValue(String type) throws SQLException {
 		if (type.equals("boolean") || type.equals("Boolean")) {
 			return "false";
-		} else if (type.equals("byte") || type.equals("Byte")
-				|| type.equals("java.lang.Byte") || type.equals("short")
-				|| type.equals("Short") || type.equals("java.lang.Short")
-				|| type.equals("int") || type.equals("Integer")
-				|| type.equals("java.lang.Integer") || type.equals("long")) {
+		} else if (type.equals("byte") || type.equals("Byte") || type.equals("java.lang.Byte") || type.equals("short")
+				|| type.equals("Short") || type.equals("java.lang.Short") || type.equals("int")
+				|| type.equals("Integer") || type.equals("java.lang.Integer") || type.equals("long")) {
 			return "0";
 		} else if (type.equals("Long") || type.equals("java.lang.Long")) {
 			return "0L";
-		} else if (type.equals("float") || type.equals("Float")
-				|| type.equals("java.lang.Float") || type.equals("double")
-				|| type.equals("Double") || type.equals("java.lang.Double")) {
+		} else if (type.equals("float") || type.equals("Float") || type.equals("java.lang.Float")
+				|| type.equals("double") || type.equals("Double") || type.equals("java.lang.Double")) {
 			return "0.0";
 		} else if (type.equals("Date") || type.equals("java.util.Date")) {
 			return "new java.util.Date()";
@@ -1936,8 +1768,7 @@ public class SqlEx extends Toolkit {
 			return "new byte[0]";
 		} else if (type.equals("Time") || type.equals("java.sql.Time")) {
 			return "new java.sql.Time(System.currentTimeMillis())";
-		} else if (type.equals("Timestamp")
-				|| type.equals("java.sql.Timestamp")) {
+		} else if (type.equals("Timestamp") || type.equals("java.sql.Timestamp")) {
 			return "new java.sql.Timestamp(System.currentTimeMillis())";
 		} else if (type.contains("oracle.sql.TIMESTAMP")) {
 			return "new oracle.sql.TIMESTAMP()";
@@ -1965,15 +1796,13 @@ public class SqlEx extends Toolkit {
 		msg.append(sql);
 		msg.append("\r\n");
 
-		SQLException e = new SQLException(msg.toString(), cause.getSQLState(),
-				cause.getErrorCode());
+		SQLException e = new SQLException(msg.toString(), cause.getSQLState(), cause.getErrorCode());
 		e.setNextException(cause);
 
 		return e;
 	}
 
-	public static SQLException rethrow(SQLException cause, String sql,
-			Object... params) {
+	public static SQLException rethrow(SQLException cause, String sql, Object... params) {
 
 		String causeMessage = cause.getMessage();
 		if (causeMessage == null) {
@@ -1994,15 +1823,13 @@ public class SqlEx extends Toolkit {
 			msg.append(Arrays.deepToString(params));
 		}
 		msg.append("\r\n");
-		SQLException e = new SQLException(msg.toString(), cause.getSQLState(),
-				cause.getErrorCode());
+		SQLException e = new SQLException(msg.toString(), cause.getSQLState(), cause.getErrorCode());
 		e.setNextException(cause);
 
 		return e;
 	}
 
-	public static SQLException rethrow(SQLException cause, String sql,
-			Map params) {
+	public static SQLException rethrow(SQLException cause, String sql, Map params) {
 
 		String causeMessage = cause.getMessage();
 		if (causeMessage == null) {
@@ -2022,15 +1849,13 @@ public class SqlEx extends Toolkit {
 			msg.append(params.toString());
 		}
 		msg.append("\r\n");
-		SQLException e = new SQLException(msg.toString(), cause.getSQLState(),
-				cause.getErrorCode());
+		SQLException e = new SQLException(msg.toString(), cause.getSQLState(), cause.getErrorCode());
 		e.setNextException(cause);
 
 		return e;
 	}
 
-	public static SQLException rethrow(SQLException cause, String sql,
-			List params) {
+	public static SQLException rethrow(SQLException cause, String sql, List params) {
 
 		String causeMessage = cause.getMessage();
 		if (causeMessage == null) {
@@ -2050,24 +1875,20 @@ public class SqlEx extends Toolkit {
 			msg.append(params.toString());
 		}
 		msg.append("\r\n");
-		SQLException e = new SQLException(msg.toString(), cause.getSQLState(),
-				cause.getErrorCode());
+		SQLException e = new SQLException(msg.toString(), cause.getSQLState(), cause.getErrorCode());
 		e.setNextException(cause);
 
 		return e;
 	}
 
-	public static void main(String[] args) throws ClassNotFoundException,
-			SQLException {
-		DruidDataSource ds = newDruidMysqlDataSource("192.168.2.241", 3306,
-				"test", "root", "12345670");
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		DruidDataSource ds = newDruidMysqlDataSource("192.168.2.241", 3306, "test", "root", "12345670");
 		String sql = "SHOW DATABASES;";
-		try (DruidPooledConnection conn = ds.getConnection();
-				ResultSet rs = executeQuery(conn, sql);) {
+		try (DruidPooledConnection conn = ds.getConnection(); ResultSet rs = executeQuery(conn, sql);) {
 
 			dumps(rs);
 			// Connection conn = newDerbyConnectiion("derbyTest");
-			// // String sql = "CREATE TABLE WISH_LIST  "
+			// // String sql = "CREATE TABLE WISH_LIST "
 			// // + "(ID INT NOT NULL GENERATED ALWAYS AS IDENTITY, "
 			// // + " NAME VARCHAR(32) NOT NULL)";
 			// String sql = "SELECT * FROM WISH_LIST";

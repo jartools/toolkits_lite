@@ -3,13 +3,11 @@ package com.bowlong.sql.beanbasic;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.bowlong.basic.ExOrigin;
+import com.bowlong.basic.ExToolkit;
 import com.bowlong.sql.SqlEx;
-import com.bowlong.util.MapEx;
 
 /**
  * 添加bean 基础类
@@ -18,7 +16,7 @@ import com.bowlong.util.MapEx;
  * @time 2019-02-18 17:24
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public abstract class BeanBasic extends ExOrigin implements RsTHandler<BeanBasic>, Cloneable, Serializable {
+public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasic>, Cloneable, Serializable {
 	private static final long serialVersionUID = 1L;
 	static final public String insFmt = "INSERT INTO `%s` (%s) VALUES (%s)";
 	static final public String selFmt = "SELECT * FROM `%s` WHERE ";
@@ -54,17 +52,5 @@ public abstract class BeanBasic extends ExOrigin implements RsTHandler<BeanBasic
 
 	public <T extends BeanBasic> T toEntity(Map map) {
 		return null;
-	}
-
-	public int getInt(Map map, String key) {
-		return MapEx.getInt(map, key);
-	}
-
-	public String getString(Map map, String key) {
-		return MapEx.getString(map, key);
-	}
-
-	public Date getDate(Map map, String key) {
-		return MapEx.getDate(map, key);
 	}
 }

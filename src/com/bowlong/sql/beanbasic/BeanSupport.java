@@ -12,9 +12,6 @@ import java.util.Vector;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.bowlong.bio2.B2OutputStream;
 import com.bowlong.io.ByteOutStream;
 import com.bowlong.json.MyJson;
@@ -30,10 +27,6 @@ import com.bowlong.util.NewMap;
 public abstract class BeanSupport extends BeanBasic {
 
 	private static final long serialVersionUID = 1L;
-
-	public static final Log getLog(Class<?> clazz) {
-		return LogFactory.getLog(clazz);
-	}
 
 	private NewMap ex;
 

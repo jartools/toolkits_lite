@@ -4,12 +4,12 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
-import com.bowlong.Toolkit;
+import com.bowlong.basic.ExToolkit;
 import com.bowlong.sql.SqlEx;
 import com.bowlong.util.StrBuilder;
 
 @SuppressWarnings("unchecked")
-public class IndexBeanBuilder extends Toolkit {
+public class IndexBeanBuilder extends ExToolkit {
 	public static void main(String[] args) throws Exception {
 		String host = "192.168.2.223";
 		String db = "sea";

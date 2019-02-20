@@ -273,7 +273,7 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public int delete(Map<String, Object> m, String c) throws SQLException {
+	public int delete(Map m, String c) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			sb.append("DELETE FROM ");

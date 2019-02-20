@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.Transaction;
-
-import com.bowlong.Toolkit;
+import com.bowlong.basic.ExToolkit;
 import com.bowlong.bio2.B2Helper;
 import com.bowlong.util.ListEx;
 import com.bowlong.util.NewList;
 import com.bowlong.util.NewMap;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Transaction;
 
 /**
  * jedis -- 基本操作
@@ -485,7 +485,7 @@ public class JedisBase extends JedisOrigin {
 
 	static public final String putObject(final Jedis jedis, final String key,
 			Object obj) throws Exception {
-		final byte[] val = Toolkit.serialization(obj);
+		final byte[] val = ExToolkit.serialization(obj);
 		return jedis.set(key2(key), val);
 	}
 
@@ -561,7 +561,7 @@ public class JedisBase extends JedisOrigin {
 	static public final Object getObject(final Jedis jedis, final String key)
 			throws Exception {
 		byte[] b = jedis.get(key2(key));
-		return Toolkit.deserialization(b);
+		return ExToolkit.deserialization(b);
 	}
 
 	static public final Object getObject(final String key) throws Exception {

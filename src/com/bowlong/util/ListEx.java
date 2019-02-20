@@ -608,24 +608,13 @@ public class ListEx extends ExOrigin {
 		return pageCount;
 	}
 
-	static public final long pageCount(long count, long pageSize) {
-		if (pageSize < 0)
-			return 0l;
-		long pageCount = count / pageSize;
-		pageCount = count == pageCount * pageSize ? pageCount : pageCount + 1;
-		return pageCount;
+	static public final int pageCount(long count, long pageSize) {
+		return pageCount((int) count, (int) pageSize);
 	}
 
-	static public final <T> List<T> getPageT(List<T> v, int page, int pageSize) {
-		List pgList = getPage(v, page, pageSize);
-		if (isEmpty(pgList))
-			return new ArrayList<T>();
-		return (List<T>) pgList;
-	}
-
-	static public final List getPage(List v, int page, int pageSize) {
+	static public final <T> List<T> getPage(List<T> v, int page, int pageSize) {
 		if (isEmpty(v))
-			return new ArrayList();
+			return newArrayList();
 
 		int count = v.size();
 		int pageCount = pageCount(count, pageSize);
@@ -635,11 +624,15 @@ public class ListEx extends ExOrigin {
 		int begin = (int) (page * pageSize);
 		int end = (int) (begin + pageSize);
 		if (begin > count || begin < 0 || end < 0)
-			return new ArrayList();
+			return newArrayList();
 		end = count < end ? count : end;
 		if (end <= begin)
-			return new ArrayList();
+			return newArrayList();
 		return v.subList(begin, end);
+	}
+
+	static public final <T> List<T> getPage(List<T> v, long page, long pageSize) {
+		return getPage(v, (int) page, (int) pageSize);
 	}
 
 	// //////////////// 过滤 ////////////////

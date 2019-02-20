@@ -13,13 +13,13 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import org.apache.commons.logging.Log;
 
-import com.bowlong.Toolkit;
+import com.bowlong.basic.ExToolkit;
 
 //Log4j日志清理器
-public class ExpiredLog4j extends Toolkit implements Runnable {
+public class ExpiredLog4j extends ExToolkit implements Runnable {
 	static Log log = getLog(ExpiredLog4j.class);
 
-	static ScheduledExecutorService SES = newScheduledThreadPool("ExpiredLog4j", 2);
+	static ScheduledExecutorService SES = newScheduledPool("ExpiredLog4j", 2);
 
 	private static ExpiredLog4j expiredlog4j = null;
 

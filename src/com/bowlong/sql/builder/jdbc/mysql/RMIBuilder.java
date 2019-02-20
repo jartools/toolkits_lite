@@ -7,14 +7,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.bowlong.Toolkit;
+import com.bowlong.basic.ExToolkit;
 import com.bowlong.lang.StrEx;
 import com.bowlong.pinyin.PinYin;
 import com.bowlong.sql.SqlEx;
 import com.bowlong.util.MapEx;
 
 @SuppressWarnings("unused")
-public class RMIBuilder extends Toolkit {
+public class RMIBuilder extends ExToolkit {
 	public static void main(String[] args) throws Exception {
 		String sql = "SELECT * FROM 用户 LIMIT 1";
 		String host = "127.0.0.1";

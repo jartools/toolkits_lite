@@ -6,13 +6,13 @@ import java.sql.ResultSetMetaData;
 import java.util.List;
 import java.util.Map;
 
-import com.bowlong.Toolkit;
+import com.bowlong.basic.ExToolkit;
 import com.bowlong.lang.StrEx;
 import com.bowlong.pinyin.PinYin;
 import com.bowlong.sql.SqlEx;
 import com.bowlong.util.StrBuilder;
 
-public class RedisBuilder extends Toolkit {
+public class RedisBuilder extends ExToolkit {
 	public static String build(Connection conn, ResultSet rs, String pkg,
 			String appContext, boolean batch, boolean sorted) throws Exception {
 //		StringBuffer sb = new StringBuffer();

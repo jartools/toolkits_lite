@@ -7,14 +7,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.bowlong.Toolkit;
+import com.bowlong.basic.ExToolkit;
 import com.bowlong.lang.StrEx;
 import com.bowlong.pinyin.PinYin;
 import com.bowlong.sql.SqlEx;
 import com.bowlong.util.MapEx;
 import com.bowlong.util.StrBuilder;
 
-public class InternalBuilder extends Toolkit {
+public class InternalBuilder extends ExToolkit {
 	public static void main(String[] args) throws Exception {
 		String sql = "SELECT * FROM `用户的道具` LIMIT 1";
 		String host = "127.0.0.1";

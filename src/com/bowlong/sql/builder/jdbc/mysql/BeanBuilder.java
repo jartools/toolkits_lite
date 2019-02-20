@@ -8,16 +8,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
-import com.bowlong.Toolkit;
+import com.bowlong.basic.ExToolkit;
 import com.bowlong.lang.StrEx;
 import com.bowlong.pinyin.PinYin;
 import com.bowlong.sql.SqlEx;
 import com.bowlong.util.MapEx;
 
 @SuppressWarnings("unused")
-public class BeanBuilder extends Toolkit {
+public class BeanBuilder extends ExToolkit {
 
 	public static void main(String[] args) throws Exception {
 		String sql = "SELECT * FROM `用户角色的好友` LIMIT 1";

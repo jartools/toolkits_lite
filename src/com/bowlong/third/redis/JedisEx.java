@@ -6,17 +6,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.Transaction;
-
-import com.bowlong.Toolkit;
+import com.bowlong.basic.ExToolkit;
 import com.bowlong.bio2.B2Helper;
 import com.bowlong.json.MyJson;
 import com.bowlong.lang.task.ThreadEx;
 import com.bowlong.sql.beanbasic.BeanSupport;
 import com.bowlong.util.NewMap;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Transaction;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class JedisEx {
@@ -865,7 +865,7 @@ public class JedisEx {
 
 	public static final String putObject(final Jedis jedis, final String key,
 			Object obj) throws Exception {
-		final byte[] val = Toolkit.serialization(obj);
+		final byte[] val = ExToolkit.serialization(obj);
 
 		String message = JedisSubMsg.setMsg(key);
 		publish(jedis, PUBSUB_CHN_SET, message);
@@ -977,7 +977,7 @@ public class JedisEx {
 	public static final Object getObject(final Jedis jedis, final String key)
 			throws Exception {
 		byte[] b = jedis.get(key2(key));
-		return Toolkit.deserialization(b);
+		return ExToolkit.deserialization(b);
 	}
 
 	public static final Object getObject(final String key) throws Exception {
@@ -1436,7 +1436,7 @@ public class JedisEx {
 		if (val instanceof BeanSupport)
 			return val2((BeanSupport) val);
 		try {
-			return Toolkit.serialization(val);
+			return ExToolkit.serialization(val);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

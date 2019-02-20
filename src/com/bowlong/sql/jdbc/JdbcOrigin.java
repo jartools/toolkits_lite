@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,18 +19,18 @@ import javax.sql.DataSource;
 import javax.sql.RowSet;
 import javax.sql.rowset.CachedRowSet;
 
+import com.bowlong.basic.ExToolkit;
 import com.bowlong.lang.StrEx;
 import com.bowlong.lang.task.MyThreadFactory;
 import com.bowlong.sql.SqlEx;
 import com.bowlong.sql.beanbasic.RsHandler;
 import com.bowlong.third.FastJSON;
-import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.ListEx;
 import com.bowlong.util.MapEx;
 import com.sun.rowset.CachedRowSetImpl;
 
 @SuppressWarnings("all")
-public class JdbcOrigin {
+public class JdbcOrigin extends ExToolkit {
 	/*** 记录数据连接对象目录下的所有表名称 **/
 	private static final Map<String, Set<String>> TABLES = newMap();
 	// 数据库连接模式[conn如果不为空，则只有一个连接]
@@ -474,18 +473,6 @@ public class JdbcOrigin {
 		return stmt;
 	}
 
-	public static final String e2s(Throwable e) {
-		return e2s(e, null, new Object[0]);
-	}
-
-	public static final String e2s(Throwable e, Object obj) {
-		return e2s(e, String.valueOf(obj), new Object[0]);
-	}
-
-	public static String e2s(Throwable e, String fmt, Object... args) {
-		return ExceptionEx.e2s(e, fmt, args);
-	}
-
 	// ///////////////////////////////////////////////////
 	static final public List<Map> toMaps(ResultSet rs) throws SQLException {
 		List<Map> result = newList();
@@ -513,30 +500,6 @@ public class JdbcOrigin {
 			result.put(rsmd.getColumnName(i), rs.getObject(i));
 
 		return result;
-	}
-
-	public static final int pageCount(final int count, final int pageSize) {
-		return ListEx.pageCount(count, pageSize);
-	}
-
-	public static final List getPage(final List v, final int page, final int pageSize) {
-		return ListEx.getPage(v, page, pageSize);
-	}
-
-	static public final int getInt(Map map, Object key) {
-		return MapEx.getInt(map, key);
-	}
-
-	static public final long getLong(Map map, Object key) {
-		return MapEx.getLong(map, key);
-	}
-
-	static public final <T> List<T> newList() {
-		return ListEx.newList();
-	}
-
-	static public final Map newMap() {
-		return MapEx.newMap();
 	}
 
 	public void truncate(String TABLENAME2) throws SQLException {

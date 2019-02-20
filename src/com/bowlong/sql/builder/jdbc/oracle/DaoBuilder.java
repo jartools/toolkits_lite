@@ -7,13 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.bowlong.Toolkit;
+import com.bowlong.basic.ExToolkit;
 import com.bowlong.lang.StrEx;
 import com.bowlong.pinyin.PinYin;
 import com.bowlong.sql.SqlEx;
 import com.bowlong.util.MapEx;
 
-public class DaoBuilder extends Toolkit {
+public class DaoBuilder extends ExToolkit {
 	public static void main(String[] args) throws Exception {
 		String TABLENAME = "BASEACCOUNTPERIOD";
 		String sql = "SELECT * FROM " + TABLENAME;
