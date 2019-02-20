@@ -37,13 +37,13 @@ public class TkitJsp extends TkitBase {
 
 	/*** 转换时间为字符串 **/
 	static final public Map toBasicMap(Map orign) {
-		if (MapEx.isEmpty(orign))
+		if (isEmpty(orign))
 			return orign;
 		Map result = new HashMap();
 		for (Object key : orign.keySet()) {
 			Object val = orign.get(key);
 			if (val instanceof Date) {
-				val = DateEx.format((Date) val, DateEx.fmt_yyyy_MM_dd_HH_mm_ss);
+				val = format((Date) val, DateEx.fmt_yyyy_MM_dd_HH_mm_ss);
 			}
 			result.put(key, val);
 		}
@@ -329,11 +329,7 @@ public class TkitJsp extends TkitBase {
 
 	static public final String getDirTmWebRoot() {
 		if (null == _dirTmWebRoot) {
-			_dirTmWebRoot = getAppRoot().replace("bin", "webapps");
-			_dirTmWebRoot = StrEx.repBackSlash(_dirTmWebRoot, "/");
-			if (!_dirTmWebRoot.endsWith("/")) {
-				_dirTmWebRoot = _dirTmWebRoot + "/";
-			}
+			_dirTmWebRoot = dirTmWebRoot();
 		}
 		return _dirTmWebRoot;
 	}

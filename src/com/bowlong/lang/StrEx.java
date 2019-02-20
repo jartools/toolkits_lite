@@ -138,37 +138,6 @@ public final class StrEx extends ExOrigin {
 		return changeN(s, 0, true, false);
 	}
 
-	public static final String package2Path(final String pkg) {
-		return pkg.replaceAll("\\.", "/");
-	}
-
-	/*** \反斜杠替换成空白 **/
-	static public final String repBackSlash(final String str) {
-		return repBackSlash(str, "");
-	}
-
-	/*** \反斜杠替换 **/
-	static public final String repBackSlash(final String str, String reval) {
-		if (reval == null)
-			reval = "";
-		return str.replaceAll("\\\\", reval);
-	}
-
-	/*** 斜杠/替换 **/
-	static public final String repSlash(final String str, String reval) {
-		if (reval == null)
-			reval = "";
-		return str.replaceAll("/", reval);
-	}
-
-	/*** 斜杠/与\反斜杠都替换 **/
-	static public final String repSlashAll(final String str, String reval) {
-		if (reval == null)
-			reval = "";
-		String v = str.replaceAll("/", reval);
-		return repBackSlash(v, reval);
-	}
-
 	public static final String mapToString(final Map<?, ?> m) {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {

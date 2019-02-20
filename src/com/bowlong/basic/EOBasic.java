@@ -40,16 +40,57 @@ public class EOBasic {
 		return EOBasic.class.getClassLoader().getResource("").getPath();
 	}
 
-	static final public byte[] toByteArray(final String s, final String charset) throws Exception {
+	static final public String dirTmWebRoot() {
+		String root = getAppRoot();
+		String dir = root.replace("bin", "webapps");
+		dir = repBackSlash(dir, "/");
+		if (!dir.endsWith("/")) {
+			dir = dir + "/";
+		}
+		return dir;
+	}
+
+	static final public String package2Path(String pkg) {
+		return pkg.replaceAll("\\.", "/");
+	}
+
+	/*** \反斜杠替换成空白 **/
+	static final public String repBackSlash(String str) {
+		return repBackSlash(str, "");
+	}
+
+	/*** \反斜杠替换 **/
+	static final public String repBackSlash(String str, String reval) {
+		if (reval == null)
+			reval = "";
+		return str.replaceAll("\\\\", reval);
+	}
+
+	/*** 斜杠/替换 **/
+	static final public String repSlash(String str, String reval) {
+		if (reval == null)
+			reval = "";
+		return str.replaceAll("/", reval);
+	}
+
+	/*** 斜杠/与\反斜杠都替换 **/
+	static public final String repSlashAll(String str, String reval) {
+		if (reval == null)
+			reval = "";
+		str = repSlash(str, reval);
+		return repBackSlash(str, reval);
+	}
+
+	static final public byte[] toByteArray(String s, String charset) throws Exception {
 		return s.getBytes(charset);
 	}
 
-	static final public int hashCode(final String s) {
+	static final public int hashCode(String s) {
 		char[] value = s.toCharArray();
 		return hashCode(value);
 	}
 
-	static final public int hashCode(final char[] value) {
+	static final public int hashCode(char[] value) {
 		int hash = 0;
 		int count = value.length;
 		int offset = 0;
