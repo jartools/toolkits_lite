@@ -81,8 +81,7 @@ public class N4HttpResponse extends N4HttpOrg {
 		int size = response.content().writableBytes();
 		int len = buff.length;
 		int realSize = Math.min(len, size);
-		System.out.println("size : " + size + ",len : " + len+",realSize : "+realSize);
-		// response.headers().set("Content-Length", size);
+		// System.out.println("size : " + size + ",len : " + len+",realSize : "+realSize);
 		response.headers().set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);  
 		response.headers().set(HttpHeaders.Names.CONTENT_LENGTH, realSize);  
 		ChannelFuture f = chn.writeAndFlush(response);
