@@ -27,7 +27,7 @@ public class JsonHelper {
 	 *            javaBean
 	 * @return Map对象
 	 */
-	public static Map toMap(Object javaBean) {
+	static final public Map toMap(Object javaBean) {
 		Map result = new HashMap();
 		Method[] methods = javaBean.getClass().getDeclaredMethods();
 		for (Method method : methods) {
@@ -54,7 +54,7 @@ public class JsonHelper {
 	 * @return Map对象
 	 * @throws JSONException
 	 */
-	public static Map toMap(String jsonString) throws JSONException {
+	static final public Map toMap(String jsonString) throws JSONException {
 		JSONObject jsonObject = new JSONObject(jsonString);
 		Map result = new HashMap();
 		Iterator iterator = jsonObject.keys();
@@ -76,11 +76,11 @@ public class JsonHelper {
 	 *            javaBean
 	 * @return json对象
 	 */
-	public static JSONObject toJSON(Object bean) {
+	static final public JSONObject toJSON(Object bean) {
 		return toJSON(toMap(bean));
 	}
 
-	public static JSONObject toJSON(Map<?, ?> map) {
+	static final public JSONObject toJSON(Map<?, ?> map) {
 		return new JSONObject(map);
 	}
 
@@ -91,7 +91,7 @@ public class JsonHelper {
 	 * @return
 	 * @throws JSONException
 	 */
-	public static JSONObject toJSON(String json) throws JSONException {
+	static final public JSONObject toJSON(String json) throws JSONException {
 		return new JSONObject(json);
 	}
 
@@ -103,7 +103,7 @@ public class JsonHelper {
 	 * @param data
 	 *            Map数据
 	 */
-	public static Object toJavaBean(Object javabean, Map data) {
+	static final public Object toJavaBean(Object javabean, Map data) {
 		Method[] methods = javabean.getClass().getDeclaredMethods();
 		for (Method method : methods) {
 
@@ -120,7 +120,7 @@ public class JsonHelper {
 		return javabean;
 	}
 
-	public static <T> T toJavaBean(Class<T> clazz, Map data) throws Exception {
+	static final public <T> T toJavaBean(Class<T> clazz, Map data) throws Exception {
 		T javabean = clazz.newInstance();
 		return (T) toJavaBean(javabean, data);
 	}
@@ -135,15 +135,22 @@ public class JsonHelper {
 	 *             json解析异常
 	 * @throws JSONException
 	 */
-	public static Object toJavaBean(Object javabean, String jsonString) throws Exception {
+	static final public Object toJavaBean(Object javabean, String jsonString) throws Exception {
 		JSONObject jsonObject = new JSONObject(jsonString);
 		Map map = toMap(jsonObject.toString());
 		return toJavaBean(javabean, map);
 	}
 
-	public static <T> T toJavaBean(Class<T> clazz, String jsonString) throws Exception {
+	static final public <T> T toJavaBean(Class<T> clazz, String jsonString) throws Exception {
 		T javabean = clazz.newInstance();
 		return (T) toJavaBean(javabean, jsonString);
 	}
 
+	static final public String toJSONStr(Object javabean){
+		return toJSON(javabean).toString();
+	}
+	
+	static final public String toJSONStr(Map<?, ?> map){
+		return toJSON(map).toString();
+	}
 }

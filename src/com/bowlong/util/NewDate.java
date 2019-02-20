@@ -56,13 +56,11 @@ public class NewDate extends Date {
 		this(year, month, day, 0, 0, 0, 0);
 	}
 
-	public NewDate(int year, int month, int day, int hour, int minute,
-			int second) {
+	public NewDate(int year, int month, int day, int hour, int minute, int second) {
 		this(year, month, day, hour, minute, second, 0);
 	}
 
-	public NewDate(int year, int month, int day, int hour, int minute,
-			int second, int millis) {
+	public NewDate(int year, int month, int day, int hour, int minute, int second, int millis) {
 		c.set(year, month - 1, day, hour, minute, second);
 		setDate(c.getTime());
 	}
@@ -277,14 +275,14 @@ public class NewDate extends Date {
 		return this;
 	}
 
-	public int getSecound() {
+	public int getSecond() {
 		c.setTime(this);
 		return c.get(Calendar.SECOND);
 	}
 
-	public NewDate setSecound(int secound) {
+	public NewDate setSecond(int second) {
 		c.setTime(this);
-		c.set(Calendar.SECOND, secound);
+		c.set(Calendar.SECOND, second);
 		this.setTime(c.getTimeInMillis());
 		return this;
 	}

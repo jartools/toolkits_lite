@@ -178,7 +178,7 @@ public class SchedulerEx {
 		NewDate dat = new NewDate();
 		long h = dat.getHour();
 		long m = dat.getMinute();
-		long s = dat.getSecound();
+		long s = dat.getSecond();
 		long initialDelay = 0;
 		long e1 = h * DateEx.TIME_HOUR + m * DateEx.TIME_MINUTE + s * DateEx.TIME_SECOND;
 		long e2 = hour * DateEx.TIME_HOUR + minute * DateEx.TIME_MINUTE + sec * DateEx.TIME_SECOND;
