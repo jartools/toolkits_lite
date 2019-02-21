@@ -15,6 +15,7 @@ import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.stream.ChunkedWriteHandler;
 
 import java.nio.charset.Charset;
 
@@ -118,9 +119,12 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 		p.addLast("deflater", new HttpContentCompressor());
 
 		// HttpObjectAggregator会把多个消息转换为一个单一的FullHttpRequest或是FullHttpResponse。
-		int maxContentLength = 1024 * 1024 * 3;
+		int maxContentLength = 1024 * 1024 * 10;
 		p.addLast("aggregator", new HttpObjectAggregator(maxContentLength));
-
+		
+		//为了处理大文件传输的情形
+		p.addLast("http-chunked", new ChunkedWriteHandler());
+		
 		// hander接受到的是:HttpRequest
 		p.addLast("handler", this.hander);
 	}
