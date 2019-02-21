@@ -67,12 +67,17 @@ public class ListEx extends ExOrigin {
 
 	/*** 分隔符，英文分号逗号(,;,;) **/
 	static public final List<List<String>> toListBySemicolonComma(String s, boolean isTrim) {
+		return toLists(s, ";", ",", isTrim);
+	}
+
+	/*** 分隔符，英文分号逗号(,;,;) **/
+	static public final List<List<String>> toLists(String s, String delimiter1, String delimiter2, boolean isTrim) {
 		List<List<String>> ret = newListT();
-		List<String> list = toList(s, ";", isTrim);
+		List<String> list = toList(s, delimiter1, isTrim);
 		int lens = list.size();
 		List<String> tmp = null;
 		for (int i = 0; i < lens; i++) {
-			tmp = toListByComma(list.get(i), isTrim);
+			tmp = toList(list.get(i), delimiter2, isTrim);
 			if (isEmpty(tmp))
 				continue;
 			ret.add(tmp);

@@ -436,18 +436,60 @@ public class JdbcOrigin extends ExToolkit {
 		}
 
 		PrepareSQLResult result = new PrepareSQLResult();
+		String _lower = sql.toLowerCase();
+		boolean isUp = _lower.contains("update");
+		boolean isSe = _lower.contains("select");
+		boolean isIn = _lower.contains("insert");
+		List<String> keys = newListT();
+		String _tmp = "";
+		if (isIn) {
+			_tmp = StrEx.left(sql, ")");
+			_tmp = StrEx.right(_tmp, "(");
+			keys = ListEx.toListByComma(_tmp, true);
+		} else {
+			_tmp = sql;
+			String _sp = "", _str = "";
+			if (isUp) {
+				_sp = "set";
+				if (sql.contains("SET")) {
+					_sp = "SET";
+				}
+				_tmp = StrEx.right(sql, _sp);
+			}
 
-		String sql2 = sql;
-		String sqlKey = StrEx.left(sql, ")");
-		sqlKey = StrEx.right(sqlKey, "(");
-		List<String> keys = ListEx.toListByComma(sqlKey, true);
-		// 没有缓存,则从头获取
-		if (!ListEx.isEmpty(keys) && sql2.indexOf(":") != -1) {
-			int lens = keys.size();
-			String key = "";
+			_sp = "where";
+			List<List<String>> lstKey = newListT();
+			if (_tmp.contains("WHERE")) {
+				_sp = "WHERE";
+			}
+
+			if (isUp) {
+				_str = StrEx.left(_tmp, _sp);
+				lstKey.addAll(ListEx.toLists(_str, ",", "=", true));
+			}
+			_str = StrEx.right(_tmp, _sp);
+			lstKey.addAll(ListEx.toLists(_str, ",", "=", true));
+			int lens = lstKey.size();
+			List<String> tmp = null;
 			for (int i = 0; i < lens; i++) {
-				key = String.format(":%s", keys.get(i));
-				sql2 = sql2.replaceFirst(key, "?");
+				tmp = lstKey.get(i);
+				if (tmp.size() == 2) {
+					_str = tmp.get(1);
+					if (_str.contains(":") || _str.contains("?")) {
+						keys.add(tmp.get(0));
+					}
+				}
+			}
+		}
+
+		boolean isEmpty = ListEx.isEmpty(keys);
+		// 没有缓存,则从头获取
+		String sql2 = sql;
+		if (!isEmpty && sql2.indexOf(":") != -1) {
+			int lens = keys.size();
+			for (int i = 0; i < lens; i++) {
+				_tmp = String.format(":%s", keys.get(i));
+				sql2 = sql2.replaceFirst(_tmp, "?");
 			}
 		}
 
