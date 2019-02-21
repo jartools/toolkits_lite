@@ -30,12 +30,12 @@ public class N4HttpResponse extends N4HttpOrg {
 	static Log log = LogFactory.getLog(N4HttpResponse.class);
 
 	/** 需要关闭的地方才关闭 */
-	static public void closeChn(Channel chn) {
+	static final public void closeChn(Channel chn) {
 		closeChn(chn, true);
 	}
 
 	/** 需要关闭的地方才关闭 */
-	static public void closeChn(Channel chn, boolean isCan) {
+	static final public void closeChn(Channel chn, boolean isCan) {
 		if (!isCan)
 			return;
 		try {
@@ -45,12 +45,22 @@ public class N4HttpResponse extends N4HttpOrg {
 		}
 	}
 
-	public static void send(Channel chn, Map params) throws Exception {
+	static final private int _send(Channel chn, ByteBuf buf, FullHttpResponse response) {
+		int size = response.content().readableBytes();
+		response.headers().set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
+		response.headers().set(HttpHeaders.Names.CONTENT_LENGTH, size);
+		ChannelFuture f = chn.writeAndFlush(response);
+		f = chn.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
+		f.addListener(ChannelFutureListener.CLOSE);
+		return size;
+	}
+
+	static final public void send(Channel chn, Map params) throws Exception {
 		byte[] buff = B2Helper.toBytes(params);
 		send(chn, buff);
 	}
 
-	public static void send(Channel chn, String content) throws Exception {
+	static final public void send(Channel chn, String content) throws Exception {
 		if (content == null) {
 			content = "";
 		}
@@ -58,8 +68,8 @@ public class N4HttpResponse extends N4HttpOrg {
 		byte[] buff = content.getBytes("UTF-8");
 		send(chn, buff);
 	}
-	
-	protected static void sendAll(Channel chn, String content, String ContentType) throws Exception {
+
+	static final protected void sendAll(Channel chn, String content, String ContentType) throws Exception {
 		if (content == null) {
 			content = "";
 		}
@@ -68,34 +78,28 @@ public class N4HttpResponse extends N4HttpOrg {
 		sendAll(chn, buff, ContentType);
 	}
 
-	protected static void sendAll(Channel chn, byte[] buff, String ContentType) {
-		ByteBuf buf = N4B2ByteBuf.buffer();
-		buf.writeBytes(buff);
-		FullHttpResponse response = new DefaultFullHttpResponse(
-				HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
+	static final protected void sendAll(Channel chn, byte[] buff, String ContentType) {
+		// ByteBuf buf = N4B2ByteBuf.buffer();
+		// buf.writeBytes(buff);
+		ByteBuf buf = N4B2ByteBuf.buffer(buff);
+		sendAll(chn, buf, ContentType);
+	}
 
+	static final protected int sendAll(Channel chn, ByteBuf buf, String ContentType) {
+		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
 		if (StrEx.isEmptyTrim(ContentType))
 			ContentType = "text/html; charset=UTF-8";
-
 		response.headers().set(HttpHeaders.Names.CONTENT_TYPE, ContentType);
-		int size = response.content().writableBytes();
-		int len = buff.length;
-		int realSize = Math.min(len, size);
-		// System.out.println("size : " + size + ",len : " + len+",realSize : "+realSize);
-		response.headers().set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);  
-		response.headers().set(HttpHeaders.Names.CONTENT_LENGTH, realSize);  
-		ChannelFuture f = chn.writeAndFlush(response);
-		f = chn.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
-		f.addListener(ChannelFutureListener.CLOSE);
+		return _send(chn, buf, response);
 	}
 
 	// 直接写内容
-	public static void send(Channel chn, byte[] buff) throws Exception {
+	static final public void send(Channel chn, byte[] buff) throws Exception {
 		String ContentType = "text/html; charset=UTF-8";
 		sendAll(chn, buff, ContentType);
 	}
-	
-	public static void sendTxt(Channel chn, String content) throws Exception {
+
+	static final public void sendTxt(Channel chn, String content) throws Exception {
 		if (content == null) {
 			content = "";
 		}
@@ -103,12 +107,12 @@ public class N4HttpResponse extends N4HttpOrg {
 		sendTxt(chn, buff);
 	}
 
-	public static void sendTxt(Channel chn, byte[] buff) throws Exception {
+	static final public void sendTxt(Channel chn, byte[] buff) throws Exception {
 		String ContentType = "text/plain; charset=UTF-8";
 		sendAll(chn, buff, ContentType);
 	}
 
-	public static void sendJson(Channel chn, String content) throws Exception {
+	static final public void sendJson(Channel chn, String content) throws Exception {
 		if (content == null) {
 			content = "";
 		}
@@ -117,12 +121,12 @@ public class N4HttpResponse extends N4HttpOrg {
 	}
 
 	// 直接写内容JSON
-	public static void sendJson(Channel chn, byte[] buff) throws Exception {
+	static final public void sendJson(Channel chn, byte[] buff) throws Exception {
 		String ContentType = "application/Json; charset=UTF-8";
 		sendAll(chn, buff, ContentType);
 	}
-	
-	public static void sendCss(Channel chn, String content) throws Exception {
+
+	static final public void sendCss(Channel chn, String content) throws Exception {
 		if (content == null) {
 			content = "";
 		}
@@ -130,13 +134,12 @@ public class N4HttpResponse extends N4HttpOrg {
 		sendCss(chn, buff);
 	}
 
-	public static void sendCss(Channel chn, byte[] buff) throws Exception {
+	static final public void sendCss(Channel chn, byte[] buff) throws Exception {
 		String ContentType = "text/css; charset=UTF-8";
 		sendAll(chn, buff, ContentType);
 	}
 
-	public static void sendByChunked(Channel chn, String content)
-			throws Exception {
+	static final public void sendByChunked(Channel chn, String content) throws Exception {
 		if (content == null) {
 			content = "";
 		}
@@ -145,29 +148,22 @@ public class N4HttpResponse extends N4HttpOrg {
 		sendByChunked(chn, buff);
 	}
 
-	public static void sendByChunked(Channel chn, Map map) throws Exception {
+	static final public void sendByChunked(Channel chn, Map map) throws Exception {
 		byte[] buff = B2Helper.toBytes(map);
 		sendByChunked(chn, buff);
 	}
 
-	// 直接写内容
-	public static void sendByChunked(Channel chn, byte[] buff) throws Exception {
-		ByteBuf buf = N4B2ByteBuf.buffer();
-		buf.writeBytes(buff);
-		FullHttpResponse response = new DefaultFullHttpResponse(
-				HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
+	static final public int sendByChunked(Channel chn, ByteBuf buf) throws Exception {
+		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
+		response.headers().set(HttpHeaders.Names.TRANSFER_ENCODING, HttpHeaders.Values.CHUNKED);
+		return _send(chn, buf, response);
+	}
 
-		response.headers().set(HttpHeaders.Names.TRANSFER_ENCODING,
-				HttpHeaders.Values.CHUNKED);
-		int size = response.content().writableBytes();
-		int len = buff.length;
-		int realSize = Math.min(len, size);
-		System.out.println("size : " + size + ",len : " + len+",realSize : "+realSize);
-		// response.headers().set("Content-Length", size);
-		response.headers().set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);  
-		response.headers().set(HttpHeaders.Names.CONTENT_LENGTH, realSize);
-		ChannelFuture f = chn.writeAndFlush(response);
-		f = chn.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
-		f.addListener(ChannelFutureListener.CLOSE);
+	// 直接写内容
+	static final public void sendByChunked(Channel chn, byte[] buff) throws Exception {
+		// ByteBuf buf = N4B2ByteBuf.buffer();
+		// buf.writeBytes(buff);
+		ByteBuf buf = N4B2ByteBuf.buffer(buff);
+		sendByChunked(chn, buf);
 	}
 }

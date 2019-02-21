@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
 import com.bowlong.objpool.AbstractQueueObjPool;
+import com.bowlong.text.Encoding;
 
 public class N4B2ByteBuf extends AbstractQueueObjPool<ByteBuf> {
 
@@ -67,8 +68,7 @@ public class N4B2ByteBuf extends AbstractQueueObjPool<ByteBuf> {
 
 	// =================== 静态对象
 
-	static protected final N4B2ByteBuf pool = new N4B2ByteBuf(1,
-			Short.MAX_VALUE);
+	static protected final N4B2ByteBuf pool = new N4B2ByteBuf(1, Short.MAX_VALUE);
 
 	static public final ByteBuf borrowBuf() {
 		return pool.borrow();
@@ -79,16 +79,35 @@ public class N4B2ByteBuf extends AbstractQueueObjPool<ByteBuf> {
 	}
 
 	static public final byte[] readBuff(ByteBuf dataBuf) {
-		if (dataBuf == null || !dataBuf.isReadable()
-				|| dataBuf.readableBytes() == 0) {
+		if (dataBuf == null || !dataBuf.isReadable() || dataBuf.readableBytes() == 0) {
 			return new byte[0];
 		}
 		byte[] buff = new byte[dataBuf.readableBytes()];
 		dataBuf.readBytes(buff);
 		return buff;
 	}
-	
-	static public final ByteBuf buffer(){
+
+	static public final ByteBuf buffer() {
 		return Unpooled.buffer();
+	}
+
+	static public final ByteBuf bufferComposite() {
+		return Unpooled.compositeBuffer();
+	}
+
+	static public final ByteBuf buffer(byte[] buf) {
+		return Unpooled.copiedBuffer(buf);
+	}
+
+	static public final ByteBuf buffer(byte[]... bufs) {
+		return Unpooled.copiedBuffer(bufs);
+	}
+
+	static public final ByteBuf buffer(CharSequence charSequence) {
+		return Unpooled.copiedBuffer(charSequence, Encoding.UTF8);
+	}
+	
+	static public final ByteBuf bufferWrapped(byte[]... bufs) {
+		return Unpooled.wrappedBuffer(bufs);
 	}
 }
