@@ -482,7 +482,7 @@ public class ListEx extends ExOrigin {
 		return src;
 	}
 
-	public static final List<Map> sort(final List m1, final String key) {
+	public static final List<Map> sort(final List<Map> m1, final String key) {
 		Collections.sort(m1, new Comparator<Map>() {
 			public int compare(Map o1, Map o2) {
 				try {
