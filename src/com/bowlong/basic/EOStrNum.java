@@ -287,16 +287,16 @@ public class EOStrNum extends EOBasic {
 		return String.valueOf(v);
 	}
 
-	static final public String getAppRoot() {
+	static final public String appRoot() {
 		return System.getProperty("user.dir");
 	}
 
-	static final public String getAppPath() {
+	static final public String appPath() {
 		return EOStrNum.class.getClassLoader().getResource("").getPath();
 	}
 
 	static final public String dirTmWebRoot() {
-		String root = getAppRoot();
+		String root = appRoot();
 		String dir = root.replace("bin", "webapps");
 		dir = repBackSlash(dir, "/");
 		if (!dir.endsWith("/")) {
