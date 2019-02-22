@@ -34,7 +34,7 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 	}
 
 	protected Map<String, Object> toMap4Client(Map<String, Object> map) {
-		return map;
+		return toMap(map);
 	}
 
 	public Map<String, Object> toMap4Client() {
