@@ -33,6 +33,15 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 		return toMap(map);
 	}
 
+	protected Map<String, Object> toMap4Client(Map<String, Object> map) {
+		return map;
+	}
+
+	public Map<String, Object> toMap4Client() {
+		map.clear();
+		return toMap4Client(map);
+	}
+
 	private Map<String, Object> toMap(ResultSet rs) throws SQLException {
 		return SqlEx.toMap(rs);
 	}
