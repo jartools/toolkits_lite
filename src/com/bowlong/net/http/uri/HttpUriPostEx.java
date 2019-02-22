@@ -61,7 +61,7 @@ public class HttpUriPostEx extends HttpUriEx {
 			}
 			// post.setHeader("Connection", "Keep-Alive");
 			post.setHeader("Connection", "close");
-			post.setHeader("User-Agent", UseAgent3);
+			post.setHeader("User-Agent", UA_360);
 			return execute(post);
 		} catch (Exception e) {
 			logError(e, log);
@@ -100,7 +100,7 @@ public class HttpUriPostEx extends HttpUriEx {
 			}
 			// post.setHeader("Connection", "Keep-Alive");
 			post.setHeader("Connection", "close");
-			post.setHeader("User-Agent", UseAgent3);
+			post.setHeader("User-Agent", UA_360);
 			return execute(post);
 		} catch (Exception e) {
 			logError(e, log);
