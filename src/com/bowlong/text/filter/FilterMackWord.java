@@ -38,6 +38,10 @@ public class FilterMackWord {
 	 *            "fonts/dirtyword.txt"
 	 */
 	static public void init(String path, String mackPath) {
+		init(path, mackPath, "*");
+	}
+
+	static public void init(String path, String mackPath, String repaceVal) {
 		File f = new File(path);
 		if (f.exists()) {
 			// 加载严格模式分隔符
@@ -50,8 +54,7 @@ public class FilterMackWord {
 						if (!splitter.containsKey(line.charAt(0)))
 							splitter.put(line.charAt(0), empty);
 					} else {
-						System.out.println("异常分隔符:" + line + ", 行数："
-								+ lr.getLineNumber());
+						System.out.println("异常分隔符:" + line + ", 行数：" + lr.getLineNumber());
 					}
 				}
 				lr.close();
@@ -63,8 +66,7 @@ public class FilterMackWord {
 		if (!ff.exists())
 			return;
 		// 加载屏蔽字
-		try (LineNumberReader lr = new LineNumberReader(new InputStreamReader(
-				new FileInputStream(ff), Encoding.UTF8));) {
+		try (LineNumberReader lr = new LineNumberReader(new InputStreamReader(new FileInputStream(ff), Encoding.UTF8));) {
 			List<String> keyWords = new ArrayList<String>();
 			String line = null;
 			int maxLength = 0;
@@ -76,8 +78,7 @@ public class FilterMackWord {
 						maxLength = line.length();
 					}
 				} else {
-					System.out.println("异常屏蔽字：" + line + ", 行数："
-							+ lr.getLineNumber());
+					System.out.println("异常屏蔽字：" + line + ", 行数：" + lr.getLineNumber());
 				}
 			}
 			System.out.println("屏蔽字数量=" + lr.getLineNumber());
@@ -88,7 +89,7 @@ public class FilterMackWord {
 			StringBuffer sb = new StringBuffer(40);
 			for (int i = 0; i < replaces.length; i++) {
 				for (int j = 0; j <= i; j++) {
-					sb.append("*");
+					sb.append(repaceVal);
 				}
 				replaces[i] = sb.toString();
 				sb.delete(0, sb.length());
@@ -150,9 +151,7 @@ public class FilterMackWord {
 						if (node.m_values.containsKey('\0')) {
 							end = j + 1;
 						}
-					} else if (IS_STAICT_MODE
-							&& FilterMackWord.splitter.containsKey(text
-									.charAt(j))) {
+					} else if (IS_STAICT_MODE && FilterMackWord.splitter.containsKey(text.charAt(j))) {
 						if (node.m_values.containsKey('\0')) {
 							end = j + 1;
 						}
@@ -163,13 +162,9 @@ public class FilterMackWord {
 				}
 				if (end > 0) {
 					String key = text.substring(i, end); // 截取出屏蔽字
-					int l = key.length() + 1 > replaces.length ? replaces.length - 1
-							: key.length() - 1; // 计算替换字*号长度
+					int l = key.length() + 1 > replaces.length ? replaces.length - 1 : key.length() - 1; // 计算替换字*号长度
 					text = replace(text, key, replaces[l]); // 将屏蔽字替换成相应长度的*号
-					i = end
-							- 1
-							- (key.length() > replaces.length ? (key.length()
-									- replaces.length + 1) : 0);
+					i = end - 1 - (key.length() > replaces.length ? (key.length() - replaces.length + 1) : 0);
 				}
 			}
 		}
