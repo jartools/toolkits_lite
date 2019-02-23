@@ -54,7 +54,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 			if (isOut) {
 				conn.setRequestProperty("Content-Length", String.valueOf(lens4params));
 			}
-			conn.setRequestProperty("user-agent", UseAgent3);
+			conn.setRequestProperty("user-agent", UA_360);
 			// 请求超时
 			if (timeOutCon <= 0) {
 				timeOutCon = defaultConRequTimeout;
@@ -72,6 +72,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 			conn.setDoOutput(isOut);
 
 			if (isPost) {
+				conn.setUseCaches(false);// 使用POST不能使用缓存
 				conn.setRequestMethod("POST");
 			} else {
 				conn.setRequestMethod("GET");

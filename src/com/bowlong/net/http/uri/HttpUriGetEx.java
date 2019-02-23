@@ -49,7 +49,7 @@ public class HttpUriGetEx extends HttpUriEx {
 			}
 			// get.setHeader("Connection", "Keep-Alive");
 			get.setHeader("Connection", "close");
-			get.setHeader("User-Agent", UseAgent3);
+			get.setHeader("User-Agent", UA_360);
 			return execute(get);
 		} catch (Exception e) {
 			logError(e, log);
