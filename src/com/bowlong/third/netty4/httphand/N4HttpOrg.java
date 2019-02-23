@@ -38,6 +38,7 @@ public class N4HttpOrg implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	static public boolean isLog = false;
 	static Log log = LogFactory.getLog(N4HttpOrg.class);
 
 	// =============== get 请求传参
@@ -132,7 +133,8 @@ public class N4HttpOrg implements Serializable {
 				map.put(attr.getName(), attr.getValue());
 			}
 		} catch (Exception e) {
-			log.error(ExceptionEx.e2s(e));
+			if (isLog)
+				log.error(ExceptionEx.e2s(e));
 		} finally {
 			msg.destroy();
 		}
@@ -153,7 +155,8 @@ public class N4HttpOrg implements Serializable {
 				map.put(key, val);
 			}
 		} catch (Exception e) {
-			log.error(ExceptionEx.e2s(e));
+			if (isLog)
+				log.error(ExceptionEx.e2s(e));
 		} finally {
 			msg.destroy();
 		}
@@ -168,7 +171,8 @@ public class N4HttpOrg implements Serializable {
 				try {
 					post = getDecoderByPost(request);
 				} catch (Exception e) {
-					log.error(ExceptionEx.e2s(e));
+					if (isLog)
+						log.error(ExceptionEx.e2s(e));
 				}
 			}
 		}
@@ -239,7 +243,8 @@ public class N4HttpOrg implements Serializable {
 					charType = Encoding.UTF_8;
 				result = new String(buff, charType);
 			} catch (UnsupportedEncodingException e) {
-				log.error(ExceptionEx.e2s(e));
+				if (isLog)
+					log.error(ExceptionEx.e2s(e));
 			}
 		}
 		return result;
@@ -284,7 +289,8 @@ public class N4HttpOrg implements Serializable {
 			Map<String, Object> dataMap = getMapKVByMsg(msg);
 			return HttpBaseEx.buildQuery(dataMap, "");
 		} catch (Exception e) {
-			log.error(ExceptionEx.e2s(e));
+			if (isLog)
+				log.error(ExceptionEx.e2s(e));
 		}
 		return "";
 	}

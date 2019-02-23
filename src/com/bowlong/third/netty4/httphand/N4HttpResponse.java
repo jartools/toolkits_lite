@@ -1,5 +1,10 @@
 package com.bowlong.third.netty4.httphand;
 
+import java.util.Map;
+
+import com.bowlong.bio2.B2Helper;
+import com.bowlong.lang.StrEx;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -11,14 +16,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 
-import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.bowlong.bio2.B2Helper;
-import com.bowlong.lang.StrEx;
-
 /***
  * N4(netty 4)请求相应类 其父N4HttpResp类处理其他过来的请求， 该类进行响应(返回对应的数据)
  ****/
@@ -26,8 +23,6 @@ import com.bowlong.lang.StrEx;
 public class N4HttpResponse extends N4HttpOrg {
 
 	private static final long serialVersionUID = 1L;
-
-	static Log log = LogFactory.getLog(N4HttpResponse.class);
 
 	/** 需要关闭的地方才关闭 */
 	static final public void closeChn(Channel chn) {
