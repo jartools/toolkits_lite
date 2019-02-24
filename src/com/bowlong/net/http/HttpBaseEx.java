@@ -128,8 +128,8 @@ public class HttpBaseEx extends InputStreamEx{
 	}
 
 	/*** GET参数转换为map对象 */
-	static final public Map<String, String> buildMapByQuery(String query) {
-		Map<String, String> ret = new HashMap<String, String>();
+	static final public Map<String, Object> buildMapByQuery(String query) {
+		Map<String, Object> ret = new HashMap<String, Object>();
 		if (!StrEx.isEmptyTrim(query)) {
 			boolean isFirst = query.indexOf("?") == 0;
 			if (isFirst)

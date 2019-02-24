@@ -1,5 +1,18 @@
 package com.bowlong.third.netty4.httphand;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.http.HttpContent;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.handler.codec.http.multipart.Attribute;
+import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
+import io.netty.handler.codec.http.multipart.FileUpload;
+import io.netty.handler.codec.http.multipart.HttpDataFactory;
+import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
+import io.netty.handler.codec.http.multipart.InterfaceHttpData;
+import io.netty.handler.codec.http.multipart.InterfaceHttpData.HttpDataType;
+
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -17,24 +30,11 @@ import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.ListEx;
 import com.bowlong.util.MapEx;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.http.HttpContent;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.QueryStringDecoder;
-import io.netty.handler.codec.http.multipart.Attribute;
-import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
-import io.netty.handler.codec.http.multipart.FileUpload;
-import io.netty.handler.codec.http.multipart.HttpDataFactory;
-import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
-import io.netty.handler.codec.http.multipart.InterfaceHttpData;
-import io.netty.handler.codec.http.multipart.InterfaceHttpData.HttpDataType;
-
 /***
  * N4(netty 4)请求相应父类 处理过来的请求，解析请求参数，取得请求传送的数据 此处的res 是 response 的简称. 此处的req 是
  * request 的简称. ByPost 表示post 请求传参 ByGet 表示 get 请求传参
  ****/
-public class N4HttpOrg implements Serializable {
+public class N4HttpOrg extends HttpBaseEx implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,7 +43,7 @@ public class N4HttpOrg implements Serializable {
 
 	// =============== get 请求传参
 	public static String getParamsVal(String query, String key) {
-		Map<String, String> mapPars = HttpBaseEx.buildMapByQuery(query);
+		Map<String, Object> mapPars = buildMapByQuery(query);
 		return MapEx.getString(mapPars, key);
 	}
 
@@ -58,7 +58,7 @@ public class N4HttpOrg implements Serializable {
 	}
 
 	static public Map<String, Object> getMapByGet(HttpRequest request) {
-		return getMapByGet(request.getUri());
+		return buildMapByQuery(request.getUri());
 	}
 
 	static public Map<String, Object> getMapByGet(String strUri) {
