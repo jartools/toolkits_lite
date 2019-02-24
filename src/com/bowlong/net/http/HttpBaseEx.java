@@ -27,7 +27,7 @@ import com.bowlong.util.MapEx;
  * @version createtime：2015年8月17日下午7:50:55
  */
 @SuppressWarnings({ "rawtypes" })
-public class HttpBaseEx extends InputStreamEx{
+public class HttpBaseEx extends InputStreamEx {
 
 	static public String UA_360 = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36";
 	static public String UA_Chrome = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.133 Safari/534.16";
@@ -131,9 +131,9 @@ public class HttpBaseEx extends InputStreamEx{
 	static final public Map<String, Object> buildMapByQuery(String query) {
 		Map<String, Object> ret = new HashMap<String, Object>();
 		if (!StrEx.isEmptyTrim(query)) {
-			boolean isFirst = query.indexOf("?") == 0;
-			if (isFirst)
-				query = query.substring(1);
+			int ind = query.indexOf("?");
+			if (ind != -1)
+				query = query.substring(ind + 1);
 			String[] params = query.split("&");
 			for (String item : params) {
 				if (StrEx.isEmptyTrim(item))
