@@ -58,7 +58,7 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 	}
 
 	static public Map<String, Object> getMapByGet(HttpRequest request) {
-		return buildMapByQuery(request.getUri());
+		return getMapByGet(request.getUri());
 	}
 
 	static public Map<String, Object> getMapByGet(String strUri) {
