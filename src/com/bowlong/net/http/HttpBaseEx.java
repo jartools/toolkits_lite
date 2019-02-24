@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bowlong.lang.InputStreamEx;
 import com.bowlong.lang.NumFmtEx;
 import com.bowlong.lang.StrEx;
+import com.bowlong.security.Escape;
 import com.bowlong.util.DateEx;
 import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.MapEx;
@@ -146,6 +147,7 @@ public class HttpBaseEx extends InputStreamEx {
 				if (ret.containsKey(k)) {
 					v = ret.get(k) + "," + v;
 				}
+				v = Escape.unescape(v);
 				ret.put(k, v);
 			}
 		}
