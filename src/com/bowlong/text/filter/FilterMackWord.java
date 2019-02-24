@@ -136,22 +136,23 @@ public class FilterMackWord {
 	 * @return 返回经过过滤，不包含屏蔽字的字符串
 	 */
 	public static String findAndReplace(String text) {
-		text = text.toUpperCase();
+		String str = text.toUpperCase();
 		TrieFilter node;
 		TrieFilter node2;
-		for (int i = 0; i < text.length(); i++) {
-			if ((node = root.m_values.get(text.charAt(i))) != null) {
+
+		for (int i = 0; i < str.length(); i++) {
+			if ((node = root.m_values.get(str.charAt(i))) != null) {
 				int end = 0;
 				if (node.m_values.containsKey('\0')) { // 碰到敏感词
 					end = i + 1;
 				}
-				for (int j = i + 1; j < text.length(); j++) {
-					if ((node2 = node.m_values.get(text.charAt(j))) != null) {
+				for (int j = i + 1; j < str.length(); j++) {
+					if ((node2 = node.m_values.get(str.charAt(j))) != null) {
 						node = node2;
 						if (node.m_values.containsKey('\0')) {
 							end = j + 1;
 						}
-					} else if (IS_STAICT_MODE && FilterMackWord.splitter.containsKey(text.charAt(j))) {
+					} else if (IS_STAICT_MODE && FilterMackWord.splitter.containsKey(str.charAt(j))) {
 						if (node.m_values.containsKey('\0')) {
 							end = j + 1;
 						}
@@ -161,14 +162,27 @@ public class FilterMackWord {
 					}
 				}
 				if (end > 0) {
-					String key = text.substring(i, end); // 截取出屏蔽字
+					String key = str.substring(i, end); // 截取出屏蔽字
 					int l = key.length() + 1 > replaces.length ? replaces.length - 1 : key.length() - 1; // 计算替换字*号长度
-					text = replace(text, key, replaces[l]); // 将屏蔽字替换成相应长度的*号
+					str = replace(str, key, replaces[l]); // 将屏蔽字替换成相应长度的*号
 					i = end - 1 - (key.length() > replaces.length ? (key.length() - replaces.length + 1) : 0);
 				}
 			}
 		}
-		return text;
+		char c1 = replaces[0].charAt(0);
+		char c2 = 0;
+		StringBuffer buff = new StringBuffer();
+		for (int i = 0; i < str.length(); i++) {
+			c2 = str.charAt(i);
+			if (c2 == c1) {
+				buff.append(c2);
+			} else {
+				buff.append(text.charAt(i));
+			}
+		}
+		String ret = buff.toString();
+		buff.setLength(0);
+		return ret;
 	}
 
 	/**
@@ -208,6 +222,7 @@ public class FilterMackWord {
 		System.out.println(v);
 		v = findAndReplace(text);
 		System.out.println(v);
+		System.out.println(findAndReplace("Dirso"));
 	}
 }
 
