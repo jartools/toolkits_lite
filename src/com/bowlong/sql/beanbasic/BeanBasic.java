@@ -21,6 +21,7 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 	static final public String insFmt = "INSERT INTO `%s` (%s) VALUES (%s)";
 	static final public String selFmt = "SELECT * FROM `%s` WHERE ";
 	static final public String upFmt = "UPDATE `%s` SET %s WHERE %s";
+	static final public String delFmt = "DELETE FROM `%s` WHERE %s";
 
 	protected Map<String, Object> map = new ConcurrentHashMap<String, Object>();
 
