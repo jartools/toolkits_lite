@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.bowlong.basic.ExToolkit;
 import com.bowlong.sql.SqlEx;
@@ -23,14 +22,12 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 	static final public String upFmt = "UPDATE `%s` SET %s WHERE %s";
 	static final public String delFmt = "DELETE FROM `%s` WHERE %s";
 
-	protected Map<String, Object> map = new ConcurrentHashMap<String, Object>();
-
 	protected Map<String, Object> toMap(Map<String, Object> map) {
 		return map;
 	}
 
 	public Map<String, Object> toMap() {
-		map.clear();
+		Map<String, Object> map = newMapT();
 		return toMap(map);
 	}
 
@@ -39,7 +36,7 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 	}
 
 	public Map<String, Object> toMap4Client() {
-		map.clear();
+		Map<String, Object> map = newMapT();
 		return toMap4Client(map);
 	}
 
