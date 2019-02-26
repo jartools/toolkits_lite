@@ -61,8 +61,8 @@ public abstract class BasicFilter implements Filter {
 	}
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
-			ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		req.setCharacterEncoding(strEncoding);
@@ -105,7 +105,9 @@ public abstract class BasicFilter implements Filter {
 		curr_ms = CalendarEx.now();
 		if (isFlag) {
 			flagState = 1;
-		} else {
+		}
+
+		if (!isFlag) {
 			isFlag = isFilterTime(pars, key_time);
 			if (isFlag) {
 				flagState = 2;
