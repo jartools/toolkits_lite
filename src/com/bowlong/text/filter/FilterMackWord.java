@@ -171,14 +171,17 @@ public class FilterMackWord {
 		}
 		char c1 = replaces[0].charAt(0);
 		char c2 = 0;
+		int _lens = str.length();
 		StringBuffer buff = new StringBuffer();
-		for (int i = 0; i < str.length(); i++) {
-			c2 = str.charAt(i);
-			if (c2 == c1) {
-				buff.append(c2);
-			} else {
-				buff.append(text.charAt(i));
+		for (int i = 0; i < text.length(); i++) {
+			if (i < _lens) {
+				c2 = str.charAt(i);
+				if (c2 == c1) {
+					buff.append(c2);
+					continue;
+				}
 			}
+			buff.append(text.charAt(i));
 		}
 		String ret = buff.toString();
 		buff.setLength(0);
