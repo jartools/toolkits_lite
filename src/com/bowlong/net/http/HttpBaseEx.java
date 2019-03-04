@@ -3,6 +3,7 @@ package com.bowlong.net.http;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +15,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bowlong.lang.InputStreamEx;
 import com.bowlong.lang.NumFmtEx;
-import com.bowlong.lang.StrEx;
-import com.bowlong.security.Escape;
+import com.bowlong.text.EncodingEx;
 import com.bowlong.util.DateEx;
 import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.MapEx;
@@ -76,32 +76,37 @@ public class HttpBaseEx extends InputStreamEx {
 	/*** GET参数转换为map对象 */
 	static final public Map<String, Object> buildMapByQuery(String query) {
 		Map<String, Object> ret = new HashMap<String, Object>();
-		if (!StrEx.isEmptyTrim(query)) {
-			int ind = query.indexOf("?");
-			if (ind != -1)
-				query = query.substring(ind + 1);
-			String[] params = query.split("&");
-			for (String item : params) {
-				if (StrEx.isEmptyTrim(item))
-					continue;
-				int index = item.indexOf("=");
-				if (index < 0)
-					continue;
-				String k = item.substring(0, index);
-				String v = item.substring(index + 1);
-				if (ret.containsKey(k)) {
-					v = ret.get(k) + "," + v;
+		try {
+			if (!isEmptyTrim(query)) {
+				int ind = query.indexOf("?");
+				if (ind != -1)
+					query = query.substring(ind + 1);
+				String[] params = query.split("&");
+				for (String item : params) {
+					if (isEmptyTrim(item))
+						continue;
+					int index = item.indexOf("=");
+					if (index < 0)
+						continue;
+					String k = item.substring(0, index);
+					String v = item.substring(index + 1);
+					v = URLDecoder.decode(v,EncodingEx.UTF_8);
+					if (ret.containsKey(k)) {
+						v = ret.get(k) + "," + v;
+					}
+//					v = Escape.unescape(v);
+					ret.put(k, v);
 				}
-				v = Escape.unescape(v);
-				ret.put(k, v);
 			}
+		} catch (Exception e) {
 		}
+		
 		return ret;
 	}
 
 	static public String getSpeed(String pingUrl, String charUTF) {
 		Charset cset = null;
-		if (!StrEx.isEmpty(charUTF)) {
+		if (!isEmpty(charUTF)) {
 			cset = Charset.forName(charUTF);
 		}
 		return getSpeed(pingUrl, cset);
