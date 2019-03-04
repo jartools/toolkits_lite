@@ -1,9 +1,11 @@
 package com.bowlong.basic;
 
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.bowlong.security.Escape;
 import com.bowlong.text.EncodingEx;
 import com.bowlong.util.Ref;
 
@@ -362,6 +364,16 @@ public class EOStrNum extends EOBasic {
 		return charset;
 	}
 
+	static final public String unescape(String v) throws Exception {
+		return Escape.unescape(v);
+	}
+	
+	static final public String urlDecode(String v) throws Exception {
+		v = v.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
+		v = v.replaceAll("\\+", "%2B");
+		return URLDecoder.decode(v, EncodingEx.UTF_8);
+	}
+	
 	/*** GET参数编码 */
 	static final public String buildQuery(Map<?, ?> data, String charset, boolean isOrderKey) {
 		if (isEmpty(data))

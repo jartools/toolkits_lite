@@ -3,7 +3,6 @@ package com.bowlong.net.http;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +14,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bowlong.lang.InputStreamEx;
 import com.bowlong.lang.NumFmtEx;
-import com.bowlong.text.EncodingEx;
 import com.bowlong.util.DateEx;
 import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.MapEx;
@@ -84,18 +82,16 @@ public class HttpBaseEx extends InputStreamEx {
 					if (index < 0)
 						continue;
 					String k = item.substring(0, index);
-					String v = item.substring(index + 1);
-					v = URLDecoder.decode(v,EncodingEx.UTF_8);
+					String v = urlDecode(item.substring(index + 1));
 					if (ret.containsKey(k)) {
 						v = ret.get(k) + "," + v;
 					}
-//					v = Escape.unescape(v);
 					ret.put(k, v);
 				}
 			}
 		} catch (Exception e) {
 		}
-		
+
 		return ret;
 	}
 
