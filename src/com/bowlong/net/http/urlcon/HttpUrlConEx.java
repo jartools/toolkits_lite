@@ -113,7 +113,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 	}
 
 	static public final byte[] sendStr(String url, String params, boolean isPost, int timeOutCon, int timeOutSo, String charset) {
-		byte[] btParams = getBytes4Str(params, charset);
+		byte[] btParams = getBytes(params, charset);
 		return sendBytes(url, btParams, isPost, timeOutCon, timeOutSo);
 	}
 
@@ -168,7 +168,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 	static final public byte[] sendParams4Json(String url, Map<String, ?> map, String charset, boolean isPost) {
 		String query = buildStrByJSON4Obj(map);
 		if (isPost) {
-			return send(url, "", getBytes4Str(query, charset), isPost);
+			return send(url, "", getBytes(query, charset), isPost);
 		} else {
 			return send(url, query, null, isPost);
 		}

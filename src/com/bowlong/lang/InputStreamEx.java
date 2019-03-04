@@ -16,7 +16,6 @@ import com.bowlong.io.ByteOutStream;
 import com.bowlong.objpool.ByteOutPool;
 import com.bowlong.text.EncodingEx;
 import com.bowlong.util.ExceptionEx;
-import com.bowlong.util.Ref;
 
 /**
  * 
@@ -25,27 +24,6 @@ import com.bowlong.util.Ref;
  */
 @SuppressWarnings({ "rawtypes" })
 public class InputStreamEx extends ExOrigin {
-	static final public String reCharset(String charset) {
-		charset = reCharset(charset, refBl);
-		if (!refBl.val)
-			charset = EncodingEx.UTF_8;
-		return charset;
-	}
-
-	static final public String reCharset(String charset, Ref<Boolean> refSupport) {
-		boolean isSupported = !StrEx.isEmptyTrim(charset);
-		if (isSupported) {
-			isSupported = EncodingEx.isSupported(charset);
-			if (!isSupported) {
-				charset = EncodingEx.UTF_8;
-				isSupported = true;
-			}
-		}
-		if (refSupport != null)
-			refSupport.val = isSupported;
-		return charset;
-	}
-
 	static final public List<String> inps2LineStr(InputStream ins, String charset) {
 		if (ins == null)
 			return null;

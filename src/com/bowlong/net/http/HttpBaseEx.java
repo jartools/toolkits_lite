@@ -3,9 +3,7 @@ package com.bowlong.net.http;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -47,59 +45,6 @@ public class HttpBaseEx extends InputStreamEx {
 
 	static final protected void logError(Exception ex, Log objLog) {
 		objLog.error(ExceptionEx.e2s(ex));
-	}
-
-	/*** GET参数编码 */
-	static final public String buildQuery(Map<String, ?> data, String charset, boolean isOrderKey) {
-		if (MapEx.isEmpty(data))
-			return "";
-
-		String ret = "";
-		charset = reCharset(charset, refBl);
-		boolean isSup = refBl.val;
-
-		Object[] keys = data.keySet().toArray();
-		if (isOrderKey)
-			Arrays.sort(keys);
-		StringBuffer buff = new StringBuffer();
-		int lens = keys.length;
-		try {
-			String k, v;
-			Object vv;
-			for (int i = 0; i < lens; i++) {
-				k = keys[i].toString();
-				vv = data.get(k);
-				if (vv == null)
-					continue;
-				v = vv.toString();
-				if (!StrEx.isEmpty(v)) {
-					if (isSup) {
-						k = URLEncoder.encode(k, charset);
-						v = URLEncoder.encode(v, charset);
-					}
-				}
-				buff.append(k).append("=").append(v);
-				if (i < lens - 1)
-					buff.append("&");
-			}
-		} catch (Exception e) {
-		}
-
-		ret = buff.toString();
-		buff.setLength(0);
-		return ret;
-	}
-
-	static final public String buildQuery(Map<String, ?> data, String charset) {
-		return buildQuery(data, charset, false);
-	}
-
-	static final public String buildQuery(Map<String, ?> data) {
-		return buildQuery(data, "", false);
-	}
-
-	static final public String buildQuery(Map<String, ?> data, boolean isOrderKey) {
-		return buildQuery(data, "", isOrderKey);
 	}
 
 	static final public String buildStrByJSON4Obj(Object data) {
@@ -152,25 +97,6 @@ public class HttpBaseEx extends InputStreamEx {
 			}
 		}
 		return ret;
-	}
-
-	/*** 取得参数的字节流 **/
-	static final public byte[] getBytes4Str(String params, String charset) {
-		byte[] btParams = new byte[0];
-		if (!StrEx.isEmptyTrim(params)) {
-			charset = reCharset(charset, refBl);
-			boolean isSup = refBl.val;
-			try {
-				if (isSup) {
-					btParams = params.getBytes(charset);
-				} else {
-					btParams = params.getBytes();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return btParams;
 	}
 
 	static public String getSpeed(String pingUrl, String charUTF) {

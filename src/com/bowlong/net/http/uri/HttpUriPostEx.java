@@ -22,7 +22,7 @@ public class HttpUriPostEx extends HttpUriEx {
 
 	static Log log = getLog(HttpUriPostEx.class);
 
-	static public final byte[] postMap(String host, Map<String, ?> params, String charset) {
+	static final public byte[] postMap(String host, Map<String, ?> params, String charset) {
 
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
@@ -59,8 +59,7 @@ public class HttpUriPostEx extends HttpUriEx {
 			} else {
 				post.setHeader("Accept-Charset", EncodingEx.UTF_8);
 			}
-			// post.setHeader("Connection", "Keep-Alive");
-			post.setHeader("Connection", "close");
+			post.setHeader("Connection", "close"); // Keep-Alive close
 			post.setHeader("User-Agent", UA_360);
 			return execute(post);
 		} catch (Exception e) {
@@ -70,7 +69,11 @@ public class HttpUriPostEx extends HttpUriEx {
 		return null;
 	}
 
-	static public final byte[] postStr(String host, String params, String charset) {
+	static final public byte[] postMap(String host, Map<String, ?> params) {
+		return postMap(host, params, EncodingEx.UTF_8);
+	}
+
+	static final public byte[] postStr(String host, String params, String charset) {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}
@@ -81,7 +84,6 @@ public class HttpUriPostEx extends HttpUriEx {
 		try {
 			URL url = new URL(host);
 			HttpPost post = new HttpPost(url.toURI());
-			// long contentLength = 0l;
 			if (!StrEx.isEmpty(params)) {
 				HttpEntity httpEn = null;
 				if (isSup) {
@@ -90,7 +92,6 @@ public class HttpUriPostEx extends HttpUriEx {
 					httpEn = new StringEntity(params);
 				}
 				post.setEntity(httpEn);
-				// contentLength = httpEn.getContentLength();
 			}
 			post.setHeader("Accept", "*/*");
 			if (isSup) {
@@ -98,8 +99,7 @@ public class HttpUriPostEx extends HttpUriEx {
 			} else {
 				post.setHeader("Accept-Charset", EncodingEx.UTF_8);
 			}
-			// post.setHeader("Connection", "Keep-Alive");
-			post.setHeader("Connection", "close");
+			post.setHeader("Connection", "close"); // Keep-Alive close
 			post.setHeader("User-Agent", UA_360);
 			return execute(post);
 		} catch (Exception e) {
@@ -108,11 +108,19 @@ public class HttpUriPostEx extends HttpUriEx {
 		return null;
 	}
 
-	static public final byte[] postJson4Map(String host, Map<String, ?> params, String charset) {
+	static final public byte[] postStr(String host, String params) {
+		return postStr(host, params, EncodingEx.UTF_8);
+	}
+
+	static final public byte[] postJson4Map(String host, Map<String, ?> params, String charset) {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}
 		String strJson = buildStrByJSON4Obj(params);
 		return postStr(host, strJson, charset);
+	}
+
+	static final public byte[] postJson4Map(String host, Map<String, ?> params) {
+		return postJson4Map(host, params, EncodingEx.UTF_8);
 	}
 }
