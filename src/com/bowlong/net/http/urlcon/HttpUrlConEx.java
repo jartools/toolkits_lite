@@ -47,7 +47,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			// 编码格式
 			conn.setRequestProperty("Charset", EncodingEx.UTF_8);
-			// 不允许使用缓存
+			// 设置是否使用缓存 - POST不能使用缓存?
 			conn.setUseCaches(false);
 			// 维持长连接 Keep-Alive close
 			conn.setRequestProperty("Connection", "close");
@@ -71,12 +71,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 			// 是否设置输出的内容
 			conn.setDoOutput(isOut);
 
-			if (isPost) {
-				conn.setUseCaches(false);// 使用POST不能使用缓存
-				conn.setRequestMethod("POST");
-			} else {
-				conn.setRequestMethod("GET");
-			}
+			conn.setRequestMethod(isPost ? "POST" : "GET");
 
 			// 建立实际的连接
 			conn.connect();
