@@ -41,12 +41,6 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 	static public boolean isLog = false;
 	static Log log = LogFactory.getLog(N4HttpOrg.class);
 
-	// =============== get 请求传参
-	public static String getParamsVal(String query, String key) {
-		Map<String, Object> mapPars = buildMapByQuery(query);
-		return MapEx.getString(mapPars, key);
-	}
-
 	// 根据uri取得get传递上来的所有参数集合的map对象
 	static public Map<String, List<String>> getMapKVesByGet(String strUri) {
 		Map<String, List<String>> v = null;
