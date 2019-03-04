@@ -42,15 +42,11 @@ public class HttpUriEx extends HttpBaseEx {
 		params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
 
 		// 请求超时
-		if (tiOutCon <= 0) {
-			tiOutCon = defaultConRequTimeout;
-		}
+		tiOutCon = (tiOutCon <= 0) ? defaultConRequTimeout : tiOutCon;
 		params.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, tiOutCon);
 
 		// 读取超时
-		if (tiOutSo <= 0) {
-			tiOutSo = defaultSoTimeout;
-		}
+		tiOutSo = (tiOutSo <= 0) ? defaultSoTimeout : tiOutSo;
 		params.setParameter(CoreConnectionPNames.SO_TIMEOUT, tiOutSo);
 		return client;
 	}
@@ -58,18 +54,11 @@ public class HttpUriEx extends HttpBaseEx {
 	// 4.5版本的超时
 	static final CloseableHttpClient httpclient4_5(int tiOutCon, int tiOutSo) {
 		// 请求超时
-		if (tiOutCon <= 0) {
-			tiOutCon = defaultConRequTimeout;
-		}
-
+		tiOutCon = (tiOutCon <= 0) ? defaultConRequTimeout : tiOutCon;
 		// 读取超时
-		if (tiOutSo <= 0) {
-			tiOutSo = defaultSoTimeout;
-		}
+		tiOutSo = (tiOutSo <= 0) ? defaultSoTimeout : tiOutSo;
 
-		RequestConfig cfg = RequestConfig.custom().setConnectTimeout(defaultTimeout)
-				.setConnectionRequestTimeout(tiOutCon).setSocketTimeout(tiOutSo).setRedirectsEnabled(true).build();
-
+		RequestConfig cfg = RequestConfig.custom().setConnectTimeout(defaultTimeout).setConnectionRequestTimeout(tiOutCon).setSocketTimeout(tiOutSo).setRedirectsEnabled(true).build();
 		// HttpClients.createDefault();
 		return HttpClients.custom().setDefaultRequestConfig(cfg).build();
 	}
@@ -81,7 +70,7 @@ public class HttpUriEx extends HttpBaseEx {
 			client = httpclient4_5(tiOutCon, tiOutSo);
 			res = client.execute(requ);
 			if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				try(InputStream ins = res.getEntity().getContent()){
+				try (InputStream ins = res.getEntity().getContent()) {
 					return inps2Bytes(ins);
 				}
 			}

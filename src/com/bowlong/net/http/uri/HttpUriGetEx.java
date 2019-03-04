@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.http.client.methods.HttpGet;
 
 import com.bowlong.lang.StrEx;
+import com.bowlong.net.http.Browser;
 import com.bowlong.text.EncodingEx;
 
 public class HttpUriGetEx extends HttpUriEx {
@@ -19,13 +20,11 @@ public class HttpUriGetEx extends HttpUriEx {
 	 * HttpParams是一种HTTP协议参数。支持HTTP 1.0和HTTP 1.1 HttpParams httpParams = new
 	 * BasicHttpParams();
 	 */
-	static public final byte[] queryStr(String host, String params,
-			String charset) {
-
+	static final public byte[] queryStr(String host, String params, String charset) {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}
-		
+
 		charset = reCharset(charset, refBl);
 		boolean isSup = refBl.val;
 
@@ -49,7 +48,7 @@ public class HttpUriGetEx extends HttpUriEx {
 			}
 			// get.setHeader("Connection", "Keep-Alive");
 			get.setHeader("Connection", "close");
-			get.setHeader("User-Agent", UA_360);
+			get.setHeader("User-Agent", Browser.ch360);
 			return execute(get);
 		} catch (Exception e) {
 			logError(e, log);
@@ -57,12 +56,19 @@ public class HttpUriGetEx extends HttpUriEx {
 		return null;
 	}
 
-	static public final byte[] queryMapByStr(String host,
-			Map<String, ?> params, String charset) {
+	static final public byte[] queryStr(String host, String params) {
+		return queryStr(host, params, EncodingEx.UTF_8);
+	}
+
+	static final public byte[] queryMapByStr(String host, Map<String, ?> params, String charset) {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}
 		String strJson = buildQuery(params, charset);
 		return queryStr(host, strJson, null);
+	}
+
+	static final public byte[] queryMapByStr(String host, Map<String, ?> params) {
+		return queryMapByStr(host, params, EncodingEx.UTF_8);
 	}
 }

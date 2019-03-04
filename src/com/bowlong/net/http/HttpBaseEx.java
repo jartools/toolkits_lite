@@ -27,11 +27,6 @@ import com.bowlong.util.MapEx;
  */
 @SuppressWarnings({ "rawtypes" })
 public class HttpBaseEx extends InputStreamEx {
-
-	static public String UA_360 = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36";
-	static public String UA_Chrome = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.133 Safari/534.16";
-	static public String UA_QQ = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; QQDownload 732; .NET4.0C; .NET4.0E)";
-
 	/** 超时时间为1分钟 */
 	static final public int defaultTimeout = 60000;
 	/** 连接超时时间 */

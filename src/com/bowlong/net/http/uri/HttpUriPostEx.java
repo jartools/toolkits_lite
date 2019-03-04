@@ -15,6 +15,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.bowlong.lang.StrEx;
+import com.bowlong.net.http.Browser;
 import com.bowlong.text.EncodingEx;
 import com.bowlong.util.MapEx;
 
@@ -60,7 +61,7 @@ public class HttpUriPostEx extends HttpUriEx {
 				post.setHeader("Accept-Charset", EncodingEx.UTF_8);
 			}
 			post.setHeader("Connection", "close"); // Keep-Alive close
-			post.setHeader("User-Agent", UA_360);
+			post.setHeader("User-Agent", Browser.ch360);
 			return execute(post);
 		} catch (Exception e) {
 			logError(e, log);
@@ -100,7 +101,7 @@ public class HttpUriPostEx extends HttpUriEx {
 				post.setHeader("Accept-Charset", EncodingEx.UTF_8);
 			}
 			post.setHeader("Connection", "close"); // Keep-Alive close
-			post.setHeader("User-Agent", UA_360);
+			post.setHeader("User-Agent", Browser.ch360);
 			return execute(post);
 		} catch (Exception e) {
 			logError(e, log);
