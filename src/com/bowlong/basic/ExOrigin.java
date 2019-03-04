@@ -11,7 +11,7 @@ import java.util.Date;
  * @author Canyon
  * @time 2019-02-14 19:32
  */
-public class ExOrigin extends EODateFmt {
+public class ExOrigin extends EOURL {
 
 	public static final boolean toBoolean(Object v) {
 		if (v == null)

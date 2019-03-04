@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -64,35 +63,6 @@ public class HttpBaseEx extends InputStreamEx {
 		} catch (Exception e) {
 		}
 		return "";
-	}
-
-	/*** GET参数转换为map对象 */
-	static final public Map<String, Object> buildMapByQuery(String query) {
-		Map<String, Object> ret = new HashMap<String, Object>();
-		try {
-			if (!isEmptyTrim(query)) {
-				int ind = query.indexOf("?");
-				if (ind != -1)
-					query = query.substring(ind + 1);
-				String[] params = query.split("&");
-				for (String item : params) {
-					if (isEmptyTrim(item))
-						continue;
-					int index = item.indexOf("=");
-					if (index < 0)
-						continue;
-					String k = item.substring(0, index);
-					String v = urlDecode(item.substring(index + 1));
-					if (ret.containsKey(k)) {
-						v = ret.get(k) + "," + v;
-					}
-					ret.put(k, v);
-				}
-			}
-		} catch (Exception e) {
-		}
-
-		return ret;
 	}
 
 	static public String getSpeed(String pingUrl, String charUTF) {
