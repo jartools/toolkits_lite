@@ -25,8 +25,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 
 	static Log log = getLog(HttpUrlConEx.class);
 
-	static public final byte[] send(String url, String query, byte[] params, boolean isPost, int timeOutCon,
-			int timeOutSo) {
+	static public final byte[] send(String url, String query, byte[] params, boolean isPost, int timeOutCon, int timeOutSo) {
 		HttpURLConnection conn = null;
 		try {
 			int lens4params = 0;
@@ -43,27 +42,26 @@ public class HttpUrlConEx extends HttpBaseEx {
 			}
 			// 打开和URL之间的连接
 			conn = (HttpURLConnection) reqUrl.openConnection();
-			// 设置通用的请求属性
+			// 设置请求数据类型 - 浏览器编码类型
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			// 设置接受所有类型
 			conn.setRequestProperty("accept", "*/*");
 			// 编码格式
 			conn.setRequestProperty("Charset", EncodingEx.UTF_8);
 			// 不允许使用缓存
 			conn.setUseCaches(false);
-			// Keep-Alive
-			conn.setRequestProperty("Connection", "close");
+			// 维持长连接 Keep-Alive close
+			conn.setRequestProperty("Connection", "Keep-Alive");
 			if (isOut) {
 				conn.setRequestProperty("Content-Length", String.valueOf(lens4params));
 			}
 			conn.setRequestProperty("user-agent", UA_360);
 			// 请求超时
-			if (timeOutCon <= 0) {
-				timeOutCon = defaultConRequTimeout;
-			}
+			timeOutCon = (timeOutCon <= 0) ? defaultConRequTimeout : timeOutCon;
 			conn.setConnectTimeout(timeOutCon);
+
 			// 读取超时
-			if (timeOutSo <= 0) {
-				timeOutSo = defaultSoTimeout;
-			}
+			timeOutSo = (timeOutSo <= 0) ? defaultSoTimeout : timeOutSo;
 			conn.setReadTimeout(timeOutSo);
 
 			// 是否设置输入的内容
@@ -90,16 +88,20 @@ public class HttpUrlConEx extends HttpBaseEx {
 
 			// 获取所有响应头字段
 			// Map<String, List<String>> map = conn.getHeaderFields();
-			try (InputStream ins = conn.getInputStream()) {
-				return inps2Bytes(ins);
-			} catch (Exception e) {
-				logError(e, log);
+			int respCode = conn.getResponseCode();
+			if (HttpURLConnection.HTTP_OK == respCode) {
+				return inps2Bytes(conn.getInputStream());
+			} else {
 				return inps2Bytes(conn.getErrorStream());
 			}
 		} catch (Exception e) {
 			logError(e, log);
-			return null;
 		}
+		return null;
+	}
+
+	static public final byte[] send(String url, String query, byte[] params, boolean isPost) {
+		return send(url, query, params, isPost, 0, 0);
 	}
 
 	static public final byte[] sendBytes(String url, byte[] params, boolean isPost, int timeOutCon, int timeOutSo) {
@@ -110,8 +112,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 		return sendBytes(url, params, isPost, 0, 0);
 	}
 
-	static public final byte[] sendStr(String url, String params, boolean isPost, int timeOutCon, int timeOutSo,
-			String charset) {
+	static public final byte[] sendStr(String url, String params, boolean isPost, int timeOutCon, int timeOutSo, String charset) {
 		byte[] btParams = getBytes4Str(params, charset);
 		return sendBytes(url, btParams, isPost, timeOutCon, timeOutSo);
 	}
@@ -142,9 +143,9 @@ public class HttpUrlConEx extends HttpBaseEx {
 	static public final byte[] sendParams(String url, Map<String, ?> map, String charset, boolean isPost) {
 		String query = buildQuery(map, charset);
 		if (isPost) {
-			return send(url, "", query.getBytes(), isPost, 0, 0);
+			return send(url, "", query.getBytes(), isPost);
 		} else {
-			return send(url, query, null, isPost, 0, 0);
+			return send(url, query, null, isPost);
 		}
 	}
 
@@ -167,9 +168,9 @@ public class HttpUrlConEx extends HttpBaseEx {
 	static final public byte[] sendParams4Json(String url, Map<String, ?> map, String charset, boolean isPost) {
 		String query = buildStrByJSON4Obj(map);
 		if (isPost) {
-			return send(url, "", getBytes4Str(query, charset), isPost, 0, 0);
+			return send(url, "", getBytes4Str(query, charset), isPost);
 		} else {
-			return send(url, query, null, isPost, 0, 0);
+			return send(url, query, null, isPost);
 		}
 	}
 
