@@ -140,8 +140,8 @@ public class EOBasic {
 		return o.trim();
 	}
 
-	static final public boolean isEmpty(String type) {
-		return type == null || type.length() <= 0;
+	static final public boolean isEmpty(String val) {
+		return val == null || val.length() <= 0;
 	}
 
 	static final public boolean isEmptyTrim(String val) {
@@ -155,10 +155,7 @@ public class EOBasic {
 	}
 
 	static final public boolean isNull(String o) {
-		if (o == null)
-			return true;
-		o = o.trim();
-		return o.isEmpty();
+		return o == null;
 	}
 
 	static final public boolean isEmpty(byte[] o) {
