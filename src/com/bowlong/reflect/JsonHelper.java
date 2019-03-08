@@ -4,8 +4,10 @@ import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,8 +34,8 @@ public class JsonHelper {
 		Method[] methods = javaBean.getClass().getDeclaredMethods();
 		for (Method method : methods) {
 			try {
-				if (method.getName().startsWith("get")) {
-					String field = method.getName();
+				String field = method.getName();
+				if (field.startsWith("get") && !"get".equals(field)) {
 					field = field.substring(field.indexOf("get") + 3);
 					field = field.toLowerCase().charAt(0) + field.substring(1);
 					Object value = method.invoke(javaBean, (Object[]) null);
@@ -84,6 +86,10 @@ public class JsonHelper {
 		return new JSONObject(map);
 	}
 
+	static final public JSONArray toJSONArr(List<?> list) {
+		return new JSONArray(list);
+	}
+
 	/***
 	 * 将json字符串转换org.json的JSONObject对象
 	 * 
@@ -93,6 +99,10 @@ public class JsonHelper {
 	 */
 	static final public JSONObject toJSON(String json) throws JSONException {
 		return new JSONObject(json);
+	}
+	
+	static final public JSONArray toJSONArr(String json) throws JSONException {
+		return new JSONArray(json);
 	}
 
 	/**
@@ -146,11 +156,15 @@ public class JsonHelper {
 		return (T) toJavaBean(javabean, jsonString);
 	}
 
-	static final public String toJSONStr(Object javabean){
+	static final public String toJSONStr(Object javabean) {
 		return toJSON(javabean).toString();
 	}
-	
-	static final public String toJSONStr(Map<?, ?> map){
+
+	static final public String toJSONStr(Map<?, ?> map) {
 		return toJSON(map).toString();
+	}
+	
+	static final public String toJSONStr(List<?> list) {
+		return toJSONArr(list).toString();
 	}
 }
