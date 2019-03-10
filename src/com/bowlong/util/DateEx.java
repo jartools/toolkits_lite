@@ -65,32 +65,23 @@ public class DateEx extends ExOrigin {
 		return NumEx.stringToInt(format(v, fmt_SSS));
 	}
 
-	static public final int week() {
-		return week(nowDate());
-	}
-
-	/*** 星期数(0~6) **/
-	static public final int week(Date v) {
-		return CalendarEx.week(parse2Cal(v));
-	}
-
-	static public final boolean isWeek() {
-		return isWeek(nowDate());
-	}
-
-	static public final boolean isWeek(long nowtime) {
-		if (nowtime == 0)
-			return false;
-		return isWeek(parse2Date(nowtime));
-	}
-
 	/*** 是否为周末(星期六，星期天) **/
-	static public final boolean isWeek(Date dt) {
+	static public final boolean isWeekEnd(Date dt) {
 		if (dt == null)
 			return false;
 		int week = week(dt);
 		boolean r = week == 0 || week == 6;
 		return r;
+	}
+	
+	static public final boolean isWeekEnd() {
+		return isWeekEnd(nowDate());
+	}
+
+	static public final boolean isWeekEnd(long nowtime) {
+		if (nowtime == 0)
+			return false;
+		return isWeekEnd(parse2Date(nowtime));
 	}
 
 	static public final int weekInYear(Date v) {

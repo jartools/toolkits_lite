@@ -445,4 +445,87 @@ public class EODateFmt extends EOStrNum {
 		Date v = parse2Date(timeStr, parttern);
 		return (v != null);
 	}
+
+	/*** 星期数(0~6),0是星期天 **/
+	static final public int week(Calendar v) {
+		int w = v.get(Calendar.DAY_OF_WEEK);
+		return w - 1;
+	}
+
+	/*** 星期数(0~6) **/
+	static final public int week(Date v) {
+		return week(parse2Cal(v));
+	}
+
+	static final public int week() {
+		return week(nowCalendar());
+	}
+
+	static final public Calendar setYMDHMS(Calendar c, int year, int month, int day, int hour, int minute, int second) {
+		c.set(year, month - 1, day, hour, minute, second);
+		c.set(Calendar.MILLISECOND, 0);
+		return c;
+	}
+
+	static final public Calendar setYMD(Calendar c, int year, int month, int day) {
+		c.set(year, month - 1, day);
+		return c;
+	}
+
+	static final public Calendar setHMS(Calendar c, int hour, int minute, int second) {
+		c.set(Calendar.HOUR_OF_DAY, hour);
+		c.set(Calendar.MINUTE, minute);
+		c.set(Calendar.SECOND, second);
+		c.set(Calendar.MILLISECOND, 0);
+		return c;
+	}
+
+	static final public Calendar getZero(Calendar c) {
+		int y = c.get(Calendar.YEAR);
+		int m = c.get(Calendar.MONTH) + 1;
+		int d = c.get(Calendar.DATE);
+		return setYMDHMS(c, y, m, d,0,0,0);
+	}
+
+	static final public Calendar getZero(Date c) {
+		return getZero(parse2Cal(c));
+	}
+
+	static final public Calendar getZero() {
+		return getZero(nowCalendar());
+	}
+
+	/** toWeek(0~6) */
+	/** toWeek(0~6) */
+	static final public Calendar getZero4Week(Calendar v, int toWeek,boolean isNext) {
+		toWeek = toWeek >= 7 ? 0 : toWeek;
+		int _curr = week(v);
+		int _diff = 0;
+		if(_curr == 0 && toWeek != 0){
+			_diff = isNext ? toWeek : (toWeek - 7);
+		}else{
+			_diff = toWeek - _curr;
+			if(isNext && _diff <= 0){
+				_diff += 7; 
+			}
+		}
+		
+		Calendar c = parse2Cal(v.getTime());
+		if (_diff != 0) {
+			c.add(Calendar.DAY_OF_MONTH, _diff);
+		}
+		return getZero(c);
+	}
+	
+	static final public Calendar getZero4Week(Calendar v, int toWeek){
+		return getZero4Week(v, toWeek, true);
+	}
+
+	static final public Calendar getZero4Week(Date v, int toWeek) {
+		return getZero4Week(parse2Cal(v), toWeek);
+	}
+
+	static final public Calendar getZero4Week(int toWeek) {
+		return getZero4Week(nowCalendar(), toWeek);
+	}
 }

@@ -64,28 +64,8 @@ public class CalendarEx extends ExOrigin {
 		return v.get(Calendar.MILLISECOND);
 	}
 
-	static public final int week() {
-		return week(nowCalendar());
-	}
-
-	/*** 星期数(0~6) **/
-	static public final int week(Calendar v) {
-		int w = v.get(Calendar.DAY_OF_WEEK);
-		return w - 1;
-	}
-
-	static public final boolean isWeek() {
-		return isWeek(nowCalendar());
-	}
-
-	static public final boolean isWeek(long nowtime) {
-		if (nowtime == 0)
-			return false;
-		return isWeek(parse2Cal(nowtime));
-	}
-
 	/*** 是否为周末(星期六，星期天) **/
-	static public final boolean isWeek(Calendar cal) {
+	static public final boolean isWeekEnd(Calendar cal) {
 		if (cal == null)
 			return false;
 		int week = week(cal);
@@ -93,6 +73,16 @@ public class CalendarEx extends ExOrigin {
 		return r;
 	}
 	
+	static public final boolean isWeekEnd() {
+		return isWeekEnd(nowCalendar());
+	}
+
+	static public final boolean isWeekEnd(long nowtime) {
+		if (nowtime == 0)
+			return false;
+		return isWeekEnd(parse2Cal(nowtime));
+	}
+
 	/*** 年中的星期(此日期是此年份第几个星期) **/
 	static public final int weekInYear(Calendar v) {
 		return v.get(Calendar.WEEK_OF_YEAR);
@@ -168,19 +158,6 @@ public class CalendarEx extends ExOrigin {
 		return c;
 	}
 	
-	static final public Calendar setYearMonthDay(Calendar c,int year, int month, int day) {
-		c.set(year, month - 1, day);
-		return c;
-	}
-	
-	static final public Calendar setHourMinuteSec(Calendar c,int hour, int min, int sec) {
-		c.set(Calendar.HOUR_OF_DAY, hour);
-		c.set(Calendar.MINUTE, min);
-		c.set(Calendar.SECOND, sec);
-		c.set(Calendar.MILLISECOND, 0);
-		return c;
-	}
-
 	/*** 此时间内当月共有多少天 **/
 	static public final int dayNumInMonth(Calendar calendar,int year,int month) {
 		if(calendar == null){
