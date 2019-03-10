@@ -484,7 +484,7 @@ public class EODateFmt extends EOStrNum {
 		int y = c.get(Calendar.YEAR);
 		int m = c.get(Calendar.MONTH) + 1;
 		int d = c.get(Calendar.DATE);
-		return setYMDHMS(c, y, m, d,0,0,0);
+		return setYMDHMS(c, y, m, d, 0, 0, 0);
 	}
 
 	static final public Calendar getZero(Date c) {
@@ -495,29 +495,32 @@ public class EODateFmt extends EOStrNum {
 		return getZero(nowCalendar());
 	}
 
+	static final public long getZeroLong() {
+		return getZero().getTimeInMillis();
+	}
+
 	/** toWeek(0~6) */
-	/** toWeek(0~6) */
-	static final public Calendar getZero4Week(Calendar v, int toWeek,boolean isNext) {
+	static final public Calendar getZero4Week(Calendar v, int toWeek, boolean isNext) {
 		toWeek = toWeek >= 7 ? 0 : toWeek;
 		int _curr = week(v);
 		int _diff = 0;
-		if(_curr == 0 && toWeek != 0){
+		if (_curr == 0 && toWeek != 0) {
 			_diff = isNext ? toWeek : (toWeek - 7);
-		}else{
+		} else {
 			_diff = toWeek - _curr;
-			if(isNext && _diff <= 0){
-				_diff += 7; 
+			if (isNext && _diff <= 0) {
+				_diff += 7;
 			}
 		}
-		
+
 		Calendar c = parse2Cal(v.getTime());
 		if (_diff != 0) {
 			c.add(Calendar.DAY_OF_MONTH, _diff);
 		}
 		return getZero(c);
 	}
-	
-	static final public Calendar getZero4Week(Calendar v, int toWeek){
+
+	static final public Calendar getZero4Week(Calendar v, int toWeek) {
 		return getZero4Week(v, toWeek, true);
 	}
 
@@ -527,5 +530,21 @@ public class EODateFmt extends EOStrNum {
 
 	static final public Calendar getZero4Week(int toWeek) {
 		return getZero4Week(nowCalendar(), toWeek);
+	}
+
+	static final public long getZeroLong4Week(Calendar v, int toWeek, boolean isNext) {
+		return getZero4Week(v, toWeek, isNext).getTimeInMillis();
+	}
+
+	static final public long getZeroLong4Week(Calendar v, int toWeek) {
+		return getZeroLong4Week(v, toWeek, true);
+	}
+
+	static final public long getZeroLong4Week(Date v, int toWeek) {
+		return getZeroLong4Week(parse2Cal(v), toWeek);
+	}
+
+	static final public long getZeroLong4Week(int toWeek) {
+		return getZeroLong4Week(nowCalendar(), toWeek);
 	}
 }
