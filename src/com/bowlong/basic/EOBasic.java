@@ -130,10 +130,6 @@ public class EOBasic {
 		return 0;
 	}
 
-	static final public long now() {
-		return System.currentTimeMillis();
-	}
-
 	static final public String trim(String o) {
 		if (o == null)
 			return "";

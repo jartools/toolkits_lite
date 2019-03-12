@@ -89,6 +89,10 @@ public class EODateFmt extends EOStrNum {
 	/*** 1900年的时间 **/
 	static public final long TIME_1900 = TIME_YEAR * 1900;
 
+	static final public long now() {
+		return System.currentTimeMillis();
+	}
+
 	static public final Date nowDate() {
 		return new Date();
 	}
@@ -128,6 +132,8 @@ public class EODateFmt extends EOStrNum {
 	}
 
 	static public final Calendar parse2Cal(Date v) {
+		if (v == null)
+			return null;
 		Calendar c = Calendar.getInstance();
 		c.setTime(v);
 		return c;
@@ -140,12 +146,7 @@ public class EODateFmt extends EOStrNum {
 	}
 
 	static public final Calendar parse2Cal(String v, String fmt) {
-		try {
-			return parse2Cal(parse2Date(v, fmt));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return parse2Cal(parse2Date(v, fmt));
 	}
 
 	/*** 当前系统时间字符串(yyyy-MM-dd HH:mm:ss) **/
