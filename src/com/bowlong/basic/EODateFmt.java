@@ -134,13 +134,13 @@ public class EODateFmt extends EOStrNum {
 	static public final Calendar parse2Cal(Date v) {
 		if (v == null)
 			return null;
-		Calendar c = Calendar.getInstance();
+		Calendar c = nowCalendar();
 		c.setTime(v);
 		return c;
 	}
 
 	static public final Calendar parse2Cal(long ms) {
-		Calendar c = Calendar.getInstance();
+		Calendar c = nowCalendar();
 		c.setTimeInMillis(ms);
 		return c;
 	}
