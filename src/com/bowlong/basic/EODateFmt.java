@@ -178,6 +178,11 @@ public class EODateFmt extends EOStrNum {
 	static public final String nowStrYMD_Hm() {
 		return nowStr(fmt_yyyyMMdd_HHmm);
 	}
+	
+	/*** 当前系统时间字符串(yyyyMMddHHmm) **/
+	static public final String nowStrYMDHm() {
+		return nowStr(fmt_yyyyMMddHHmm);
+	}
 
 	/*** 当前系统时间字符串(yyyyMMdd) **/
 	static public final String nowStrYMD() {
