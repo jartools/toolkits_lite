@@ -66,7 +66,7 @@ public class TkitOrigin extends ExToolkit {
 	static public final Map<String, Object> getAllParamsBy(HttpServletRequest requ, boolean isNoFitlerEmpty) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map mapPars = requ.getParameterMap();
-		List keyList = ListEx.keyToList(mapPars);
+		List keyList = ListEx.keys(mapPars);
 		int size = keyList.size();
 		StringBuffer buff = new StringBuffer();
 

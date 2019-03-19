@@ -3,6 +3,8 @@ package com.bowlong.basic;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Ex扩展类的起源<br/>
@@ -216,6 +218,22 @@ public class ExOrigin extends EOURL {
 
 	static final public double round2(double org) {
 		return round(org, 2);
+	}
+	
+	static final public <K, V> List<K> keys(Map<K, V> map) {
+		List<K> list = newListT();
+		if (map == null)
+			return list;
+		list.addAll(map.keySet());
+		return list;
+	}
+
+	static final public <K, V> List<V> values(Map<K, V> map) {
+		List<V> list = newListT();
+		if (map == null)
+			return list;
+		list.addAll(map.values());
+		return list;
 	}
 	
 	static final public org.apache.commons.logging.Log getLog(Class<?> clazz) {

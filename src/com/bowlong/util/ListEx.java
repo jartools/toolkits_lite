@@ -250,22 +250,6 @@ public class ListEx extends ExOrigin {
 		return add(list, arrs);
 	}
 
-	public static final <K, V> List<K> keyToList(Map<K, V> map) {
-		List<K> list = newListT();
-		if (map == null)
-			return list;
-		list.addAll(map.keySet());
-		return list;
-	}
-
-	public static final <K, V> List<V> valueToList(Map<K, V> map) {
-		List<V> list = newListT();
-		if (map == null)
-			return list;
-		list.addAll(map.values());
-		return list;
-	}
-
 	public static final List toVector(Object... arrs) {
 		List list = newVector();
 		return add(list, arrs);
