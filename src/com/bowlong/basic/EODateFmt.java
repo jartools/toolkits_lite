@@ -497,12 +497,12 @@ public class EODateFmt extends EOStrNum {
 		return getZero(parse2Cal(c));
 	}
 
-	static final public Calendar getZero() {
+	static final public Calendar zeroTime() {
 		return getZero(nowCalendar());
 	}
 
-	static final public long getZeroLong() {
-		return getZero().getTimeInMillis();
+	static final public long zeroLong() {
+		return zeroTime().getTimeInMillis();
 	}
 
 	/** toWeek(0~6) */
