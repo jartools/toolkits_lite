@@ -2,6 +2,7 @@ package com.bowlong.basic;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,23 +39,30 @@ public class EOURL extends EODateFmt {
 		return charset;
 	}
 
+	static final public Charset reCharset2(String charset) {
+		charset = reCharset(charset, refBl);
+		if (!refBl.val)
+			charset = EncodingEx.UTF_8;
+		return Charset.forName(charset);
+	}
+
 	static final public String escape(String v) throws Exception {
 		return Escape.escape(v);
 	}
-	
+
 	static final public String unescape(String v) throws Exception {
 		return Escape.unescape(v);
 	}
-	
-	static final public String urlEncode(String v,String charset) throws Exception {
+
+	static final public String urlEncode(String v, String charset) throws Exception {
 		return URLEncoder.encode(v, charset);
 	}
-	
+
 	static final public String urlEncode(String v) throws Exception {
 		return urlEncode(v, EncodingEx.UTF_8);
 	}
-	
-	static final public String urlDecode(String v,String charset) throws Exception {
+
+	static final public String urlDecode(String v, String charset) throws Exception {
 		v = v.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
 		v = v.replaceAll("\\+", "%2B");
 		v = v.replaceAll(" ", "%20"); // 空格
@@ -64,11 +72,11 @@ public class EOURL extends EODateFmt {
 		v = v.replaceAll("@", "%40");
 		return URLDecoder.decode(v, charset);
 	}
-	
+
 	static final public String urlDecode(String v) throws Exception {
 		return urlDecode(v, EncodingEx.UTF_8);
 	}
-	
+
 	/*** GET参数编码 */
 	static final public String buildQuery(Map<?, ?> data, String charset, boolean isOrderKey) {
 		if (isEmpty(data))
@@ -121,7 +129,7 @@ public class EOURL extends EODateFmt {
 	static final public String buildQuery(Map<String, ?> data) {
 		return buildQuery(data, false);
 	}
-	
+
 	/*** GET参数转换为map对象 */
 	static final public Map<String, Object> buildMapByQuery(String query) {
 		Map<String, Object> ret = new HashMap<String, Object>();
@@ -139,10 +147,10 @@ public class EOURL extends EODateFmt {
 						continue;
 					String k = item.substring(0, index);
 					String v = item.substring(index + 1);
-					if(v.matches("(%[0-9a-fA-F]{2})+")){
+					if (v.matches("(%[0-9a-fA-F]{2})+")) {
 						v = urlDecode(v);
-					}else{
-						v = unescape(v);						
+					} else {
+						v = unescape(v);
 					}
 					if (ret.containsKey(k)) {
 						v = ret.get(k) + "," + v;
