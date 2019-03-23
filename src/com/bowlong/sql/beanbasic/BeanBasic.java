@@ -44,8 +44,8 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 		return null;
 	}
 
-	/** entity -> map */
-	public Map<String, Object> toMap(Map<String, Object> map) {
+	/** entity -> map,子类想外部访问，可以将修饰语改成public */
+	protected Map<String, Object> toMap(Map<String, Object> map) {
 		return map;
 	}
 
@@ -54,7 +54,7 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 		return toMap(map);
 	}
 
-	public Map<String, Object> toMap4Client(Map<String, Object> map) {
+	protected Map<String, Object> toMap4Client(Map<String, Object> map) {
 		return toMap(map);
 	}
 
@@ -63,7 +63,7 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 		return toMap4Client(map);
 	}
 
-	public Map<String, Object> toMap4Html(Map<String, Object> map) {
+	protected Map<String, Object> toMap4Html(Map<String, Object> map) {
 		return toMap(map);
 	}
 
@@ -72,7 +72,7 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 		return toMap4Html(map);
 	}
 	
-	public Map<String, Object> toMap4Json(Map<String, Object> map) {
+	protected Map<String, Object> toMap4Json(Map<String, Object> map) {
 		return toMap(map);
 	}
 
