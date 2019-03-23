@@ -22,24 +22,6 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 	static final public String upFmt = "UPDATE `%s` SET %s WHERE %s";
 	static final public String delFmt = "DELETE FROM `%s` WHERE %s";
 
-	protected Map<String, Object> toMap(Map<String, Object> map) {
-		return map;
-	}
-
-	public Map<String, Object> toMap() {
-		Map<String, Object> map = newMapT();
-		return toMap(map);
-	}
-
-	protected Map<String, Object> toMap4Client(Map<String, Object> map) {
-		return toMap(map);
-	}
-
-	public Map<String, Object> toMap4Client() {
-		Map<String, Object> map = newMapT();
-		return toMap4Client(map);
-	}
-
 	private Map<String, Object> toMap(ResultSet rs) throws SQLException {
 		return SqlEx.toMap(rs);
 	}
@@ -57,7 +39,45 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 		return null;
 	}
 
+	/** map -> entity */
 	public <T extends BeanBasic> T toEntity(Map map) {
 		return null;
+	}
+
+	/** entity -> map */
+	public Map<String, Object> toMap(Map<String, Object> map) {
+		return map;
+	}
+
+	public Map<String, Object> toMap() {
+		Map<String, Object> map = newMapT();
+		return toMap(map);
+	}
+
+	public Map<String, Object> toMap4Client(Map<String, Object> map) {
+		return toMap(map);
+	}
+
+	public Map<String, Object> toMap4Client() {
+		Map<String, Object> map = newMapT();
+		return toMap4Client(map);
+	}
+
+	public Map<String, Object> toMap4Html(Map<String, Object> map) {
+		return toMap(map);
+	}
+
+	public Map<String, Object> toMap4Html() {
+		Map<String, Object> map = newMapT();
+		return toMap4Html(map);
+	}
+	
+	public Map<String, Object> toMap4Json(Map<String, Object> map) {
+		return toMap(map);
+	}
+
+	public Map<String, Object> toMap4Json() {
+		Map<String, Object> map = newMapT();
+		return toMap4Json(map);
 	}
 }
