@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.StringTokenizer;
+// import java.util.StringTokenizer; StringTokenizer 类是出于兼容性的原因而被保留的遗留类
 import java.util.Vector;
 
 import org.apache.commons.collections4.list.FixedSizeList;
@@ -58,23 +58,34 @@ public class ListEx extends ExOrigin {
 		return (T) list.get(0);
 	}
 
-	/*** 分隔符 **/
-	static public final List<String> toList(String s, String delimiter, int ntype) {
+	static public final String[] toArrs(String s, String delimiter) {
+		if (isEmpty(s))
+			return null;
 		if (isEmpty(delimiter))
 			delimiter = ",";
-		List<String> result = newListT();
-		StringTokenizer st = new StringTokenizer(s, delimiter);
+		return s.split(delimiter);
+	}
+
+	/*** 分隔符 **/
+	static public final List<String> toList(String s, String delimiter, int ntype) {
+		List<String> _ret = newListT();
+		String[] arrs = toArrs(s, delimiter);
+		if (arrs == null || arrs.length <= 0)
+			return _ret;
+
 		boolean isTrim = ntype == 0 || ntype == 1;
 		boolean isExceptEmp = ntype == 0 || ntype == 2;
-		while (st.hasMoreTokens()) {
-			String str = st.nextToken();
+		int lens = arrs.length;
+		String str = "";
+		for (int i = 0; i < lens; i++) {
+			str = arrs[i];
 			if (isExceptEmp && isEmpty(str))
 				continue;
 			if (isTrim)
 				str = str.trim();
-			result.add(str);
+			_ret.add(str);
 		}
-		return result;
+		return _ret;
 	}
 
 	/*** 分隔符，英文逗号(,) **/
