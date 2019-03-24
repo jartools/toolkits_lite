@@ -465,10 +465,10 @@ public class JdbcOrigin extends ExToolkit {
 
 			if (isUp) {
 				_str = StrEx.left(_tmp, _sp);
-				lstKey.addAll(ListEx.toLists(_str, ",", "="));
+				lstKey.addAll(ListEx.toLists(_str, ",", "=",0));
 			}
 			_str = StrEx.right(_tmp, _sp);
-			lstKey.addAll(ListEx.toLists(_str, ",", "="));
+			lstKey.addAll(ListEx.toLists(_str, ",", "=",0));
 			int lens = lstKey.size();
 			List<String> tmp = null;
 			for (int i = 0; i < lens; i++) {
