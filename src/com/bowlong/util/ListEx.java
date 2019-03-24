@@ -23,9 +23,7 @@ import org.apache.commons.collections4.list.TreeList;
 
 import com.alibaba.fastjson.JSON;
 import com.bowlong.basic.ExOrigin;
-import com.bowlong.lang.NumEx;
 import com.bowlong.lang.RndEx;
-import com.bowlong.lang.StrEx;
 import com.bowlong.objpool.StringBufPool;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -60,40 +58,17 @@ public class ListEx extends ExOrigin {
 		return (T) list.get(0);
 	}
 
-	/*** 分隔符，英文逗号(,) **/
-	static public final List<String> toListByComma(String s, boolean isTrim) {
-		return toList(s, ",", isTrim);
-	}
-
-	/*** 分隔符，英文分号逗号(,;,;) **/
-	static public final List<List<String>> toListBySemicolonComma(String s, boolean isTrim) {
-		return toLists(s, ";", ",", isTrim);
-	}
-
-	/*** 分隔符，英文分号逗号(,;,;) **/
-	static public final List<List<String>> toLists(String s, String delimiter1, String delimiter2, boolean isTrim) {
-		List<List<String>> ret = newListT();
-		List<String> list = toList(s, delimiter1, isTrim);
-		int lens = list.size();
-		List<String> tmp = null;
-		for (int i = 0; i < lens; i++) {
-			tmp = toList(list.get(i), delimiter2, isTrim);
-			if (isEmpty(tmp))
-				continue;
-			ret.add(tmp);
-		}
-		return ret;
-	}
-
 	/*** 分隔符 **/
-	static public final List<String> toList(String s, String delimiter, boolean isTrim) {
-		if (StrEx.isEmpty(delimiter))
+	static public final List<String> toList(String s, String delimiter, int ntype) {
+		if (isEmpty(delimiter))
 			delimiter = ",";
 		List<String> result = newListT();
 		StringTokenizer st = new StringTokenizer(s, delimiter);
+		boolean isTrim = ntype == 0 || ntype == 1;
+		boolean isExceptEmp = ntype == 0 || ntype == 2;
 		while (st.hasMoreTokens()) {
 			String str = st.nextToken();
-			if (StrEx.isEmpty(str))
+			if (isExceptEmp && isEmpty(str))
 				continue;
 			if (isTrim)
 				str = str.trim();
@@ -102,14 +77,43 @@ public class ListEx extends ExOrigin {
 		return result;
 	}
 
+	/*** 分隔符，英文逗号(,) **/
+	static public final List<String> toListByComma(String s, int ntype) {
+		return toList(s, ",", ntype);
+	}
+
+	/*** 分隔符，英文分号逗号(,;,;) **/
+	static public final List<List<String>> toListBySemicolonComma(String s, int ntype) {
+		return toLists(s, ";", ",", ntype);
+	}
+
+	/*** 分隔符，英文分号逗号(,;,;) **/
+	static public final List<List<String>> toLists(String s, String delimiter1, String delimiter2, int ntype) {
+		List<List<String>> ret = newListT();
+		List<String> list = toList(s, delimiter1, 0);
+		int lens = list.size();
+		List<String> tmp = null;
+		for (int i = 0; i < lens; i++) {
+			tmp = toList(list.get(i), delimiter2, ntype);
+			if (isEmpty(tmp))
+				continue;
+			ret.add(tmp);
+		}
+		return ret;
+	}
+
+	static public final List<String> toList(String s, String delimiter) {
+		return toList(s, delimiter, 0);
+	}
+
 	public static final List<Integer> toListInt(String s) {
 		List<Integer> ret = newListT();
-		List<String> listStr = toListByComma(s, true);
+		List<String> listStr = toListByComma(s, 0);
 		if (isEmpty(listStr))
 			return ret;
 		int len = listStr.size();
 		for (int i = 0; i < len; i++) {
-			int e = NumEx.stringToInt(listStr.get(i));
+			int e = stringToInt(listStr.get(i));
 			ret.add(e);
 		}
 		return ret;
@@ -117,7 +121,7 @@ public class ListEx extends ExOrigin {
 
 	static public final List<List<Integer>> toListInts(String s) {
 		List<List<Integer>> ret = newListT();
-		List<String> list = toList(s, ";", true);
+		List<String> list = toList(s, ";", 0);
 		int lens = list.size();
 		List<Integer> tmp = null;
 		for (int i = 0; i < lens; i++) {

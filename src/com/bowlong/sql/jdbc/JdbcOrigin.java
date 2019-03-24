@@ -445,7 +445,7 @@ public class JdbcOrigin extends ExToolkit {
 		if (isIn) {
 			_tmp = StrEx.left(sql, ")");
 			_tmp = StrEx.right(_tmp, "(");
-			keys = ListEx.toListByComma(_tmp, true);
+			keys = ListEx.toListByComma(_tmp, 0);
 		} else {
 			_tmp = sql;
 			String _sp = "", _str = "";
@@ -465,10 +465,10 @@ public class JdbcOrigin extends ExToolkit {
 
 			if (isUp) {
 				_str = StrEx.left(_tmp, _sp);
-				lstKey.addAll(ListEx.toLists(_str, ",", "=", true));
+				lstKey.addAll(ListEx.toLists(_str, ",", "="));
 			}
 			_str = StrEx.right(_tmp, _sp);
-			lstKey.addAll(ListEx.toLists(_str, ",", "=", true));
+			lstKey.addAll(ListEx.toLists(_str, ",", "="));
 			int lens = lstKey.size();
 			List<String> tmp = null;
 			for (int i = 0; i < lens; i++) {
