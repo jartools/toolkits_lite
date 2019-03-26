@@ -78,7 +78,7 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 						buff.append(",");
 					}
 				}
-				result.put(item.getKey(), buff.toString());
+				result = buildDecode(result,item.getKey(), buff.toString());
 			}
 		}
 		return result;
@@ -117,6 +117,7 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 		if (msg == null)
 			return map;
 		try {
+			String k,v;
 			while (msg.hasNext()) {
 				InterfaceHttpData data = msg.next();
 				if (data == null)
@@ -124,7 +125,9 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 				if (data.getHttpDataType() != HttpDataType.Attribute)
 					continue;
 				Attribute attr = (Attribute) data;
-				map.put(attr.getName(), attr.getValue());
+				k = attr.getName();
+				v = attr.getValue();
+				map = buildDecode(map, k, v);
 			}
 		} catch (Exception e) {
 			if (isLog)
@@ -144,9 +147,9 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 				if (data.getHttpDataType() != HttpDataType.Attribute)
 					continue;
 				Attribute attr = (Attribute) data;
-				String key = attr.getName();
-				String val = attr.getValue();
-				map.put(key, val);
+				String k = attr.getName();
+				String v = attr.getValue();
+				map = buildDecode(map, k, v);
 			}
 		} catch (Exception e) {
 			if (isLog)
@@ -187,9 +190,7 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 			if (request.getMethod().equals(HttpMethod.GET)) {
 				Map<String, Object> m = getMapByGet(request);
 				if (m != null && !m.isEmpty()) {
-					for (Entry<String, Object> item : m.entrySet()) {
-						map.put(item.getKey(), item.getValue());
-					}
+					map = m;
 				}
 			}
 		}

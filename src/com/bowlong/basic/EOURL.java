@@ -130,37 +130,44 @@ public class EOURL extends EODateFmt {
 		return buildQuery(data, false);
 	}
 
-	/*** GET参数转换为map对象 */
-	static final public Map<String, Object> buildMapByQuery(String query) {
-		Map<String, Object> ret = new HashMap<String, Object>();
+	static final public Map<String, Object> buildDecode(Map<String, Object> map, String k, String v) {
+		if (isNull(v) || isNull(map) || isEmpty(k))
+			return map;
 		try {
-			if (!isEmptyTrim(query)) {
-				int ind = query.indexOf("?");
-				if (ind != -1)
-					query = query.substring(ind + 1);
-				String[] params = query.split("&");
-				for (String item : params) {
-					if (isEmptyTrim(item))
-						continue;
-					int index = item.indexOf("=");
-					if (index < 0)
-						continue;
-					String k = item.substring(0, index);
-					String v = item.substring(index + 1);
-					if (v.matches("(%[0-9a-fA-F]{2})+")) {
-						v = urlDecode(v);
-					} else {
-						v = unescape(v);
-					}
-					if (ret.containsKey(k)) {
-						v = ret.get(k) + "," + v;
-					}
-					ret.put(k, v);
-				}
+			if (v.matches("(%[0-9a-fA-F]{2})+")) {
+				v = urlDecode(v);
+			} else {
+				v = unescape(v);
 			}
 		} catch (Exception e) {
 		}
 
+		if (map.containsKey(k)) {
+			v = map.get(k) + "," + v;
+		}
+		map.put(k, v);
+		return map;
+	}
+
+	/*** GET参数转换为map对象 */
+	static final public Map<String, Object> buildMapByQuery(String query) {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		if (!isEmptyTrim(query)) {
+			int ind = query.indexOf("?");
+			if (ind != -1)
+				query = query.substring(ind + 1);
+			String[] params = query.split("&");
+			for (String item : params) {
+				if (isEmptyTrim(item))
+					continue;
+				int index = item.indexOf("=");
+				if (index < 0)
+					continue;
+				String k = item.substring(0, index);
+				String v = item.substring(index + 1);
+				ret = buildDecode(ret, k, v);
+			}
+		}
 		return ret;
 	}
 
