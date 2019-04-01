@@ -473,7 +473,7 @@ public final class StrEx extends ExOrigin {
 		return str.replaceAll("[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]", "");
 	}
 
-	static public final String join(String sep, List<Object> list) {
+	static public final <T extends Object> String join(String sep, List<T> list) {
 		if (ListEx.isEmpty(list))
 			return "";
 		int lens = list.size();
