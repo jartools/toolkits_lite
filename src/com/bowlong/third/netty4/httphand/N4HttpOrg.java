@@ -52,7 +52,7 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 	}
 
 	static public Map<String, Object> getMapByGet(HttpRequest request) {
-		return buildMapByQuery(request.getUri()); // getMapByGet
+		return buildMapByQuery(request.uri()); // getMapByGet 
 	}
 
 	static public Map<String, Object> getMapByGet(String strUri) {
@@ -164,7 +164,7 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 		HttpPostRequestDecoder post = null;
 		if (msg instanceof HttpRequest) {
 			HttpRequest request = (HttpRequest) msg;
-			if (request.getMethod().equals(HttpMethod.POST)) {
+			if (request.method().equals(HttpMethod.POST)) {
 				try {
 					post = getDecoderByPost(request);
 				} catch (Exception e) {
@@ -187,7 +187,7 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (msg instanceof HttpRequest) {
 			HttpRequest request = (HttpRequest) msg;
-			if (request.getMethod().equals(HttpMethod.GET)) {
+			if (request.method().equals(HttpMethod.GET)) {
 				Map<String, Object> m = getMapByGet(request);
 				if (m != null && !m.isEmpty()) {
 					map = m;

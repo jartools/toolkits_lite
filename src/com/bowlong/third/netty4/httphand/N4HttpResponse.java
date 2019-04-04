@@ -11,7 +11,8 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
@@ -42,8 +43,8 @@ public class N4HttpResponse extends N4HttpOrg {
 
 	static final private int _send(Channel chn, ByteBuf buf, FullHttpResponse response) {
 		int size = response.content().readableBytes();
-		response.headers().set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
-		response.headers().set(HttpHeaders.Names.CONTENT_LENGTH, size);
+		response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
+		response.headers().set(HttpHeaderNames.CONTENT_LENGTH, size);
 		ChannelFuture f = chn.writeAndFlush(response);
 		f = chn.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 		f.addListener(ChannelFutureListener.CLOSE);
@@ -84,7 +85,7 @@ public class N4HttpResponse extends N4HttpOrg {
 		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
 		if (StrEx.isEmptyTrim(ContentType))
 			ContentType = "text/html; charset=UTF-8";
-		response.headers().set(HttpHeaders.Names.CONTENT_TYPE, ContentType);
+		response.headers().set(HttpHeaderNames.CONTENT_TYPE, ContentType);
 		return _send(chn, buf, response);
 	}
 
@@ -150,7 +151,7 @@ public class N4HttpResponse extends N4HttpOrg {
 
 	static final public int sendByChunked(Channel chn, ByteBuf buf) throws Exception {
 		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
-		response.headers().set(HttpHeaders.Names.TRANSFER_ENCODING, HttpHeaders.Values.CHUNKED);
+		response.headers().set(HttpHeaderNames.TRANSFER_ENCODING, HttpHeaderValues.CHUNKED);
 		return _send(chn, buf, response);
 	}
 
