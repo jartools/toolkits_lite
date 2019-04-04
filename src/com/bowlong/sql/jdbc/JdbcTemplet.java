@@ -34,12 +34,12 @@ public class JdbcTemplet extends JdbcBasic {
 		return insert2(sql, x.toBasicMap());
 	}
 
-	public int[] batchInsert4LBean(String sql, List<BeanSupport> list) throws SQLException {
+	public long[] batchInsert4LBean(String sql, List<BeanSupport> list) throws SQLException {
 		List<Map> listMap = newList();
 		for (BeanSupport x : list) {
 			listMap.add(x.toBasicMap());
 		}
-		return batchInsert(sql, listMap);
+		return batchInsertGK(sql, listMap);
 	}
 
 	public CachedRowSet query(String sql, BeanSupport x) throws SQLException {

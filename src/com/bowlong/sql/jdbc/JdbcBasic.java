@@ -103,32 +103,42 @@ public class JdbcBasic extends JdbcOrigin {
 		return 0;
 	}
 
-	public int[] batchInsert(String sql, List<Map> list) throws SQLException {
+	public long[] batchInsertGK(String sql, List<Map> list) throws SQLException {
 		Connection conn = conn_w();
 		try {
-			int[] r2 = new int[list.size()];
+			long[] r2 = new long[list.size()];
 			PrepareSQLResult sr = prepareKeys(sql);
-			// PreparedStatement stmt = conn.prepareStatement(sr.sql);
 			PreparedStatement stmt = conn.prepareStatement(sr.sql, PreparedStatement.RETURN_GENERATED_KEYS);
-
 			for (Map map : list) {
 				prepareMap(stmt, sr.keys, map);
 				stmt.addBatch();
 			}
-			// r2 = stmt.executeBatch();
 			stmt.executeBatch();
 			ResultSet rs = stmt.getGeneratedKeys();
 			int i = 0;
 			while (rs.next()) {
-				r2[i++] = rs.getInt(1);
+				r2[i++] = rs.getLong(1);
 			}
-
 			stmt.close();
 			return r2;
 		} catch (SQLException e) {
 			throw rethrow(e, sql, list);
 		} finally {
 			close(conn);
+		}
+	}
+
+	public int[] batchInsert(String sql, List<Map> list) throws SQLException {
+		try {
+			long[] r2 = batchInsertGK(sql, list);
+			int lens = r2.length;
+			int[] r1 = new int[lens];
+			for (int i = 0; i < lens; i++) {
+				r1[i] = (int) r2[i];
+			}
+			return r1;
+		} catch (SQLException ex) {
+			throw ex;
 		}
 	}
 
