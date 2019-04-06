@@ -134,11 +134,11 @@ public class EOURL extends EODateFmt {
 		if (isNull(v) || isNull(map) || isEmpty(k))
 			return map;
 		try {
-			if (v.matches("(.*)?(%[0-9a-fA-F]{2})+(.*)?")) {
-				v = urlDecode(v);
-			}
 			if (v.matches("(.*)?(%u[0-9a-fA-F]{4})+(.*)?")) {
 				v = unescape(v);
+			}
+			if (v.matches("(.*)?(%[0-9a-fA-F]{2})+(.*)?")) {
+				v = urlDecode(v);
 			}
 		} catch (Exception e) {
 		}
