@@ -113,7 +113,7 @@ public class IOSHelper {
 	}
 
 	/*** 验证 订单： pwd 是针对 订阅的类型的验证 ***/
-	static final public String vlidatePurchase(String str64, String pwd) {
+	static final public String validatePurchase(String str64, String pwd) {
 		try {
 			JSONObject json;
 			if (str64.startsWith("{") && str64.endsWith("}")) {
@@ -139,8 +139,8 @@ public class IOSHelper {
 	}
 
 	/*** 验证 订单 ***/
-	static final public String vlidatePurchase(String str64) {
-		return vlidatePurchase(str64, m_iosAppSharedSecret);
+	static final public String validatePurchase(String str64) {
+		return validatePurchase(str64, m_iosAppSharedSecret);
 	}
 
 	/*** 针对 订阅的类型的 续订验证 ***/
@@ -150,7 +150,7 @@ public class IOSHelper {
 				return "-1"; // -1 : 没有购买记录
 			}
 
-			String strRes = vlidatePurchase(str64, pwd);
+			String strRes = validatePurchase(str64, pwd);
 			if (strRes.startsWith("-")) {
 				return "-2"; // -2 : 取得验证字符串错误
 			}
