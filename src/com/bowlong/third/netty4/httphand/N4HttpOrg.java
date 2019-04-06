@@ -199,8 +199,13 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 		if (post != null) {
 			if (msg instanceof HttpContent) {
 				HttpContent chunk = (HttpContent) msg;
-				post.offer(chunk);
-				map = getMapByPostDecoderChunk(post, map);
+				try {					
+					post.offer(chunk);
+					map = getMapByPostDecoderChunk(post, map);
+				} catch (Exception e) {
+				}finally{
+					chunk.release();
+				}
 			} else {
 				map = getMapByPostDecoderBody(post, map);
 			}
