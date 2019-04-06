@@ -267,7 +267,8 @@ public class EOStrNum extends EOBasic {
 
 	static final public String toStr(byte[] b, String chaset) {
 		try {
-			return new String(b, chaset);
+			if (!isEmpty(b))
+				return new String(b, chaset);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
