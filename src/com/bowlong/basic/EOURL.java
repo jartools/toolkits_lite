@@ -136,7 +136,8 @@ public class EOURL extends EODateFmt {
 		try {
 			if (v.matches("(%[0-9a-fA-F]{2})+")) {
 				v = urlDecode(v);
-			} else {
+			}
+			if (v.matches("(%u[0-9a-fA-F]{2,4})+")) {
 				v = unescape(v);
 			}
 		} catch (Exception e) {
