@@ -1,24 +1,10 @@
 package com.bowlong.third.netty4.httphand;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.http.HttpContent;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.QueryStringDecoder;
-import io.netty.handler.codec.http.multipart.Attribute;
-import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
-import io.netty.handler.codec.http.multipart.FileUpload;
-import io.netty.handler.codec.http.multipart.HttpDataFactory;
-import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
-import io.netty.handler.codec.http.multipart.InterfaceHttpData;
-import io.netty.handler.codec.http.multipart.InterfaceHttpData.HttpDataType;
-
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,8 +13,19 @@ import com.bowlong.lang.StrEx;
 import com.bowlong.net.http.HttpBaseEx;
 import com.bowlong.text.Encoding;
 import com.bowlong.util.ExceptionEx;
-import com.bowlong.util.ListEx;
 import com.bowlong.util.MapEx;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.http.HttpContent;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.multipart.Attribute;
+import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
+import io.netty.handler.codec.http.multipart.FileUpload;
+import io.netty.handler.codec.http.multipart.HttpDataFactory;
+import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
+import io.netty.handler.codec.http.multipart.InterfaceHttpData;
+import io.netty.handler.codec.http.multipart.InterfaceHttpData.HttpDataType;
 
 /***
  * N4(netty 4)请求相应父类 处理过来的请求，解析请求参数，取得请求传送的数据 此处的res 是 response 的简称. 此处的req 是
@@ -42,69 +39,9 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 	static Log log = LogFactory.getLog(N4HttpOrg.class);
 
 	// 根据uri取得get传递上来的所有参数集合的map对象
-	static public Map<String, List<String>> getMapKVesByGet(String strUri) {
-		Map<String, List<String>> v = null;
-		if (strUri != null && !"".equals(strUri.trim())) {
-			QueryStringDecoder qdec = new QueryStringDecoder(strUri);
-			v = qdec.parameters();
-		}
-		return v;
-	}
-
 	static public Map<String, Object> getMapByGet(HttpRequest request) {
-		return buildMapByQuery(request.uri()); // getMapByGet 
+		return buildMapByQuery(request.uri()); // QueryStringDecoder
 	}
-
-	static public Map<String, Object> getMapByGet(String strUri) {
-		Map<String, Object> result = null;
-		Map<String, List<String>> v = getMapKVesByGet(strUri);
-		if (v != null && !v.isEmpty()) {
-			result = new HashMap<String, Object>();
-
-			StringBuffer buff = new StringBuffer();
-
-			for (Entry<String, List<String>> item : v.entrySet()) {
-
-				buff.setLength(0);
-
-				List<String> tmp = item.getValue();
-				if (tmp == null || tmp.isEmpty())
-					continue;
-
-				int lens = tmp.size();
-				for (int i = 0; i < lens; i++) {
-					buff.append(tmp.get(i));
-					if (i < lens - 1) {
-						buff.append(",");
-					}
-				}
-				result = buildDecode(result,item.getKey(), buff.toString());
-			}
-		}
-		return result;
-	}
-
-	// 根据parmetes 参数取得对应的value，value默认是key对应的所有值中的第一个值.
-	public static Map<String, Object> getMapByGetKeys(String strUri, String... keyes) {
-		Map<String, Object> v = new HashMap<String, Object>();
-		if (ListEx.isEmpty(keyes))
-			return v;
-
-		Map<String, Object> map = getMapByGet(strUri);
-		if (map != null && !map.isEmpty()) {
-			for (String key : keyes) {
-				boolean isHasKey = map.containsKey(key);
-				if (!isHasKey) {
-					v.put(key, "");
-					continue;
-				}
-				Object val = map.get(key);
-				v.put(key, val);
-			}
-		}
-		return v;
-	}
-
 	// ==================== post 请求传参
 
 	static HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE);
@@ -113,43 +50,34 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 		return new HttpPostRequestDecoder(factory, request);
 	}
 
-	static private Map<String, Object> getMapByPostDecoderChunk(HttpPostRequestDecoder msg, Map<String, Object> map) {
-		if (msg == null)
+	static private Map<String, Object> _addData(InterfaceHttpData data, Map<String, Object> map) throws Exception {
+		if (data == null || data.getHttpDataType() != HttpDataType.Attribute)
 			return map;
-		try {
-			String k,v;
-			while (msg.hasNext()) {
-				InterfaceHttpData data = msg.next();
-				if (data == null)
-					continue;
-				if (data.getHttpDataType() != HttpDataType.Attribute)
-					continue;
-				Attribute attr = (Attribute) data;
-				k = attr.getName();
-				v = attr.getValue();
-				map = buildDecode(map, k, v);
-			}
-		} catch (Exception e) {
-			if (isLog)
-				log.error(ExceptionEx.e2s(e));
-		} finally {
-			msg.destroy();
-		}
+		Attribute attr = (Attribute) data;
+		String k = attr.getName();
+		String v = attr.getValue();
+		map = buildDecode(map, k, v);
 		return map;
 	}
 
-	static private Map<String, Object> getMapByPostDecoderBody(HttpPostRequestDecoder msg, Map<String, Object> map) {
+	static private Map<String, Object> getMapByPostDecoder(HttpPostRequestDecoder msg, Map<String, Object> map, boolean isBody) {
 		if (msg == null)
 			return map;
 		try {
-			List<InterfaceHttpData> datas = msg.getBodyHttpDatas();
-			for (InterfaceHttpData data : datas) {
-				if (data.getHttpDataType() != HttpDataType.Attribute)
-					continue;
-				Attribute attr = (Attribute) data;
-				String k = attr.getName();
-				String v = attr.getValue();
-				map = buildDecode(map, k, v);
+			InterfaceHttpData data = null;
+			if (isBody) {
+				List<InterfaceHttpData> datas = msg.getBodyHttpDatas();
+				int lens = datas.size();
+				for (int i = 0; i < lens; i++) {
+					data = datas.get(i);
+					map = _addData(data, map);
+				}
+			} else {
+				// Chunk
+				while (msg.hasNext()) {
+					data = msg.next();
+					map = _addData(data, map);
+				}
 			}
 		} catch (Exception e) {
 			if (isLog)
@@ -176,12 +104,6 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 		return post;
 	}
 
-	static public Map<String, Object> getMapByPostBody(Object msgObj) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		HttpPostRequestDecoder msg = getPostDecoder(msgObj);
-		return getMapByPostDecoderBody(msg, map);
-	}
-
 	/*** 取得 传送过来的参数map对象(处理了get,post) ***/
 	static public Map<String, Object> getMapKVByMsg(Object msg) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -199,15 +121,14 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 		if (post != null) {
 			if (msg instanceof HttpContent) {
 				HttpContent chunk = (HttpContent) msg;
-				try {					
+				try {
 					post.offer(chunk);
-					map = getMapByPostDecoderChunk(post, map);
-				} catch (Exception e) {
-				}finally{
+					map = getMapByPostDecoder(post, map, false);
+				} finally {
 					chunk.release();
 				}
 			} else {
-				map = getMapByPostDecoderBody(post, map);
+				map = getMapByPostDecoder(post, map, true);
 			}
 		}
 
@@ -216,18 +137,16 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 
 	/*** 取得 传送过来的字节流对象 ***/
 	static public byte[] getBytesContByMsg(Object msg) {
-		// if (msg instanceof HttpRequest) {
-		// HttpRequest request = (HttpRequest) msg;
-		// if (HttpHeaders.isContentLengthSet(request)) {
-		//
-		// }
-		// }
 		if (msg instanceof HttpContent) {
 			HttpContent chunk = (HttpContent) msg;
-			ByteBuf content = chunk.content();
-			byte[] buff = N4B2ByteBuf.readBuff(content);
-			if (buff != null && buff.length > 0) {
-				return buff;
+			try {
+				ByteBuf content = chunk.content();
+				byte[] buff = N4B2ByteBuf.readBuff(content);
+				if (buff != null && buff.length > 0) {
+					return buff;
+				}
+			} finally {
+				chunk.release();
 			}
 		}
 		return new byte[0];
