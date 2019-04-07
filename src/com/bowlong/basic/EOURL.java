@@ -158,14 +158,15 @@ public class EOURL extends EODateFmt {
 			if (ind != -1)
 				query = query.substring(ind + 1);
 			String[] params = query.split("&");
+			String k,v;
 			for (String item : params) {
 				if (isEmptyTrim(item))
 					continue;
 				int index = item.indexOf("=");
 				if (index < 0)
 					continue;
-				String k = item.substring(0, index);
-				String v = item.substring(index + 1);
+				k = item.substring(0, index);
+				v = item.substring(index + 1);
 				ret = buildDecode(ret, k, v);
 			}
 		}
