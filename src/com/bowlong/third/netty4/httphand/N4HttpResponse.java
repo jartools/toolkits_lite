@@ -48,6 +48,7 @@ public class N4HttpResponse extends N4HttpOrg {
 		ChannelFuture f = chn.writeAndFlush(response);
 		f = chn.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 		f.addListener(ChannelFutureListener.CLOSE);
+		// buf.release(); // 添加buff释放？ 测试了会报错  io.netty.util.IllegalReferenceCountException: refCnt: 0, decrement: 1
 		return size;
 	}
 
@@ -75,8 +76,6 @@ public class N4HttpResponse extends N4HttpOrg {
 	}
 
 	static final protected void sendAll(Channel chn, byte[] buff, String ContentType) {
-		// ByteBuf buf = N4B2ByteBuf.buffer();
-		// buf.writeBytes(buff);
 		ByteBuf buf = N4B2ByteBuf.buffer(buff);
 		sendAll(chn, buf, ContentType);
 	}
