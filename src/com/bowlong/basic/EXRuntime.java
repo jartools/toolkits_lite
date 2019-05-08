@@ -23,6 +23,10 @@ public class EXRuntime extends EOURL {
 		}
 		return null;
 	}
+	
+	static final public Process call(String shell) {
+		return exec(shell); 
+	}
 
 	/**
 	 * 执行shell
@@ -30,23 +34,19 @@ public class EXRuntime extends EOURL {
 	 * @param args 参数
 	 * @param workspace 脚本所在的目录
 	 */
-	static final public void callShell(String script, String args, String workspace) {
-		try {
-			if (isEmpty(workspace)) {
-				workspace = "";
-			} else {
-				workspace = toDir(workspace);
-			}
-			String cmd = "";
-			// cmd = "sh " + script + " " + args;
-			if (isEmpty(args)) {
-				cmd = String.format(fmtSh0, workspace, script);
-			} else {
-				cmd = String.format(fmtSh1, workspace, script, args);
-			}
-			exec(cmd);
-		} catch (Exception e) {
-			e.printStackTrace();
+	static final public Process callShell(String script, String args, String workspace) {
+		if (isEmpty(workspace)) {
+			workspace = "";
+		} else {
+			workspace = toDir(workspace);
 		}
+		String cmd = "";
+		// cmd = "sh " + script + " " + args;
+		if (isEmpty(args)) {
+			cmd = String.format(fmtSh0, workspace, script);
+		} else {
+			cmd = String.format(fmtSh1, workspace, script, args);
+		}
+		return exec(cmd);
 	}
 }
