@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Canyon
  * @time 2019-02-14 19:32
  */
-public class ExOrigin extends EOURL {
+public class ExOrigin extends EXRuntime {
 
 	public static final boolean toBoolean(Object v) {
 		if (v == null)
