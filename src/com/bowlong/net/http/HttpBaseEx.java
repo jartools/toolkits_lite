@@ -76,7 +76,7 @@ public class HttpBaseEx extends InputStreamEx {
 	static public String getSpeed(String pingUrl, Charset cset) {
 		try {
 			String line = null;
-			Process pro = Runtime.getRuntime().exec("ping " + pingUrl + " -l 1000 -n 4");
+			Process pro = exec("ping " + pingUrl + " -l 1000 -n 4");
 
 			InputStream inStream = pro.getInputStream();
 			BufferedReader buf = null;
