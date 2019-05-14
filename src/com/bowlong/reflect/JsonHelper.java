@@ -167,4 +167,22 @@ public class JsonHelper {
 	static final public String toJSONStr(List<?> list) {
 		return toJSONArr(list).toString();
 	}
+	
+	static final public JSONObject get(JSONObject json, String key) {
+		if (json == null || !json.has(key))
+			return null;
+		return json.getJSONObject(key);
+	}
+	
+	static final public String getStr(JSONObject json, String key) {
+		if (json == null || !json.has(key))
+			return "";
+		return json.getString(key);
+	}
+	
+	static final public int getInt(JSONObject json, String key) {
+		if (json == null || !json.has(key))
+			return 0;
+		return json.getInt(key);
+	}
 }
