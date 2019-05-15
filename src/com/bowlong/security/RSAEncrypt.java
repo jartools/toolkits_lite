@@ -51,8 +51,7 @@ public class RSAEncrypt {
 	/**
 	 * 字节数据转字符串专用集合
 	 */
-	private static final char[] HEX_CHAR = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
-			'f' };
+	private static final char[] HEX_CHAR = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
 	KeyFactory keyFactory = null;
 	Cipher cipher = null;
@@ -78,17 +77,23 @@ public class RSAEncrypt {
 	/**
 	 * 随机生成密钥对
 	 */
-	public void genKeyPair() {
+	public RSAEncrypt genKeyPair() {
+		return genKeyPair(1024);
+	}
+
+	// 1024,2048
+	public RSAEncrypt genKeyPair(int keysize) {
 		KeyPairGenerator keyPairGen = null;
 		try {
 			keyPairGen = KeyPairGenerator.getInstance("RSA");
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
-		keyPairGen.initialize(1024, new SecureRandom());
+		keyPairGen.initialize(keysize, new SecureRandom());
 		KeyPair keyPair = keyPairGen.generateKeyPair();
 		this.rsaPriKey = (RSAPrivateKey) keyPair.getPrivate();
 		this.rsaPubKey = (RSAPublicKey) keyPair.getPublic();
+		return this;
 	}
 
 	public RSAPublicKey toPublicKey(String publicKey) {
@@ -108,8 +113,10 @@ public class RSAEncrypt {
 	/**
 	 * 从文件中输入流中加载公钥
 	 * 
-	 * @param in 公钥输入流
-	 * @throws Exception 加载公钥时产生的异常
+	 * @param in
+	 *            公钥输入流
+	 * @throws Exception
+	 *             加载公钥时产生的异常
 	 */
 	public void loadPublicKey(InputStream in) throws Exception {
 		try {
@@ -135,8 +142,10 @@ public class RSAEncrypt {
 	/**
 	 * 从字符串中加载公钥
 	 * 
-	 * @param publicKeyStr 公钥数据字符串
-	 * @throws Exception 加载公钥时产生的异常
+	 * @param publicKeyStr
+	 *            公钥数据字符串
+	 * @throws Exception
+	 *             加载公钥时产生的异常
 	 */
 	public void loadPublicKey(String publicKey) throws Exception {
 		this.rsaPubKey = toPublicKey(publicKey);
@@ -145,10 +154,13 @@ public class RSAEncrypt {
 	/**
 	 * 公钥加密过程
 	 * 
-	 * @param publicKey     公钥
-	 * @param plainTextData 明文数据
+	 * @param publicKey
+	 *            公钥
+	 * @param plainTextData
+	 *            明文数据
 	 * @return
-	 * @throws Exception 加密过程中的异常信息
+	 * @throws Exception
+	 *             加密过程中的异常信息
 	 */
 	public byte[] encrypt(RSAPublicKey publicKey, byte[] plainTextData) throws Exception {
 		if (publicKey == null) {
@@ -184,10 +196,13 @@ public class RSAEncrypt {
 	/**
 	 * 公钥解密过程
 	 * 
-	 * @param publicKey  公钥
-	 * @param cipherData 密文数据
+	 * @param publicKey
+	 *            公钥
+	 * @param cipherData
+	 *            密文数据
 	 * @return 明文
-	 * @throws Exception 解密过程中的异常信息
+	 * @throws Exception
+	 *             解密过程中的异常信息
 	 */
 	public byte[] decrypt(RSAPublicKey publicKey, byte[] cipherData) throws Exception {
 		if (publicKey == null) {
@@ -222,7 +237,8 @@ public class RSAEncrypt {
 	/**
 	 * 字节数据转十六进制字符串
 	 * 
-	 * @param data 输入数据
+	 * @param data
+	 *            输入数据
 	 * @return 十六进制内容
 	 */
 	public static String byteArrayToString(byte[] data) {
@@ -319,18 +335,15 @@ public class RSAEncrypt {
 	}
 
 	static void demoDecode() throws Exception {
-		RSAEncrypt rsaEncrypt = RSAEncrypt.getInstance();
+		RSAEncrypt objRsa = RSAEncrypt.getInstance();
 		// rsaEncrypt.genKeyPair();
 
 		// 加载公钥
 		try {
-			String DEFAULT_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1BvMF7LGlQb7OEetChUg" + "\r\n"
-					+ "grG6+/GpaH7os5WapsMbcRHftljf2A1Wgy3GvcbILJRcINWohuhrBQ2+PIBDyBof" + "\r\n"
-					+ "eVU/LEvaT1hQyyJ3OOI1Qa/vXPtXCTUPjfKk5d+0jr7xKa1rES0xJF8s6Bpll6QA" + "\r\n"
-					+ "nfuiSEbBq0O5TTFJAmPR0o9+Ity0retQ0W91O4rrCkfS2aSMsKeA5aaz1ixFwDS3" + "\r\n"
-					+ "4dpAO0gqhFUvyHITWkS0n7/4MAVqCIoVSfZwIFZ7k2Bf39EouAYbkuYue6rxIlbV" + "\r\n"
-					+ "wABAcopMxr4aHbbJRs7Ll62uHyio10jIHXesdz3Ur4GrKOSomay6vAaT4RjggeCv" + "\r\n" + "SwIDAQAB" + "\r\n";
-			rsaEncrypt.loadPublicKey(DEFAULT_PUBLIC_KEY);
+			String DEFAULT_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1BvMF7LGlQb7OEetChUg" + "\r\n" + "grG6+/GpaH7os5WapsMbcRHftljf2A1Wgy3GvcbILJRcINWohuhrBQ2+PIBDyBof" + "\r\n"
+					+ "eVU/LEvaT1hQyyJ3OOI1Qa/vXPtXCTUPjfKk5d+0jr7xKa1rES0xJF8s6Bpll6QA" + "\r\n" + "nfuiSEbBq0O5TTFJAmPR0o9+Ity0retQ0W91O4rrCkfS2aSMsKeA5aaz1ixFwDS3" + "\r\n"
+					+ "4dpAO0gqhFUvyHITWkS0n7/4MAVqCIoVSfZwIFZ7k2Bf39EouAYbkuYue6rxIlbV" + "\r\n" + "wABAcopMxr4aHbbJRs7Ll62uHyio10jIHXesdz3Ur4GrKOSomay6vAaT4RjggeCv" + "\r\n" + "SwIDAQAB" + "\r\n";
+			objRsa.loadPublicKey(DEFAULT_PUBLIC_KEY);
 			System.out.println("加载公钥成功");
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -342,12 +355,19 @@ public class RSAEncrypt {
 
 		try {
 			byte[] dcDataStr = Base64.decode2Bytes(testDataStr);
-			byte[] plainData = rsaEncrypt.decrypt(rsaEncrypt.getPublicKey(), dcDataStr);
+			byte[] plainData = objRsa.decrypt(objRsa.getPublicKey(), dcDataStr);
 			System.out.println("文档测试数据明文长度:" + plainData.length);
 			System.out.println(RSAEncrypt.byteArrayToString(plainData));
 			System.out.println(new String(plainData));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	static public void markRsa() throws Exception {
+		RSAEncrypt obj = RSAEncrypt.getInstance();
+		obj.genKeyPair();
+		System.out.println(obj.getPrivateKey());
+		System.out.println(obj.getPublicKey());
 	}
 }
