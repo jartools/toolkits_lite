@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -23,6 +24,9 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.tools.ToolProvider;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 @SuppressWarnings("all")
 public class RSAEncrypt {
@@ -326,6 +330,32 @@ public class RSAEncrypt {
 		return verify(content, sign, getPublicKey(), "");
 	}
 
+	// 获得私钥字符串
+	public String getStrPriKey() {
+		if (this.rsaPriKey == null)
+			return null;
+		// 编码返回字符串
+		try {
+			return getKeyStr(this.rsaPriKey);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	// 获得私钥字符串
+	public String getStrPubKey() {
+		if (this.rsaPubKey == null)
+			return null;
+		// 编码返回字符串
+		try {
+			return getKeyStr(this.rsaPubKey);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	static RSAEncrypt _self;
 
 	public static RSAEncrypt getInstance() {
@@ -334,7 +364,23 @@ public class RSAEncrypt {
 		return _self;
 	}
 
-	static void demoDecode() throws Exception {
+	// 解码返回byte
+	public static byte[] decryptBASE64(String key) throws Exception {
+		return (new BASE64Decoder()).decodeBuffer(key);
+	}
+
+	// 编码返回字符串
+	public static String encryptBASE64(byte[] key) throws Exception {
+		return (new BASE64Encoder()).encodeBuffer(key);
+	}
+
+	// 获得公钥字符串
+	public static String getKeyStr(Key key) throws Exception {
+		// 编码返回字符串
+		return encryptBASE64(key.getEncoded());
+	}
+
+	static public void demoDecode() throws Exception {
 		RSAEncrypt objRsa = RSAEncrypt.getInstance();
 		// rsaEncrypt.genKeyPair();
 
@@ -364,10 +410,9 @@ public class RSAEncrypt {
 		}
 	}
 
-	static public void markRsa() throws Exception {
+	static public RSAEncrypt markRsa(int keySize) throws Exception {
 		RSAEncrypt obj = RSAEncrypt.getInstance();
-		obj.genKeyPair();
-		System.out.println(obj.getPrivateKey());
-		System.out.println(obj.getPublicKey());
+		obj.genKeyPair(keySize);
+		return obj;
 	}
 }
