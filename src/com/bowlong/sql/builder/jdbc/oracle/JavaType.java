@@ -111,19 +111,19 @@ public class JavaType {
 	}
 	
 	public static String getBasicType(String type){
-		if (type.equals("Boolean"))
+		if (type.contains("Boolean"))
 			type = "boolean";
-		if (type.equals("Byte") || type.equals("java.lang.Byte"))
+		if (type.contains("Byte"))
 			type = "byte";
-		else if (type.equals("Short") || type.equals("java.lang.Short"))
+		else if (type.contains("Short"))
 			type = "short";
-		else if (type.equals("Integer") || type.equals("java.lang.Integer"))
+		else if (type.contains("Integer"))
 			type = "int";
-		else if (type.equals("Long") || type.equals("java.lang.Long"))
+		else if (type.contains("Long"))
 			type = "long";
-		else if (type.equals("Float") || type.equals("java.lang.Float"))
+		else if (type.contains("Float"))
 			type = "float";
-		else if (type.equals("Double") || type.equals("java.lang.Double"))
+		else if (type.contains("Double"))
 			type = "double";
 
 		return type;
