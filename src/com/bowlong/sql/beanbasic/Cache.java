@@ -13,8 +13,7 @@ import com.bowlong.sql.mysql.DataSet;
 import com.bowlong.util.ListEx;
 
 /**
- * 缓存对象父节点
- * 数据缓存对象，可以操作增删改
+ * 缓存对象父节点 数据缓存对象，可以操作增删改
  * 
  * @author Administrator
  *
@@ -24,8 +23,8 @@ import com.bowlong.util.ListEx;
 public class Cache<T extends BeanBasic> extends ExToolkit {
 	static Log log = getLog(Cache.class);
 
-
 	protected Cache() {
+		_init();
 	}
 
 	public boolean isPtCache = false;
@@ -47,6 +46,9 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	protected String fmt_c = " 1 = 1 LIMIT %s,%s"; // 分页查询条件
 	protected int nLimit = 10000; // 限定加载数量
 	protected int msSleep = 2; // 限定延迟处理
+
+	protected void _init() {
+	}
 
 	protected DataSource ds() {
 		return null;
