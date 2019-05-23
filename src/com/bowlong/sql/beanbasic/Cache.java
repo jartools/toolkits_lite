@@ -28,7 +28,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	}
 
 	public boolean isPtCache = false;
-	public String TabelName = "";
+	public String tabelName = "";
 	protected String coulmns_new = "";
 	protected String val_new = "";
 	protected String coulmns_all = "";
@@ -57,7 +57,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	protected DataSet dset() {
 		DataSource _ds = ds();
 		if (_dset == null && _ds != null) {
-			_dset = new DataSet(_ds, TabelName);
+			_dset = new DataSet(_ds, tabelName);
 		}
 		return _dset;
 	}
@@ -100,7 +100,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 				ret.addAll(list);
 
 			Thread.sleep(msSleep);
-			log.info(String.format("== %s = [%s]", this.TabelName, c));
+			log.info(String.format("== %s = [%s]", this.tabelName, c));
 		}
 		return ret;
 	}
@@ -193,8 +193,8 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	}
 
 	void _insert(List<Map> temp, List<T> tmpList) {
-		if (isEmpty(sqlIn)) {
-			sqlIn = String.format(BeanBasic.insFmt, TabelName, coulmns_new, val_new);
+		if (isEmpty(sqlIn) && !isEmpty(tabelName) && !isEmpty(coulmns_new)) {
+			sqlIn = String.format(BeanBasic.insFmt, tabelName, coulmns_new, val_new);
 		}
 		synchronized (listIn) {
 			if (!listIn.isEmpty()) {
@@ -206,7 +206,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 				listIn.clear();
 			}
 		}
-		if (!isEmpty(temp)) {
+		if (!isEmpty(temp) && !isEmpty(sqlIn)) {
 			try {
 				long[] ids = dset().batchInsertGK(sqlIn, temp);
 				callInsert(tmpList, ids);
