@@ -1,11 +1,8 @@
 package com.bowlong.io;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -27,25 +24,13 @@ public class FileRw extends FileBigEx {
 	}
 
 	static final public byte[] readBytes(File f) {
+		if (!f.exists()) {
+			return null;
+		}
 		byte[] r = null;
-		try (FileInputStream read = new FileInputStream(f);
-				BufferedInputStream inStream = new BufferedInputStream(read);
-				ByteArrayOutputStream outStream = new ByteArrayOutputStream();) {
-			if (!f.exists()) {
-				f = null;
-				return r;
-			}
-			byte[] btBuff = new byte[10240];
-			int len = 0;
-			while ((len = inStream.read(btBuff)) != -1) {
-				outStream.write(btBuff, 0, len);
-			}
-			r = outStream.toByteArray();
-			inStream.close();
-			outStream.close();
-			read.close();
-			f = null;
-		} catch (IOException e) {
+		try (FileInputStream in = new FileInputStream(f);) {
+			r = readFully(in);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return r;
@@ -178,13 +163,10 @@ public class FileRw extends FileBigEx {
 		for (int i = 0; i < len; i++) {
 			String tmp = list.get(i);
 			String endname = tmp.substring(tmp.lastIndexOf(".") + 1);
-			if (endname.equalsIgnoreCase("java") || endname.equalsIgnoreCase("lua") || endname.equalsIgnoreCase("cs")
-					|| endname.equalsIgnoreCase("txt") || endname.equalsIgnoreCase("text")
-					|| endname.equalsIgnoreCase("html") || endname.equalsIgnoreCase("js")
-					|| endname.equalsIgnoreCase("css") || endname.equalsIgnoreCase("xml")
-					|| endname.equalsIgnoreCase("json") || endname.equalsIgnoreCase("lrc")) {
-				try (InputStream inps = openFileInps(tmp);
-						BufferedReader buffRead = new BufferedReader(new InputStreamReader(inps, getCharsetStr(tmp)));) {
+			if (endname.equalsIgnoreCase("java") || endname.equalsIgnoreCase("lua") || endname.equalsIgnoreCase("cs") || endname.equalsIgnoreCase("txt") || endname.equalsIgnoreCase("text")
+					|| endname.equalsIgnoreCase("html") || endname.equalsIgnoreCase("js") || endname.equalsIgnoreCase("css") || endname.equalsIgnoreCase("xml") || endname.equalsIgnoreCase("json")
+					|| endname.equalsIgnoreCase("lrc")) {
+				try (InputStream inps = openFileInps(tmp); BufferedReader buffRead = new BufferedReader(new InputStreamReader(inps, getCharsetStr(tmp)));) {
 					String v = B2InputStream.readStrByBuffReader(buffRead);
 					writeAll(tmp, false, v);
 				} catch (Exception e) {
@@ -201,13 +183,10 @@ public class FileRw extends FileBigEx {
 		for (int i = 0; i < len; i++) {
 			String tmp = list.get(i);
 			String endname = tmp.substring(tmp.lastIndexOf(".") + 1);
-			if (endname.equalsIgnoreCase("java") || endname.equalsIgnoreCase("lua") || endname.equalsIgnoreCase("cs")
-					|| endname.equalsIgnoreCase("txt") || endname.equalsIgnoreCase("text")
-					|| endname.equalsIgnoreCase("html") || endname.equalsIgnoreCase("js")
-					|| endname.equalsIgnoreCase("css") || endname.equalsIgnoreCase("xml")
-					|| endname.equalsIgnoreCase("json") || endname.equalsIgnoreCase("lrc")) {
-				try (InputStream inps = openFileInps(tmp);
-						InputStreamReader inpReader = new InputStreamReader(inps, getCharsetStr(tmp));) {
+			if (endname.equalsIgnoreCase("java") || endname.equalsIgnoreCase("lua") || endname.equalsIgnoreCase("cs") || endname.equalsIgnoreCase("txt") || endname.equalsIgnoreCase("text")
+					|| endname.equalsIgnoreCase("html") || endname.equalsIgnoreCase("js") || endname.equalsIgnoreCase("css") || endname.equalsIgnoreCase("xml") || endname.equalsIgnoreCase("json")
+					|| endname.equalsIgnoreCase("lrc")) {
+				try (InputStream inps = openFileInps(tmp); InputStreamReader inpReader = new InputStreamReader(inps, getCharsetStr(tmp));) {
 					String v = B2InputStream.readStrByReader(inpReader);
 					writeAll(tmp, false, v);
 				} catch (Exception e) {
@@ -224,13 +203,10 @@ public class FileRw extends FileBigEx {
 		for (int i = 0; i < len; i++) {
 			String tmp = list.get(i);
 			String endname = tmp.substring(tmp.lastIndexOf(".") + 1);
-			if (endname.equalsIgnoreCase("java") || endname.equalsIgnoreCase("lua") || endname.equalsIgnoreCase("cs")
-					|| endname.equalsIgnoreCase("txt") || endname.equalsIgnoreCase("text")
-					|| endname.equalsIgnoreCase("html") || endname.equalsIgnoreCase("js")
-					|| endname.equalsIgnoreCase("css") || endname.equalsIgnoreCase("xml")
-					|| endname.equalsIgnoreCase("json") || endname.equalsIgnoreCase("lrc")) {
-				try (InputStream inps = openInpsWithOutBom(tmp);
-						InputStreamReader inpReader = new InputStreamReader(inps, getCharsetStr(tmp));) {
+			if (endname.equalsIgnoreCase("java") || endname.equalsIgnoreCase("lua") || endname.equalsIgnoreCase("cs") || endname.equalsIgnoreCase("txt") || endname.equalsIgnoreCase("text")
+					|| endname.equalsIgnoreCase("html") || endname.equalsIgnoreCase("js") || endname.equalsIgnoreCase("css") || endname.equalsIgnoreCase("xml") || endname.equalsIgnoreCase("json")
+					|| endname.equalsIgnoreCase("lrc")) {
+				try (InputStream inps = openInpsWithOutBom(tmp); InputStreamReader inpReader = new InputStreamReader(inps, getCharsetStr(tmp));) {
 					String v = B2InputStream.readStrByReader(inpReader);
 					writeAll(tmp, false, v);
 				} catch (Exception e) {

@@ -249,20 +249,17 @@ public class MapperShareBuffer {
 
 	// ////////////////////////// String ///////////////////////////
 	public final String readStr(String charset) throws Exception {
-		try (InputStream inps = readInps()) {
-			InputStream inps2 = B2InputStream.dropBomByInps(inps);
+		String ret = "";
+		try (InputStream inps = readInps(); InputStream inps2 = B2InputStream.dropBomByInps(inps);) {
 			byte[] bts = B2InputStream.readStream(inps2);
-			inps2.close();
 			boolean isSup = EncodingEx.isSupported(charset);
 			if (isSup) {
-				return new String(bts, charset);
+				ret = new String(bts, charset);
+			} else {
+				ret = new String(bts);
 			}
-			return new String(bts);
 		}
-	}
-
-	public final String readStr4Xml(String charset) throws Exception {
-		return StrEx.fitlerNonValidXMLChars(readStr(charset));
+		return StrEx.fitlerNonValidXMLChars(ret);
 	}
 
 	// /////////////////////////////////////////////////////////

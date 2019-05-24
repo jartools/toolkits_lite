@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 
+import com.bowlong.text.EncodingEx;
+
 /**
  * 大文件读写处理 <br/>
  * RandomAccessFile[可以处理随机读取，大文件读取]<br/>
@@ -76,23 +78,17 @@ public class FileBigEx extends FileEx {
 			mapper.close();
 		}
 	}
+	
+	static public final String readText4Mapper(File file) throws Exception {
+		return readText4Mapper(file, EncodingEx.UTF_8);
+	}
 
 	static public final String readText4Mapper(String path, String charset) throws Exception {
 		File file = openFile(path);
 		return readText4Mapper(file, charset);
 	}
-
-	static public final String readXml4Mapper(File file, String charset) throws Exception {
-		MapperShareBuffer mapper = new MapperShareBuffer(file);
-		try {
-			return mapper.readStr4Xml(charset);
-		} finally {
-			mapper.close();
-		}
-	}
-
-	static public final String readXml4Mapper(String path, String charset) throws Exception {
-		File file = openFile(path);
-		return readXml4Mapper(file, charset);
+	
+	static public final String readText4Mapper(String path) throws Exception {
+		return readText4Mapper(path, EncodingEx.UTF_8);
 	}
 }
