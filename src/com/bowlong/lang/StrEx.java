@@ -34,18 +34,6 @@ public final class StrEx extends ExOrigin {
 		return s.substring(begin);
 	}
 
-	public static final String left(final String s, final String endExclude) {
-		int p1 = s.indexOf(endExclude);
-		p1 = p1 < 0 ? 0 : p1;
-		return s.substring(0, p1);
-	}
-
-	public static final String right(final String s, final String begExclude) {
-		int p1 = s.lastIndexOf(begExclude);
-		p1 = p1 < 0 ? 0 : p1 + begExclude.length();
-		return s.substring(p1);
-	}
-
 	public static final String sub(final String s, final String begin, final String end) {
 		int p1 = s.indexOf(begin);
 		p1 = p1 < 0 ? 0 : p1 + begin.length();

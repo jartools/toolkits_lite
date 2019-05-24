@@ -218,8 +218,7 @@ public class TkitJsp extends TkitBase {
 		MultipartFile multipartFile = fileRequest.getFile("img2Upload");
 		/** 获取文件的后缀 **/
 		System.out.println(multipartFile.getOriginalFilename());
-		String suffix = multipartFile.getOriginalFilename()
-				.substring(multipartFile.getOriginalFilename().lastIndexOf("."));
+		String suffix = suffix(multipartFile.getOriginalFilename(),true);
 
 		/** 拼成完整的文件保存路径加文件 **/
 		String name = +System.currentTimeMillis() + suffix;

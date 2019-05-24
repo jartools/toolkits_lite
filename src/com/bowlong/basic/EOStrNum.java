@@ -278,11 +278,11 @@ public class EOStrNum extends EOBasic {
 
 		return String.valueOf(v);
 	}
-	
+
 	static final public String toDir(String dir) {
-		if(isEmpty(dir))
+		if (isEmpty(dir))
 			return "";
-		
+
 		dir = repBackSlash(dir, "/");
 		if (!dir.endsWith("/")) {
 			dir = dir + "/";
@@ -333,5 +333,33 @@ public class EOStrNum extends EOBasic {
 			reval = "";
 		str = repSlash(str, reval);
 		return repBackSlash(str, reval);
+	}
+
+	/** Exclude 排除了的 */
+	static final public String left(final String s, final String endExclude) {
+		int p1 = s.indexOf(endExclude);
+		p1 = p1 < 0 ? 0 : p1;
+		return s.substring(0, p1);
+	}
+
+	static final public String right(final String s, final String begExclude) {
+		int p1 = s.lastIndexOf(begExclude);
+		p1 = p1 < 0 ? 0 : p1 + begExclude.length();
+		return s.substring(p1);
+	}
+
+	/*** 文件后缀 **/
+	static final public String suffix(String fp, boolean include) {
+		if (isEmpty(fp))
+			return "";
+		String r = right(fp, ".");
+		if (include) {
+			return "." + r;
+		}
+		return r;
+	}
+
+	static final public String suffix(String fp) {
+		return suffix(fp, false);
 	}
 }
