@@ -17,7 +17,7 @@ import com.bowlong.util.Ref;
  * @author Canyon
  * @version 2019-03-04 19:29
  */
-public class EOURL extends EODateFmt {
+public class EOURL extends EORuntime {
 	static final public String reCharset(String charset, Ref<Boolean> refSupport) {
 		boolean isSupported = !isEmptyTrim(charset);
 		if (isSupported) {

@@ -6,7 +6,7 @@ package com.bowlong.basic;
  * @author Canyon
  * @version 2019-05-08 20:20
  */
-public class ExRuntime extends EOURL {
+public class EORuntime extends EOJson {
 
 	static final private String fmtSh0 = "sh %s%s";
 	static final private String fmtSh1 = "sh %s%s %s";

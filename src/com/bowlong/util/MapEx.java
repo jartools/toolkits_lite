@@ -318,10 +318,6 @@ public class MapEx extends ExOrigin {
 		return toConcurrentHashMap(m);
 	}
 
-	public static final Map toMap(String s) {
-		return propertiesToMap(s);
-	}
-
 	static public final Map toMapByJson(String json) {
 		try {
 			if (StrEx.isEmptyTrim(json))
@@ -414,7 +410,7 @@ public class MapEx extends ExOrigin {
 		return ret;
 	}
 
-	public static final Map propertiesToMap(String s) {
+	public static final Map toMapByProperties(String s) {
 		Properties p = new Properties();
 		try {
 			StringReader sr = new StringReader(s);
