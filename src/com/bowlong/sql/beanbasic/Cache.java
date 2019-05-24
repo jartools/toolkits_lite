@@ -37,9 +37,9 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	private String sqlIn = "";
 	protected String sqlUp = "";
 	protected String sqlDel = "";
-	final private List<T> listIn = newList2();
-	final private List<T> listUp = newList2();
-	final private List<T> listDel = newList2();
+	final protected List<T> listIn = newList2();
+	final protected List<T> listUp = newList2();
+	final protected List<T> listDel = newList2();
 
 	// 分页查询效率慢,优化方式 ORDER BY
 	// (建议where的时候用某个自增标识来做起点。比如id必须大于那个最后一条记录的id,并用 ORDER BY id 贼快)
