@@ -215,8 +215,7 @@ public class EOBasic {
 	/*** 清空并创建对象 **/
 	static final public <K, V> Map<K, V> clearOrNew(Map map) {
 		if (map == null) {
-			map = newMap();
-			return map;
+			return newMap();
 		}
 		map.clear();
 		return map;
@@ -252,18 +251,10 @@ public class EOBasic {
 		ls.clear();
 	}
 
-	static public final void clearNull(List ls) {
-		if (ls == null)
-			return;
-		ls.clear();
-		ls = null;
-	}
-
 	/*** 清空并创建对象 **/
 	static public final List clearOrNew(List ls) {
 		if (ls == null) {
-			ls = newList();
-			return ls;
+			return newList();
 		}
 		ls.clear();
 		return ls;

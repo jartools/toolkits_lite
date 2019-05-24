@@ -219,7 +219,7 @@ public class ExOrigin extends ExRuntime {
 	static final public double round2(double org) {
 		return round(org, 2);
 	}
-	
+
 	static final public <K, V> List<K> keys(Map<K, V> map) {
 		List<K> list = newListT();
 		if (map == null)
@@ -235,7 +235,42 @@ public class ExOrigin extends ExRuntime {
 		list.addAll(map.values());
 		return list;
 	}
+
+	static public final long pageCount(long count, long pageSize) {
+		if (pageSize < 0)
+			return 0;
+		long pageCount = count / pageSize;
+		pageCount = (count == pageCount * pageSize) ? pageCount : pageCount + 1;
+		return pageCount;
+	}
+
+	static public final int pageCount(int count, int pageSize) {
+		return (int) pageCount((long) count, (long) pageSize);
+	}
+
+	static public final <T> List<T> getPage(List<T> v, long page, long pageSize) {
+		if (isEmpty(v))
+			return newListT();
+
+		int count = v.size();
+		long pageCount = pageCount(count, pageSize);
+		page--;
+		page = page < 0 ? 0 : page;
+		page = page >= pageCount ? pageCount - 1 : page;
+		int begin = (int) (page * pageSize);
+		int end = (int) (begin + pageSize);
+		if (begin > count || begin < 0 || end < 0)
+			return newListT();
+		end = count < end ? count : end;
+		if (end <= begin)
+			return newListT();
+		return v.subList(begin, end);
+	}
 	
+	static public final <T> List<T> getPage(List<T> v, int page, int pageSize) {
+		return getPage(v, (long) page, (long) pageSize);
+	}
+
 	static final public org.apache.commons.logging.Log getLog(Class<?> clazz) {
 		return org.apache.commons.logging.LogFactory.getLog(clazz);
 	}

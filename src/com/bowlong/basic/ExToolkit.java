@@ -33,7 +33,6 @@ import com.bowlong.objpool.ObjPool;
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.pinyin.PinYin;
 import com.bowlong.util.ExceptionEx;
-import com.bowlong.util.ListEx;
 import com.bowlong.util.MapEx;
 
 /**
@@ -331,14 +330,6 @@ public class ExToolkit extends ExOrigin {
 		return (T) objs.get(i);
 	}
 
-	static final public int pageCount(long count, long pageSize) {
-		return ListEx.pageCount(count, pageSize);
-	}
-
-	static final public <T> List<T> getPage(List<T> v, long page, long pageSize) {
-		return ListEx.getPage(v, page, pageSize);
-	}
-	
 	static final public void sleep(long ms) {
 		ThreadEx.Sleep(ms);
 	}

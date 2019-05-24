@@ -604,41 +604,6 @@ public class ListEx extends ExOrigin {
 		}
 	}
 
-	static public final int pageCount(int count, int pageSize) {
-		if (pageSize < 0)
-			return 0;
-		int pageCount = count / pageSize;
-		pageCount = count == pageCount * pageSize ? pageCount : pageCount + 1;
-		return pageCount;
-	}
-
-	static public final int pageCount(long count, long pageSize) {
-		return pageCount((int) count, (int) pageSize);
-	}
-
-	static public final <T> List<T> getPage(List<T> v, int page, int pageSize) {
-		if (isEmpty(v))
-			return newArrayList();
-
-		int count = v.size();
-		int pageCount = pageCount(count, pageSize);
-		page--;
-		page = page < 0 ? 0 : page;
-		page = page >= pageCount ? pageCount - 1 : page;
-		int begin = (int) (page * pageSize);
-		int end = (int) (begin + pageSize);
-		if (begin > count || begin < 0 || end < 0)
-			return newArrayList();
-		end = count < end ? count : end;
-		if (end <= begin)
-			return newArrayList();
-		return v.subList(begin, end);
-	}
-
-	static public final <T> List<T> getPage(List<T> v, long page, long pageSize) {
-		return getPage(v, (int) page, (int) pageSize);
-	}
-
 	// //////////////// 过滤 ////////////////
 	/*** 过滤origin中包含filter里面的元素 **/
 	static public final <T> List fitlerList(List<T> origin, List<T> filter) {
