@@ -30,6 +30,10 @@ public class EOBasic {
 	static final public String kf_2 = "%s_%s";
 	static final public String kf_3 = "%s_%s_%s";
 	static final public String kf_4 = "%s_%s_%s_%s";
+	static final public String C_SUCCESS = "success";
+	static final public String C_WAIT = "wait";
+	static final public String C_FAILS = "fails";
+	static final public String C_ERROR = "error";
 
 	static final public <T> T toT(Object obj) {
 		return (T) obj;
