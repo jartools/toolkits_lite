@@ -1,5 +1,6 @@
 package com.bowlong.third;
 
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -38,5 +39,14 @@ public class Shutdown extends Thread {
 
 	// 在下线之前
 	protected void beforeShutDown() throws Exception {
+	}
+
+	static final public Socket soMsg(String host, int port, String msg) throws Exception {
+		Socket sss = new Socket(host, port);
+		OutputStream out = sss.getOutputStream();
+		out.write(msg.getBytes("UTF-8"));
+		out.flush();
+		out.close();
+		return sss;
 	}
 }
