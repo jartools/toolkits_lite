@@ -338,4 +338,8 @@ public class ExToolkit extends ExOrigin {
 	static final public <T> List<T> getPage(List<T> v, long page, long pageSize) {
 		return ListEx.getPage(v, page, pageSize);
 	}
+	
+	static final public void sleep(long ms) {
+		ThreadEx.Sleep(ms);
+	}
 }
