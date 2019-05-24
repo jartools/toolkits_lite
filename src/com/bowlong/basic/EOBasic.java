@@ -26,15 +26,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @time 2019-02-14 19:32
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class EOBasic {
-	static final public String kf_2 = "%s_%s";
-	static final public String kf_3 = "%s_%s_%s";
-	static final public String kf_4 = "%s_%s_%s_%s";
-	static final public String C_SUCCESS = "success";
-	static final public String C_WAIT = "wait";
-	static final public String C_FAILS = "fails";
-	static final public String C_ERROR = "error";
-
+public class EOBasic extends EOConfig {
+	
 	static final public <T> T toT(Object obj) {
 		return (T) obj;
 	}

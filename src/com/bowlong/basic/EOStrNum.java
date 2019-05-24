@@ -9,15 +9,6 @@ import com.bowlong.util.Ref;
  * @version createtime：2015年8月21日下午3:33:23
  */
 public class EOStrNum extends EOBasic {
-	static final public Ref<Boolean> refBl = new Ref<Boolean>(false);
-	static final public Ref<Byte> refByte = new Ref<Byte>((byte) 0);
-	static final public Ref<Short> refShort = new Ref<Short>((short) 0);
-	static final public Ref<Integer> refInt = new Ref<Integer>(0);
-	static final public Ref<Long> refLong = new Ref<Long>(0L);
-	static final public Ref<Float> refFloat = new Ref<Float>(0F);
-	static final public Ref<Double> refDouble = new Ref<Double>(0D);
-	static final public Ref<Object> refObj = new Ref<Object>();
-
 	static final public boolean isByte(final String s, final Ref<Byte> ref) {
 		try {
 			if (s == null || "".equals(s))
