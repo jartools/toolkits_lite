@@ -352,9 +352,9 @@ public class EOStrNum extends EOBasic {
 	static final public String suffix(String fp, boolean include) {
 		if (isEmpty(fp))
 			return "";
-		String r = right(fp, ".");
+		String r = right(fp, f_d);
 		if (include) {
-			return "." + r;
+			return f_d + r;
 		}
 		return r;
 	}

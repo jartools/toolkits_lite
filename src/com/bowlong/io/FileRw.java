@@ -162,7 +162,7 @@ public class FileRw extends FileBigEx {
 		int len = list.size();
 		for (int i = 0; i < len; i++) {
 			String tmp = list.get(i);
-			String endname = tmp.substring(tmp.lastIndexOf(".") + 1);
+			String endname = suffix(tmp);
 			if (endname.equalsIgnoreCase("java") || endname.equalsIgnoreCase("lua") || endname.equalsIgnoreCase("cs") || endname.equalsIgnoreCase("txt") || endname.equalsIgnoreCase("text")
 					|| endname.equalsIgnoreCase("html") || endname.equalsIgnoreCase("js") || endname.equalsIgnoreCase("css") || endname.equalsIgnoreCase("xml") || endname.equalsIgnoreCase("json")
 					|| endname.equalsIgnoreCase("lrc")) {
@@ -182,7 +182,7 @@ public class FileRw extends FileBigEx {
 		int len = list.size();
 		for (int i = 0; i < len; i++) {
 			String tmp = list.get(i);
-			String endname = tmp.substring(tmp.lastIndexOf(".") + 1);
+			String endname = suffix(tmp);
 			if (endname.equalsIgnoreCase("java") || endname.equalsIgnoreCase("lua") || endname.equalsIgnoreCase("cs") || endname.equalsIgnoreCase("txt") || endname.equalsIgnoreCase("text")
 					|| endname.equalsIgnoreCase("html") || endname.equalsIgnoreCase("js") || endname.equalsIgnoreCase("css") || endname.equalsIgnoreCase("xml") || endname.equalsIgnoreCase("json")
 					|| endname.equalsIgnoreCase("lrc")) {
@@ -202,7 +202,7 @@ public class FileRw extends FileBigEx {
 		int len = list.size();
 		for (int i = 0; i < len; i++) {
 			String tmp = list.get(i);
-			String endname = tmp.substring(tmp.lastIndexOf(".") + 1);
+			String endname = suffix(tmp);
 			if (endname.equalsIgnoreCase("java") || endname.equalsIgnoreCase("lua") || endname.equalsIgnoreCase("cs") || endname.equalsIgnoreCase("txt") || endname.equalsIgnoreCase("text")
 					|| endname.equalsIgnoreCase("html") || endname.equalsIgnoreCase("js") || endname.equalsIgnoreCase("css") || endname.equalsIgnoreCase("xml") || endname.equalsIgnoreCase("json")
 					|| endname.equalsIgnoreCase("lrc")) {
