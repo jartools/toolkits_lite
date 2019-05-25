@@ -336,16 +336,32 @@ public class EOStrNum extends EOBasic {
 	}
 
 	/** Exclude 排除了的 */
-	static final public String left(final String s, final String endExclude) {
-		int p1 = s.indexOf(endExclude);
-		p1 = p1 < 0 ? 0 : p1;
+	static final public String left(String s, String exclude, boolean isLast) {
+		int p1 = -1;
+		if (isLast)
+			p1 = s.lastIndexOf(exclude);
+		else
+			p1 = s.indexOf(exclude);
+		p1 = p1 < 0 ? s.length() : p1;
 		return s.substring(0, p1);
 	}
 
-	static final public String right(final String s, final String begExclude) {
-		int p1 = s.lastIndexOf(begExclude);
-		p1 = p1 < 0 ? 0 : p1 + begExclude.length();
+	static final public String left(String s, String exclude) {
+		return left(s, exclude, false);
+	}
+
+	static final public String right(String s, String exclude, boolean isLast) {
+		int p1 = -1;
+		if (isLast)
+			p1 = s.lastIndexOf(exclude);
+		else
+			p1 = s.indexOf(exclude);
+		p1 = p1 < 0 ? 0 : p1 + exclude.length();
 		return s.substring(p1);
+	}
+
+	static final public String right(String s, String exclude) {
+		return right(s, exclude, true);
 	}
 
 	/*** 文件后缀 **/
