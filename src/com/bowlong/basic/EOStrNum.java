@@ -378,4 +378,36 @@ public class EOStrNum extends EOBasic {
 	static final public String suffix(String fp) {
 		return suffix(fp, false);
 	}
+
+	static final private String reFilePath(String fp, String exclude) {
+		if (isEmpty(fp))
+			return "";
+		int index = fp.indexOf(exclude);
+		int lens = exclude.length();
+		if (index == 0) {
+			fp = fp.substring(lens);
+		} else if (index > 0) {
+			String _b = left(fp.substring(0, index), "/",true);
+			_b = left(_b, "/",true);
+			String _e = fp.substring(index + lens);
+			fp = _b + "/" + _e;
+		}
+		return fp;
+	}
+
+	static final public String realFilePath(String fp) {
+		if (isEmpty(fp))
+			return "";
+		fp = repBackSlash(fp, "/");
+		String exclude = "../";
+		while (fp.indexOf(exclude) != -1) {
+			fp = reFilePath(fp, exclude);
+		}
+
+		exclude = "..";
+		while (fp.indexOf(exclude) != -1) {
+			fp = reFilePath(fp, exclude);
+		}
+		return fp;
+	}
 }
