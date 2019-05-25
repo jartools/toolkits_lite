@@ -1,5 +1,7 @@
 package com.bowlong.third.netty4.httphand;
 
+import java.io.File;
+import java.io.RandomAccessFile;
 import java.util.Map;
 
 import com.bowlong.bio2.B2Helper;
@@ -9,6 +11,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelProgressiveFuture;
+import io.netty.channel.ChannelProgressiveFutureListener;
+import io.netty.channel.DefaultFileRegion;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaderNames;
@@ -48,7 +53,8 @@ public class N4HttpResponse extends N4HttpOrg {
 		ChannelFuture f = chn.writeAndFlush(response);
 		f = chn.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 		f.addListener(ChannelFutureListener.CLOSE);
-		// buf.release(); // 添加buff释放？ 测试了会报错  io.netty.util.IllegalReferenceCountException: refCnt: 0, decrement: 1
+		// buf.release(); // 添加buff释放？ 测试了会报错
+		// io.netty.util.IllegalReferenceCountException: refCnt: 0, decrement: 1
 		return size;
 	}
 
@@ -160,5 +166,30 @@ public class N4HttpResponse extends N4HttpOrg {
 		// buf.writeBytes(buff);
 		ByteBuf buf = N4B2ByteBuf.buffer(buff);
 		sendByChunked(chn, buf);
+	}
+
+	static final public void sendFile(Channel chn, File file) throws Exception {
+		final RandomAccessFile raf = new RandomAccessFile(file, "r");
+		final String fname = file.getName();
+		long fileLength = raf.length();
+		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+		response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
+		response.headers().set(HttpHeaderNames.CONTENT_LENGTH, fileLength);
+		response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/octet-stream");
+		response.headers().add(HttpHeaderNames.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", fname));
+		chn.write(response);
+
+		ChannelFuture f = chn.write(new DefaultFileRegion(raf.getChannel(), 0, fileLength), chn.newProgressivePromise());
+		f.addListener(new ChannelProgressiveFutureListener() {
+			@Override
+			public void operationComplete(ChannelProgressiveFuture future) throws Exception {
+				raf.close();
+			}
+
+			@Override
+			public void operationProgressed(ChannelProgressiveFuture future, long progress, long total) throws Exception {
+			}
+		});
+		f = chn.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 	}
 }
