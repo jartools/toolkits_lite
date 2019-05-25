@@ -5,6 +5,7 @@ import java.io.RandomAccessFile;
 import java.util.Map;
 
 import com.bowlong.bio2.B2Helper;
+import com.bowlong.io.FileRw;
 import com.bowlong.lang.StrEx;
 
 import io.netty.buffer.ByteBuf;
@@ -169,10 +170,13 @@ public class N4HttpResponse extends N4HttpOrg {
 	}
 
 	static final public void sendFile(Channel chn, File file) throws Exception {
-		final RandomAccessFile raf = new RandomAccessFile(file, "r");
 		final String fname = file.getName();
+		final RandomAccessFile raf = FileRw.openRAFile(file, "r");
+		byte[] buff = FileRw.readFully(raf);
 		long fileLength = raf.length();
-		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+		ByteBuf buf = N4B2ByteBuf.buffer(buff);
+		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
+		response.headers().set(HttpHeaderNames.TRANSFER_ENCODING, HttpHeaderValues.CHUNKED);
 		response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
 		response.headers().set(HttpHeaderNames.CONTENT_LENGTH, fileLength);
 		response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/octet-stream");

@@ -1,8 +1,6 @@
 package com.bowlong.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 
@@ -21,42 +19,46 @@ public class FileBigEx extends FileEx {
 
 	// //////////////// RandomAccessFile 处理 ////////////////
 	// 只读
-	static public final String RAF_READONLY = "r";
+	static final public String RAF_READONLY = "r";
 	// 读写(文件不存在则创建)
-	static public final String RAF_READWRITE = "rw";
+	static final public String RAF_READWRITE = "rw";
 	// 打开阅读和写作，如“RW”，并要求每一个更新的文件的内容或元数据写入同步对底层的存储装置。
-	static public final String RAF_READONLYSYNC = "rws";
+	static final public String RAF_READONLYSYNC = "rws";
 	// 打开阅读和写作，如“RW”，并要求每一个更新文件的内容写入同步对底层的存储装置。
-	static public final String RAF_READONLYD = "rwd";
+	static final public String RAF_READONLYD = "rwd";
 
-	static public final RandomAccessFile openRandomAccessFile(final File f, final String mode)
-			throws FileNotFoundException {
+	static final public RandomAccessFile openRAFile(File f, String mode) throws Exception {
 		return new RandomAccessFile(f, mode);
 	}
 
-	static public final RandomAccessFile openRandomAccessFile(final String f, final String mode)
-			throws FileNotFoundException {
+	static final public RandomAccessFile openRAFile(String f, String mode) throws Exception {
 		return new RandomAccessFile(f, mode);
 	}
 
-	static public final byte[] readFully(final RandomAccessFile f, final int pos, final int len) throws IOException {
+	static final public byte[] readFully(RandomAccessFile f, int pos, int len) throws Exception {
 		final byte[] result = new byte[len];
 		readFully(f, pos, result);
 		return result;
 	}
 
-	static public final void readFully(final RandomAccessFile f, final int pos, final byte[] result)
-			throws IOException {
+	static final public void readFully(RandomAccessFile f, int pos, byte[] result) throws Exception {
 		f.seek(pos);
 		f.readFully(result);
 	}
 
-	static public final String readLine(final RandomAccessFile f, final int pos) throws IOException {
+	static final public byte[] readFully(RandomAccessFile f) throws Exception {
+		int len = (int) f.length();
+		byte[] result = new byte[len];
+		readFully(f, 0, result);
+		return result;
+	}
+
+	static final public String readLine(RandomAccessFile f, int pos) throws Exception {
 		f.seek(pos);
 		return f.readLine();
 	}
 
-	static public final InputStream readInps4Mapper(File file) throws Exception {
+	static final public InputStream readInps4Mapper(File file) throws Exception {
 		MapperShareBuffer mapper = new MapperShareBuffer(file);
 		try {
 			return mapper.readInps();
@@ -65,12 +67,12 @@ public class FileBigEx extends FileEx {
 		}
 	}
 
-	static public final InputStream readInps4Mapper(String path) throws Exception {
+	static final public InputStream readInps4Mapper(String path) throws Exception {
 		File file = openFile(path);
 		return readInps4Mapper(file);
 	}
 
-	static public final String readText4Mapper(File file, String charset) throws Exception {
+	static final public String readText4Mapper(File file, String charset) throws Exception {
 		MapperShareBuffer mapper = new MapperShareBuffer(file);
 		try {
 			return mapper.readStr(charset);
@@ -78,17 +80,17 @@ public class FileBigEx extends FileEx {
 			mapper.close();
 		}
 	}
-	
-	static public final String readText4Mapper(File file) throws Exception {
+
+	static final public String readText4Mapper(File file) throws Exception {
 		return readText4Mapper(file, EncodingEx.UTF_8);
 	}
 
-	static public final String readText4Mapper(String path, String charset) throws Exception {
+	static final public String readText4Mapper(String path, String charset) throws Exception {
 		File file = openFile(path);
 		return readText4Mapper(file, charset);
 	}
-	
-	static public final String readText4Mapper(String path) throws Exception {
+
+	static final public String readText4Mapper(String path) throws Exception {
 		return readText4Mapper(path, EncodingEx.UTF_8);
 	}
 }
