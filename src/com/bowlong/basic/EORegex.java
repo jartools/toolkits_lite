@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 /**
  * 正则表达式
+ * 
  * @author Canyon
  *
  */
@@ -106,5 +107,9 @@ public class EORegex extends EOJson {
 
 	static final public boolean regexAnsi(String GID) {
 		return isMatch(GID, "^\\w+$");
+	}
+
+	static final public boolean isContains(String src, String contains) {
+		return isMatch(src, "(.*)?(" + contains + ")+(.*)?");
 	}
 }
