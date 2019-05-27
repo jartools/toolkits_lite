@@ -1,16 +1,15 @@
-package com.bowlong.regex;
+package com.bowlong.basic;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 正则匹配
+ * 正则表达式
  * @author Canyon
  *
  */
-public class RegxEx {
+public class EORegex extends EOJson {
 	// 是否有匹配
 	static final public boolean isMatch(String str, String regx) {
 		Pattern p = Pattern.compile(regx);
@@ -21,7 +20,7 @@ public class RegxEx {
 	// 查找以指定字符开始，并以指定字符结尾的数据集
 	static final public List<String> matchBeginAndEnd(String str, String begin, String end) {
 		String regx = begin + "[\\s\\S]*?" + end;
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = newListT();
 		int start = 0;
 		Pattern p = Pattern.compile(regx);
 		Matcher m = p.matcher(str);
@@ -36,7 +35,7 @@ public class RegxEx {
 	// 查找以指定字符开始，并以指定字符结尾的数据集，并且包含指定字符串
 	static final public List<String> matchBeginAndEndAndInc(String str, String begin, String end, String inc) {
 		String regx = begin + "[\\s\\S]*" + inc + "[\\s\\S]*?" + end;
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = newListT();
 		int start = 0;
 		Pattern p = Pattern.compile(regx);
 		Matcher m = p.matcher(str);
@@ -86,7 +85,7 @@ public class RegxEx {
 
 	static final public List<String> href(String str) {
 		String regx = "href\\s*=\\s*(?:\"([^\"]*)\"|'([^']*)'|([^\"'>\\s]+))";
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = newListT();
 		int start = 0;
 		Pattern p = Pattern.compile(regx);
 		Matcher m = p.matcher(str);
