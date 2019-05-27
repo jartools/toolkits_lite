@@ -277,6 +277,18 @@ public class ListEx extends ExOrigin {
 		return (T[]) list.toArray(arrs);
 	}
 
+	static public final <T> List<T> toList(T[] arrs) {
+		List<T> ret = newListT();
+		if (arrs == null || arrs.length <= 0)
+			return ret;
+		int lens = arrs.length;
+		for (int i = 0; i < lens; i++) {
+			if (arrs[i] != null)
+				ret.add(arrs[i]);
+		}
+		return ret;
+	}
+
 	public static final List listIt(Object... var) {
 		List result = new Vector();
 		return add(result, var);
