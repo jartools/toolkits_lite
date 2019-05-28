@@ -23,6 +23,7 @@ import org.apache.commons.collections4.list.TreeList;
 
 import com.alibaba.fastjson.JSON;
 import com.bowlong.basic.ExOrigin;
+import com.bowlong.basic.bean.ComparatorMap;
 import com.bowlong.lang.RndEx;
 import com.bowlong.objpool.StringBufPool;
 
@@ -488,43 +489,19 @@ public class ListEx extends ExOrigin {
 		return src;
 	}
 
-	public static final List sort(List src, Comparator comparator) {
+	public static final <T> List<T> sort(List<T> src, Comparator<T> comparator) {
 		Collections.sort(src, comparator);
 		return src;
 	}
 
-	public static final List<Map> sort(final List<Map> m1, final String key) {
-		Collections.sort(m1, new Comparator<Map>() {
-			public int compare(Map o1, Map o2) {
-				try {
-					Object v1 = o1.get(key);
-					Object v2 = o2.get(key);
-					if (v1 == null || v2 == null)
-						return 0;
-					return compareTo(v1, v2);
-				} catch (Exception e) {
-					return 0;
-				}
-			}
-		});
-		return m1;
+	public static final List<Map> sort(List<Map> m1, String key) {
+		return sort(m1, new ComparatorMap(key));
 	}
 
 	/*** 交换位置 **/
 	public static final List swap(List list, int i, int j) {
 		Collections.swap(list, i, j);
 		return list;
-	}
-
-	public static final List<Map> sortLMap4NVal(List<Map> m1, final Object key) {
-		Collections.sort(m1, new Comparator<Map>() {
-			public int compare(Map o1, Map o2) {
-				double i1 = (Double) o1.get(key);
-				double i2 = (Double) o2.get(key);
-				return i1 > i2 ? 1 : -1;
-			}
-		});
-		return m1;
 	}
 
 	public static final List<Byte> distinctByte(List<Byte> vars) {
