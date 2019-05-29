@@ -1,8 +1,6 @@
 package com.bowlong.basic;
 
 import java.awt.Point;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,8 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 import com.bowlong.bio2.B2InputStream;
 import com.bowlong.io.ByteInStream;
@@ -29,7 +25,6 @@ import com.bowlong.lang.task.SchedulerEx;
 import com.bowlong.lang.task.ThreadEx;
 import com.bowlong.objpool.ByteInPool;
 import com.bowlong.objpool.ByteOutPool;
-import com.bowlong.objpool.ObjPool;
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.pinyin.PinYin;
 import com.bowlong.util.ExceptionEx;
@@ -84,65 +79,9 @@ public class ExToolkit extends ExOrigin {
 	}
 
 	// ///////////////////////////////////////////////////
-	static final public ByteArrayOutputStream newStream() {
-		return new ByteArrayOutputStream();
-	}
-
-	static final public InputStream newStream(byte[] b) {
-		return new ByteArrayInputStream(b);
-	}
-
-	// ///////////////////////////////////////////////////
 	static final public String pn(int n) {
 		return n > 0 ? "+" + n : String.valueOf(n);
 	}
-
-	// ///////////////////////////////////////////////////
-	static final public byte[] zip(byte[] b) throws IOException {
-		ByteArrayOutputStream baos = ObjPool.borrowObject(ByteArrayOutputStream.class);
-		try {
-			GZIPOutputStream gos = new GZIPOutputStream(baos);
-			gos.write(b);
-			gos.finish();
-			return baos.toByteArray();
-		} catch (IOException e) {
-			throw e;
-		} finally {
-			ObjPool.returnObject(baos);
-		}
-	}
-
-	static final public byte[] unzip(byte[] b) throws IOException {
-		ByteArrayOutputStream baos = ObjPool.borrowObject(ByteArrayOutputStream.class);
-		try {
-			int times = 1000;
-			byte[] buff = new byte[4 * 1024];
-			InputStream bais = newStream(b);
-			GZIPInputStream gis = new GZIPInputStream(bais);
-			while (true) {
-				if (times-- <= 0)
-					break;
-				int len = gis.read(buff);
-				if (len <= 0)
-					break;
-				baos.write(buff, 0, len);
-			}
-			return baos.toByteArray();
-		} catch (IOException e) {
-			throw e;
-		} finally {
-			ObjPool.returnObject(baos);
-		}
-	}
-
-	static final public byte[] unzip(byte[] b, int srcLen) throws IOException {
-		byte[] buff = new byte[srcLen];
-		InputStream bais = newStream(b);
-		GZIPInputStream gis = new GZIPInputStream(bais);
-		gis.read(buff);
-		return buff;
-	}
-
 	// ///////////////////////////////////////////////////
 	static final public String s(String s, Object... args) {
 		return String.format(s, args);
