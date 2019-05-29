@@ -30,6 +30,11 @@ public class EOConfig {
 	static final public int mb_et = 2;
 	static final public int gb_et = 3;
 	static final public int tb_et = 4;
+	static final public String am = "f:%s t:%s u:%s m:%s"; // 当前 app 内存
+	static final public String am_kb = "f:%skb t:%skb u:%skb m:%skb";
+	static final public String am_mb = "f:%smb t:%smb u:%smb m:%smb";
+	static final public String am_gb = "f:%sgb t:%sgb u:%sgb m:%sgb";
+	static final public String am_tb = "f:%stb t:%stb u:%stb m:%stb";
 	static final public long kb = 1024; // 存储单位-值
 	static final public long mb = kb * kb;
 	static final public long gb = mb * kb;
