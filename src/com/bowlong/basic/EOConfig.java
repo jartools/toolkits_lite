@@ -26,4 +26,12 @@ public class EOConfig {
 	static final public String C_FAILS = "fails";
 	static final public String C_ERROR = "error";
 	static final public String f_d = ".";
+	static final public int kb_et = 1; // 存储单位-类型
+	static final public int mb_et = 2;
+	static final public int gb_et = 3;
+	static final public int tb_et = 4;
+	static final public long kb = 1024; // 存储单位-值
+	static final public long mb = kb * kb;
+	static final public long gb = mb * kb;
+	static final public long tb = gb * kb;
 }
