@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -118,19 +119,25 @@ public class EOZip extends EOURL {
 	}
 
 	public static long toZip(String srcDir, OutputStream out, boolean keepDir) throws Exception {
-		long start = System.currentTimeMillis();
+		long start = now();
 		try (ZipOutputStream zos = new ZipOutputStream(out);) {
 			File sourceFile = new File(srcDir);
 			compress(sourceFile, zos, sourceFile.getName(), keepDir);
-			long end = System.currentTimeMillis();
+			long end = now();
 			return (end - start);
 		} catch (Exception e) {
 			throw new RuntimeException("zip error from ZipUtils", e);
 		}
 	}
 
+	public static long toZip(String srcDir, String fpOut, boolean keepDir) throws Exception {
+		try (FileOutputStream fos1 = new FileOutputStream(fpOut);) {
+			return toZip(srcDir, fos1, keepDir);
+		}
+	}
+
 	public static long toZip(List<File> srcFiles, OutputStream out) throws Exception {
-		long start = System.currentTimeMillis();
+		long start = now();
 		try (ZipOutputStream zos = new ZipOutputStream(out);) {
 			for (File srcFile : srcFiles) {
 				byte[] buf = new byte[BUFFER_SIZE];
@@ -143,10 +150,16 @@ public class EOZip extends EOURL {
 				zos.closeEntry();
 				in.close();
 			}
-			long end = System.currentTimeMillis();
+			long end = now();
 			return (end - start);
 		} catch (Exception e) {
 			throw new RuntimeException("zip error from ZipUtils", e);
+		}
+	}
+
+	public static long toZip(List<File> srcFiles, String fpOut) throws Exception {
+		try (FileOutputStream fos1 = new FileOutputStream(fpOut);) {
+			return toZip(srcFiles, fos1);
 		}
 	}
 }

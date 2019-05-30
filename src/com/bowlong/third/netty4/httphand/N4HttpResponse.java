@@ -169,8 +169,8 @@ public class N4HttpResponse extends N4HttpOrg {
 		sendByChunked(chn, buf);
 	}
 
-	static final public void sendFile(Channel chn, File file) throws Exception {
-		final String fname = file.getName();
+	static final public void sendFile(Channel chn, final File file, final boolean isDelFile) throws Exception {
+		String fname = file.getName();
 		final RandomAccessFile raf = FileRw.openRAFile(file, "r");
 		byte[] buff = FileRw.readFully(raf);
 		long fileLength = raf.length();
@@ -188,6 +188,9 @@ public class N4HttpResponse extends N4HttpOrg {
 			@Override
 			public void operationComplete(ChannelProgressiveFuture future) throws Exception {
 				raf.close();
+				if (isDelFile) {
+					file.deleteOnExit();
+				}
 			}
 
 			@Override
@@ -195,5 +198,9 @@ public class N4HttpResponse extends N4HttpOrg {
 			}
 		});
 		f = chn.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
+	}
+
+	static final public void sendFile(Channel chn, File file) throws Exception {
+		sendFile(chn, file, false);
 	}
 }

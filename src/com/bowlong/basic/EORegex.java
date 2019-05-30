@@ -109,7 +109,18 @@ public class EORegex extends EOJson {
 		return isMatch(GID, "^\\w+$");
 	}
 
+	static final public boolean isContains(String src, String contains, boolean isBeg, boolean isEnd) {
+		String mid = String.format("(%s)+", contains);
+		String str2 = "(.)+"; // 必须有
+		String str3 = "(.*)?"; // 可有可无
+		return isMatch(src, (isBeg ? str2 : str3) + mid + (isEnd ? str2 : str3));
+	}
+
 	static final public boolean isContains(String src, String contains) {
-		return isMatch(src, "(.*)?(" + contains + ")+(.*)?");
+		return isContains(src, contains, false, false);
+	}
+
+	static final public boolean isContains(String src, String contains, boolean isEnd) {
+		return isContains(src, contains, false, isEnd);
 	}
 }
