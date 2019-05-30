@@ -189,7 +189,10 @@ public class N4HttpResponse extends N4HttpOrg {
 			public void operationComplete(ChannelProgressiveFuture future) throws Exception {
 				raf.close();
 				if (isDelFile) {
-					file.deleteOnExit();
+					try {
+						file.delete();
+					} catch (Exception e) {
+					}
 				}
 			}
 
