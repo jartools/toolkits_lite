@@ -24,19 +24,16 @@ public class N4BootstrapSocketClient extends N4Socket {
 	static Log log = LogFactory.getLog(N4BootstrapSocketClient.class);
 
 	/** 异步的netty */
-	static public Map start(String host, int port, boolean nodelay, boolean alive,
-			ChannelInitializer<SocketChannel> handler) {
+	static public Map start(String host, int port, boolean nodelay, boolean alive, ChannelInitializer<SocketChannel> handler) {
 		return begin(host, port, nodelay, alive, handler, false);
 	}
 
 	/** 同步的netty */
-	static public Map startSync(String host, int port, boolean nodelay, boolean alive,
-			ChannelInitializer<SocketChannel> handler) {
+	static public Map startSync(String host, int port, boolean nodelay, boolean alive, ChannelInitializer<SocketChannel> handler) {
 		return begin(host, port, nodelay, alive, handler, true);
 	}
 
-	static private Map begin(String host, int port, boolean nodelay, boolean alive,
-			ChannelInitializer<SocketChannel> handler, boolean isSync) {
+	static private Map begin(String host, int port, boolean nodelay, boolean alive, ChannelInitializer<SocketChannel> handler, boolean isSync) {
 		EventLoopGroup group = new NioEventLoopGroup();// 用于接收发来的连接请求
 		Bootstrap bstrap = initServer(group, handler, nodelay, alive);
 		Map map = new HashMap();
@@ -49,8 +46,7 @@ public class N4BootstrapSocketClient extends N4Socket {
 		return map;
 	}
 
-	private static Bootstrap initServer(EventLoopGroup group, ChannelInitializer<SocketChannel> handler,
-			boolean nodelay, boolean alive) {
+	private static Bootstrap initServer(EventLoopGroup group, ChannelInitializer<SocketChannel> handler, boolean nodelay, boolean alive) {
 		Bootstrap bstrap = new Bootstrap();
 
 		bstrap.group(group);
@@ -77,13 +73,15 @@ public class N4BootstrapSocketClient extends N4Socket {
 			try {
 				chnFu = clientConnect(host, port, bstrap);
 				if (isSync) {
-					chnFu.sync();
+					ChannelFuture f = chnFu.sync();
+					f.channel().closeFuture().sync();
 				}
 			} catch (Exception e) {
 				log.error(ExToolkit.e2s(e));
-			}
-			if (chnFu != null) {
-				map.put("chnFuture", chnFu);
+			} finally {
+				if (chnFu != null) {
+					map.put("chnFuture", chnFu);
+				}
 			}
 		}
 		return map;

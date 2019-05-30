@@ -1,5 +1,11 @@
 package com.bowlong.third.netty4.socket;
 
+import java.nio.charset.Charset;
+
+import com.bowlong.text.Encoding;
+import com.bowlong.third.netty4.codec.LengthByteArrayDecoder;
+import com.bowlong.third.netty4.codec.LengthByteArrayEncoder;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
@@ -13,15 +19,10 @@ import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
-
-import java.nio.charset.Charset;
-
-import com.bowlong.text.Encoding;
-import com.bowlong.third.netty4.codec.LengthByteArrayDecoder;
-import com.bowlong.third.netty4.codec.LengthByteArrayEncoder;
 
 /** 数据处理 */
 public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
@@ -67,6 +68,9 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 			break;
 		case 4:
 			initType_4http(chn);
+			break;
+		case 5:
+			initType_5http(chn);
 			break;
 		default:
 			initType_1(chn);
@@ -119,13 +123,24 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 		p.addLast("deflater", new HttpContentCompressor());
 
 		// HttpObjectAggregator会把多个消息转换为一个单一的FullHttpRequest或是FullHttpResponse。
-		int maxContentLength = 1024 * 1024 * 10;
-		p.addLast("aggregator", new HttpObjectAggregator(maxContentLength));
+		p.addLast("aggregator", new HttpObjectAggregator(65536));
 		
 		//为了处理大文件传输的情形
 		p.addLast("http-chunked", new ChunkedWriteHandler());
 		
 		// hander接受到的是:HttpRequest
 		p.addLast("handler", this.hander);
+	}
+	
+	void initType_5http(SocketChannel chn) throws Exception {
+		ChannelPipeline p = chn.pipeline();
+		// 解码 和 编码
+		p.addLast(new HttpServerCodec()); // HttpServerCodec 继承 <HttpRequestDecoder,HttpResponseEncoder>
+		p.addLast(new HttpObjectAggregator(65536));
+		//为了处理大文件传输的情形
+		p.addLast(new ChunkedWriteHandler());
+		
+		// hander接受到的是:HttpRequest
+		p.addLast(this.hander);
 	}
 }
