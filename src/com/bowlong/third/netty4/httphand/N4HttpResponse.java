@@ -14,14 +14,17 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelProgressiveFuture;
 import io.netty.channel.ChannelProgressiveFutureListener;
-import io.netty.channel.DefaultFileRegion;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpChunkedInput;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
+import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
+import io.netty.handler.stream.ChunkedFile;
 
 /***
  * N4(netty 4)请求相应类 其父N4HttpResp类处理其他过来的请求， 该类进行响应(返回对应的数据)
@@ -172,18 +175,14 @@ public class N4HttpResponse extends N4HttpOrg {
 	static final public void sendFile(Channel chn, final File file, final boolean isDelFile) throws Exception {
 		String fname = file.getName();
 		final RandomAccessFile raf = FileRw.openRAFile(file, "r");
-		byte[] buff = FileRw.readFully(raf);
 		long fileLength = raf.length();
-		ByteBuf buf = N4B2ByteBuf.buffer(buff);
-		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
-		response.headers().set(HttpHeaderNames.TRANSFER_ENCODING, HttpHeaderValues.CHUNKED);
+		final HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
 		response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
 		response.headers().set(HttpHeaderNames.CONTENT_LENGTH, fileLength);
 		response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/octet-stream");
 		response.headers().add(HttpHeaderNames.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", fname));
-		chn.write(response);
-
-		ChannelFuture f = chn.write(new DefaultFileRegion(raf.getChannel(), 0, fileLength), chn.newProgressivePromise());
+		ChannelFuture f = chn.writeAndFlush(response);
+		f = chn.writeAndFlush(new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, 8192)), chn.newProgressivePromise());
 		f.addListener(new ChannelProgressiveFutureListener() {
 			@Override
 			public void operationComplete(ChannelProgressiveFuture future) throws Exception {
