@@ -177,6 +177,20 @@ public class N4HttpResponse extends N4HttpOrg {
 		sendByChunked(chn, buf);
 	}
 
+	static final int _chunkSize(long fsize) {
+		int chunkSize = 5120;
+		if (fsize >= 51200) {
+			chunkSize = 51200;
+		} else if (fsize >= 30720) {
+			chunkSize = 30720;
+		} else if (fsize >= 15360) {
+			chunkSize = 15360;
+		} else if (fsize >= 8192) {
+			chunkSize = 8192;
+		}
+		return chunkSize;
+	}
+
 	static final public void sendFile(Channel chn, File file, boolean isDelFile) throws Exception {
 		String fname = file.getName();
 		RandomAccessFile raf = FileRw.openRAFile(file, "r");
@@ -187,7 +201,7 @@ public class N4HttpResponse extends N4HttpOrg {
 		response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/octet-stream");
 		response.headers().add(HttpHeaderNames.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", fname));
 		ChannelFuture f = chn.writeAndFlush(response);
-		f = chn.writeAndFlush(new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, 8192)), chn.newProgressivePromise());
+		f = chn.writeAndFlush(new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, _chunkSize(fileLength))), chn.newProgressivePromise());
 		ChannelProgressiveFutureListener fListener = new FilePrgListener(file, raf, isDelFile);
 		f.addListener(fListener);
 		f = chn.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
@@ -207,7 +221,7 @@ public class N4HttpResponse extends N4HttpOrg {
 		ctx.write(response);
 		// f = ctx.write(new DefaultFileRegion(raf.getChannel(), 0, fileLength),
 		// ctx.newProgressivePromise());
-		ChannelFuture fSend = ctx.writeAndFlush(new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, 8192)), ctx.newProgressivePromise());
+		ChannelFuture fSend = ctx.writeAndFlush(new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, _chunkSize(fileLength))), ctx.newProgressivePromise());
 		ChannelProgressiveFutureListener fLister = new FilePrgListener(file, raf, isDelFile);
 		fSend.addListener(fLister);
 
