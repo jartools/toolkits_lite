@@ -7,12 +7,14 @@ import java.util.Map;
 import com.bowlong.bio2.B2Helper;
 import com.bowlong.io.FileRw;
 import com.bowlong.lang.StrEx;
+import com.bowlong.third.netty4.future.EndListener;
+import com.bowlong.third.netty4.future.FilePrgListener;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelProgressiveFuture;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelProgressiveFutureListener;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpResponse;
@@ -20,8 +22,10 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpChunkedInput;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
+import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.stream.ChunkedFile;
@@ -55,6 +59,7 @@ public class N4HttpResponse extends N4HttpOrg {
 		response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
 		response.headers().set(HttpHeaderNames.CONTENT_LENGTH, size);
 		ChannelFuture f = chn.writeAndFlush(response);
+		f.addListener(new EndListener());
 		f = chn.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 		f.addListener(ChannelFutureListener.CLOSE);
 		// buf.release(); // 添加buff释放？ 测试了会报错
@@ -172,37 +177,42 @@ public class N4HttpResponse extends N4HttpOrg {
 		sendByChunked(chn, buf);
 	}
 
-	static final public void sendFile(Channel chn, final File file, final boolean isDelFile) throws Exception {
+	static final public void sendFile(Channel chn, File file, boolean isDelFile) throws Exception {
 		String fname = file.getName();
-		final RandomAccessFile raf = FileRw.openRAFile(file, "r");
+		RandomAccessFile raf = FileRw.openRAFile(file, "r");
 		long fileLength = raf.length();
-		final HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+		HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
 		response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
 		response.headers().set(HttpHeaderNames.CONTENT_LENGTH, fileLength);
 		response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/octet-stream");
 		response.headers().add(HttpHeaderNames.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", fname));
 		ChannelFuture f = chn.writeAndFlush(response);
 		f = chn.writeAndFlush(new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, 8192)), chn.newProgressivePromise());
-		f.addListener(new ChannelProgressiveFutureListener() {
-			@Override
-			public void operationComplete(ChannelProgressiveFuture future) throws Exception {
-				raf.close();
-				if (isDelFile) {
-					try {
-						file.delete();
-					} catch (Exception e) {
-					}
-				}
-			}
-
-			@Override
-			public void operationProgressed(ChannelProgressiveFuture future, long progress, long total) throws Exception {
-			}
-		});
+		ChannelProgressiveFutureListener fListener = new FilePrgListener(file, raf, isDelFile);
+		f.addListener(fListener);
 		f = chn.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 	}
 
-	static final public void sendFile(Channel chn, File file) throws Exception {
-		sendFile(chn, file, false);
+	static final public void sendFile(ChannelHandlerContext ctx, HttpRequest request, File file, boolean isDelFile) throws Exception {
+		boolean isKeep = HttpUtil.isKeepAlive(request);
+		String fname = file.getName();
+		RandomAccessFile raf = FileRw.openRAFile(file, "r");
+		long fileLength = raf.length();
+		HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+		if (isKeep)
+			response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
+		response.headers().set(HttpHeaderNames.CONTENT_LENGTH, fileLength);
+		response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/octet-stream");
+		response.headers().add(HttpHeaderNames.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", fname));
+		ctx.write(response);
+		// f = ctx.write(new DefaultFileRegion(raf.getChannel(), 0, fileLength),
+		// ctx.newProgressivePromise());
+		ChannelFuture fSend = ctx.writeAndFlush(new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, 8192)), ctx.newProgressivePromise());
+		ChannelProgressiveFutureListener fLister = new FilePrgListener(file, raf, isDelFile);
+		fSend.addListener(fLister);
+
+		ChannelFuture fLast = ctx.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
+		if (!isKeep)
+			fLast.addListener(ChannelFutureListener.CLOSE);
 	}
 }
