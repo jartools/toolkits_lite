@@ -15,7 +15,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelProgressiveFutureListener;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -179,6 +178,7 @@ public class N4HttpResponse extends N4HttpOrg {
 
 	static final int _chunkSize(long fsize) {
 		int chunkSize = 5120;
+		fsize = fsize / 1024;
 		if (fsize >= 51200) {
 			chunkSize = 51200;
 		} else if (fsize >= 30720) {
@@ -201,9 +201,9 @@ public class N4HttpResponse extends N4HttpOrg {
 		response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/octet-stream");
 		response.headers().add(HttpHeaderNames.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", fname));
 		ChannelFuture f = chn.writeAndFlush(response);
-		f = chn.writeAndFlush(new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, _chunkSize(fileLength))), chn.newProgressivePromise());
-		ChannelProgressiveFutureListener fListener = new FilePrgListener(file, raf, isDelFile);
-		f.addListener(fListener);
+		HttpChunkedInput hci = new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, _chunkSize(fileLength))); 
+		f = chn.writeAndFlush(hci, chn.newProgressivePromise());
+		f.addListener(new FilePrgListener(file, raf, isDelFile));
 		f = chn.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 	}
 
@@ -221,9 +221,9 @@ public class N4HttpResponse extends N4HttpOrg {
 		ctx.write(response);
 		// f = ctx.write(new DefaultFileRegion(raf.getChannel(), 0, fileLength),
 		// ctx.newProgressivePromise());
-		ChannelFuture fSend = ctx.writeAndFlush(new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, _chunkSize(fileLength))), ctx.newProgressivePromise());
-		ChannelProgressiveFutureListener fLister = new FilePrgListener(file, raf, isDelFile);
-		fSend.addListener(fLister);
+		HttpChunkedInput hci = new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, _chunkSize(fileLength)));
+		ChannelFuture fSend = ctx.writeAndFlush(hci, ctx.newProgressivePromise());
+		fSend.addListener(new FilePrgListener(file, raf, isDelFile));
 
 		ChannelFuture fLast = ctx.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 		if (!isKeep)
