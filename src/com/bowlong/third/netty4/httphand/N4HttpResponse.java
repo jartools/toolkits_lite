@@ -201,7 +201,7 @@ public class N4HttpResponse extends N4HttpOrg {
 		response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/octet-stream");
 		response.headers().add(HttpHeaderNames.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", fname));
 		ChannelFuture f = chn.writeAndFlush(response);
-		HttpChunkedInput hci = new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, _chunkSize(fileLength))); 
+		HttpChunkedInput hci = new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, _chunkSize(fileLength)));
 		f = chn.writeAndFlush(hci, chn.newProgressivePromise());
 		f.addListener(new FilePrgListener(file, raf, isDelFile));
 		f = chn.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
@@ -228,5 +228,18 @@ public class N4HttpResponse extends N4HttpOrg {
 		ChannelFuture fLast = ctx.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 		if (!isKeep)
 			fLast.addListener(ChannelFutureListener.CLOSE);
+	}
+
+	// 重定向
+	static final public void sendRedirect(ChannelHandlerContext ctx, String newUrl) {
+		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.FOUND);
+		response.headers().set(HttpHeaderNames.LOCATION, newUrl);
+		ctx.writeAndFlush(response).addListener(new EndListener()).addListener(ChannelFutureListener.CLOSE);
+	}
+
+	static final public void sendRedirect(Channel chn, String newUrl) {
+		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.FOUND);
+		response.headers().set(HttpHeaderNames.LOCATION, newUrl);
+		chn.writeAndFlush(response).addListener(new EndListener()).addListener(ChannelFutureListener.CLOSE);
 	}
 }
