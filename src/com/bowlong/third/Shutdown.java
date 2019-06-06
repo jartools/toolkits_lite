@@ -41,16 +41,20 @@ public class Shutdown extends Thread {
 	protected void beforeShutDown() throws Exception {
 	}
 
-	static final public Socket soMsg(String host, int port, String msg) throws Exception {
-		Socket sss = new Socket(host, port);
-		OutputStream out = sss.getOutputStream();
-		out.write(msg.getBytes("UTF-8"));
-		out.flush();
-		out.close();
+	static final public Socket soMsg(String host, int port, String msg) {
+		Socket sss = null;
+		try {
+			sss = new Socket(host, port);
+			OutputStream out = sss.getOutputStream();
+			out.write(msg.getBytes("UTF-8"));
+			out.flush();
+			out.close();
+		} catch (Exception e) {
+		}
 		return sss;
 	}
 
-	static final public Socket soMsg(int port, String msg) throws Exception {
+	static final public Socket soMsg(int port, String msg) {
 		return soMsg("127.0.0.1", port, msg);
 	}
 }

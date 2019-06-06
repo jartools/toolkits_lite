@@ -416,18 +416,11 @@ public class EOStrNum extends EOBasic {
 	}
 
 	static final public int limitMinMax(int v, int min, int max) {
-		v = limitMin(v, min);
-		return limitMax(v, max);
+		v = max(v, min);
+		return min(v, max);
 	}
 
-	static final public int limitMin(int v, int min) {
-		return v < min ? min : v;
-	}
-
-	static final public int limitMax(int v, int max) {
-		return v > max ? max : v;
-	}
-
+	// limitMin 限定最小值 = max
 	static final public int max(int v1, int v2) {
 		return v1 < v2 ? v2 : v1;
 	}
@@ -449,6 +442,7 @@ public class EOStrNum extends EOBasic {
 		return v;
 	}
 
+	// limitMax 限定最大值 = min
 	static final public int min(int v1, int v2) {
 		return v1 < v2 ? v1 : v2;
 	}
