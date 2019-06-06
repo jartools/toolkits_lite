@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.bowlong.tool.TkitJsp;
 import com.bowlong.util.CalendarEx;
-import com.bowlong.util.ExceptionEx;
 
 /***
  * jsp servlet基础 类 <br/>
@@ -20,8 +19,8 @@ import com.bowlong.util.ExceptionEx;
 public abstract class AbsDispatcherServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-
 	static public boolean isLogOut = false;
+	static final public String NoWrite = "noWrite";
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,13 +38,14 @@ public abstract class AbsDispatcherServlet extends HttpServlet {
 		try {
 			outVal = dispatcher(req, resp);
 		} catch (Exception e) {
-			outVal = ExceptionEx.e2s(e);
+			outVal = TkitJsp.e2s(e);
 			isError = true;
 		}
 		if (isLogOut || isError) {
 			System.out.println(String.format("%s == outVal = [%s]", CalendarEx.nowStr_YMDHms(), outVal));
 		}
-		TkitJsp.writeAndClose(resp, outVal, BasicFilter.strEncoding);
+		if (!outVal.equals(NoWrite))
+			TkitJsp.writeAndClose(resp, outVal, BasicFilter.strEncoding);
 	}
 
 	// Handler 处理

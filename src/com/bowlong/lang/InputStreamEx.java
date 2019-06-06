@@ -15,7 +15,6 @@ import com.bowlong.io.ByteInStream;
 import com.bowlong.io.ByteOutStream;
 import com.bowlong.objpool.ByteOutPool;
 import com.bowlong.text.EncodingEx;
-import com.bowlong.util.ExceptionEx;
 
 /**
  * 
@@ -138,7 +137,7 @@ public class InputStreamEx extends ExOrigin {
 				return new String(bts);
 			}
 		} catch (Exception e) {
-			return ExceptionEx.e2s(e);
+			return e2s(e);
 		}
 	}
 

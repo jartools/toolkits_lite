@@ -33,7 +33,7 @@ import com.bowlong.util.ListEx;
 import com.bowlong.util.MapEx;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class TkitJsp extends TkitBase {
+public class TkitJsp extends TkitOrigin {
 
 	/*** 转换时间为字符串 **/
 	static final public Map toBasicMap(Map orign) {

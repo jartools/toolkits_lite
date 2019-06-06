@@ -15,6 +15,11 @@ import com.bowlong.util.ListEx;
 import com.bowlong.util.MapEx;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
+/**
+ * Origin -> Base(Basic) - > Toolkit(Helper)
+ * @author Canyon
+ *
+ */
 public class TkitOrigin extends ExToolkit {
 	static final Map<String, Object> allParams(Map<String, Object> map, StringBuffer buff, String key, String[] vals,
 			boolean isNoFitlerEmpty) {

@@ -22,7 +22,6 @@ import org.apache.http.params.HttpParams;
 
 import com.bowlong.bio2.B2InputStream;
 import com.bowlong.net.http.HttpBaseEx;
-import com.bowlong.util.ExceptionEx;
 
 /**
  * web Http 请求
@@ -127,7 +126,7 @@ public class HttpUriEx extends HttpBaseEx {
 					return new String(bts);
 				}
 			} catch (Exception e) {
-				return ExceptionEx.e2s(e);
+				return e2s(e);
 			}
 		}
 
@@ -160,7 +159,7 @@ public class HttpUriEx extends HttpBaseEx {
 				br.close();
 				return buff.toString();
 			} catch (Exception e) {
-				return ExceptionEx.e2s(e);
+				return e2s(e);
 			}
 		}
 

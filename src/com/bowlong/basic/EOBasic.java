@@ -20,8 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Ex扩展类的起源<br/>
- * basic,origin<br/>
- * 
+ * Origin -> Base(Basic) -> Toolkit(Tools,Helper) -> Manager(Ex)
  * @author Canyon
  * @time 2019-02-14 19:32
  */

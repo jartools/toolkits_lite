@@ -14,7 +14,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.bowlong.lang.InputStreamEx;
 import com.bowlong.lang.NumFmtEx;
 import com.bowlong.util.DateEx;
-import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.MapEx;
 
 /**
@@ -36,7 +35,7 @@ public class HttpBaseEx extends InputStreamEx {
 	}
 
 	static final protected void logError(Exception ex, Log objLog) {
-		objLog.error(ExceptionEx.e2s(ex));
+		objLog.error(e2s(ex));
 	}
 
 	static final public String buildStrByJSON4Obj(Object data) {

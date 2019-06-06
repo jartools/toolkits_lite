@@ -3,14 +3,14 @@ package com.bowlong.third.netty4.socket;
 import java.net.InetSocketAddress;
 import java.util.Map;
 
-import com.bowlong.lang.StrEx;
+import com.bowlong.basic.ExToolkit;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 
-public class N4Socket {
+public class N4Socket extends ExToolkit {
 	static final public ChannelFuture serverBind(String host, int port, ServerBootstrap bstrap) throws Exception {
 		InetSocketAddress address = getAddress(host, port);
 		ChannelFuture chn = bstrap.bind(address);
@@ -27,7 +27,7 @@ public class N4Socket {
 
 	static final public InetSocketAddress getAddress(final String host, final int port) {
 		InetSocketAddress address = null;
-		if (StrEx.isEmpty(host)) {
+		if (isEmpty(host)) {
 			address = new InetSocketAddress(port);
 		} else {
 			address = new InetSocketAddress(host, port);
@@ -43,7 +43,6 @@ public class N4Socket {
 		ChannelFuture chnFu = (ChannelFuture) map.get("chnFuture");
 		if(chnFu != null){
 			chnFu.channel().close();
-			chnFu.channel().closeFuture();
 			chnFu.cancel(true);
 		}
 		EventLoopGroup group = null;

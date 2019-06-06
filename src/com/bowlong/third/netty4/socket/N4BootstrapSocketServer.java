@@ -6,8 +6,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.bowlong.util.ExceptionEx;
-
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -50,7 +48,7 @@ public class N4BootstrapSocketServer extends N4Socket {
 				f.channel().closeFuture().sync();
 			}
 		} catch (Exception e) {
-			log.error(ExceptionEx.e2s(e));
+			log.error(e2s(e));
 		} finally {
 			if (isSync) {
 				parentGroup.shutdownGracefully();

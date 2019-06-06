@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import com.bowlong.lang.StrEx;
 import com.bowlong.net.http.HttpBaseEx;
 import com.bowlong.text.Encoding;
-import com.bowlong.util.ExceptionEx;
 import com.bowlong.util.MapEx;
 
 import io.netty.buffer.ByteBuf;
@@ -81,7 +80,7 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 			}
 		} catch (Exception e) {
 			if (isLog)
-				log.error(ExceptionEx.e2s(e));
+				log.error(e2s(e));
 		} finally {
 			msg.destroy();
 		}
@@ -97,7 +96,7 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 					post = getDecoderByPost(request);
 				} catch (Exception e) {
 					if (isLog)
-						log.error(ExceptionEx.e2s(e));
+						log.error(e2s(e));
 				}
 			}
 		}
@@ -163,7 +162,7 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 				result = new String(buff, charType);
 			} catch (UnsupportedEncodingException e) {
 				if (isLog)
-					log.error(ExceptionEx.e2s(e));
+					log.error(e2s(e));
 			}
 		}
 		return result;
@@ -209,7 +208,7 @@ public class N4HttpOrg extends HttpBaseEx implements Serializable {
 			return HttpBaseEx.buildQuery(dataMap, "");
 		} catch (Exception e) {
 			if (isLog)
-				log.error(ExceptionEx.e2s(e));
+				log.error(e2s(e));
 		}
 		return "";
 	}

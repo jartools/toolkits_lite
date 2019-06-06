@@ -6,9 +6,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.bowlong.basic.ExToolkit;
-import com.bowlong.util.MapEx;
-
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -66,21 +63,24 @@ public class N4BootstrapSocketClient extends N4Socket {
 			isCanCon = (chn == null) || !chn.isOpen();
 		}
 		if (isCanCon) {
-			String host = MapEx.getString(map, "host");
-			int port = MapEx.getInt(map, "port");
-			boolean isSync = MapEx.getBoolean(map, "isSync");
+			String host = getString(map, "host");
+			int port = getInt(map, "port");
+			boolean isSync = getBool(map, "isSync");
 			Bootstrap bstrap = (Bootstrap) map.get("bstrap");
 			try {
 				chnFu = clientConnect(host, port, bstrap);
 				if (isSync) {
 					ChannelFuture f = chnFu.sync();
 					f.channel().closeFuture().sync();
+				}else {
+					map.put("chnFuture", chnFu);
 				}
 			} catch (Exception e) {
-				log.error(ExToolkit.e2s(e));
-			} finally {
-				if (chnFu != null) {
-					map.put("chnFuture", chnFu);
+				log.error(e2s(e));
+			}finally {
+				if (isSync) {
+					EventLoopGroup group = (EventLoopGroup) map.remove("group");
+					group.shutdownGracefully();
 				}
 			}
 		}

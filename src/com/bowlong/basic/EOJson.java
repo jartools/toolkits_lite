@@ -20,7 +20,7 @@ import org.json.JSONObject;
  * @author Canyon
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class EOJson extends EODateFmt {
+public class EOJson extends EOException {
 
 	/**
 	 * 将Javabean转换为Map

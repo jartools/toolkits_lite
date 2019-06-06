@@ -60,6 +60,12 @@ public final class StrEx extends ExOrigin {
 		return fmt(fmt, args) + "\r\n";
 	}
 
+	/**
+	 * 
+	 * @param fmt a_${1}$[1]_${2}
+	 * @param args v1,v2
+	 * @return a_v1v1_v2
+	 */
 	public static final String fmt(final String fmt, final Object... args) {
 		try {
 			Map<String, String> params = new HashMap<String, String>();

@@ -49,4 +49,8 @@ public class Shutdown extends Thread {
 		out.close();
 		return sss;
 	}
+
+	static final public Socket soMsg(int port, String msg) throws Exception {
+		return soMsg("127.0.0.1", port, msg);
+	}
 }
