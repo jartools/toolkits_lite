@@ -1,5 +1,8 @@
 package com.bowlong.basic;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Runtime 封装，执行shell<br/>
  * 
@@ -8,8 +11,8 @@ package com.bowlong.basic;
  */
 public class EORuntime extends EORegex {
 
-	static final private String fmtSh0 = "sh %s%s";
-	static final private String fmtSh1 = "sh %s%s %s";
+	static final private String fmtSh0 = "sh %s";
+	static final private String fmtSh1 = "sh %s %s";
 
 	static final public Runtime currRt() {
 		return Runtime.getRuntime();
@@ -23,33 +26,54 @@ public class EORuntime extends EORegex {
 		}
 		return null;
 	}
-	
-	static final public Process call(String shell) {
-		return exec(shell); 
+
+	// cmd = "tar -cf" + tarName + " " + fileName;
+	// envp = 设置全局环境变量，其格式为name=value;envp={"val=2", "call=Bash Shell"} 等价于 export val=2
+	static final public Process exec(String cmd, String[] envp, File dir) {
+		try {
+			return currRt().exec(cmd, envp, dir);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	// cmd = {"tar","-cf",tarName,fileName};
+	static final public Process exec(String[] cmd, String[] envp, File dir) {
+		try {
+			return currRt().exec(cmd, envp, dir);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**
 	 * 执行shell
-	 * @param script 脚本名
-	 * @param args 参数
-	 * @param workspace 脚本所在的目录
+	 * 
+	 * @param script
+	 *            脚本名
+	 * @param args
+	 *            参数
+	 * @param workspace
+	 *            脚本所在的目录
 	 */
 	static final public Process callShell(String script, String args, String workspace) {
-		if (isEmpty(workspace)) {
-			workspace = "";
-		} else {
-			workspace = toDir(workspace);
+		File dir = null;
+		workspace = toDir(workspace);
+		if (!isEmpty(workspace)) {
+			dir = new File(workspace);
 		}
 		String cmd = "";
 		// cmd = "sh " + script + " " + args;
 		if (isEmpty(args)) {
-			cmd = String.format(fmtSh0, workspace, script);
+			cmd = String.format(fmtSh0, script);
 		} else {
-			cmd = String.format(fmtSh1, workspace, script, args);
+			cmd = String.format(fmtSh1, script, args);
 		}
-		return exec(cmd);
+		return exec(cmd, null, dir);
 	}
-	
+
 	// 获取当前 APP 内存分配
 	static final public String appMemory(int ntype) {
 		Runtime rt = currRt();
@@ -59,15 +83,15 @@ public class EORuntime extends EORegex {
 		long max = rt.maxMemory(); // 最大能够申请的内存，在 Java Heap 部分
 		switch (ntype) {
 		case kb_et:
-			return String.format(am_kb, (free / KB),(total / KB),(used / KB),(max / KB));
+			return String.format(am_kb, (free / KB), (total / KB), (used / KB), (max / KB));
 		case mb_et:
-			return String.format(am_mb, (free / MB),(total / MB),(used / MB),(max / MB));
+			return String.format(am_mb, (free / MB), (total / MB), (used / MB), (max / MB));
 		case gb_et:
-			return String.format(am_gb, (free / GB),(total / GB),(used / GB),(max / GB));
+			return String.format(am_gb, (free / GB), (total / GB), (used / GB), (max / GB));
 		case tb_et:
-			return String.format(am_tb, (free / TB),(total / TB),(used / TB),(max / TB));
+			return String.format(am_tb, (free / TB), (total / TB), (used / TB), (max / TB));
 		default:
-			return String.format(am, free,total,used,max);
+			return String.format(am, free, total, used, max);
 		}
 	}
 }
