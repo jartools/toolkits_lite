@@ -387,8 +387,8 @@ public class EOStrNum extends EOBasic {
 		if (index == 0) {
 			fp = fp.substring(lens);
 		} else if (index > 0) {
-			String _b = left(fp.substring(0, index), "/",true);
-			_b = left(_b, "/",true);
+			String _b = left(fp.substring(0, index), "/", true);
+			_b = left(_b, "/", true);
 			String _e = fp.substring(index + lens);
 			fp = _b + "/" + _e;
 		}
@@ -409,5 +409,64 @@ public class EOStrNum extends EOBasic {
 			fp = reFilePath(fp, exclude);
 		}
 		return fp;
+	}
+
+	static final public boolean isInMinMax(double v, double min, double max) {
+		return v >= min && v <= max;
+	}
+
+	static final public int limitMinMax(int v, int min, int max) {
+		v = limitMin(v, min);
+		return limitMax(v, max);
+	}
+
+	static final public int limitMin(int v, int min) {
+		return v < min ? min : v;
+	}
+
+	static final public int limitMax(int v, int max) {
+		return v > max ? max : v;
+	}
+
+	static final public int max(int v1, int v2) {
+		return v1 < v2 ? v2 : v1;
+	}
+
+	static final public int max(int[] arrs) {
+		int result = arrs[0];
+		int size = arrs.length;
+		for (int i = 1; i < size; i++) {
+			result = max(arrs[i], result);
+		}
+		return result;
+	}
+
+	static final public int max(int v, int... arrs) {
+		int size = arrs.length;
+		for (int i = 1; i < size; i++) {
+			v = max(arrs[i], v);
+		}
+		return v;
+	}
+
+	static final public int min(int v1, int v2) {
+		return v1 < v2 ? v1 : v2;
+	}
+
+	static final public int min(int[] arrs) {
+		int result = arrs[0];
+		int size = arrs.length;
+		for (int i = 1; i < size; i++) {
+			result = min(arrs[i], result);
+		}
+		return result;
+	}
+
+	static final public int min(int v, int... arrs) {
+		int size = arrs.length;
+		for (int i = 1; i < size; i++) {
+			v = min(arrs[i], v);
+		}
+		return v;
 	}
 }

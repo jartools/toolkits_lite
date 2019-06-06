@@ -35,8 +35,9 @@ public class EOConfig {
 	static final public String am_mb = "f:%smb t:%smb u:%smb m:%smb";
 	static final public String am_gb = "f:%sgb t:%sgb u:%sgb m:%sgb";
 	static final public String am_tb = "f:%stb t:%stb u:%stb m:%stb";
-	static final public int kb = 1024; // 存储单位-值
-	static final public int mb = kb * kb;
-	static final public long gb = mb * kb;
-	static final public long tb = gb * kb;
+	static final public int KB = 1024; // 存储单位-值
+	static final public int MB = KB * KB;
+	static final public long GB = MB * KB;
+	static final public long TB = GB * KB;
+	static final public long PB = TB * KB;
 }

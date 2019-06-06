@@ -59,13 +59,13 @@ public class EORuntime extends EORegex {
 		long max = rt.maxMemory(); // 最大能够申请的内存，在 Java Heap 部分
 		switch (ntype) {
 		case kb_et:
-			return String.format(am_kb, (free / kb),(total / kb),(used / kb),(max / kb));
+			return String.format(am_kb, (free / KB),(total / KB),(used / KB),(max / KB));
 		case mb_et:
-			return String.format(am_mb, (free / mb),(total / mb),(used / mb),(max / mb));
+			return String.format(am_mb, (free / MB),(total / MB),(used / MB),(max / MB));
 		case gb_et:
-			return String.format(am_gb, (free / gb),(total / gb),(used / gb),(max / gb));
+			return String.format(am_gb, (free / GB),(total / GB),(used / GB),(max / GB));
 		case tb_et:
-			return String.format(am_tb, (free / tb),(total / tb),(used / tb),(max / tb));
+			return String.format(am_tb, (free / TB),(total / TB),(used / TB),(max / TB));
 		default:
 			return String.format(am, free,total,used,max);
 		}

@@ -10,7 +10,6 @@ import java.util.List;
 import javax.xml.bind.DatatypeConverter;
 
 import com.bowlong.basic.ExOrigin;
-import com.bowlong.util.ListEx;
 
 public final class NumEx extends ExOrigin {
 	// byte
@@ -31,12 +30,6 @@ public final class NumEx extends ExOrigin {
 	// double
 	public static final double DOUBLE_MIN_VALUE = 0x0.0000000000001P-1022; // 4.9e-324
 	public static final double DOUBLE_MAX_VALUE = 0x1.fffffffffffffP+1023; // 1.7976931348623157e+308
-
-	public static final int KB = 1024;
-	public static final int MB = 1024 * KB;
-	public static final int GB = 1024 * MB;
-	public static final int TB = 1024 * GB;
-	public static final int PB = 1024 * TB;
 
 	private static final int read(final InputStream input) throws IOException {
 		int value = input.read();
@@ -281,8 +274,7 @@ public final class NumEx extends ExOrigin {
 	}
 
 	public static final int readInt(final byte[] data, final int offset) {
-		return (((data[offset + 0] & 0xff) << 24) + ((data[offset + 1] & 0xff) << 16) + ((data[offset + 2] & 0xff) << 8)
-				+ ((data[offset + 3] & 0xff) << 0));
+		return (((data[offset + 0] & 0xff) << 24) + ((data[offset + 1] & 0xff) << 16) + ((data[offset + 2] & 0xff) << 8) + ((data[offset + 3] & 0xff) << 0));
 	}
 
 	public static final int readInt(final byte[] data, final Offset offset) {
@@ -324,10 +316,8 @@ public final class NumEx extends ExOrigin {
 	}
 
 	public static final long readLong(final byte[] data, final int offset) {
-		long high = ((data[offset + 0] & 0xff) << 24) + ((data[offset + 1] & 0xff) << 16)
-				+ ((data[offset + 2] & 0xff) << 8) + ((data[offset + 3] & 0xff) << 0);
-		long low = ((data[offset + 4] & 0xff) << 24) + ((data[offset + 5] & 0xff) << 16)
-				+ ((data[offset + 6] & 0xff) << 8) + ((data[offset + 7] & 0xff) << 0);
+		long high = ((data[offset + 0] & 0xff) << 24) + ((data[offset + 1] & 0xff) << 16) + ((data[offset + 2] & 0xff) << 8) + ((data[offset + 3] & 0xff) << 0);
+		long low = ((data[offset + 4] & 0xff) << 24) + ((data[offset + 5] & 0xff) << 16) + ((data[offset + 6] & 0xff) << 8) + ((data[offset + 7] & 0xff) << 0);
 		return (high << 32) + (0xffffffffL & low);
 	}
 
@@ -445,8 +435,7 @@ public final class NumEx extends ExOrigin {
 		return result;
 	}
 
-	public static final byte[] readFully(final InputStream input, final byte result[], final int off, final int len)
-			throws IOException {
+	public static final byte[] readFully(final InputStream input, final byte result[], final int off, final int len) throws IOException {
 		if (len < 0)
 			throw new IndexOutOfBoundsException();
 		int n = 0;
@@ -614,14 +603,12 @@ public final class NumEx extends ExOrigin {
 	}
 
 	public static final int swapInteger(final int value) {
-		return (((value >> 0) & 0xff) << 24) + (((value >> 8) & 0xff) << 16) + (((value >> 16) & 0xff) << 8)
-				+ (((value >> 24) & 0xff) << 0);
+		return (((value >> 0) & 0xff) << 24) + (((value >> 8) & 0xff) << 16) + (((value >> 16) & 0xff) << 8) + (((value >> 24) & 0xff) << 0);
 	}
 
 	public static final long swapLong(final long value) {
-		return (((value >> 0) & 0xff) << 56) + (((value >> 8) & 0xff) << 48) + (((value >> 16) & 0xff) << 40)
-				+ (((value >> 24) & 0xff) << 32) + (((value >> 32) & 0xff) << 24) + (((value >> 40) & 0xff) << 16)
-				+ (((value >> 48) & 0xff) << 8) + (((value >> 56) & 0xff) << 0);
+		return (((value >> 0) & 0xff) << 56) + (((value >> 8) & 0xff) << 48) + (((value >> 16) & 0xff) << 40) + (((value >> 24) & 0xff) << 32) + (((value >> 32) & 0xff) << 24)
+				+ (((value >> 40) & 0xff) << 16) + (((value >> 48) & 0xff) << 8) + (((value >> 56) & 0xff) << 0);
 	}
 
 	public static final float swapFloat(final float value) {
@@ -707,8 +694,7 @@ public final class NumEx extends ExOrigin {
 	}
 
 	public static final int readSwappedInteger(final byte[] data, final int offset) {
-		return (((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8) + ((data[offset + 2] & 0xff) << 16)
-				+ ((data[offset + 3] & 0xff) << 24));
+		return (((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8) + ((data[offset + 2] & 0xff) << 16) + ((data[offset + 3] & 0xff) << 24));
 	}
 
 	public static final int readSwappedInteger(final byte[] data, final Offset offset) {
@@ -722,8 +708,7 @@ public final class NumEx extends ExOrigin {
 	}
 
 	public static final long readSwappedUnsignedInteger(final byte[] data, final int offset) {
-		long low = (((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8)
-				+ ((data[offset + 2] & 0xff) << 16));
+		long low = (((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8) + ((data[offset + 2] & 0xff) << 16));
 		long high = data[offset + 3] & 0xff;
 		return (high << 24) + (0xffffffffL & low);
 	}
@@ -767,10 +752,8 @@ public final class NumEx extends ExOrigin {
 	}
 
 	public static final long readSwappedLong(final byte[] data, final int offset) {
-		long low = ((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8)
-				+ ((data[offset + 2] & 0xff) << 16) + ((data[offset + 3] & 0xff) << 24);
-		long high = ((data[offset + 4] & 0xff) << 0) + ((data[offset + 5] & 0xff) << 8)
-				+ ((data[offset + 6] & 0xff) << 16) + ((data[offset + 7] & 0xff) << 24);
+		long low = ((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8) + ((data[offset + 2] & 0xff) << 16) + ((data[offset + 3] & 0xff) << 24);
+		long high = ((data[offset + 4] & 0xff) << 0) + ((data[offset + 5] & 0xff) << 8) + ((data[offset + 6] & 0xff) << 16) + ((data[offset + 7] & 0xff) << 24);
 		return (high << 32) + (0xffffffffL & low);
 	}
 
@@ -941,23 +924,6 @@ public final class NumEx extends ExOrigin {
 		return (int) v;
 	}
 
-	public static final boolean isInMinMax(final double v, final double min, final double max) {
-		return v >= min && v <= max;
-	}
-
-	public static final int limitMinMax(final int v, final int min, final int max) {
-		final int v2 = v < min ? min : v;
-		return v2 > max ? max : v2;
-	}
-
-	public static final int limitMax(final int v, final int max) {
-		return v > max ? max : v;
-	}
-
-	public static final int limitMin(final int v, final int min) {
-		return v < min ? min : v;
-	}
-
 	// 计算百分率
 	public static final int percent(final double v, final double max) {
 		if (v <= 0 || max <= 0)
@@ -966,41 +932,10 @@ public final class NumEx extends ExOrigin {
 		return r > 100 ? 100 : r;
 	}
 
-	public static final int max(final int[] list) {
-		int result = list[0];
-		int size = list.length;
-		for (int i = 1; i < size; i++) {
-			int v = list[i];
-			result = v > result ? v : result;
-		}
-		return result;
-	}
-
-	public static final int maxPars(int... arr) {
-		int[] v = ListEx.toArrs4Int(arr);
-		return max(v);
-	}
-
-	public static final int min(final int[] list) {
-		int result = list[0];
-		int size = list.length;
-		for (int i = 1; i < size; i++) {
-			int v = list[i];
-			result = v < result ? v : result;
-		}
-		return result;
-	}
-
-	public static final int minPars(int... arr) {
-		int[] v = ListEx.toArrs4Int(arr);
-		return min(v);
-	}
-
 	public static final double longBitsToDouble(final long bits) {
 		int sign = ((bits >> 63) == 0) ? 1 : -1;
 		int exponent = (int) ((bits >> 52) & 0x7ffL);
-		long mantissa = (exponent == 0) ? (bits & 0xfffffffffffffL) << 1
-				: (bits & 0xfffffffffffffL) | 0x10000000000000L;
+		long mantissa = (exponent == 0) ? (bits & 0xfffffffffffffL) << 1 : (bits & 0xfffffffffffffL) | 0x10000000000000L;
 		double result = sign * mantissa * Math.pow(2, exponent - 1075);
 		return result;
 	}
@@ -1134,40 +1069,18 @@ public final class NumEx extends ExOrigin {
 
 	static final public int toInt32(byte[] bytes, int index, boolean isHigh2Low) {
 		if (isHigh2Low) {
-			return (int) ((int) (0xff & bytes[index]) << 56 | (int) (0xff & bytes[index + 1]) << 48
-					| (int) (0xff & bytes[index + 2]) << 40 | (int) (0xff & bytes[index + 3]) << 32);
+			return (int) ((int) (0xff & bytes[index]) << 56 | (int) (0xff & bytes[index + 1]) << 48 | (int) (0xff & bytes[index + 2]) << 40 | (int) (0xff & bytes[index + 3]) << 32);
 		}
-		return (int) ((int) (0xff & bytes[index]) << 32 | (int) (0xff & bytes[index + 1]) << 40
-				| (int) (0xff & bytes[index + 2]) << 48 | (int) (0xff & bytes[index + 3]) << 56);
+		return (int) ((int) (0xff & bytes[index]) << 32 | (int) (0xff & bytes[index + 1]) << 40 | (int) (0xff & bytes[index + 2]) << 48 | (int) (0xff & bytes[index + 3]) << 56);
 	}
-	
-	static final public int toInt32CShapreBase64(String strCs64){
+
+	static final public int toInt32CShapreBase64(String strCs64) {
 		byte[] buf = DatatypeConverter.parseBase64Binary(strCs64);
 		return toInt32(buf, 0, false);
 	}
 
 	// //////////////////////
 	// 空间转换
-	public static final int KB(int nb) {
-		return nb / KB;
-	}
-
-	public static final int MB(int nb) {
-		return nb / MB;
-	}
-
-	public static final int GB(int nb) {
-		return nb / GB;
-	}
-
-	public static final int TB(int nb) {
-		return nb / TB;
-	}
-
-	public static final int PB(int nb) {
-		return nb / PB;
-	}
-
 	public static final int KB(long nb) {
 		return (int) (nb / KB);
 	}
@@ -1187,7 +1100,6 @@ public final class NumEx extends ExOrigin {
 	public static final int PB(long nb) {
 		return (int) (nb / PB);
 	}
-
 	// //////////////////////
 
 	public static void main(String[] args) {
