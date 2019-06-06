@@ -6,6 +6,7 @@ import java.io.IOException;
 /**
  * Runtime 封装，执行shell<br/>
  * sh -c 执行文本string中的命令
+ * 
  * @author Canyon
  * @version 2019-05-08 20:20
  */
@@ -49,28 +50,36 @@ public class EORuntime extends EORegex {
 	}
 
 	/**
-	 * 执行shell
+	 * 执行 command
 	 * 
-	 * @param script
-	 *            脚本名
-	 * @param args
-	 *            参数
-	 * @param workspace
-	 *            脚本所在的目录
+	 * @param cmd       sh x.sh 或者 cd 文件夹
+	 * @param args      参数
+	 * @param workspace 脚本所在的目录
+	 * @return
 	 */
-	static final public Process callShell(String script, String args, String workspace) {
+	static final public Process callCMD(String cmd, String args, String workspace) {
 		File dir = null;
 		workspace = toDir(workspace);
 		if (!isEmpty(workspace)) {
 			dir = new File(workspace);
 		}
-		String cmd = "";
-		// cmd = "sh " + script + " " + args;
-		cmd = String.format(fmtSh, script);
 		if (!isEmpty(args)) {
 			cmd = cmd.concat(" ").concat(args);
 		}
 		return exec(cmd, null, dir);
+	}
+
+	/**
+	 * 执行shell
+	 * 
+	 * @param script    脚本名
+	 * @param args      参数
+	 * @param workspace 脚本所在的目录
+	 */
+	static final public Process callShell(String script, String args, String workspace) {
+		// cmd = "sh " + script + " " + args;
+		String cmd = String.format(fmtSh, script);
+		return callCMD(cmd, args, workspace);
 	}
 
 	// 获取当前 APP 内存分配
