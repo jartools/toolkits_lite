@@ -11,8 +11,7 @@ import java.io.IOException;
  */
 public class EORuntime extends EORegex {
 
-	static final private String fmtSh0 = "sh %s";
-	static final private String fmtSh1 = "sh %s %s";
+	static final private String fmtSh = "sudo sh -c %s";
 
 	static final public Runtime currRt() {
 		return Runtime.getRuntime();
@@ -28,7 +27,8 @@ public class EORuntime extends EORegex {
 	}
 
 	// cmd = "tar -cf" + tarName + " " + fileName;
-	// envp = 设置全局环境变量，其格式为name=value;envp={"val=2", "call=Bash Shell"} 等价于 export val=2
+	// envp = 设置全局环境变量，其格式为name=value;envp={"val=2", "call=Bash Shell"} 等价于 export
+	// val=2
 	static final public Process exec(String cmd, String[] envp, File dir) {
 		try {
 			return currRt().exec(cmd, envp, dir);
@@ -66,10 +66,9 @@ public class EORuntime extends EORegex {
 		}
 		String cmd = "";
 		// cmd = "sh " + script + " " + args;
-		if (isEmpty(args)) {
-			cmd = String.format(fmtSh0, script);
-		} else {
-			cmd = String.format(fmtSh1, script, args);
+		cmd = String.format(fmtSh, script);
+		if (!isEmpty(args)) {
+			cmd = cmd.concat(" ").concat(args);
 		}
 		return exec(cmd, null, dir);
 	}
