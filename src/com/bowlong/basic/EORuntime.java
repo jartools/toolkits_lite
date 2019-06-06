@@ -5,13 +5,13 @@ import java.io.IOException;
 
 /**
  * Runtime 封装，执行shell<br/>
- * 
+ * sh -c 执行文本string中的命令
  * @author Canyon
  * @version 2019-05-08 20:20
  */
 public class EORuntime extends EORegex {
 
-	static final private String fmtSh = "sudo sh -c %s";
+	static final private String fmtSh = "sudo sh %s";
 
 	static final public Runtime currRt() {
 		return Runtime.getRuntime();
