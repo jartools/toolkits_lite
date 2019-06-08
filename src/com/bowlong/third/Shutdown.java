@@ -11,14 +11,14 @@ public class Shutdown extends Thread {
 	public ServerSocket ssocket = null;
 
 	public Shutdown(int port, int sleep) throws Exception {
-		InetAddress addr = InetAddress.getByName("127.0.0.1");
-
-		try {
-			new Socket(addr, port);
-			Thread.sleep(sleep);
-		} catch (Exception e) {
+		if (sleep > 0) {
+			try {
+				Thread.sleep(sleep);
+			} catch (Exception e) {
+			}
 		}
 
+		InetAddress addr = InetAddress.getByName("127.0.0.1");
 		ssocket = new ServerSocket(port, 2, addr);
 	}
 
