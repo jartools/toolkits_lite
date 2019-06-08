@@ -8,7 +8,7 @@ import com.bowlong.basic.ExToolkit;
  * Session 会话对象
  * 
  * @author Canyon
- * @time 2018-12-01 12:03
+ * @time 2014-06-15 09:30
  */
 public class Session extends ExToolkit implements Serializable {
 	private static final long serialVersionUID = 1L;

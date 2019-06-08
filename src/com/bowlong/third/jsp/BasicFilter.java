@@ -13,11 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
-
-import com.bowlong.reflect.JsonHelper;
 import com.bowlong.tool.TkitJsp;
-import com.bowlong.util.CalendarEx;
-import com.bowlong.util.MapEx;
 
 /***
  * jsp filter基础过滤文件 <br/>
@@ -26,17 +22,17 @@ import com.bowlong.util.MapEx;
  * 
  * @author Canyon 2017-04-16 23:30
  */
-public abstract class BasicFilter implements Filter {
+public abstract class BasicFilter extends TkitJsp implements Filter {
 	static protected String[] badSqlStrs = { " and ", "insert ", "select ", "delete ", "update ", "count",
 			"drop table ", " or ", "char ", "declare", "sitename", "net user", "xp_cmdshell", " like'", " like '",
 			"create ", " from ", "grant ", "use ", "group_concat", "column_name", "truncate table ",
 			"information_schema.columns", "table_schema", "union", " where ", " order by" };
 
-	static protected long ms_bef = CalendarEx.TIME_SECOND * 15;
-	static protected long ms_aft = CalendarEx.TIME_SECOND * 15;
-	static public boolean isVSql = true; // 是否验证sql注入
 	static public boolean isVTime = false; // 是否验证有效时间
 	static public String key_time = "time_ms"; // 时间字段
+	static protected long ms_bef = TIME_SECOND * 15; // 有效时间段 - 开始(>)
+	static protected long ms_aft = TIME_SECOND * 15; // 有效时间段 - 结束(<)
+	
 	static public boolean isCFDef = true; // 错误时是否用默认函数返回
 	static public boolean isPrint = false;
 	static private boolean isInit = false;
@@ -101,13 +97,12 @@ public abstract class BasicFilter implements Filter {
 	protected boolean onFilter(HttpServletResponse res, String uri, Map<String, Object> pars) {
 		int flagState = 0;
 		boolean isFlag = false;
+		curr_ms = now();
 		isFlag = isFilter(uri, pars);
-		curr_ms = CalendarEx.now();
+		
 		if (isFlag) {
 			flagState = 1;
-		}
-
-		if (!isFlag) {
+		}else{
 			isFlag = isFilterTime(pars, key_time);
 			if (isFlag) {
 				flagState = 2;
@@ -132,7 +127,7 @@ public abstract class BasicFilter implements Filter {
 
 	protected boolean isFilterTime(Map<String, Object> pars, String keyTime) {
 		if (isVTime && pars.containsKey(keyTime)) {
-			long time_ms = MapEx.getLong(pars, keyTime);
+			long time_ms = getLong(pars, keyTime);
 			return !(time_ms > curr_ms - ms_bef && time_ms < curr_ms + ms_aft);
 		}
 		return isVTime;
@@ -154,8 +149,8 @@ public abstract class BasicFilter implements Filter {
 	private void _print(String uri, Map<String, Object> pars) {
 		if (!isPrint)
 			return;
-		JSONObject jsonData = JsonHelper.toJSON(pars);
-		System.out.println(String.format("%s == [%s] = %s", CalendarEx.nowStr_YMDHms(), uri, jsonData.toString()));
+		JSONObject jsonData = toJSON(pars);
+		System.out.println(String.format("%s == [%s] = %s", nowStr_YMDHms(), uri, jsonData.toString()));
 	}
 
 	protected String cfFilterDef(int state, String uri, Map<String, Object> pars) {
@@ -163,14 +158,16 @@ public abstract class BasicFilter implements Filter {
 		pars.put("code", "fails");
 		pars.put("sv_ms", curr_ms);
 		pars.put("ftState", String.valueOf(state));
-		JSONObject jsonData = JsonHelper.toJSON(pars);
+		JSONObject jsonData = toJSON(pars);
 		return jsonData.toString();
 	}
 
+	// 初始化函数
 	public abstract void onInit(FilterConfig cfg);
 
+	// 过滤函数,需要过滤返回true,过滤后会执行
 	public abstract boolean isFilter(String uri, Map<String, Object> pars);
 
-	// 过滤掉后需要返回的
+	// 被过滤掉时，自己定义的需要返回的字符串方法
 	public abstract String cfFilter(int state, String uri, Map<String, Object> pars);
 }
