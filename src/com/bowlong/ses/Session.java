@@ -1,16 +1,12 @@
 package com.bowlong.ses;
 
-import java.io.Serializable;
-
-import com.bowlong.basic.ExToolkit;
-
 /**
  * Session 会话对象
  * 
  * @author Canyon
  * @time 2014-06-15 09:30
  */
-public class Session extends ExToolkit implements Serializable {
+public class Session extends MgrSession {
 	private static final long serialVersionUID = 1L;
 	static private final int defMs = 600 * 1000;// 10分钟
 	public long sesid; // 唯一表示
