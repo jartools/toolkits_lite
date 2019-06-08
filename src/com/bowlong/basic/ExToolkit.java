@@ -67,7 +67,7 @@ public class ExToolkit extends ExOrigin {
 	}
 
 	static final public boolean intersectedPoints(List<Point> list, Point p) {
-		if (list == null || list.isEmpty() || p == null)
+		if (isEmpty(list) || p == null)
 			return false;
 
 		Set<String> c = new HashSet<String>();
@@ -137,49 +137,49 @@ public class ExToolkit extends ExOrigin {
 	}
 
 	static final public Map getMap(Map ps, Object key) {
-		if (MapEx.isEmpty(ps))
+		if (isEmpty(ps))
 			return null;
 		return MapEx.getMap(ps, key);
 	}
 
 	static final public List getList(Map ps, Object key) {
-		if (MapEx.isEmpty(ps))
+		if (isEmpty(ps))
 			return null;
 		return MapEx.getList(ps, key);
 	}
 
 	static final public String getString(Map ps, Object key) {
-		if (MapEx.isEmpty(ps))
+		if (isEmpty(ps))
 			return "";
 		return MapEx.getString(ps, key);
 	}
 
 	static final public boolean getBool(Map ps, Object key) {
-		if (MapEx.isEmpty(ps))
+		if (isEmpty(ps))
 			return false;
 		return MapEx.getBoolean(ps, key);
 	}
 
 	static final public int getInt(Map ps, Object key) {
-		if (MapEx.isEmpty(ps))
+		if (isEmpty(ps))
 			return 0;
 		return MapEx.getInt(ps, key);
 	}
 
 	static final public long getLong(Map ps, Object key) {
-		if (MapEx.isEmpty(ps))
+		if (isEmpty(ps))
 			return 0l;
 		return MapEx.getLong(ps, key);
 	}
 
 	static final public double getDouble(Map ps, Object key) {
-		if (MapEx.isEmpty(ps))
+		if (isEmpty(ps))
 			return 0;
 		return MapEx.getDouble(ps, key);
 	}
 
 	static final public Date getDate(Map ps, Object key) {
-		if (MapEx.isEmpty(ps))
+		if (isEmpty(ps))
 			return null;
 		return MapEx.getDate(ps, key);
 	}
@@ -240,7 +240,7 @@ public class ExToolkit extends ExOrigin {
 	}
 
 	static final public <T> T rand(List<T> objs) {
-		if (objs == null || objs.isEmpty())
+		if (isEmpty(objs))
 			return null;
 		else if (objs.size() == 1)
 			return (T) objs.get(0);
