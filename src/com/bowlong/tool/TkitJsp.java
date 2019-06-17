@@ -279,7 +279,7 @@ public class TkitJsp extends TkitOrigin {
 	 * @param visIP 255.255.255.0
 	 * @return
 	 */
-	static final public String ip4CountryCode(String visIP) {
+	static final public String getCountryCode(String visIP) {
 		List<Integer> list = ListEx.toListInt(visIP);
 		long val = 0L;
 		int lens = list.size();
@@ -289,6 +289,10 @@ public class TkitJsp extends TkitOrigin {
 			counter--;
 		}
 		return toStr(val);
+	}
+	
+	static final public String getCountryCode(HttpServletRequest request) {
+		return getCountryCode(getVisitorIP(request));
 	}
 
 	/**
