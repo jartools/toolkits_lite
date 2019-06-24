@@ -287,12 +287,12 @@ public class MyJson {
 		return s;
 	}
 
-	public static final Object parse(File f) throws IOException {
+	public static final Object parse(File f) throws Exception {
 		String s = FileEx.readText(f);
 		return MyJson.parse(s);
 	}
 
-	public static final <T> T parseGeneric(File s) throws IOException {
+	public static final <T> T parseGeneric(File s) throws Exception {
 		Object o = parse(s);
 		return (T) o;
 	}

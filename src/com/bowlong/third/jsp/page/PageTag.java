@@ -1,6 +1,5 @@
 package com.bowlong.third.jsp.page;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -50,7 +49,7 @@ public class PageTag extends TagSupport {
 			URL url = this.getClass().getResource("page_cur.txt");
 			InputStream stream = url.openStream();
 			pageTxt = FileRw.readText(stream, "UTF-8");
-		} catch (IOException e) {
+		} catch (Exception e) {
 		}
 	}
 
@@ -157,7 +156,7 @@ public class PageTag extends TagSupport {
 			writer.print(ret);
 			writer.flush();
 			writer.clearBuffer();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new JspException(e);
 		}
 		return EVAL_PAGE;

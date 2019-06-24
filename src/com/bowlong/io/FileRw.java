@@ -215,7 +215,7 @@ public class FileRw extends FileBigEx {
 		}
 	}
 
-	static final public void writeText(String fp, String cont) {
+	static final public void writeText(String fp, String cont) throws Exception {
 		File f = createFile(fp);
 		writeText(f, cont, EncodingEx.UTF8);
 	}
