@@ -24,7 +24,7 @@ public class FileRw extends FileBigEx {
 	}
 
 	static final public byte[] readBytes(File f) {
-		if (!f.exists()) {
+		if (f == null || !f.exists()) {
 			return null;
 		}
 		byte[] r = null;
@@ -41,8 +41,7 @@ public class FileRw extends FileBigEx {
 	}
 
 	static final public File getDire(String path) {
-		File f = null;
-		f = new File(path);
+		File f = new File(path);
 
 		if (!f.exists()) {
 			createDire(f);
@@ -51,9 +50,7 @@ public class FileRw extends FileBigEx {
 	}
 
 	static final public File createFile(String path) {
-		File f = null;
-		f = new File(path);
-
+		File f = new File(path);
 		if (!f.exists()) {
 			createFile(f);
 		}
@@ -62,10 +59,7 @@ public class FileRw extends FileBigEx {
 
 	static final public void createFile(File f) {
 		try {
-			if (f == null)
-				return;
-			boolean isExi = f.exists();
-			if (!isExi) {
+			if (f != null && !f.exists()) {
 				File pf = f.getParentFile();
 				if (!pf.exists()) {
 					createDire(pf);
@@ -79,10 +73,7 @@ public class FileRw extends FileBigEx {
 
 	static final public void createDire(File f) {
 		try {
-			if (f == null)
-				return;
-			boolean isExi = f.exists();
-			if (!isExi) {
+			if (f != null && !f.exists()) {
 				f.mkdirs();
 			}
 		} catch (Exception e) {
