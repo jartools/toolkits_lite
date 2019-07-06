@@ -36,49 +36,14 @@ public class FileRw extends FileBigEx {
 		return r;
 	}
 
-	static final public File getFile(String path) {
+	static final public File getFile(String path) throws Exception {
 		return createFile(path);
 	}
 
 	static final public File getDire(String path) {
 		File f = new File(path);
-
-		if (!f.exists()) {
-			createDire(f);
-		}
+		createFolder(f);
 		return f;
-	}
-
-	static final public File createFile(String path) {
-		File f = new File(path);
-		if (!f.exists()) {
-			createFile(f);
-		}
-		return f;
-	}
-
-	static final public void createFile(File f) {
-		try {
-			if (f != null && !f.exists()) {
-				File pf = f.getParentFile();
-				if (!pf.exists()) {
-					createDire(pf);
-				}
-				f.createNewFile();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	static final public void createDire(File f) {
-		try {
-			if (f != null && !f.exists()) {
-				f.mkdirs();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	static final public String readStr(String path) {
@@ -159,7 +124,7 @@ public class FileRw extends FileBigEx {
 					|| endname.equalsIgnoreCase("lrc")) {
 				try (InputStream inps = openFileInps(tmp); BufferedReader buffRead = new BufferedReader(new InputStreamReader(inps, getCharsetStr(tmp)));) {
 					String v = B2InputStream.readStrByBuffReader(buffRead);
-					writeAll(tmp, false, v);
+					writeFully(tmp, v, false);
 				} catch (Exception e) {
 				}
 			}
@@ -179,7 +144,7 @@ public class FileRw extends FileBigEx {
 					|| endname.equalsIgnoreCase("lrc")) {
 				try (InputStream inps = openFileInps(tmp); InputStreamReader inpReader = new InputStreamReader(inps, getCharsetStr(tmp));) {
 					String v = B2InputStream.readStrByReader(inpReader);
-					writeAll(tmp, false, v);
+					writeFully(tmp, v, false);
 				} catch (Exception e) {
 				}
 			}
@@ -199,7 +164,7 @@ public class FileRw extends FileBigEx {
 					|| endname.equalsIgnoreCase("lrc")) {
 				try (InputStream inps = openInpsWithOutBom(tmp); InputStreamReader inpReader = new InputStreamReader(inps, getCharsetStr(tmp));) {
 					String v = B2InputStream.readStrByReader(inpReader);
-					writeAll(tmp, false, v);
+					writeFully(tmp, v, false);
 				} catch (Exception e) {
 				}
 			}
@@ -209,5 +174,10 @@ public class FileRw extends FileBigEx {
 	static final public void writeText(String fp, String cont) throws Exception {
 		File f = createFile(fp);
 		writeText(f, cont, EncodingEx.UTF8);
+	}
+
+	static final public void writeAppend(String fp, String cont) throws Exception {
+		File f = createFile(fp);
+		writeFully(f, cont, true);
 	}
 }

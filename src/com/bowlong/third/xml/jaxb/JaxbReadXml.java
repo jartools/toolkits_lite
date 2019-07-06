@@ -84,18 +84,18 @@ public class JaxbReadXml {
 
 	////////////////// 对象 转为xml //////////////////
 
-	static public final <T> void writeObj(T obj, String xmlPath) throws JAXBException {
+	static public final <T> void writeObj(T obj, String xmlPath) throws Exception {
 		File f = FileRw.getFile(xmlPath);
 		writeObj(obj, f);
 	}
 
-	static public final <T> void writeObj(T obj, File file) throws JAXBException {
+	static public final <T> void writeObj(T obj, File file) throws Exception {
 		JAXBContext jc = JAXBContext.newInstance(obj.getClass());
 		Marshaller marshaller = jc.createMarshaller();
 		marshaller.marshal(obj, file);
 	}
 
-	static public final <T> byte[] getBytes(T obj, String xmlPath) throws JAXBException {
+	static public final <T> byte[] getBytes(T obj, String xmlPath) throws Exception {
 		File f = FileRw.getFile(xmlPath);
 		writeObj(obj, f);
 		byte[] bes = FileRw.readBytes(f);
@@ -104,7 +104,7 @@ public class JaxbReadXml {
 		return bes;
 	}
 
-	static public final <T> String getString(T obj, String xmlPath) throws JAXBException {
+	static public final <T> String getString(T obj, String xmlPath) throws Exception {
 		byte[] bes = getBytes(obj, xmlPath);
 		return new String(bes);
 	}

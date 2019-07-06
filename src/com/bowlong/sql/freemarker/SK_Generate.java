@@ -2,7 +2,6 @@ package com.bowlong.sql.freemarker;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.sql.Connection;
@@ -52,7 +51,7 @@ public class SK_Generate {
 				cfg = new Configuration();
 				cfg.setDirectoryForTemplateLoading(FileRw.getFile(path));
 				cfg.setObjectWrapper(new BeansWrapper());
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -268,11 +267,11 @@ public class SK_Generate {
 		String packageName = packageMap.get("bean").replace("src/", "")
 				.replace("/", ".");
 		table.setPackageName(packageName);
-		File file = FileRw.getFile(filePath);
 		try {
+			File file = FileRw.getFile(filePath);
 			Template template = cfg.getTemplate("pojo.ftl");
 			fileWriter(template, file, table);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -283,11 +282,11 @@ public class SK_Generate {
 		String packageName = packageMap.get("dao").replace("src/", "")
 				.replace("/", ".");
 		table.setPackageName(packageName);
-		File file = FileRw.getFile(filePath);
 		try {
+			File file = FileRw.getFile(filePath);
 			Template template = cfg.getTemplate("dao.ftl");
 			fileWriter(template, file, table);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -299,11 +298,11 @@ public class SK_Generate {
 		String packageName = packageMap.get("jedis").replace("src/", "")
 				.replace("/", ".");
 		table.setPackageName(packageName);
-		File file = FileRw.getFile(filePath);
 		try {
+			File file = FileRw.getFile(filePath);
 			Template template = cfg.getTemplate("jedis.ftl");
 			fileWriter(template, file, table);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -315,11 +314,11 @@ public class SK_Generate {
 		String packageName = packageMap.get("cache").replace("src/", "")
 				.replace("/", ".");
 		table.setPackageName(packageName);
-		File file = FileRw.getFile(filePath);
 		try {
+			File file = FileRw.getFile(filePath);
 			Template template = cfg.getTemplate("cache.ftl");
 			fileWriter(template, file, table);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -337,11 +336,11 @@ public class SK_Generate {
 			return;
 		}
 
-		file = FileRw.getFile(filePath);
 		try {
+			file = FileRw.getFile(filePath);
 			Template template = cfg.getTemplate("imp.ftl");
 			fileWriter(template, file, table);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -352,11 +351,11 @@ public class SK_Generate {
 		String packageName = packageMap.get("cfg").replace("src/", "")
 				.replace("/", ".");
 		table.setPackageName(packageName);
-		File file = FileRw.getFile(filePath);
 		try {
+			File file = FileRw.getFile(filePath);
 			Template template = cfg.getTemplate("cfg.ftl");
 			fileWriter(template, file, table);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -366,11 +365,11 @@ public class SK_Generate {
 		String filePath = path + "/ConfigLoad.java";
 		String packageName = path.replace("src/", "").replace("/", ".");
 		SK_Cfg skCfg = new SK_Cfg("ConfigLoad", packageName, tables);
-		File file = FileRw.getFile(filePath);
 		try {
+			File file = FileRw.getFile(filePath);
 			Template template = cfg.getTemplate("cfgLoad.ftl");
 			fileWriter(template, file, skCfg);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -380,11 +379,11 @@ public class SK_Generate {
 		String filePath = path + "/DbSave.java";
 		String packageName = path.replace("src/", "").replace("/", ".");
 		SK_Cfg skCfg = new SK_Cfg("DbSave", packageName, tables);
-		File file = FileRw.getFile(filePath);
 		try {
+			File file = FileRw.getFile(filePath);
 			Template template = cfg.getTemplate("dbSave.ftl");
 			fileWriter(template, file, skCfg);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -394,11 +393,11 @@ public class SK_Generate {
 		String filePath = path + "/CfgDbCache.java";
 		String packageName = path.replace("src/", "").replace("/", ".");
 		SK_Cfg skCfg = new SK_Cfg("CfgDbCache", packageName, tables);
-		File file = FileRw.getFile(filePath);
 		try {
+			File file = FileRw.getFile(filePath);
 			Template template = cfg.getTemplate("cfgDbCache.ftl");
 			fileWriter(template, file, skCfg);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -506,11 +505,11 @@ public class SK_Generate {
 		String packageName = packageMap.get("cache").replace("src/", "")
 				.replace("/", ".");
 		table.setPackageName(packageName);
-		File file = FileRw.getFile(filePath);
 		try {
+			File file = FileRw.getFile(filePath);
 			Template template = cfg.getTemplate("clearCache.ftl");
 			fileWriter(template, file, table);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

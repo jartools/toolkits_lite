@@ -34,6 +34,36 @@ import com.bowlong.objpool.StringBufPool;
 public class FileEx extends InputStreamEx implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	static final public boolean isEmpty(File f) {
+		return f == null || !f.exists();
+	}
+
+	static final public File openFile(String file) {
+		return new File(file);
+	}
+
+	/**
+	 * 判断是否是目录
+	 * 
+	 * @param path
+	 * @return
+	 */
+	static final public boolean isDir(String path) {
+		File file = openFile(path);
+		return file.isDirectory();
+	}
+
+	/**
+	 * 判断是否是文件
+	 * 
+	 * @param path
+	 * @return
+	 */
+	static final public boolean isFile(String path) {
+		File file = openFile(path);
+		return file.isFile();
+	}
+
 	static final public InputStream openInputStreamByUrl(String url) throws Exception {
 		URL u = new URL(url);
 		return openInputStreamByUrl(u);
@@ -44,8 +74,8 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public int getLength(String file) {
-		File f = openFile(file);
-		return (int) f.length();
+		File _f = openFile(file);
+		return (int) _f.length();
 	}
 
 	/**
@@ -56,20 +86,39 @@ public class FileEx extends InputStreamEx implements Serializable {
 	 * @throws Exception
 	 */
 	static final public boolean createFolder(String path) {
-		File file = new File(path);
-		boolean b = file.mkdirs();
-		file = null;
-		return b;
+		return createFolder(openFile(path));
+	}
+
+	// createDire
+	static final public boolean createFolder(File f) {
+		if (isEmpty(f))
+			return false;
+
+		return f.mkdirs();
+	}
+
+	static final public void createFile(File f) throws Exception {
+		try {
+			if (f != null && !f.exists()) {
+				createFolder(f.getParentFile());
+				f.createNewFile();
+			}
+		} finally {
+		}
+	}
+
+	static final public File createFile(String path) throws Exception {
+		File f = openFile(path);
+		createFile(f);
+		return f;
 	}
 
 	/**
 	 * 检查文件是否存在 exists
 	 */
 	static final public boolean exists(String path) {
-		File file = new File(path);
-		boolean b = file.exists();
-		file = null;
-		return b;
+		File _f = openFile(path);
+		return _f.exists();
 	}
 
 	/**
@@ -77,23 +126,22 @@ public class FileEx extends InputStreamEx implements Serializable {
 	 * 
 	 * @param file
 	 *            String 文件路径及名称 如c:/fqf.txt
-	 * @param fileContent
+	 * @param content
 	 *            String 文件内容
 	 * @return boolean
 	 */
-	static final public void newFile(String filePath, String fileContent) throws Exception {
-		File myFilePath = new File(filePath);
-		if (!myFilePath.exists()) {
-			myFilePath.createNewFile();
+	static final public void newFile(String filePath, String content) throws Exception {
+		File _f = openFile(filePath);
+		if (!_f.exists()) {
+			_f.createNewFile();
 		}
-		FileWriter resultFile = new FileWriter(myFilePath);
-		PrintWriter myFile = new PrintWriter(resultFile);
-		myFile.println(fileContent);
-
-		myFile.flush();
-		resultFile.flush();
-		myFile.close();
-		resultFile.close();
+		FileWriter _fwr = new FileWriter(_f);
+		PrintWriter _pwr = new PrintWriter(_fwr);
+		_pwr.println(content);
+		_pwr.flush();
+		_fwr.flush();
+		_pwr.close();
+		_fwr.close();
 	}
 
 	/**
@@ -108,7 +156,7 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public void delFile(String filePath) {
-		delFile(new File(filePath));
+		delFile(openFile(filePath));
 	}
 
 	/**
@@ -126,7 +174,7 @@ public class FileEx extends InputStreamEx implements Serializable {
 	 *            String 文件夹路径 如 c:/fqf
 	 */
 	static final public void delAllFile(String path) {
-		File file = new File(path);
+		File file = openFile(path);
 		if (!file.exists()) {
 			return;
 		}
@@ -137,9 +185,9 @@ public class FileEx extends InputStreamEx implements Serializable {
 		File temp = null;
 		for (int i = 0; i < tempList.length; i++) {
 			if (path.endsWith(File.separator)) {
-				temp = new File(path + tempList[i]);
+				temp = openFile(path + tempList[i]);
 			} else {
-				temp = new File(path + File.separator + tempList[i]);
+				temp = openFile(path + File.separator + tempList[i]);
 			}
 			if (temp.isFile()) {
 				temp.delete();
@@ -162,7 +210,7 @@ public class FileEx extends InputStreamEx implements Serializable {
 	 */
 	static final public void copyFile(String oldPath, String newPath) throws Exception {
 		int byteread = 0;
-		File oldfile = new File(oldPath);
+		File oldfile = openFile(oldPath);
 		if (oldfile.exists()) { // 文件存在时
 			try (InputStream inStream = new FileInputStream(oldPath); FileOutputStream fs = new FileOutputStream(newPath);) {
 				byte[] buffer = new byte[1024];
@@ -187,16 +235,15 @@ public class FileEx extends InputStreamEx implements Serializable {
 	 * @throws Exception
 	 */
 	static final public void copyFolder(String oldPath, String newPath) throws Exception {
-
-		(new File(newPath)).mkdirs(); // 如果文件夹不存在 则建立新文件夹
-		File a = new File(oldPath);
+		(openFile(newPath)).mkdirs(); // 如果文件夹不存在 则建立新文件夹
+		File a = openFile(oldPath);
 		String[] file = a.list();
 		File temp = null;
 		for (int i = 0; i < file.length; i++) {
 			if (oldPath.endsWith(File.separator)) {
-				temp = new File(oldPath + file[i]);
+				temp = openFile(oldPath + file[i]);
 			} else {
-				temp = new File(oldPath + File.separator + file[i]);
+				temp = openFile(oldPath + File.separator + file[i]);
 			}
 
 			if (temp.isFile()) {
@@ -247,31 +294,9 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public boolean rename(String srcPath, String name) {
-		File file = new File(srcPath);
-		File newFile = new File(file.getParent() + File.separator + name);
+		File file = openFile(srcPath);
+		File newFile = openFile(file.getParent() + File.separator + name);
 		return file.renameTo(newFile);
-	}
-
-	/**
-	 * 判断是否是目录
-	 * 
-	 * @param path
-	 * @return
-	 */
-	static final public boolean isDir(String path) {
-		File file = new File(path);
-		return file.isDirectory();
-	}
-
-	/**
-	 * 判断是否是文件
-	 * 
-	 * @param path
-	 * @return
-	 */
-	static final public boolean isFile(String path) {
-		File file = new File(path);
-		return file.isFile();
 	}
 
 	// ///////////////////////////////////////////////////
@@ -359,7 +384,7 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public byte[] readFully(String file) throws Exception {
-		File f = new File(file);
+		File f = openFile(file);
 		byte[] data = new byte[(int) f.length()];
 		try (FileInputStream fis = new FileInputStream(f);) {
 			readFully(fis, data);
@@ -369,7 +394,7 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public Properties readProperties(File f) {
-		if (f == null || !f.exists())
+		if (isEmpty(f))
 			return null;
 		try (FileInputStream fis = new FileInputStream(f);) {
 			Properties p = new Properties();
@@ -383,7 +408,7 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public String readText(String file) throws Exception {
-		return readText(new File(file));
+		return readText(openFile(file));
 	}
 
 	static final public String readText(File file) throws Exception {
@@ -416,7 +441,7 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public List<String> readLines(String file) throws Exception {
-		return readLines(new File(file));
+		return readLines(openFile(file));
 	}
 
 	static final public List<String> readLines(File file) throws Exception {
@@ -439,7 +464,7 @@ public class FileEx extends InputStreamEx implements Serializable {
 
 	// /////////////////////////////////////////////////
 	static final public void writeFully(File f, byte[] b, boolean append) throws Exception {
-		try (FileOutputStream output = new FileOutputStream(f, append);) { // 2表示追加
+		try (FileOutputStream output = new FileOutputStream(f, append);) {
 			output.write(b);
 			output.flush();
 			output.close();
@@ -447,11 +472,14 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public void writeFully(String file, byte[] b, boolean append) throws Exception {
-		File f = new File(file);
-		writeFully(f, b, append);
+		writeFully(openFile(file), b, append);
 	}
 
-	static final public void writeAll(String file, boolean append, String str) throws Exception {
+	static final public void writeFully(File f, String str, boolean append) throws Exception {
+		writeFully(f, str.getBytes("UTF-8"), append);
+	}
+
+	static final public void writeFully(String file, String str, boolean append) throws Exception {
 		writeFully(file, str.getBytes("UTF-8"), append);
 	}
 
@@ -460,7 +488,7 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public void write(String file, String str) throws Exception {
-		writeAll(file, false, str);
+		writeFully(file, str, false);
 	}
 
 	static final public void write(File f, byte[] b) throws Exception {
@@ -495,7 +523,7 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static public File writeFile(String inFile, String outFile) {
-		return writeFile(new File(inFile), new File(outFile));
+		return writeFile(openFile(inFile), openFile(outFile));
 	}
 
 	static public File writeFile(File inFile, File outFile) {
@@ -516,10 +544,6 @@ public class FileEx extends InputStreamEx implements Serializable {
 			ex.printStackTrace();
 		}
 		return outFile;
-	}
-
-	static final public File openFile(String file) {
-		return new File(file);
 	}
 
 	static final public FileInputStream openFileInps(String fn) throws Exception {
@@ -635,12 +659,12 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public String getPath(String filename) {
-		File f = new File(filename);
+		File f = openFile(filename);
 		return f.getParentFile().getPath();
 	}
 
 	static final public String getName(String filename) {
-		File f = new File(filename);
+		File f = openFile(filename);
 		return f.getName();
 	}
 
@@ -699,9 +723,5 @@ public class FileEx extends InputStreamEx implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	static final public boolean isEmpty(File fn) {
-		return fn == null || !fn.exists();
 	}
 }
