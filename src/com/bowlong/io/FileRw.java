@@ -24,7 +24,7 @@ public class FileRw extends FileBigEx {
 	}
 
 	static final public byte[] readBytes(File f) {
-		if (f == null || !f.exists()) {
+		if (isEmpty(f)) {
 			return null;
 		}
 		byte[] r = null;

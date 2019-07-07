@@ -38,6 +38,18 @@ public class FileEx extends InputStreamEx implements Serializable {
 		return f == null || !f.exists();
 	}
 
+	static final public boolean isExists(File f) {
+		return f != null && f.exists();
+	}
+
+	static final public boolean isNoExists(File f) {
+		return f != null && !f.exists();
+	}
+
+	static final public boolean isExists(String path) {
+		return isExists(openFile(path));
+	}
+
 	static final public File openFile(String file) {
 		return new File(file);
 	}
@@ -91,15 +103,14 @@ public class FileEx extends InputStreamEx implements Serializable {
 
 	// createDire
 	static final public boolean createFolder(File f) {
-		if (isEmpty(f))
-			return false;
-
-		return f.mkdirs();
+		if (isNoExists(f))
+			return f.mkdirs();
+		return false;
 	}
 
 	static final public void createFile(File f) throws Exception {
 		try {
-			if (f != null && !f.exists()) {
+			if (isNoExists(f)) {
 				createFolder(f.getParentFile());
 				f.createNewFile();
 			}
@@ -114,20 +125,10 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	/**
-	 * 检查文件是否存在 exists
-	 */
-	static final public boolean exists(String path) {
-		File _f = openFile(path);
-		return _f.exists();
-	}
-
-	/**
 	 * 新建文件
 	 * 
-	 * @param file
-	 *            String 文件路径及名称 如c:/fqf.txt
-	 * @param content
-	 *            String 文件内容
+	 * @param file    String 文件路径及名称 如c:/fqf.txt
+	 * @param content String 文件内容
 	 * @return boolean
 	 */
 	static final public void newFile(String filePath, String content) throws Exception {
@@ -170,8 +171,7 @@ public class FileEx extends InputStreamEx implements Serializable {
 	/**
 	 * 删除文件夹里面的所有文件
 	 * 
-	 * @param path
-	 *            String 文件夹路径 如 c:/fqf
+	 * @param path String 文件夹路径 如 c:/fqf
 	 */
 	static final public void delAllFile(String path) {
 		File file = openFile(path);
@@ -201,10 +201,8 @@ public class FileEx extends InputStreamEx implements Serializable {
 	/**
 	 * 复制单个文件
 	 * 
-	 * @param oldPath
-	 *            String 原文件路径 如：c:/fqf.txt
-	 * @param newPath
-	 *            String 复制后路径 如：f:/fqf.txt
+	 * @param oldPath String 原文件路径 如：c:/fqf.txt
+	 * @param newPath String 复制后路径 如：f:/fqf.txt
 	 * @return boolean
 	 * @throws Exception
 	 */
@@ -227,10 +225,8 @@ public class FileEx extends InputStreamEx implements Serializable {
 	/**
 	 * 复制整个文件夹内容
 	 * 
-	 * @param oldPath
-	 *            String 原文件路径 如：c:/fqf
-	 * @param newPath
-	 *            String 复制后路径 如：f:/fqf/ff
+	 * @param oldPath String 原文件路径 如：c:/fqf
+	 * @param newPath String 复制后路径 如：f:/fqf/ff
 	 * @return boolean
 	 * @throws Exception
 	 */
@@ -268,10 +264,8 @@ public class FileEx extends InputStreamEx implements Serializable {
 	/**
 	 * 移动文件到指定目录
 	 * 
-	 * @param oldPath
-	 *            String 如：c:/fqf.txt
-	 * @param newPath
-	 *            String 如：d:/fqf.txt
+	 * @param oldPath String 如：c:/fqf.txt
+	 * @param newPath String 如：d:/fqf.txt
 	 * @throws Exception
 	 */
 	static final public void moveFile(String oldPath, String newPath) throws Exception {
@@ -282,10 +276,8 @@ public class FileEx extends InputStreamEx implements Serializable {
 	/**
 	 * 移动文件到指定目录
 	 * 
-	 * @param oldPath
-	 *            String 如：c:/fqf.txt
-	 * @param newPath
-	 *            String 如：d:/fqf.txt
+	 * @param oldPath String 如：c:/fqf.txt
+	 * @param newPath String 如：d:/fqf.txt
 	 * @throws Exception
 	 */
 	static final public void moveFolder(String oldPath, String newPath) throws Exception {
@@ -350,10 +342,7 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public byte[] readFully(File f) {
-		if (f == null)
-			return null;
-
-		if (!f.exists())
+		if (isEmpty(f))
 			return null;
 
 		try (FileInputStream fis = new FileInputStream(f);) {
