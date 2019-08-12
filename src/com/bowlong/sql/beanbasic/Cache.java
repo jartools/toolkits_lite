@@ -121,8 +121,11 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		if (list == null)
 			return;
 		int lens = list.size();
+		T _it = null;
 		for (int i = 0; i < lens; i++) {
-			rmCache(list.get(i));
+			_it = list.get(i);
+			if (_it != null)
+				rmCache(_it);
 		}
 	}
 
