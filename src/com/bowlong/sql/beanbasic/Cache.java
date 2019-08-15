@@ -49,6 +49,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	protected String fmt_s_map = ""; // 分页查询sql - map
 	protected boolean isLog4Load = false; // 加载时候是否打印
 	protected int nLimit = 10000; // 限定加载数量
+	protected int nLmtMap = 10000; // 限定加载数量 - map
 	protected int msSleep = 2; // 限定延迟处理
 
 	protected void _init() {
@@ -285,13 +286,13 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 			return ret;
 		
 		int count = dset().count(str_c_map);
-		int pageCount = ListEx.pageCount(count, nLimit);
+		int pageCount = ListEx.pageCount(count, nLmtMap);
 		int begin = 0;
 		List<Map> list = null;
-		int nlmt = nLimit;
+		int nlmt = nLmtMap;
 		String _s = "";
 		for (int i = 0; i < pageCount; i++) {
-			nlmt = Math.min(nLimit, count);
+			nlmt = Math.min(nLmtMap, count);
 			_s = getSql4Map(begin, nlmt);
 			list = dset().queryForList(_s);
 			if (isEmpty(list))
