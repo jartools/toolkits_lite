@@ -315,4 +315,14 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		}
 		return ret;
 	}
+
+	public void excBatchSql(List<String> sqls) {
+		if (isEmpty(sqls))
+			return;
+		try {
+			dset().batch4Sqls(ListEx.toStrArray(sqls));
+		} catch (SQLException e) {
+			log.error(e2s(e));
+		}
+	}
 }

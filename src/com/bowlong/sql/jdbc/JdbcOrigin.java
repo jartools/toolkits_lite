@@ -357,16 +357,17 @@ public class JdbcOrigin extends ExToolkit {
 		}
 	}
 
-	public int[] batch4Sqls(String sqls[]) throws SQLException {
+	public int[] batch4Sqls(String... sqls) throws SQLException {
+		int r2[] = null;
+		if (isEmpty(sqls))
+			return r2;
 		Connection conn = conn_w();
 		try {
-			int r2[] = null;
 			Statement stmt = conn.createStatement();
 			for (String sql : sqls) {
 				stmt.addBatch(sql);
 			}
 			r2 = stmt.executeBatch();
-
 			stmt.close();
 			return r2;
 		} finally {
@@ -465,10 +466,10 @@ public class JdbcOrigin extends ExToolkit {
 
 			if (isUp) {
 				_str = StrEx.left(_tmp, _sp);
-				lstKey.addAll(ListEx.toLists(_str, ",", "=",0));
+				lstKey.addAll(ListEx.toLists(_str, ",", "=", 0));
 			}
 			_str = StrEx.right(_tmp, _sp);
-			lstKey.addAll(ListEx.toLists(_str, ",", "=",0));
+			lstKey.addAll(ListEx.toLists(_str, ",", "=", 0));
 			int lens = lstKey.size();
 			List<String> tmp = null;
 			for (int i = 0; i < lens; i++) {
@@ -502,8 +503,7 @@ public class JdbcOrigin extends ExToolkit {
 		return result;
 	}
 
-	static final public PreparedStatement prepareMap(PreparedStatement stmt, List<String> keys, Map m)
-			throws SQLException {
+	static final public PreparedStatement prepareMap(PreparedStatement stmt, List<String> keys, Map m) throws SQLException {
 		if (ListEx.isEmpty(keys) || MapEx.isEmpty(m))
 			return stmt;
 		int index = 0;
