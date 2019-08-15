@@ -76,9 +76,10 @@ public class EODateFmt extends EOStrNum {
 	static public final int TIME_SECOND = 1000 * TIME_MILLISECOND;
 	static public final int TIME_MINUTE = 60 * TIME_SECOND;
 	static public final int TIME_HOUR = 60 * TIME_MINUTE;
-	static public final long TIME_DAY = 24 * TIME_HOUR;
-	static public final long TIME_WEEK = 7 * TIME_DAY;
-	static public final long TIME_YEAR = 365 * TIME_DAY;
+	static public final int TIME_DAY = 24 * TIME_HOUR;
+	static public final long TIME_DAY_L = TIME_DAY;
+	static public final long TIME_WEEK = 7 * TIME_DAY_L;
+	static public final long TIME_YEAR = 365 * TIME_DAY_L;
 	/*** 1900年的时间 **/
 	static public final long TIME_1900 = TIME_YEAR * 1900;
 
