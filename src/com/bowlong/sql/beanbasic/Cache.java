@@ -15,7 +15,7 @@ import com.bowlong.util.ListEx;
 /**
  * 缓存对象父节点 数据缓存对象，可以操作增删改
  * 
- * @author Administrator
+ * @author Canyon
  *
  * @param <T>
  */
@@ -43,7 +43,9 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 
 	// 分页查询效率慢,优化方式 ORDER BY
 	// (建议where的时候用某个自增标识来做起点。比如id必须大于那个最后一条记录的id,并用 ORDER BY id 贼快)
-	protected String fmt_c = " 1 = 1 LIMIT %s,%s"; // 分页查询条件
+	protected String fmt_c = " 1 = 1 LIMIT %s,%s"; // 分页查询条件 - class
+	protected String fmt_c_map = " 1 = 1 LIMIT %s,%s"; // 分页查询条件 - map
+	protected boolean isLog4Load = false; // 加载时候是否打印
 	protected int nLimit = 10000; // 限定加载数量
 	protected int msSleep = 2; // 限定延迟处理
 
@@ -100,7 +102,9 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 				ret.addAll(list);
 
 			Thread.sleep(msSleep);
-			log.info(String.format("== %s = [%s]", this.tabelName, c));
+			if (isLog4Load) {
+				log.info(String.format("== %s = [%s]", this.tabelName, c));
+			}
 		}
 		return ret;
 	}
@@ -267,5 +271,34 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 
 	protected boolean isInOrUp(T item) {
 		return listIn.contains(item) || listUp.contains(item);
+	}
+
+	protected String getCondition4Map(int begin, int nlmt) {
+		return String.format(fmt_c_map, begin, nlmt);
+	}
+
+	protected List<Map> _loadAll4Map() throws Exception {
+		List<Map> ret = newListT();
+		int count = dset().count();
+		int pageCount = ListEx.pageCount(count, nLimit);
+		int begin = 0;
+		List<Map> list = null;
+		int nlmt = nLimit;
+		String c = "";
+		for (int i = 0; i < pageCount; i++) {
+			nlmt = Math.min(nLimit, count);
+			c = getCondition4Map(begin, nlmt);
+			list = dset().queryForList(c);
+			if (isEmpty(list))
+				break;
+			begin += nlmt;
+			count -= nlmt;
+			ret.addAll(list);
+			Thread.sleep(msSleep);
+			if (isLog4Load) {
+				log.info(String.format("== map = %s = [%s]", this.tabelName, c));
+			}
+		}
+		return ret;
 	}
 }
