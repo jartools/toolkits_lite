@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -221,10 +222,6 @@ public class EOBasic extends EOConfig {
 		return o == null || o.isEmpty();
 	}
 
-	static final public boolean isEmpty(Set s) {
-		return (s == null || s.isEmpty());
-	}
-
 	static final public boolean notEmpty(List o) {
 		return o != null && !o.isEmpty();
 	}
@@ -265,6 +262,14 @@ public class EOBasic extends EOConfig {
 	}
 
 	static final public boolean isEmpty(Queue s) {
+		return (s == null || s.isEmpty());
+	}
+	
+	static final public <E> Set<E> newSet() {
+		return Collections.synchronizedSet(new HashSet<E>());
+	}
+	
+	static final public boolean isEmpty(Set s) {
 		return (s == null || s.isEmpty());
 	}
 }

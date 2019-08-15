@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -645,16 +644,6 @@ public class ListEx extends ExOrigin {
 		}
 		return ret;
 	}
-
-	// ==========set
-	static public final Set newSet() {
-		return Collections.synchronizedSet(new HashSet());
-	}
-
-	static public final <T> Set<T> newSetT() {
-		return Collections.synchronizedSet(new HashSet<T>());
-	}
-
 	// //////////////////////////////////////////////////
 
 	public static void main(String[] args) {

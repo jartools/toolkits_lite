@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +35,7 @@ import com.bowlong.util.MapEx;
  * @author Canyon
  * @time 2019-02-14 19:32
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
+@SuppressWarnings({"rawtypes" })
 public class ExToolkit extends ExOrigin {
 
 	static final public void println(Object... args) {
@@ -62,10 +61,6 @@ public class ExToolkit extends ExOrigin {
 	}
 
 	// ///////////////////////////////////////////////////
-	static final public Set newSet() {
-		return Collections.synchronizedSet(new HashSet());
-	}
-
 	static final public boolean intersectedPoints(List<Point> list, Point p) {
 		if (isEmpty(list) || p == null)
 			return false;
