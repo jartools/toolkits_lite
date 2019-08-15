@@ -43,7 +43,9 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 
 	// 分页查询效率慢,优化方式 ORDER BY
 	// (建议where的时候用某个自增标识来做起点。比如id必须大于那个最后一条记录的id,并用 ORDER BY id 贼快)
+	protected String str_c = ""; // 取得总页数的条件 - class
 	protected String fmt_c = " 1 = 1 LIMIT %s,%s"; // 分页查询条件 - class
+	protected String str_c_map = ""; // 取得总页数的条件 - map
 	protected String fmt_c_map = " 1 = 1 LIMIT %s,%s"; // 分页查询条件 - map
 	protected boolean isLog4Load = false; // 加载时候是否打印
 	protected int nLimit = 10000; // 限定加载数量
@@ -82,7 +84,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		List<T> ret = null;
 		if (!isCache)
 			ret = newListT();
-		int count = dset().count();
+		int count = dset().count(str_c);
 		int pageCount = ListEx.pageCount(count, nLimit);
 		int begin = 0;
 		List<T> list = null;
@@ -279,7 +281,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 
 	protected List<Map> _loadAll4Map() throws Exception {
 		List<Map> ret = newListT();
-		int count = dset().count();
+		int count = dset().count(str_c_map);
 		int pageCount = ListEx.pageCount(count, nLimit);
 		int begin = 0;
 		List<Map> list = null;
