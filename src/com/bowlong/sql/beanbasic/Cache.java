@@ -93,7 +93,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		for (int i = 0; i < pageCount; i++) {
 			nlmt = Math.min(nLimit, count);
 			c = getCondition(begin, nlmt);
-			list = dset().queryForList(c, clazz);
+			list = dset().queryForList4C(c, clazz);
 			if (isEmpty(list))
 				break;
 			begin += nlmt;
@@ -310,7 +310,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	protected T _loadOne(String c, Class clazz, boolean isCache) {
 		T ret = null;
 		try {
-			ret = dset().queryForObject(c, clazz);
+			ret = dset().queryForObject4C(c, clazz);
 			if (isCache && ret != null)
 				cache(ret);
 		} catch (Exception e) {
