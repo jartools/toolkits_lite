@@ -46,7 +46,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	protected String str_c = ""; // 取得总页数的条件 - class
 	protected String fmt_c = " 1 = 1 LIMIT %s,%s"; // 分页查询条件 - class
 	protected String str_c_map = ""; // 取得总页数的条件 - map
-	protected String fmt_c_map = " 1 = 1 LIMIT %s,%s"; // 分页查询条件 - map
+	protected String fmt_s_map = ""; // 分页查询sql - map
 	protected boolean isLog4Load = false; // 加载时候是否打印
 	protected int nLimit = 10000; // 限定加载数量
 	protected int msSleep = 2; // 限定延迟处理
@@ -275,22 +275,25 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		return listIn.contains(item) || listUp.contains(item);
 	}
 
-	protected String getCondition4Map(int begin, int nlmt) {
-		return String.format(fmt_c_map, begin, nlmt);
+	protected String getSql4Map(int begin, int nlmt) {
+		return String.format(fmt_s_map, begin, nlmt);
 	}
 
 	protected List<Map> _loadAll4Map() throws Exception {
 		List<Map> ret = newListT();
+		if(isEmpty(fmt_s_map))
+			return ret;
+		
 		int count = dset().count(str_c_map);
 		int pageCount = ListEx.pageCount(count, nLimit);
 		int begin = 0;
 		List<Map> list = null;
 		int nlmt = nLimit;
-		String c = "";
+		String _s = "";
 		for (int i = 0; i < pageCount; i++) {
 			nlmt = Math.min(nLimit, count);
-			c = getCondition4Map(begin, nlmt);
-			list = dset().queryForList(c);
+			_s = getSql4Map(begin, nlmt);
+			list = dset().queryForList(_s);
 			if (isEmpty(list))
 				break;
 			begin += nlmt;
@@ -298,7 +301,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 			ret.addAll(list);
 			Thread.sleep(msSleep);
 			if (isLog4Load) {
-				log.info(String.format("== map = %s = [%s]", this.tabelName, c));
+				log.info(String.format("== map = %s = [%s]", this.tabelName, _s));
 			}
 		}
 		return ret;

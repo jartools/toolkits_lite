@@ -66,7 +66,7 @@ public class DataSet extends JdbcTemplet {
 		return queryForList("", c2);
 	}
 
-	public final <T> T queryForObject(String c, Class c2)
+	public final <T> T queryForObject4C(String c, Class c2)
 			throws Exception {
 		List<T> dataset = queryForList(c, c2);
 		if (dataset == null || dataset.isEmpty())
@@ -74,14 +74,14 @@ public class DataSet extends JdbcTemplet {
 		return dataset.get(0);
 	}
 
-	public final Map queryForMap(String c) throws SQLException {
+	public final Map queryForMap4C(String c) throws SQLException {
 		List<Map> dataset = queryForList(c);
 		if (dataset == null || dataset.isEmpty())
 			return null;
 		return dataset.get(0);
 	}
 
-	public final List<Map> queryForList(String c) throws SQLException {
+	public final List<Map> queryForList4C(String c) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			sb.append("SELECT * FROM ").append(TABLENAME);
@@ -95,7 +95,7 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final <T> List<T> queryForList(String c, Class c2)
+	public final <T> List<T> queryForList4C(String c, Class c2)
 			throws Exception {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
