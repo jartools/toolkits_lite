@@ -185,7 +185,7 @@ public class MapEx extends ExOrigin {
 		else if (obj instanceof Long)
 			return new NewDate((Long) obj);
 		else if (obj instanceof String)
-			return NewDate.parse2((String) obj, DateEx.fmt_yyyy_MM_dd_HH_mm_ss);
+			return new NewDate(parse2Date((String) obj, fmt_yyyy_MM_dd_HH_mm_ss));
 
 		return null;
 	}

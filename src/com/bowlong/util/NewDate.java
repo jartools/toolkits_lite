@@ -1,7 +1,5 @@
 package com.bowlong.util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -10,18 +8,6 @@ import java.util.TimeZone;
 @SuppressWarnings("serial")
 public class NewDate extends Date {
 	Calendar c = Calendar.getInstance();
-
-	public static final long TIME_MILLISECOND = 1;
-
-	public static final long TIME_SECOND = 1000 * TIME_MILLISECOND;
-
-	public static final long TIME_MINUTE = 60 * TIME_SECOND;
-
-	public static final long TIME_HOUR = 60 * TIME_MINUTE;
-
-	public static final long TIME_DAY = 24 * TIME_HOUR;
-
-	public static final long TIME_WEEK = 7 * TIME_DAY;
 
 	public NewDate() {
 		super();
@@ -88,23 +74,23 @@ public class NewDate extends Date {
 	}
 
 	public NewDate addWeek(int w) {
-		return addMillis(w * TIME_WEEK);
+		return addMillis(w * DateEx.TIME_WEEK);
 	}
 
 	public NewDate addDay(int d) {
-		return addMillis(d * TIME_DAY);
+		return addMillis(d * DateEx.TIME_DAY);
 	}
 
 	public NewDate addHour(int h) {
-		return addMillis(h * TIME_HOUR);
+		return addMillis(h * DateEx.TIME_HOUR);
 	}
 
 	public NewDate addMinute(int m) {
-		return addMillis(m * TIME_MINUTE);
+		return addMillis(m * DateEx.TIME_MINUTE);
 	}
 
 	public NewDate addSecond(int s) {
-		return addMillis(s * TIME_SECOND);
+		return addMillis(s * DateEx.TIME_SECOND);
 	}
 
 	public NewDate addMillis(long t) {
@@ -113,63 +99,15 @@ public class NewDate extends Date {
 	}
 
 	public String fmt_yyyyMMdd() {
-		String fmt = DateEx.fmt_yyyy_MM_dd;
-		return format(fmt);
+		return format(DateEx.fmt_yyyy_MM_dd);
 	}
 
 	public String fmt_yyyyMMddHHmmss() {
-		String fmt = DateEx.fmt_yyyy_MM_dd_HH_mm_ss;
-		return format(fmt);
+		return format(DateEx.fmt_yyyy_MM_dd_HH_mm_ss);
 	}
 
 	public String format(String fmt) {
-		SimpleDateFormat sdf = new SimpleDateFormat(fmt);
-		return sdf.format(this);
-	}
-
-	public void parse(String d, String fmt) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat(fmt);
-		this.setTime(sdf.parse(d).getTime());
-	}
-
-	public static NewDate parse2(String d, String fmt) {
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat(fmt);
-			return new NewDate(sdf.parse(d));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static NewDate parse2(String d) {
-		try {
-			int len = d.length();
-			if (len == DateEx.fmt_yyyy_MM_dd_HH_mm_ss_sss.length())
-				return parse2(d, DateEx.fmt_yyyy_MM_dd_HH_mm_ss_sss);
-			else if (len == DateEx.fmt_yyyy_MM_dd_HH_mm_ss.length())
-				return parse2(d, DateEx.fmt_yyyy_MM_dd_HH_mm_ss);
-			else if (len == DateEx.fmt_yyyy_MM_dd.length())
-				return parse2(d, DateEx.fmt_yyyy_MM_dd);
-			return null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public int getYearMonthDay() {
-		return 0;
-	}
-
-	// 与当前时间差
-	public long diffCurrentTime() {
-		return System.currentTimeMillis() - getTime();
-	}
-
-	// 时间差
-	public long difference(Date dat2) {
-		return dat2.getTime() - getTime();
+		return DateEx.format(this, fmt);
 	}
 
 	public static void main(String[] args) {
@@ -299,16 +237,17 @@ public class NewDate extends Date {
 		this.setTime(ts.getTime());
 	}
 
-	public long dateDiffIt(Date d) {
-		return msDiffIt(d.getTime());
+	// 时间差
+	public long diffMsIt(Date d) {
+		return diffMsIt(d.getTime());
 	}
 
-	public long msDiffIt(long ms) {
+	public long diffMsIt(long ms) {
 		return ms - getTime();
 	}
 
-	public long nowDiffIt() {
-		return System.currentTimeMillis() - getTime();
+	public long diffMsIt() {
+		return diffMsIt(DateEx.now());
 	}
 
 	public int maxDayOfMonth() {
@@ -321,7 +260,7 @@ public class NewDate extends Date {
 	}
 
 	public boolean notIn(Date min, Date max) {
-		return this.before(min) || this.after(max);
+		return !in(min, max);
 	}
 
 	public String toString() {
@@ -356,5 +295,9 @@ public class NewDate extends Date {
 
 	public NewDate create() {
 		return new NewDate(this);
+	}
+	
+	public NewDate zero() {
+		return setHourMinuteSec(0, 0, 0);
 	}
 }

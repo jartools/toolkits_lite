@@ -203,7 +203,7 @@ public class NewList<E> extends ArrayList<E> {
 		else if (obj instanceof Long)
 			return new Date((Long) obj);
 		else if (obj instanceof String)
-			return NewDate.parse2((String) obj, DateEx.fmt_yyyy_MM_dd_HH_mm_ss);
+			return DateEx.parse2Date((String) obj, DateEx.fmt_yyyy_MM_dd_HH_mm_ss);
 
 		return null;
 	}
@@ -223,7 +223,7 @@ public class NewList<E> extends ArrayList<E> {
 		else if (obj instanceof Long)
 			return new NewDate((Long) obj);
 		else if (obj instanceof String)
-			return NewDate.parse2((String) obj, DateEx.fmt_yyyy_MM_dd_HH_mm_ss);
+			return new NewDate(DateEx.parse2Date((String) obj, DateEx.fmt_yyyy_MM_dd_HH_mm_ss));
 
 		return null;
 	}
