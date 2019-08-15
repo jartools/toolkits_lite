@@ -303,4 +303,16 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		}
 		return ret;
 	}
+
+	protected T _loadOne(String c, Class clazz, boolean isCache) {
+		T ret = null;
+		try {
+			ret = dset().queryForObject(c, clazz);
+			if (isCache && ret != null)
+				cache(ret);
+		} catch (Exception e) {
+			log.error(e2s(e));
+		}
+		return ret;
+	}
 }
