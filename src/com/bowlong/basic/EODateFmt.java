@@ -72,20 +72,13 @@ public class EODateFmt extends EOStrNum {
 	/*** 月份中的星期(没搞懂) **/
 	static public final String fmt_FInMonth = "F";
 
-	static public final long TIME_MILLISECOND = 1;
-
-	static public final long TIME_SECOND = 1000 * TIME_MILLISECOND;
-
-	static public final long TIME_MINUTE = 60 * TIME_SECOND;
-
-	static public final long TIME_HOUR = 60 * TIME_MINUTE;
-
+	static public final int TIME_MILLISECOND = 1;
+	static public final int TIME_SECOND = 1000 * TIME_MILLISECOND;
+	static public final int TIME_MINUTE = 60 * TIME_SECOND;
+	static public final int TIME_HOUR = 60 * TIME_MINUTE;
 	static public final long TIME_DAY = 24 * TIME_HOUR;
-
 	static public final long TIME_WEEK = 7 * TIME_DAY;
-
 	static public final long TIME_YEAR = 365 * TIME_DAY;
-
 	/*** 1900年的时间 **/
 	static public final long TIME_1900 = TIME_YEAR * 1900;
 

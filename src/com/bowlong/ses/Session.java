@@ -18,7 +18,7 @@ public class Session extends MgrSession {
 		return creattime;
 	}
 
-	public void SetOverdue(long overdue) {
+	protected void SetOverdue(long overdue) {
 		this.overdue = overdue;
 	}
 
