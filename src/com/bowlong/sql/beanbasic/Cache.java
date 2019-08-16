@@ -335,4 +335,14 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 			log.error(e2s(e));
 		}
 	}
+	
+	public void excSql(String sql) {
+		if (isEmpty(sql))
+			return;
+		try {
+			dset().execute(sql);
+		} catch (SQLException e) {
+			log.error(e2s(e));
+		}
+	}
 }
