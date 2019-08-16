@@ -28,7 +28,7 @@ public class DataSet extends JdbcTemplate {
 	 * 从 begin 条 开始, num 条记录 SELECT * FROM ( SELECT ROWNUM r, a.* FROM 表名 a
 	 * WHERE 条件 ORDER BY id ) b WHERE b.r >= begin AND b.r < begin + num ;
 	 */
-	public List<Map> queryForList(String c, String idKey, int begin, int num) throws SQLException {
+	public List<Map> queryForMap4C(String c, String idKey, int begin, int num) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			if (c != null && !c.isEmpty()) {
@@ -46,7 +46,7 @@ public class DataSet extends JdbcTemplate {
 		}
 	}
 
-	public <T> List<T> queryForList(String c, String idKey, Class c2, int begin, int num) throws Exception {
+	public <T> List<T> queryForMap4C(String c, String idKey, Class c2, int begin, int num) throws Exception {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			if (c != null && !c.isEmpty()) {
@@ -64,12 +64,12 @@ public class DataSet extends JdbcTemplate {
 		}
 	}
 
-	public List<Map> queryForList2(String idKey, int begin, int num) throws SQLException {
-		return queryForList("", idKey, begin, num);
+	public List<Map> queryForMap4C(String idKey, int begin, int num) throws SQLException {
+		return queryForMap4C("", idKey, begin, num);
 	}
 
-	public <T> List<T> queryForList2(String idKey, Class c2, int begin, int num) throws Exception {
-		return queryForList("", idKey, c2, begin, num);
+	public <T> List<T> queryForMap4C(String idKey, Class c2, int begin, int num) throws Exception {
+		return queryForMap4C("", idKey, c2, begin, num);
 	}
 
 	public int insert(BeanSupport x, String sqlId) throws SQLException {

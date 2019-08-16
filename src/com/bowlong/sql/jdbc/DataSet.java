@@ -59,23 +59,23 @@ public class DataSet extends JdbcTemplet {
 	}
 
 	public final List<Map> queryAll() throws SQLException {
-		return queryForList("");
+		return queryForList4C("");
 	}
 
 	public final <T> List<T> queryAll(Class c2) throws Exception {
-		return queryForList("", c2);
+		return queryForList4C("", c2);
 	}
 
 	public final <T> T queryForObject4C(String c, Class c2)
 			throws Exception {
-		List<T> dataset = queryForList(c, c2);
+		List<T> dataset = queryForList4C(c, c2);
 		if (dataset == null || dataset.isEmpty())
 			return null;
 		return dataset.get(0);
 	}
 
 	public final Map queryForMap4C(String c) throws SQLException {
-		List<Map> dataset = queryForList(c);
+		List<Map> dataset = queryForList4C(c);
 		if (dataset == null || dataset.isEmpty())
 			return null;
 		return dataset.get(0);
@@ -110,7 +110,7 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final List<Map> queryForList(String c, int begin,
+	public final List<Map> queryForList4C(String c, int begin,
 			int num) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
@@ -126,7 +126,7 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final <T> List<T> queryForList(String c, Class c2,
+	public final <T> List<T> queryForList4C(String c, Class c2,
 			int begin, int num) throws Exception {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
@@ -142,14 +142,14 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final List<Map> queryForList(int begin, int num)
+	public final List<Map> queryForList4C(int begin, int num)
 			throws SQLException {
-		return queryForList("", begin, num);
+		return queryForList4C("", begin, num);
 	}
 
-	public final <T> List<T> queryForList(Class c2, int begin,
+	public final <T> List<T> queryForList4C(Class c2, int begin,
 			int num) throws Exception {
-		return queryForList("", c2, begin, num);
+		return queryForList4C("", c2, begin, num);
 	}
 
 	public final int insert(BeanSupport x) throws SQLException {
