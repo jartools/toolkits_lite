@@ -59,28 +59,28 @@ public class DataSet extends JdbcTemplet {
 	}
 
 	public List<Map> queryAll() throws SQLException {
-		return queryForList("");
+		return queryForList4C("");
 	}
 
 	public <T> List<T> queryAll(Class c2) throws Exception {
-		return queryForList("", c2);
+		return queryForList4C("", c2);
 	}
 
-	public <T> T queryForObject(String c, Class c2) throws Exception {
-		List<T> dataset = queryForList(c, c2);
+	public <T> T queryForObject4C(String c, Class c2) throws Exception {
+		List<T> dataset = queryForList4C(c, c2);
 		if (dataset == null || dataset.isEmpty())
 			return null;
 		return dataset.get(0);
 	}
 
 	public Map queryForMap(String c) throws SQLException {
-		List<Map> dataset = queryForList(c);
+		List<Map> dataset = queryForList4C(c);
 		if (dataset == null || dataset.isEmpty())
 			return null;
 		return dataset.get(0);
 	}
 
-	public List<Map> queryForList(String c) throws SQLException {
+	public List<Map> queryForList4C(String c) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			sb.append("SELECT * FROM ").append(TABLENAME);
@@ -94,7 +94,7 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public <T> List<T> queryForList(String c, Class c2) throws Exception {
+	public <T> List<T> queryForList4C(String c, Class c2) throws Exception {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			sb.append("SELECT * FROM ").append(TABLENAME);
@@ -126,7 +126,7 @@ public class DataSet extends JdbcTemplet {
 	// return super.queryForList(sql);
 	// }
 
-	public List<Map> queryForList(String c, String idKey, int begin, int num)
+	public List<Map> queryForList4C(String c, String idKey, int begin, int num)
 			throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
@@ -172,7 +172,7 @@ public class DataSet extends JdbcTemplet {
 	// return super.queryForList(sql, c2);
 	// }
 
-	public <T> List<T> queryForList(String c, String idKey, Class c2,
+	public <T> List<T> queryForList4C(String c, String idKey, Class c2,
 			int begin, int num) throws Exception {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
@@ -200,14 +200,14 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public List<Map> queryForList(String idKey, int begin, int num)
+	public List<Map> queryForList4C(String idKey, int begin, int num)
 			throws SQLException {
-		return queryForList("", begin, num);
+		return queryForList4C("", begin, num);
 	}
 
-	public <T> List<T> queryForList(String idKey, Class c2, int begin, int num)
+	public <T> List<T> queryForList4C(String idKey, Class c2, int begin, int num)
 			throws Exception {
-		return queryForList("", idKey, c2, begin, num);
+		return queryForList4C("", idKey, c2, begin, num);
 	}
 
 	public int insert(BeanSupport x) throws SQLException {
