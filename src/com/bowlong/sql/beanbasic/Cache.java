@@ -21,6 +21,12 @@ import com.bowlong.util.ListEx;
  */
 @SuppressWarnings("rawtypes")
 public class Cache<T extends BeanBasic> extends ExToolkit {
+	
+	static final int NLOG_NONE = 0; // 无log
+	static final int NLOG_LOAD = 1; // 所有 log
+	static final int NLOG_LOAD_A = 2; // log load_all
+	static final int NLOG_LOAD_M = 3; // log load_map
+	
 	static Log log = getLog(Cache.class);
 
 	protected Cache() {
@@ -47,7 +53,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	protected String fmt_c = " 1 = 1 LIMIT %s,%s"; // 分页查询条件 - class
 	protected String str_c_map = ""; // 取得总页数的条件 - map
 	protected String fmt_s_map = ""; // 分页查询sql - map
-	protected boolean isLog4Load = false; // 加载时候是否打印
+	protected int nCurrLog = NLOG_NONE; // 打印 类型
 	protected int nLimit = 10000; // 限定加载数量
 	protected int nLmtMap = 10000; // 限定加载数量 - map
 	protected int msSleep = 2; // 限定延迟处理
@@ -91,6 +97,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		List<T> list = null;
 		int nlmt = nLimit;
 		String c = "";
+		boolean _isLog = (nCurrLog == NLOG_LOAD || nCurrLog == NLOG_LOAD_A);
 		for (int i = 0; i < pageCount; i++) {
 			nlmt = Math.min(nLimit, count);
 			c = getCondition(begin, nlmt);
@@ -105,7 +112,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 				ret.addAll(list);
 
 			Thread.sleep(msSleep);
-			if (isLog4Load) {
+			if (_isLog) {
 				log.info(String.format("== %s = [%s]", this.tabelName, c));
 			}
 		}
@@ -291,6 +298,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		List<Map> list = null;
 		int nlmt = nLmtMap;
 		String _s = "";
+		boolean _isLog = (nCurrLog == NLOG_LOAD || nCurrLog == NLOG_LOAD_M);
 		for (int i = 0; i < pageCount; i++) {
 			nlmt = Math.min(nLmtMap, count);
 			_s = getSql4Map(begin, nlmt);
@@ -301,8 +309,8 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 			count -= nlmt;
 			ret.addAll(list);
 			Thread.sleep(msSleep);
-			if (isLog4Load) {
-				log.info(String.format("== map = %s = [%s]", this.tabelName, _s));
+			if (_isLog) {
+				log.info(String.format("==m= %s = [%s]", this.tabelName, _s));
 			}
 		}
 		return ret;
