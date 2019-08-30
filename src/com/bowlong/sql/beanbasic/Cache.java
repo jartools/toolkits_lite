@@ -21,12 +21,12 @@ import com.bowlong.util.ListEx;
  */
 @SuppressWarnings("rawtypes")
 public class Cache<T extends BeanBasic> extends ExToolkit {
-	
+
 	static final int NLOG_NONE = 0; // 无log
 	static final int NLOG_LOAD = 1; // 所有 log
 	static final int NLOG_LOAD_A = 2; // log load_all
 	static final int NLOG_LOAD_M = 3; // log load_map
-	
+
 	static Log log = getLog(Cache.class);
 
 	protected Cache() {
@@ -76,7 +76,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	public void loadAll() throws Exception {
 		Class clzz = getTClazz();
 		if (clzz != null && clzz != this.getClass())
-			_loadAll(clzz, true);
+			_loadList(clzz, true);
 	}
 
 	protected Class getTClazz() {
@@ -87,7 +87,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		return String.format(fmt_c, begin, nlmt);
 	}
 
-	protected List<T> _loadAll(Class clazz, boolean isCache) throws Exception {
+	private List<T> _loadLst(Class clazz, boolean isCache) throws Exception {
 		List<T> ret = null;
 		if (!isCache)
 			ret = newListT();
@@ -116,6 +116,18 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 				log.info(String.format("== %s = [%s]", this.tabelName, c));
 			}
 		}
+		return ret;
+	}
+
+	protected List<T> _loadList(Class clazz, boolean isCache) {
+		List<T> ret = null;
+		try {
+			ret = _loadLst(clazz, isCache);
+		} catch (Exception e) {
+			log.error(e2s(e));
+		}
+		if (!isCache && ret == null)
+			ret = newListT();
 		return ret;
 	}
 
@@ -287,11 +299,11 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		return String.format(fmt_s_map, begin, nlmt);
 	}
 
-	protected List<Map> _loadAll4Map() throws Exception {
+	private List<Map> _load4Map() throws Exception {
 		List<Map> ret = newListT();
-		if(isEmpty(fmt_s_map))
+		if (isEmpty(fmt_s_map))
 			return ret;
-		
+
 		int count = dset().count(str_c_map);
 		int pageCount = ListEx.pageCount(count, nLmtMap);
 		int begin = 0;
@@ -314,6 +326,15 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 			}
 		}
 		return ret;
+	}
+
+	protected List<Map> _loadList4Map() {
+		try {
+			return _load4Map();
+		} catch (Exception e) {
+			log.error(e2s(e));
+		}
+		return newListT();
 	}
 
 	protected T _loadOne(String c, Class clazz, boolean isCache) {
@@ -343,7 +364,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 			log.error(e2s(e));
 		}
 	}
-	
+
 	public void excSql(String sql) {
 		if (isEmpty(sql))
 			return;
