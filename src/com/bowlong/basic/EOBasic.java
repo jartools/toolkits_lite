@@ -60,8 +60,12 @@ public class EOBasic extends EOConfig {
 	}
 
 	static final public int compareTo(Object v1, Object v2) {
-		if (v1 == null || v2 == null)
+		if (v1 == null && v2 == null)
 			return 0;
+		if (v1 == null)
+			return 1;
+		if (v2 == null)
+			return -1;
 
 		if (v1 instanceof Byte && v2 instanceof Byte) {
 			Boolean i1 = (Boolean) v1;
