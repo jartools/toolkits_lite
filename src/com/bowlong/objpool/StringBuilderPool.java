@@ -1,8 +1,7 @@
 package com.bowlong.objpool;
 
 public class StringBuilderPool extends BasicPool<StringBuilder> {
-	public static final StringBuilderPool POOL = new StringBuilderPool();
-
+	
 	public StringBuilderPool() {
 		super(StringBuilder.class);
 	}

@@ -22,8 +22,7 @@ public abstract class AbstractQueueObjPool<T> {
 			synchronized (queues) {
 				if (num.get() > 0) {
 					num.decrementAndGet();
-					T en = queues.poll();
-					return resetObj(en);
+					return resetObj(queues.poll());
 				}
 			}
 		}
@@ -53,5 +52,11 @@ public abstract class AbstractQueueObjPool<T> {
 
 	public final int size() {
 		return num.intValue();
+	}
+
+	public final int count() {
+		synchronized (queues) {
+			return queues.size();
+		}
 	}
 }
