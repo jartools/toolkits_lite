@@ -32,7 +32,11 @@ public class StrBufPool extends BasicPool<StrBuilder> {
 		return obj;
 	}
 
-	public static final StrBuilder borrowObject() {
+	static final public StrBuilder borrowObject() {
 		return borrowObject(StrBuilder.class);
+	}
+
+	static final public StrBufPool getPool() {
+		return (StrBufPool) getPool(StrBuilder.class);
 	}
 }

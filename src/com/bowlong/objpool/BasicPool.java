@@ -20,8 +20,12 @@ public abstract class BasicPool<T> extends AbstractQueueObjPool<T> {
 		}
 	}
 
+	static final public <T> BasicPool<T> getPool(Class<T> clazz) {
+		return MgrPools.getPool(clazz);
+	}
+	
 	static final public <T> T borrowObject(Class<T> clazz) {
-		BasicPool<T> _pool = MgrPools.getPool(clazz);
+		BasicPool<T> _pool = getPool(clazz);
 		if (_pool != null)
 			return _pool.borrow();
 		return null;

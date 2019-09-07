@@ -3,17 +3,13 @@ package com.bowlong.objpool;
 import com.bowlong.io.ByteOutStream;
 
 public class ByteOutPool extends BasicPool<ByteOutStream> {
-	
+
 	public ByteOutPool() {
 		super(ByteOutStream.class);
 	}
 
 	public ByteOutPool(int num) {
-		super(ByteOutStream.class,num);
-	}
-	
-	public static final ByteOutStream borrowObject() {
-		return borrowObject(ByteOutStream.class);
+		super(ByteOutStream.class, num);
 	}
 
 	@Override
@@ -35,4 +31,11 @@ public class ByteOutPool extends BasicPool<ByteOutStream> {
 		return obj;
 	}
 
+	static final public ByteOutStream borrowObject() {
+		return borrowObject(ByteOutStream.class);
+	}
+
+	static final public ByteOutPool getPool() {
+		return (ByteOutPool) getPool(ByteOutStream.class);
+	}
 }

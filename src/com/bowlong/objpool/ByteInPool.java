@@ -12,12 +12,6 @@ public class ByteInPool extends BasicPool<ByteInStream> {
 		super(ByteInStream.class, num);
 	}
 
-	public static final ByteInStream borrowObject(byte[] buf) {
-		ByteInStream r2 = borrowObject(ByteInStream.class);
-		r2.setBytes(buf);
-		return r2;
-	}
-
 	@Override
 	public final ByteInStream createObj() {
 		ByteInStream is = new ByteInStream(new byte[8]);
@@ -37,4 +31,17 @@ public class ByteInPool extends BasicPool<ByteInStream> {
 		return obj;
 	}
 
+	static final public ByteInStream borrowObject() {
+		return borrowObject(ByteInStream.class);
+	}
+
+	static final public ByteInStream borrowObject(byte[] buf) {
+		ByteInStream r2 = borrowObject();
+		r2.setBytes(buf);
+		return r2;
+	}
+
+	static final public ByteInPool getPool() {
+		return (ByteInPool) getPool(ByteInStream.class);
+	}
 }

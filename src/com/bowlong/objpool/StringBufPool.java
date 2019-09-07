@@ -27,7 +27,11 @@ public class StringBufPool extends BasicPool<StringBuffer> {
 		return obj;
 	}
 
-	public static final StringBuffer borrowObject() {
+	static final public StringBuffer borrowObject() {
 		return borrowObject(StringBuffer.class);
+	}
+
+	static final public StringBufPool getPool() {
+		return (StringBufPool) getPool(StringBuffer.class);
 	}
 }
