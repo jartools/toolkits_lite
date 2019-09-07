@@ -35,8 +35,9 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 		return _newEntity(toMap(rs));
 	}
 
+	/** 必须实现:new对象并调用toEntity函数 */
 	protected <T extends BeanBasic> T _newEntity(Map map) {
-		return null;
+		return null; // 例如  return new BeanBasic().toEntity(map);
 	}
 
 	/** map -> entity */
@@ -80,4 +81,10 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 		Map<String, Object> map = newMapT();
 		return toMap4Json(map);
 	}
+	
+	/** 清除部分 */
+	public void clear() {}
+	
+	/** 清除全部 */
+	public void clearAll() {clear();}
 }
