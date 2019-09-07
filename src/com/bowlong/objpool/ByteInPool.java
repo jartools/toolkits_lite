@@ -2,26 +2,20 @@ package com.bowlong.objpool;
 
 import com.bowlong.io.ByteInStream;
 
-public class ByteInPool extends AbstractQueueObjPool<ByteInStream> {
-	public static final ByteInPool POOL = new ByteInPool();
-
-	public static final ByteInStream borrowObject(byte[] buf) {
-		ByteInStream r2 = POOL.borrow();
-		r2.setBytes(buf);
-		return r2;
-	}
+public class ByteInPool extends BasicPool<ByteInStream> {
 
 	public ByteInPool() {
+		super(ByteInStream.class);
 	}
 
 	public ByteInPool(int num) {
-		for (int i = 0; i < num; i++) {
-			returnObj(createObj());
-		}
+		super(ByteInStream.class, num);
 	}
 
-	public static final void returnObject(ByteInStream obj) {
-		POOL.returnObj(obj);
+	public static final ByteInStream borrowObject(byte[] buf) {
+		ByteInStream r2 = borrowObject(ByteInStream.class);
+		r2.setBytes(buf);
+		return r2;
 	}
 
 	@Override

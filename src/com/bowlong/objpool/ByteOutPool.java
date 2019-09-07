@@ -2,24 +2,18 @@ package com.bowlong.objpool;
 
 import com.bowlong.io.ByteOutStream;
 
-public class ByteOutPool extends AbstractQueueObjPool<ByteOutStream> {
-	public static final ByteOutPool POOL = new ByteOutPool();
-
-	public static final ByteOutStream borrowObject() {
-		return POOL.borrow();
-	}
-
+public class ByteOutPool extends BasicPool<ByteOutStream> {
+	
 	public ByteOutPool() {
+		super(ByteOutStream.class);
 	}
 
 	public ByteOutPool(int num) {
-		for (int i = 0; i < num; i++) {
-			returnObj(createObj());
-		}
+		super(ByteOutStream.class,num);
 	}
-
-	public static final void returnObject(ByteOutStream obj) {
-		POOL.returnObj(obj);
+	
+	public static final ByteOutStream borrowObject() {
+		return borrowObject(ByteOutStream.class);
 	}
 
 	@Override

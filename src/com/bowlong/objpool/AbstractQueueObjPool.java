@@ -4,25 +4,25 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class AbstractQueueObjPool<E> {
-	protected final Queue<E> queues = new ConcurrentLinkedQueue<E>();
+public abstract class AbstractQueueObjPool<T> {
+	protected final Queue<T> queues = new ConcurrentLinkedQueue<T>();
 
-	protected abstract E createObj();
+	protected abstract T createObj();
 
-	protected abstract E resetObj(E obj);
+	protected abstract T resetObj(T obj);
 
-	protected abstract E destoryObj(E obj);
+	protected abstract T destoryObj(T obj);
 
 	protected int MAX = Short.MAX_VALUE;
 
 	protected final AtomicInteger num = new AtomicInteger();
 
-	protected final E borrow() {
+	protected final T borrow() {
 		synchronized (num) {
 			synchronized (queues) {
 				if (num.get() > 0) {
 					num.decrementAndGet();
-					E en = queues.poll();
+					T en = queues.poll();
 					return resetObj(en);
 				}
 			}
@@ -30,7 +30,7 @@ public abstract class AbstractQueueObjPool<E> {
 		return createObj();
 	}
 
-	public final void returnObj(E obj) {
+	public final void returnObj(T obj) {
 		if (obj == null)
 			return;
 

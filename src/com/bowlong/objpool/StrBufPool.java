@@ -2,17 +2,14 @@ package com.bowlong.objpool;
 
 import com.bowlong.util.StrBuilder;
 
-public class StrBufPool extends AbstractQueueObjPool<StrBuilder> {
-
-	public static final StrBufPool POOL = new StrBufPool();
+public class StrBufPool extends BasicPool<StrBuilder> {
 
 	public StrBufPool() {
+		super(StrBuilder.class);
 	}
 
 	public StrBufPool(int num) {
-		for (int i = 0; i < num; i++) {
-			returnObj(createObj());
-		}
+		super(StrBuilder.class, num);
 	}
 
 	@Override
@@ -36,11 +33,6 @@ public class StrBufPool extends AbstractQueueObjPool<StrBuilder> {
 	}
 
 	public static final StrBuilder borrowObject() {
-		return POOL.borrow();
+		return borrowObject(StrBuilder.class);
 	}
-
-	public static final void returnObject(StrBuilder obj) {
-		POOL.returnObj(obj);
-	}
-
 }

@@ -22,6 +22,9 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 	static final public String upFmt = "UPDATE `%s` SET %s WHERE %s";
 	static final public String delFmt = "DELETE FROM `%s` WHERE %s";
 
+	public boolean isUsePool = false; // 是否使用对象池
+	private boolean _isInitPool = false; // 是否初始化了对象池
+
 	private Map<String, Object> toMap(ResultSet rs) throws SQLException {
 		return SqlEx.toMap(rs);
 	}
@@ -37,7 +40,14 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 
 	/** 必须实现:new对象并调用toEntity函数 */
 	protected <T extends BeanBasic> T _newEntity(Map map) {
-		return null; // 例如  return new BeanBasic().toEntity(map);
+		if (this.isUsePool) {
+			if (!this._isInitPool) {
+				initPool(this.getClass());
+				this._isInitPool = true;
+			}
+			return (T) borrowObject(this.getClass());
+		}
+		return null; // 例如 return new BeanBasic().toEntity(map);
 	}
 
 	/** map -> entity */
@@ -72,7 +82,7 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 		Map<String, Object> map = newMapT();
 		return toMap4Html(map);
 	}
-	
+
 	protected Map<String, Object> toMap4Json(Map<String, Object> map) {
 		return toMap(map);
 	}
@@ -81,10 +91,25 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 		Map<String, Object> map = newMapT();
 		return toMap4Json(map);
 	}
-	
+
 	/** 清除部分 */
-	public void clear() {}
-	
+	public void clear() {
+	}
+
 	/** 清除全部 */
-	public void clearAll() {clear();}
+	public void clearAll() {
+		clear();
+	}
+
+	static final public <T extends BeanBasic> void initPool(Class<T> clazz) {
+		BBasisPool.initPool(new BBasisPool(clazz));
+	}
+
+	static final public <T extends BeanBasic> T borrowObject(Class<T> clazz) {
+		return BBasisPool.borrowObject(clazz);
+	}
+
+	static final public <T extends BeanBasic> void returnObject(T obj) {
+		BBasisPool.returnObject(obj);
+	}
 }

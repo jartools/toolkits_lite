@@ -1,16 +1,13 @@
 package com.bowlong.objpool;
 
-public class StringBufPool extends AbstractQueueObjPool<StringBuffer> {
-
-	public static final StringBufPool POOL = new StringBufPool();
+public class StringBufPool extends BasicPool<StringBuffer> {
 
 	public StringBufPool() {
+		super(StringBuffer.class);
 	}
 
 	public StringBufPool(int num) {
-		for (int i = 0; i < num; i++) {
-			returnObj(createObj());
-		}
+		super(StringBuffer.class, num);
 	}
 
 	@Override
@@ -31,11 +28,6 @@ public class StringBufPool extends AbstractQueueObjPool<StringBuffer> {
 	}
 
 	public static final StringBuffer borrowObject() {
-		return POOL.borrow();
+		return borrowObject(StringBuffer.class);
 	}
-
-	public static final void returnObject(StringBuffer obj) {
-		POOL.returnObj(obj);
-	}
-
 }
