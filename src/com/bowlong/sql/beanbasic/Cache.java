@@ -19,7 +19,7 @@ import com.bowlong.util.ListEx;
  *
  * @param <T>
  */
-@SuppressWarnings({ "rawtypes", "unchecked" })
+@SuppressWarnings({ "rawtypes"})
 public class Cache<T extends BeanBasic> extends ExToolkit {
 
 	static final protected int NLOG_NONE = 0; // 无log
@@ -30,7 +30,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	static Log log = getLog(Cache.class);
 
 	static final public <T extends BeanBasic> void initPool(Class<T> clazz) {
-		BBasisPool.initPool(new BBasisPool(clazz));
+		BBasisPool.initPool(new BBasisPool<T>(clazz));
 	}
 
 	static final public <T extends BeanBasic> T borrowObject(Class<T> clazz) {
