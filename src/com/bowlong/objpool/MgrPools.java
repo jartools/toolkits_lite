@@ -3,6 +3,7 @@ package com.bowlong.objpool;
 import java.util.Map;
 
 import com.bowlong.basic.ExToolkit;
+import com.bowlong.tool.SnowflakeldPool;
 
 /**
  * 对象池的管理类
@@ -69,5 +70,6 @@ public class MgrPools extends ExToolkit {
 		initPool(new StrBufPool());
 		initPool(new StringBufPool());
 		initPool(new StringBuilderPool());
+		initPool(new SnowflakeldPool());
 	}
 }

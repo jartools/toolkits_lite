@@ -26,10 +26,10 @@ public class SnowflakeIdWorker {
 	static final long twepoch = 1539532800000L;
 
 	/** 机器id所占的位数 */
-	static final long workerIdBits = 5L;
+	static final int workerIdBits = 5;
 
 	/** 数据标识id所占的位数 */
-	static final long datacenterIdBits = 5L;
+	static final int datacenterIdBits = 5;
 
 	/** 支持的最大机器id，结果是31 (这个移位算法可以很快的计算出几位二进制数所能表示的最大十进制数) */
 	static final long maxWorkerId = -1L ^ (-1L << workerIdBits);
@@ -38,21 +38,21 @@ public class SnowflakeIdWorker {
 	static final long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
 
 	/** 序列在id中占的位数 */
-	static final long sequenceBits = 12L;
+	static final int sequenceBits = 12;
 
 	/** 机器ID向左移12位 */
-	static final long workerIdShift = sequenceBits;
+	static final int workerIdShift = sequenceBits;
 
 	/** 数据标识id向左移17位(12+5) */
-	static final long datacenterIdShift = sequenceBits + workerIdBits;
+	static final int datacenterIdShift = sequenceBits + workerIdBits;
 
 	/** 时间截向左移22位(5+5+12) */
-	static final long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
+	static final int timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
 
 	/** 生成序列的掩码，这里为4095 (0b111111111111=0xfff=4095) */
 	static final long sequenceMask = -1L ^ (-1L << sequenceBits);
-	
-	/** 错误码  */
+
+	/** 错误码 */
 	static final String fmtError = "Clock moved backwards. Refusing to generate id for %d milliseconds";
 
 	/** 工作机器ID(0~31) */
@@ -77,10 +77,8 @@ public class SnowflakeIdWorker {
 	/**
 	 * 构造函数
 	 * 
-	 * @param workerId
-	 *            工作ID (0~31)
-	 * @param datacenterId
-	 *            数据中心ID (0~31)
+	 * @param workerId     工作ID (0~31)
+	 * @param datacenterId 数据中心ID (0~31)
 	 */
 	public SnowflakeIdWorker(int workerId, int datacenterId) {
 		reInit(workerId, datacenterId);
@@ -89,10 +87,8 @@ public class SnowflakeIdWorker {
 	/**
 	 * 初始函数
 	 * 
-	 * @param workerId
-	 *            工作ID (0~31)
-	 * @param datacenterId
-	 *            数据中心ID (0~31)
+	 * @param workerId     工作ID (0~31)
+	 * @param datacenterId 数据中心ID (0~31)
 	 */
 	public SnowflakeIdWorker reInit(int workerId, int datacenterId) {
 		if (workerId > maxWorkerId || workerId < 0) {
@@ -117,7 +113,7 @@ public class SnowflakeIdWorker {
 
 		// 如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常
 		if (timestamp < lastTimestamp) {
-			throw new RuntimeException(String.format(fmtError,lastTimestamp - timestamp));
+			throw new RuntimeException(String.format(fmtError, lastTimestamp - timestamp));
 		}
 
 		// 如果是同一时间生成的，则进行毫秒内序列
@@ -150,11 +146,10 @@ public class SnowflakeIdWorker {
 	/**
 	 * 阻塞到下一个毫秒，直到获得新的时间戳
 	 * 
-	 * @param lastTimestamp
-	 *            上次生成ID的时间截
+	 * @param lastTimestamp 上次生成ID的时间截
 	 * @return 当前时间戳
 	 */
-	protected long tilNextMillis(long lastTimestamp) {
+	private long tilNextMillis(long lastTimestamp) {
 		long timestamp = timeGen();
 		while (timestamp <= lastTimestamp) {
 			timestamp = timeGen();
@@ -167,8 +162,13 @@ public class SnowflakeIdWorker {
 	 * 
 	 * @return 当前时间(毫秒)
 	 */
-	protected long timeGen() {
+	private long timeGen() {
 		return System.currentTimeMillis();
+	}
+
+	@Override
+	public String toString() {
+		return "SnowflakeIdWorker [workerId=" + workerId + ", datacenterId=" + datacenterId + "]";
 	}
 
 	static SnowflakeIdWorker _defInstance = null;

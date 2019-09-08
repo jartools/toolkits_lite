@@ -6,7 +6,7 @@ package com.bowlong.objpool;
  * @author canyon/龚阳辉
  * @time 2019-09-07 14:35
  */
-public abstract class BasicPool<T> extends AbstractQueueObjPool<T> {
+public class BasicPool<T> extends AbstractQueueObjPool<T> {
 	protected Class<T> _tClazz = null;
 
 	public BasicPool(Class<T> clazz) {
@@ -20,10 +20,25 @@ public abstract class BasicPool<T> extends AbstractQueueObjPool<T> {
 		}
 	}
 
+	@Override
+	protected T createObj() {
+		return null;
+	}
+
+	@Override
+	protected T resetObj(T obj) {
+		return obj;
+	}
+
+	@Override
+	protected T destoryObj(T obj) {
+		return obj;
+	}
+
 	static final public <T> BasicPool<T> getPool(Class<T> clazz) {
 		return MgrPools.getPool(clazz);
 	}
-	
+
 	static final public <T> T borrowObject(Class<T> clazz) {
 		BasicPool<T> _pool = getPool(clazz);
 		if (_pool != null)
