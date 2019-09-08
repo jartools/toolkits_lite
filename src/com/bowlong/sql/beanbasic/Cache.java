@@ -22,10 +22,10 @@ import com.bowlong.util.ListEx;
 @SuppressWarnings("rawtypes")
 public class Cache<T extends BeanBasic> extends ExToolkit {
 
-	static final int NLOG_NONE = 0; // 无log
-	static final int NLOG_LOAD = 1; // 所有 log
-	static final int NLOG_LOAD_A = 2; // log load_all
-	static final int NLOG_LOAD_M = 3; // log load_map
+	static final protected int NLOG_NONE = 0; // 无log
+	static final protected int NLOG_LOAD = 1; // 所有 log
+	static final protected int NLOG_LOAD_L = 2; // log load_list
+	static final protected int NLOG_LOAD_M = 3; // log load_map
 
 	static Log log = getLog(Cache.class);
 
@@ -97,7 +97,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		List<T> list = null;
 		int nlmt = nLimit;
 		String c = "";
-		boolean _isLog = (nCurrLog == NLOG_LOAD || nCurrLog == NLOG_LOAD_A);
+		boolean _isLog = (nCurrLog == NLOG_LOAD || nCurrLog == NLOG_LOAD_L);
 		for (int i = 0; i < pageCount; i++) {
 			nlmt = Math.min(nLimit, count);
 			c = getCondition(begin, nlmt);
