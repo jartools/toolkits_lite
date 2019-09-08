@@ -90,16 +90,4 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 	public void clearAll() {
 		clear();
 	}
-
-	static final public <T extends BeanBasic> void initPool(Class<T> clazz) {
-		BBasisPool.initPool(new BBasisPool(clazz));
-	}
-
-	static final public <T extends BeanBasic> T borrowObject(Class<T> clazz) {
-		return BBasisPool.borrowObject(clazz);
-	}
-
-	static final public <T extends BeanBasic> void returnObject(T obj) {
-		BBasisPool.returnObject(obj);
-	}
 }
