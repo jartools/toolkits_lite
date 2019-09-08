@@ -40,4 +40,12 @@ public class SnowflakeldPool extends BasicPool<SnowflakeIdWorker> {
 	static final public SnowflakeldPool getPool() {
 		return (SnowflakeldPool) getPool(SnowflakeIdWorker.class);
 	}
+
+	/** 外部调用函数 */
+	static final public long nextId() {
+		SnowflakeIdWorker _w = borrowObject();
+		long ret = _w.nextId();
+		returnObject(_w);
+		return ret;
+	}
 }
