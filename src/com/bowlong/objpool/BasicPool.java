@@ -15,9 +15,7 @@ public class BasicPool<T> extends AbstractQueueObjPool<T> {
 
 	public BasicPool(Class<T> clazz, int initNum) {
 		this._tClazz = clazz;
-		for (int i = 0; i < initNum; i++) {
-			returnObj(createObj());
-		}
+		onInit(initNum);
 	}
 
 	@Override
@@ -33,6 +31,12 @@ public class BasicPool<T> extends AbstractQueueObjPool<T> {
 	@Override
 	protected T destoryObj(T obj) {
 		return obj;
+	}
+	
+	public final void onInit(int initNum) {
+		for (int i = 0; i < initNum; i++) {
+			returnObj(createObj());
+		}
 	}
 
 	static final public <T> BasicPool<T> getPool(Class<T> clazz) {
