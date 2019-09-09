@@ -6,7 +6,7 @@ import com.bowlong.basic.ExToolkit;
 import com.bowlong.tool.SnowflakeldPool;
 
 /**
- * 对象池的管理类
+ * 对象池的管理类 管理 Factory( = pool，创建，借出，回收对象等逻辑)
  * 
  * @author canyon/龚阳辉
  * @time 2019-09-07 14:35
@@ -22,6 +22,19 @@ public class MgrPools extends ExToolkit {
 	static final public void initPool(BasicPool<?> val) {
 		if (!isEmpty(val))
 			map.put(val._tClazz, val);
+	}
+
+	static final public BasicPool<?> rmPool(Class<?> clazz) {
+		if (clazz != null)
+			return map.remove(clazz);
+		return null;
+	}
+
+	static final public void reInitPool(BasicPool<?> val) {
+		if (!isEmpty(val)) {
+			rmPool(val._tClazz);
+			initPool(val);
+		}
 	}
 
 	static final public BasicPool<?> getPool0(Class<?> clazz) {

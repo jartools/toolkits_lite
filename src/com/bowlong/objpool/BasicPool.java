@@ -20,9 +20,15 @@ public class BasicPool<T> extends AbstractQueueObjPool<T> {
 
 	@Override
 	protected T createObj() {
+		if (this._tClazz != null) {
+			try {
+				return this._tClazz.newInstance();
+			} catch (Exception e) {
+			}
+		}
 		return null;
 	}
-
+	
 	@Override
 	protected T resetObj(T obj) {
 		return obj;
@@ -32,7 +38,7 @@ public class BasicPool<T> extends AbstractQueueObjPool<T> {
 	protected T destoryObj(T obj) {
 		return obj;
 	}
-	
+
 	public final void onInit(int initNum) {
 		for (int i = 0; i < initNum; i++) {
 			returnObj(createObj());

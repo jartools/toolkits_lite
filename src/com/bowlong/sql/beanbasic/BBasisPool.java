@@ -20,18 +20,6 @@ public class BBasisPool<T extends BeanBasic> extends BasicPool<T> {
 	}
 
 	@Override
-	protected T createObj() {
-		if (_tClazz != null) {
-			try {
-				return _tClazz.newInstance();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
-
-	@Override
 	protected T resetObj(T obj) {
 		if (obj != null) {
 			obj.clear();
