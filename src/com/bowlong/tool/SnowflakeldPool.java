@@ -48,4 +48,7 @@ public class SnowflakeldPool extends BasicPool<SnowflakeIdWorker> {
 		returnObject(_w);
 		return ret;
 	}
+	static final public String nextIdStr() {
+		return String.valueOf(nextId());
+	}
 }
