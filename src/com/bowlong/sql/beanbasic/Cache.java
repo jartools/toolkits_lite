@@ -315,15 +315,15 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		return String.format(fmt_s_map, begin, nlmt);
 	}
 
-	private List<Map> _load4Map() throws Exception {
-		List<Map> ret = newListT();
+	private List<Map<String, Object>> _load4Map() throws Exception {
+		List<Map<String, Object>> ret = newListT();
 		if (isEmpty(fmt_s_map))
 			return ret;
 
 		int count = dset().count(str_c_map);
 		int pageCount = ListEx.pageCount(count, nLmtMap);
 		int begin = 0;
-		List<Map> list = null;
+		List<Map<String, Object>> list = null;
 		int nlmt = nLmtMap;
 		String _s = "";
 		boolean _isLog = (nCurrLog == NLOG_LOAD || nCurrLog == NLOG_LOAD_M);
@@ -344,7 +344,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		return ret;
 	}
 
-	protected List<Map> _loadList4Map() {
+	protected List<Map<String, Object>> _loadList4Map() {
 		try {
 			return _load4Map();
 		} catch (Exception e) {

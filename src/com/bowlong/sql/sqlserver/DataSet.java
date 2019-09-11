@@ -58,7 +58,7 @@ public class DataSet extends JdbcTemplet {
 		return pageCount("", size);
 	}
 
-	public List<Map> queryAll() throws SQLException {
+	public List<Map<String, Object>> queryAll() throws SQLException {
 		return queryForList4C("");
 	}
 
@@ -73,14 +73,14 @@ public class DataSet extends JdbcTemplet {
 		return dataset.get(0);
 	}
 
-	public Map queryForMap(String c) throws SQLException {
-		List<Map> dataset = queryForList4C(c);
+	public Map<String, Object> queryForMap(String c) throws SQLException {
+		List<Map<String, Object>> dataset = queryForList4C(c);
 		if (dataset == null || dataset.isEmpty())
 			return null;
 		return dataset.get(0);
 	}
 
-	public List<Map> queryForList4C(String c) throws SQLException {
+	public List<Map<String, Object>> queryForList4C(String c) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			sb.append("SELECT * FROM ").append(TABLENAME);
@@ -126,7 +126,7 @@ public class DataSet extends JdbcTemplet {
 	// return super.queryForList(sql);
 	// }
 
-	public List<Map> queryForList4C(String c, String idKey, int begin, int num)
+	public List<Map<String, Object>> queryForList4C(String c, String idKey, int begin, int num)
 			throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {

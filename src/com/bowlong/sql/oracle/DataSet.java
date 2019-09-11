@@ -28,7 +28,7 @@ public class DataSet extends JdbcTemplate {
 	 * 从 begin 条 开始, num 条记录 SELECT * FROM ( SELECT ROWNUM r, a.* FROM 表名 a
 	 * WHERE 条件 ORDER BY id ) b WHERE b.r >= begin AND b.r < begin + num ;
 	 */
-	public List<Map> queryForMap4C(String c, String idKey, int begin, int num) throws SQLException {
+	public List<Map<String, Object>> queryForMap4C(String c, String idKey, int begin, int num) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			if (c != null && !c.isEmpty()) {
@@ -64,7 +64,7 @@ public class DataSet extends JdbcTemplate {
 		}
 	}
 
-	public List<Map> queryForMap4C(String idKey, int begin, int num) throws SQLException {
+	public List<Map<String, Object>> queryForMap4C(String idKey, int begin, int num) throws SQLException {
 		return queryForMap4C("", idKey, begin, num);
 	}
 

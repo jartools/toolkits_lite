@@ -221,13 +221,12 @@ public class JdbcOrigin extends ExToolkit {
 		}
 	}
 
-	public List<Map> queryForList(String sql) throws SQLException {
+	public List<Map<String, Object>> queryForList(String sql) throws SQLException {
 		Connection conn = conn_r();
 		try {
-			List<Map> r2 = null;
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
-			r2 = toMaps(rs);
+			List<Map<String, Object>> r2 = toMaps(rs);
 			rs.close();
 			stmt.close();
 			return r2;
@@ -410,13 +409,12 @@ public class JdbcOrigin extends ExToolkit {
 		}
 	}
 
-	public List<Map> queryByCall(String sql) throws SQLException {
+	public List<Map<String, Object>> queryByCall(String sql) throws SQLException {
 		Connection conn = conn_w();
 		try {
-			List<Map> r2 = null;
 			CallableStatement stmt = conn.prepareCall(sql);
 			ResultSet rs = stmt.executeQuery();
-			r2 = toMaps(rs);
+			List<Map<String, Object>> r2 = toMaps(rs);
 			rs.close();
 			stmt.close();
 			return r2;
@@ -516,8 +514,8 @@ public class JdbcOrigin extends ExToolkit {
 	}
 
 	// ///////////////////////////////////////////////////
-	static final public List<Map> toMaps(ResultSet rs) throws SQLException {
-		List<Map> result = newList();
+	static final public List<Map<String, Object>> toMaps(ResultSet rs) throws SQLException {
+		List<Map<String, Object>> result = newList();
 		while (rs.next()) {
 			Map m = toMap(rs);
 			result.add(m);

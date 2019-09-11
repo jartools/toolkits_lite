@@ -68,7 +68,7 @@ public class JdbcTemplet extends JdbcBasic {
 		return queryForMap(sql, x.toBasicMap());
 	}
 
-	public List<Map> queryForList(String sql, BeanSupport x) throws SQLException {
+	public List<Map<String, Object>> queryForList(String sql, BeanSupport x) throws SQLException {
 		return queryForList(sql, x.toBasicMap());
 	}
 
@@ -113,7 +113,7 @@ public class JdbcTemplet extends JdbcBasic {
 		call(sql, x.toBasicMap());
 	}
 
-	public List<Map> queryByCall(String sql, BeanSupport x) throws SQLException {
+	public List<Map<String, Object>> queryByCall(String sql, BeanSupport x) throws SQLException {
 		return queryByCall(sql, x.toBasicMap());
 	}
 }

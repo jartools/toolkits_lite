@@ -181,15 +181,14 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public List<Map> queryForList(String sql, Map params) throws SQLException {
+	public List<Map<String, Object>> queryForList(String sql, Map params) throws SQLException {
 		Connection conn = conn_r();
 		try {
-			List<Map> r2 = null;
 			PrepareSQLResult sr = prepareKeys(sql);
 			PreparedStatement stmt = conn.prepareStatement(sr.sql);
 			prepareMap(stmt, sr.keys, params);
 			ResultSet rs = stmt.executeQuery();
-			r2 = toMaps(rs);
+			List<Map<String, Object>> r2 = toMaps(rs);
 			rs.close();
 			stmt.close();
 			return r2;
@@ -340,15 +339,14 @@ public class JdbcBasic extends JdbcOrigin {
 		}
 	}
 
-	public List<Map> queryByCall(String sql, Map params) throws SQLException {
+	public List<Map<String, Object>> queryByCall(String sql, Map params) throws SQLException {
 		Connection conn = conn_w();
 		try {
-			List<Map> r2 = null;
 			PrepareSQLResult sr = prepareKeys(sql);
 			CallableStatement stmt = conn.prepareCall(sr.sql);
 			prepareMap(stmt, sr.keys, params);
 			ResultSet rs = stmt.executeQuery();
-			r2 = toMaps(rs);
+			List<Map<String, Object>> r2 = toMaps(rs);
 			rs.close();
 			stmt.close();
 			return r2;
