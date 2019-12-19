@@ -40,7 +40,11 @@ public class GGPlayRSA {
 	 */
 	static final public JSONObject validRSA2Json(String pubKey, String strJsonSrc) {
 		try {
-			JSONObject objSrc = JsonHelper.toJSON(strJsonSrc);
+			JSONObject src = JsonHelper.toJSON(strJsonSrc);
+			JSONObject objSrc = src;
+			if(src.has("Payload")) {
+				objSrc = JsonHelper.toJSON(src.getString("Payload"));
+			}
 			String jStr = objSrc.getString("json");
 			String signature = objSrc.getString("signature");
 			if (getRSAGGPlay(pubKey).verify(jStr, signature)) {
