@@ -100,7 +100,7 @@ public class EOJson extends EOException {
 	static final public JSONObject toJSON(String json) throws JSONException {
 		return new JSONObject(json);
 	}
-	
+
 	static final public JSONArray toJSONArr(String json) throws JSONException {
 		return new JSONArray(json);
 	}
@@ -156,6 +156,17 @@ public class EOJson extends EOException {
 		return (T) toJavaBean(javabean, jsonString);
 	}
 
+	static final public String toJSONStr(JSONObject json, boolean isList) {
+		if (json == null) {
+			return isList ? "[]" : "{}";
+		}
+		return json.toString();
+	}
+
+	static final public String toJSONStr(JSONObject json) {
+		return toJSONStr(json, false);
+	}
+
 	static final public String toJSONStr(Object javabean) {
 		return toJSON(javabean).toString();
 	}
@@ -163,23 +174,23 @@ public class EOJson extends EOException {
 	static final public String toJSONStr(Map<?, ?> map) {
 		return toJSON(map).toString();
 	}
-	
+
 	static final public String toJSONStr(List<?> list) {
 		return toJSONArr(list).toString();
 	}
-	
+
 	static final public JSONObject get(JSONObject json, String key) {
 		if (json == null || !json.has(key))
 			return null;
 		return json.getJSONObject(key);
 	}
-	
+
 	static final public String getStr(JSONObject json, String key) {
 		if (json == null || !json.has(key))
 			return "";
 		return json.getString(key);
 	}
-	
+
 	static final public int getInt(JSONObject json, String key) {
 		if (json == null || !json.has(key))
 			return 0;

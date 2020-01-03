@@ -23,10 +23,10 @@ public class TaobaoIP extends ExToolkit {
 
 	static final Map<String, JSONObject> CACHE = newMap();
 
-	public static JSONObject info(String ip) {
+	static final public JSONObject info(String ip) {
 		if (CACHE.containsKey(ip))
 			return CACHE.get(ip);
-		
+
 		JSONObject _ret = null;
 		try {
 			String url = String.format(resetUrl, ip);
@@ -45,7 +45,11 @@ public class TaobaoIP extends ExToolkit {
 		}
 		return _ret;
 	}
-	
+
+	static final public String infoStr(String ip) {
+		return toJSONStr(info(ip));
+	}
+
 	/**
 	 * @param args
 	 * @throws Exception
