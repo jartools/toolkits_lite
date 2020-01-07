@@ -42,6 +42,7 @@ public class Shutdown extends RShutdown {
 			SDHandler hder = new SDHandler(this, ssocket.accept());
 			list.add(hder);
 			pool.execute(hder);
+			ThreadEx.sleep(200);
 		}
 	}
 

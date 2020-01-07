@@ -47,25 +47,20 @@ public class SDHandler extends InputStreamEx implements Runnable {
 		}
 
 		String msg = null;
+		String str = socket.toString();
 		try (InputStream inStream = socket.getInputStream()) {
 			msg = inps2Str(inStream);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		boolean _is = isCanShut(msg);
-		String info = String.format(fmt, _is, msg, this.flag_shutdown, socket.toString());
+		boolean _is = isEmpty(this.flag_shutdown);
+		if (!_is) {
+			_is = this.flag_shutdown.equalsIgnoreCase(msg);
+		}
+		String info = String.format(fmt, _is, msg, this.flag_shutdown, str);
 		this.stdWrap.onCallShut(_is, info, this);
 		close();
-	}
-
-	// 判断是否可以执行停止
-	private boolean isCanShut(String msg) throws Exception {
-		boolean _isRet = isEmpty(this.flag_shutdown);
-		if (!_isRet) {
-			_isRet = this.flag_shutdown.equalsIgnoreCase(msg);
-		}
-		return _isRet;
 	}
 
 	public void close() {
