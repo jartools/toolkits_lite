@@ -11,9 +11,9 @@ import com.bowlong.lang.task.ThreadEx;
 
 //SHUTDOWN
 public class Shutdown extends RShutdown {
-	
+
 	static ExecutorService pool = Executors.newCachedThreadPool();
-	
+
 	private ServerSocket ssocket = null;
 	private boolean isDoShut = false;
 	final List<SDHandler> list = ExOrigin.newList();
@@ -38,7 +38,7 @@ public class Shutdown extends RShutdown {
 
 	@Override
 	protected void exce_run() throws Exception {
-		while (!this.isDoShut) {
+		while (!this.isDoShut && this.ssocket != null) {
 			SDHandler hder = new SDHandler(this, ssocket.accept());
 			list.add(hder);
 			pool.execute(hder);

@@ -14,6 +14,8 @@ import com.bowlong.net.Tcp;
  */
 public class SDHandler extends InputStreamEx implements Runnable {
 
+	static final String fmt = "= isCanDo=[%s],Shut down msg=[%s],flag=[%s],[%s]";
+
 	private String flag_shutdown = null;
 	private Shutdown stdWrap = null;
 	protected Socket socket = null;
@@ -52,7 +54,7 @@ public class SDHandler extends InputStreamEx implements Runnable {
 		}
 
 		boolean _is = isCanShut(msg);
-		String info = String.format("= do Shut =[%s],[%s],[%s],[%s]", _is, msg, this.flag_shutdown, socket.toString());
+		String info = String.format(fmt, _is, msg, this.flag_shutdown, socket.toString());
 		this.stdWrap.onCallShut(_is, info, this);
 		close();
 	}
