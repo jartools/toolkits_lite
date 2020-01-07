@@ -52,9 +52,12 @@ public class EORuntime extends EORegex {
 	/**
 	 * 执行 command
 	 * 
-	 * @param cmd       sh x.sh 或者 cd 文件夹
-	 * @param args      参数
-	 * @param workspace 脚本所在的目录
+	 * @param cmd
+	 *            sh x.sh 或者 cd 文件夹
+	 * @param args
+	 *            参数
+	 * @param workspace
+	 *            脚本所在的目录
 	 * @return
 	 */
 	static final public Process callCMD(String cmd, String args, String workspace) {
@@ -72,9 +75,12 @@ public class EORuntime extends EORegex {
 	/**
 	 * 执行shell
 	 * 
-	 * @param script    脚本名
-	 * @param args      参数
-	 * @param workspace 脚本所在的目录
+	 * @param script
+	 *            脚本名
+	 * @param args
+	 *            参数
+	 * @param workspace
+	 *            脚本所在的目录
 	 */
 	static final public Process callShell(String script, String args, String workspace) {
 		// cmd = "sh " + script + " " + args;
@@ -101,5 +107,9 @@ public class EORuntime extends EORegex {
 		default:
 			return String.format(am, free, total, used, max);
 		}
+	}
+
+	static final public void addShutdownHook(Thread thread) {
+		currRt().addShutdownHook(thread);
 	}
 }

@@ -322,7 +322,7 @@ public class JedisEx {
 			}
 		}).start();
 
-		ThreadEx.Sleep(1000);
+		ThreadEx.sleep(1000);
 
 		publish(PUBSUB_CHN_SET, JedisSubMsg.HELLO);
 		publish(PUBSUB_CHN_HSET, JedisSubMsg.HELLO);
@@ -353,7 +353,7 @@ public class JedisEx {
 
 		System.out.println(new String(get("a")));
 		System.out.println(new String(hget("map", "field1")));
-		ThreadEx.Sleep(10000);
+		ThreadEx.sleep(10000);
 
 		System.exit(1);
 	}

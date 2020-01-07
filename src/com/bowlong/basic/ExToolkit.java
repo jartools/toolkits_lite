@@ -245,12 +245,12 @@ public class ExToolkit extends ExOrigin {
 	}
 
 	static final public void sleep(long ms) {
-		ThreadEx.Sleep(ms);
+		ThreadEx.sleep(ms);
 	}
 
 	static final public void sysExit(long ms) {
 		if (ms > 0)
-			ThreadEx.Sleep(ms);
+			ThreadEx.sleep(ms);
 		System.exit(1);
 	}
 

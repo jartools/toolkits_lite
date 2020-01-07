@@ -63,11 +63,11 @@ public class ThreadQ2 {
 			@Override
 			public void run() {
 				System.out.println("run.1...");
-				ThreadEx.Sleep(1000);
+				ThreadEx.sleep(1000);
 				System.out.println("run.2...");
 			}
 		});
-		ThreadEx.Sleep(1000);
+		ThreadEx.sleep(1000);
 		tq.cancel(f);
 	}
 }

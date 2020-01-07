@@ -173,7 +173,7 @@ public class ThreadEx {
 	}
 
 	// /////////////////////////////////////////////////////////////////
-	public static final void Sleep(final long t) {
+	public static final void sleep(final long t) {
 		try {
 			Thread.sleep(t);
 		} catch (Exception e) {
