@@ -48,15 +48,15 @@ public class SDHandler extends InputStreamEx implements Runnable {
 
 		String msg = null;
 		String str = socket.toString();
-		try (InputStream inStream = socket.getInputStream()) {
-			msg = inps2Str(inStream);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		boolean _is = isEmpty(this.flag_shutdown);
+		String flag = this.flag_shutdown;
+		boolean _is = isEmpty(flag);
 		if (!_is) {
-			_is = this.flag_shutdown.equalsIgnoreCase(msg);
+			try (InputStream inStream = socket.getInputStream()) {
+				msg = inps2Str(inStream);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			_is = flag.equalsIgnoreCase(msg);
 		}
 		String info = String.format(fmt, _is, msg, this.flag_shutdown, str);
 		this.stdWrap.onCallShut(_is, info, this);
