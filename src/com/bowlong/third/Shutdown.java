@@ -1,87 +1,77 @@
 package com.bowlong.third;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import com.bowlong.lang.InputStreamEx;
+import com.bowlong.basic.ExOrigin;
+import com.bowlong.lang.task.ThreadEx;
 
 //SHUTDOWN
-@SuppressWarnings("all")
-public class Shutdown extends Thread {
-	public ServerSocket ssocket = null;
+public class Shutdown extends RShutdown {
+	
+	static ExecutorService pool = Executors.newCachedThreadPool();
+	
+	private ServerSocket ssocket = null;
+	private boolean isDoShut = false;
+	final List<SDHandler> list = ExOrigin.newList();
+	protected String flag_shutdown = null;
 
-	public Shutdown(int port, int sleep) throws Exception {
+	public Shutdown(int port, int sleep, String flag_shut) throws Exception {
 		if (sleep > 0) {
-			try {
-				Thread.sleep(sleep);
-			} catch (Exception e) {
-			}
+			ThreadEx.sleep(sleep);
 		}
-
+		this.flag_shutdown = flag_shut;
 		InetAddress addr = InetAddress.getByName("127.0.0.1");
 		ssocket = new ServerSocket(port, 2, addr);
 	}
 
+	public Shutdown(int port, String flag_shut) throws Exception {
+		this(port, 1000, flag_shut);
+	}
+
 	public Shutdown(int port) throws Exception {
-		this(port, 1000);
+		this(port, null);
 	}
 
 	@Override
-	public void run() {
+	protected void exce_run() throws Exception {
+		while (!this.isDoShut) {
+			SDHandler hder = new SDHandler(this, ssocket.accept());
+			list.add(hder);
+			pool.execute(hder);
+		}
+	}
+
+	final public void onCallShut(boolean isCanShut, String info, SDHandler hder) {
+		this.isDoShut = isCanShut;
 		try {
-			while (_isShut(ssocket.accept())) {
-				break;
+			logShutDown(info, hder.socket);
+			if (this.isDoShut) {
+				clear();
+				exce_exit();
 			}
-			beforeShutDown();
-			System.exit(1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private boolean _isShut(Socket socket) {
-		String msg = null;
-		try (InputStream inStream = socket.getInputStream()) {
-			msg = InputStreamEx.inps2Str(inStream);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		boolean _is = false;
+	void clear() {
 		try {
-			_is = isCanShut(msg, socket);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return _is;
-	}
+			int lens = list.size();
+			for (int i = 0; i < lens; i++) {
+				list.get(i).clear();
+			}
+			list.clear();
 
-	// 在下线之前
-	protected boolean isCanShut(String msg, Socket socket) throws Exception {
-		return true;
-	}
-
-	// 在下线之前
-	protected void beforeShutDown() throws Exception {
-	}
-
-	static final public Socket soMsg(String host, int port, String msg) {
-		Socket sss = null;
-		try {
-			sss = new Socket(host, port);
-			OutputStream out = sss.getOutputStream();
-			out.write(msg.getBytes("UTF-8"));
-			out.flush();
-			out.close();
+			this.flag_shutdown = null;
+			if (this.ssocket != null) {
+				this.ssocket.close();
+			}
+			this.ssocket = null;
 		} catch (Exception e) {
 		}
-		return sss;
-	}
-
-	static final public Socket soMsg(int port, String msg) {
-		return soMsg("127.0.0.1", port, msg);
 	}
 }
