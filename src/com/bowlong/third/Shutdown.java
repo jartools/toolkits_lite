@@ -49,6 +49,8 @@ public class Shutdown extends RShutdown {
 	final public void onCallShut(boolean isCanShut, String info, SDHandler hder) {
 		this.isDoShut = isCanShut;
 		try {
+			if (this.ssocket == null)
+				return;
 			logShutDown(info, hder.socket);
 			if (this.isDoShut) {
 				clear();
