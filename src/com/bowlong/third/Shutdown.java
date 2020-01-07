@@ -1,9 +1,12 @@
 package com.bowlong.third;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import com.bowlong.lang.InputStreamEx;
 
 //SHUTDOWN
 @SuppressWarnings("all")
@@ -29,12 +32,36 @@ public class Shutdown extends Thread {
 	@Override
 	public void run() {
 		try {
-			ssocket.accept();
+			while (_isShut(ssocket.accept())) {
+				break;
+			}
 			beforeShutDown();
 			System.exit(1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private boolean _isShut(Socket socket) {
+		String msg = null;
+		try (InputStream inStream = socket.getInputStream()) {
+			msg = InputStreamEx.inps2Str(inStream);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		boolean _is = false;
+		try {
+			_is = isCanShut(msg, socket);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return _is;
+	}
+
+	// 在下线之前
+	protected boolean isCanShut(String msg, Socket socket) throws Exception {
+		return true;
 	}
 
 	// 在下线之前
