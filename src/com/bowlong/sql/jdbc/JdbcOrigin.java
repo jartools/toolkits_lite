@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import javax.sql.DataSource;
@@ -21,7 +20,7 @@ import javax.sql.rowset.CachedRowSet;
 
 import com.bowlong.basic.ExToolkit;
 import com.bowlong.lang.StrEx;
-import com.bowlong.lang.task.MyThreadFactory;
+import com.bowlong.lang.task.ThreadEx;
 import com.bowlong.sql.SqlEx;
 import com.bowlong.sql.beanbasic.RsHandler;
 import com.bowlong.third.FastJSON;
@@ -562,21 +561,6 @@ public class JdbcOrigin extends ExToolkit {
 		this.update(sql);
 	}
 
-	// //////////////////////////////////////////////////////////
-	// static ScheduledExecutorService _executor = null;
-	//
-	// public static void setExecutor(ScheduledExecutorService ses) {
-	// _executor = ses;
-	// }
-	//
-	// protected static ScheduledExecutorService executor() {
-	// if (_executor == null)
-	// _executor = Executors.newScheduledThreadPool(8,
-	// new MyThreadFactory("JdbcTemplate", false));
-	// return _executor;
-	// }
-
-	// //////////////////////////////////////////////////////////
 	ScheduledExecutorService _single_executor = null;
 
 	public void setSingleExecutor(ScheduledExecutorService ses) {
@@ -585,7 +569,7 @@ public class JdbcOrigin extends ExToolkit {
 
 	protected synchronized ScheduledExecutorService executor(String name) {
 		if (_single_executor == null)
-			_single_executor = Executors.newSingleThreadScheduledExecutor(new MyThreadFactory(name, false));
+			_single_executor = ThreadEx.newSingleThreadScheduledExecutor(name);
 		return _single_executor;
 	}
 

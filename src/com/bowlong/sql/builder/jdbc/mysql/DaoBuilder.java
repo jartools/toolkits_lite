@@ -2038,20 +2038,6 @@ public class DaoBuilder extends ExToolkit {
 		sn(sb, "        }");
 		sn(sb, "    }");
 		sn(sb, "");
-
-		// sn(sb, "    ScheduledExecutorService _single_executor = null;");
-		// sn(sb,
-		// "    public void setSingleExecutor(ScheduledExecutorService ses) {");
-		// sn(sb, "        this._single_executor = ses;");
-		// sn(sb, "    }");
-		// sn(sb,
-		// "    protected synchronized ScheduledExecutorService executor(final String name) {");
-		// sn(sb, "        if (_single_executor == null)");
-		// sn(sb,
-		// "            _single_executor = Executors.newSingleThreadScheduledExecutor(new MyThreadFactory(name, false));");
-		// sn(sb, "        return _single_executor;");
-		// sn(sb, "    }");
-
 		sn(sb, "}");
 
 		return sb.toString();

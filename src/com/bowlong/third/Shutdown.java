@@ -3,17 +3,12 @@ package com.bowlong.third;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import com.bowlong.basic.ExOrigin;
 import com.bowlong.lang.task.ThreadEx;
 
 //SHUTDOWN
 public class Shutdown extends RShutdown {
-
-	static ExecutorService pool = Executors.newCachedThreadPool();
-
 	private ServerSocket ssocket = null;
 	private boolean isDoShut = false;
 	final List<SDHandler> list = ExOrigin.newList();
@@ -41,7 +36,7 @@ public class Shutdown extends RShutdown {
 		while (!this.isDoShut && this.ssocket != null) {
 			SDHandler hder = new SDHandler(this, ssocket.accept());
 			list.add(hder);
-			pool.execute(hder);
+			ThreadEx.execute(hder);
 			ThreadEx.sleep(200);
 		}
 	}

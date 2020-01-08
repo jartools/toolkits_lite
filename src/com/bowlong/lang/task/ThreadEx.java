@@ -18,56 +18,47 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ThreadEx {
 
-	final private static MyThreadFactory getThreadFactory(String name,
-			boolean daemon) {
+	static final public MyThreadFactory newThreadFactory(String name, boolean daemon) {
 		return new MyThreadFactory(name, daemon);
 	}
 
 	// 创建一个无限线程池
-	public static final ExecutorService newCachedThreadPool() {
+	static final public ExecutorService newCachedThreadPool() {
 		return newCachedThreadPool("cachedPool");
 	}
 
-	public static final ExecutorService newCachedThreadPool(String name) {
+	static final public ExecutorService newCachedThreadPool(String name) {
 		return newCachedThreadPool(name, false);
 	}
 
-	public static final ExecutorService newCachedThreadPool(String name,
-			boolean daemon) {
-		ThreadFactory cachedFactory = getThreadFactory(name, daemon);
-		return Executors.newCachedThreadPool(cachedFactory);
+	static final public ExecutorService newCachedThreadPool(String name, boolean daemon) {
+		return Executors.newCachedThreadPool(newThreadFactory(name, daemon));
 	}
 
 	// 创建一个固定大小线程
-
-	public static final ExecutorService newFixedThreadPool(int nThreads) {
+	static final public ExecutorService newFixedThreadPool(int nThreads) {
 		return newFixedThreadPool("fixedPool", nThreads);
 	}
 
-	public static final ExecutorService newFixedThreadPool(String name,
-			int nThreads) {
+	static final public ExecutorService newFixedThreadPool(String name, int nThreads) {
 		return newFixedThreadPool(name, nThreads, false);
 	}
 
-	public static final ExecutorService newFixedThreadPool(String name,
-			int nThreads, boolean daemon) {
-		ThreadFactory fixedFactory = getThreadFactory(name, daemon);
-		return Executors.newFixedThreadPool(nThreads, fixedFactory);
+	static final public ExecutorService newFixedThreadPool(String name, int nThreads, boolean daemon) {
+		return Executors.newFixedThreadPool(nThreads, newThreadFactory(name, daemon));
 	}
 
 	// 单线程
-	public static final ExecutorService newSingleThreadExecutor() {
+	static final public ExecutorService newSingleThreadExecutor() {
 		return newSingleThreadExecutor("singlePool");
 	}
 
-	public static final ExecutorService newSingleThreadExecutor(String name) {
+	static final public ExecutorService newSingleThreadExecutor(String name) {
 		return newSingleThreadExecutor(name, false);
 	}
 
-	public static final ExecutorService newSingleThreadExecutor(String name,
-			boolean daemon) {
-		ThreadFactory singleFactory = getThreadFactory(name, daemon);
-		return Executors.newSingleThreadExecutor(singleFactory);
+	static final public ExecutorService newSingleThreadExecutor(String name, boolean daemon) {
+		return Executors.newSingleThreadExecutor(newThreadFactory(name, daemon));
 	}
 
 	public static ExecutorService newThreadExecutor() {
@@ -76,104 +67,78 @@ public class ThreadEx {
 		return newThreadExecutor(min, max);
 	}
 
-	public static ExecutorService newThreadExecutor(final int min, final int max) {
-		return new ThreadPoolExecutor(min, max, 60L, TimeUnit.SECONDS,
-				new ArrayBlockingQueue<Runnable>(max),
-				new ThreadPoolExecutor.CallerRunsPolicy());
+	public static ExecutorService newThreadExecutor(int min, int max) {
+		return new ThreadPoolExecutor(min, max, 60L, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(max), new ThreadPoolExecutor.CallerRunsPolicy());
 	}
 
-	public static ExecutorService newThreadExecutor(final int min,
-			final int max, final ThreadFactory threadFactory) {
-		return new ThreadPoolExecutor(min, max, 60L, TimeUnit.SECONDS,
-				new ArrayBlockingQueue<Runnable>(max), threadFactory,
-				new ThreadPoolExecutor.CallerRunsPolicy());
+	public static ExecutorService newThreadExecutor(int min, int max, ThreadFactory threadFactory) {
+		return new ThreadPoolExecutor(min, max, 60L, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(max), threadFactory, new ThreadPoolExecutor.CallerRunsPolicy());
 	}
 
-	// 用线程池执行任务
-	public static final void execute(final Executor executor, final Runnable r) {
+	// 用线程池执行任务 ： (Executor 是 ExecutorService 的父类)
+	static final public void execute(Executor executor, Runnable r) {
 		executor.execute(r);
 	}
 
-	public static final Future submit(final ExecutorService executor,
-			final Callable c) {
+	static final public Future<?> submit(ExecutorService executor, Runnable r) {
+		return executor.submit(r);
+	}
+
+	static final public <T> Future<T> submit(ExecutorService executor, Callable<T> c) {
 		return executor.submit(c);
 	}
 
-	public static final Thread newThreadExec(final Runnable r) {
+	static final public Thread newThreadExec(Runnable r) {
 		final Thread t = new Thread(r);
 		t.start();
 		return t;
 	}
 
-	public static final ForkJoinPool newForkJoinPool(int parallelism) {
+	static final public ForkJoinPool newForkJoinPool(int parallelism) {
 		return new ForkJoinPool(parallelism);
 	}
 
-	public static final ForkJoinTask<?> forkSubmit(final ForkJoinPool fjp,
-			final Runnable r) {
+	static final public ForkJoinTask<?> forkSubmit(ForkJoinPool fjp, Runnable r) {
 		return fjp.submit(r);
 	}
 
-	public static final ForkJoinTask<?> forkSubmit(final ForkJoinPool fjp,
-			final Callable c) {
+	static final public ForkJoinTask<?> forkSubmit(ForkJoinPool fjp, Callable c) {
 		return fjp.submit(c);
 	}
 
-	public static final ForkJoinTask<?> forkSubmit(final ForkJoinPool fjp,
-			final RecursiveAction c) {
+	static final public ForkJoinTask<?> forkSubmit(ForkJoinPool fjp, RecursiveAction c) {
 		return fjp.submit(c);
 	}
 
 	// /////////////////////////////////////////////////////////////////
-	// 用线程池执行
-	static Executor _executor = null;
-
-	public static final void execute(final Runnable r) {
-		if (_executor == null)
-			_executor = newCachedThreadPool();
-
-		execute(_executor, r);
-	}
-
-	static Executor _singleExecutor = null;
-
-	public static final void executeSingle(final Runnable r) {
-		if (_singleExecutor == null)
-			_singleExecutor = newSingleThreadExecutor();
-
-		execute(_singleExecutor, r);
-	}
-
-	public static final ScheduledExecutorService newScheduledPool(
-			final int nThreads) {
+	static final public ScheduledExecutorService newScheduledPool(int nThreads) {
 		return newScheduledPool("scheduledPool", nThreads);
 	}
 
-	public static ScheduledExecutorService newScheduledPool(final String name,
-			final int nThreads) {
+	public static ScheduledExecutorService newScheduledPool(String name, int nThreads) {
 		return newScheduledPool(name, nThreads, false);
 	}
 
-	public static ScheduledExecutorService newScheduledPool(final String name,
-			final int nThreads, boolean daemon) {
-		MyThreadFactory scheduledFactory = getThreadFactory(name, daemon);
-		return Executors.newScheduledThreadPool(nThreads, scheduledFactory);
+	public static ScheduledExecutorService newScheduledPool(String name, int nThreads, boolean daemon) {
+		return Executors.newScheduledThreadPool(nThreads, newThreadFactory(name, daemon));
 	}
 
-	public static final FutureTask<Exception> execute(final ExecutorService es,
-			final FutureTask<Exception> task) {
+	static final public ScheduledExecutorService newSingleThreadScheduledExecutor(String name) {
+		return Executors.newSingleThreadScheduledExecutor(newThreadFactory(name, false));
+	}
+
+	static final public FutureTask<Exception> execute(ExecutorService es, FutureTask<Exception> task) {
 		es.submit(task);
 		return task;
 	}
 
-	public static final FutureTask<Exception> execute(final ExecutorService es,
-			final Callable<Exception> task) {
+	static final public FutureTask<Exception> execute(ExecutorService es, Callable<Exception> task) {
 		FutureTask<Exception> ft = new FutureTask<Exception>(task);
 		return execute(es, ft);
 	}
 
 	// /////////////////////////////////////////////////////////////////
-	public static final void sleep(final long t) {
+	static final public void sleep(long t) {
 		try {
 			Thread.sleep(t);
 		} catch (Exception e) {
@@ -181,5 +146,31 @@ public class ThreadEx {
 		}
 	}
 
-	// /////////////////////////////////////////////////////////////////
+	// 用线程池执行
+	static ExecutorService _executor = newCachedThreadPool();
+	static ExecutorService _singleExecutor = newSingleThreadExecutor();
+
+	static final public void execute(Runnable r) {
+		execute(_executor, r);
+	}
+
+	static final public Future<?> submit(Runnable r) {
+		return submit(_executor, r);
+	}
+
+	static final public <T> Future<T> submit(Callable<T> c) {
+		return submit(_executor, c);
+	}
+
+	static final public void executeSingle(Runnable r) {
+		execute(_singleExecutor, r);
+	}
+
+	static final public Future<?> submitSingle(Runnable r) {
+		return submit(_singleExecutor, r);
+	}
+
+	static final public <T> Future<T> submitSingle(Callable<T> c) {
+		return submit(_singleExecutor, c);
+	}
 }
