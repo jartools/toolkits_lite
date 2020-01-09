@@ -14,6 +14,7 @@ import com.bowlong.bio2.B2InputStream;
 import com.bowlong.io.ByteInStream;
 import com.bowlong.io.ByteOutStream;
 import com.bowlong.objpool.ByteOutPool;
+import com.bowlong.objpool.StringBufPool;
 import com.bowlong.text.EncodingEx;
 
 /**
@@ -59,12 +60,12 @@ public class InputStreamEx extends ExOrigin {
 		int lens = list.size();
 		if (lens <= 0)
 			return "";
-		StringBuffer buff = new StringBuffer();
+		StringBuffer buff = StringBufPool.borrowObject();
 		for (int i = 0; i < lens; i++) {
 			buff.append(list.get(i));
 		}
 		String ret = buff.toString();
-		buff.setLength(0);
+		StringBufPool.returnObject(buff);
 		return ret;
 	}
 

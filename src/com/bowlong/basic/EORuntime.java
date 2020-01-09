@@ -3,6 +3,8 @@ package com.bowlong.basic;
 import java.io.File;
 import java.io.IOException;
 
+import com.bowlong.lang.InputStreamEx;
+
 /**
  * Runtime 封装，执行shell<br/>
  * sh -c 执行文本string中的命令
@@ -13,18 +15,29 @@ import java.io.IOException;
 public class EORuntime extends EORegex {
 
 	static final private String fmtSh = "sudo sh %s";
+	static final public String strLinuxCmdNet = "sudo netstat -tunlp";
+	static final private String fmtNet = "sudo netstat -anp | grep %s";
 
 	static final public Runtime currRt() {
 		return Runtime.getRuntime();
 	}
 
-	static final public Process exec(String shell) {
+	static final public Process exec(String cmd) {
 		try {
-			return currRt().exec(shell);
+			return currRt().exec(cmd);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	static final public String execStr(String cmd) {
+		Process _p = exec(cmd);
+		if (_p == null)
+			return null;
+		String ret = InputStreamEx.inps2Str(_p.getInputStream());
+		_p.destroy();
+		return ret;
 	}
 
 	// cmd = "tar -cf" + tarName + " " + fileName;
@@ -111,5 +124,13 @@ public class EORuntime extends EORegex {
 
 	static final public void addShutdownHook(Thread thread) {
 		currRt().addShutdownHook(thread);
+	}
+
+	static final public String callNetstat() {
+		return execStr(strLinuxCmdNet);
+	}
+
+	static final public String callNetstat(int port) {
+		return execStr(String.format(fmtNet, port));
 	}
 }

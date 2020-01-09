@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bowlong.objpool.StringBufPool;
 import com.bowlong.security.Escape;
 import com.bowlong.text.EncodingEx;
 import com.bowlong.util.Ref;
@@ -89,7 +90,7 @@ public class EOURL extends EORuntime {
 		Object[] keys = data.keySet().toArray();
 		if (isOrderKey)
 			Arrays.sort(keys);
-		StringBuffer buff = new StringBuffer();
+		StringBuffer buff = StringBufPool.borrowObject();
 		int lens = keys.length;
 		try {
 			String k, v;
@@ -112,9 +113,8 @@ public class EOURL extends EORuntime {
 			}
 		} catch (Exception e) {
 		}
-
 		ret = buff.toString();
-		buff.setLength(0);
+		StringBufPool.returnObject(buff);
 		return ret;
 	}
 
