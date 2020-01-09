@@ -18,23 +18,24 @@ public final class MyThreadFactory implements ThreadFactory {
 	// 1 thread.setDaemon(true)必须在thread.start()之前设置
 	// 2 在守护线程中产生的新线程也是守护线程的。
 	// 3 读写操作或者计算逻辑不要放在守护线程中执行
-	
-	static final AtomicInteger nAto = new AtomicInteger(1);
+
+	static final AtomicInteger nPool = new AtomicInteger(1);
+	static final AtomicInteger nThread = new AtomicInteger(1);
 	static final String fmt = "%s.pool-%s-thread-";
+
 	final ThreadGroup group;
-	final AtomicInteger threadNumber = new AtomicInteger(1);
 	final String namePrefix;
 	private boolean daemon = true;
 
 	public MyThreadFactory(String nameP, boolean daemon) {
 		SecurityManager s = System.getSecurityManager();
 		group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
-		namePrefix = String.format(fmt, nameP, nAto.getAndIncrement());
+		namePrefix = String.format(fmt, nameP, nPool.getAndIncrement());
 		this.daemon = daemon;
 	}
 
 	public Thread newThread(Runnable r) {
-		Thread t = new Thread(group, r, namePrefix + nAto.getAndIncrement(), 0);
+		Thread t = new Thread(group, r, namePrefix + nThread.getAndIncrement(), 0);
 		t.setDaemon(daemon);
 		if (t.getPriority() != Thread.NORM_PRIORITY)
 			t.setPriority(Thread.NORM_PRIORITY);

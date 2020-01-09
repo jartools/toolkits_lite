@@ -23,7 +23,7 @@ public abstract class BeanEvent<T> {
 	public BeanEvent(List<String> keys) {
 		this(keys, true);
 	}
-	
+
 	public BeanEvent(List<String> keys, boolean asyn) {
 		this.asyn = asyn;
 		for (String key : keys) {
@@ -34,31 +34,34 @@ public abstract class BeanEvent<T> {
 	public boolean containsKey(String key) {
 		return this.keys.containsKey(key);
 	}
-	
-	public void doEvent(final T obj, final String key, final Object oldValue, final Object newValue){
-		if(!containsKey(key))
+
+	public void doEvent(final T obj, final String key, final Object oldValue, final Object newValue) {
+		if (!containsKey(key))
 			return;
-		
-		if(asyn){ // 异步执行
+
+		if (asyn) { // 异步执行
 			execute(new Runnable() {
 				public void run() {
 					onEvent(obj, key, oldValue, newValue);
 				}
 			});
-		}else{ // 同步执行
+		} else { // 同步执行
 			onEvent(obj, key, oldValue, newValue);
 		}
 	}
 
 	public abstract void onEvent(T obj, String key, Object oldValue, Object newValue);
-	
-	
-	private static ExecutorService _threadPool = null;
+
+	private static ExecutorService _tpool = null;
+
+	protected static ExecutorService _getES() {
+		if (_tpool == null)
+			_tpool = Executors.newCachedThreadPool();
+		return _tpool;
+	}
 
 	public static final void execute(Runnable r) {
-		if (_threadPool == null)
-			_threadPool = Executors.newCachedThreadPool();
-		_threadPool.execute(r);
+		_getES().execute(r);
 	}
 
 }

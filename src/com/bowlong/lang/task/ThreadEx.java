@@ -62,9 +62,7 @@ public class ThreadEx {
 	}
 
 	public static ExecutorService newThreadExecutor() {
-		final int min = 0;
-		final int max = Integer.MAX_VALUE;
-		return newThreadExecutor(min, max);
+		return newThreadExecutor(0, Integer.MAX_VALUE);
 	}
 
 	public static ExecutorService newThreadExecutor(int min, int max) {
@@ -147,30 +145,43 @@ public class ThreadEx {
 	}
 
 	// 用线程池执行
-	static ExecutorService _executor = newCachedThreadPool();
-	static ExecutorService _singleExecutor = newSingleThreadExecutor();
+	static ExecutorService _executor = null;
+
+	static ExecutorService _getExec() {
+		if (_executor == null)
+			_executor = newCachedThreadPool();
+		return _executor;
+	}
+
+	static ExecutorService _singleExecutor = null;
+
+	static ExecutorService _getSingleExec() {
+		if (_singleExecutor == null)
+			_singleExecutor = newSingleThreadExecutor();
+		return _singleExecutor;
+	}
 
 	static final public void execute(Runnable r) {
-		execute(_executor, r);
+		execute(_getExec(), r);
 	}
 
 	static final public Future<?> submit(Runnable r) {
-		return submit(_executor, r);
+		return submit(_getExec(), r);
 	}
 
 	static final public <T> Future<T> submit(Callable<T> c) {
-		return submit(_executor, c);
+		return submit(_getExec(), c);
 	}
 
 	static final public void executeSingle(Runnable r) {
-		execute(_singleExecutor, r);
+		execute(_getSingleExec(), r);
 	}
 
 	static final public Future<?> submitSingle(Runnable r) {
-		return submit(_singleExecutor, r);
+		return submit(_getSingleExec(), r);
 	}
 
 	static final public <T> Future<T> submitSingle(Callable<T> c) {
-		return submit(_singleExecutor, c);
+		return submit(_getSingleExec(), c);
 	}
 }

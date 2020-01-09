@@ -42,20 +42,19 @@ public class InternalSupport extends ExToolkit {
 
 	// ///////////////////////////////////////////////////
 	// 线程并发线程池
-	private static ExecutorService _threadPool = null;
+	private static ExecutorService _tpool = null;
+	protected static ExecutorService _getES() {
+		if (_tpool == null)
+			_tpool = Executors.newCachedThreadPool();
+		return _tpool;
+	}
 
 	public static final void execute(Runnable r) {
-		if (_threadPool == null)
-			_threadPool = Executors.newCachedThreadPool();
-
-		_threadPool.execute(r);
+		_getES().execute(r);
 	}
 
 	public static final <T> Future<T> execute(Callable<T> r) {
-		if (_threadPool == null)
-			_threadPool = Executors.newCachedThreadPool();
-
-		return _threadPool.submit(r);
+		return _getES().submit(r);
 	}
 
 	public static final Date beginningToday2() {
