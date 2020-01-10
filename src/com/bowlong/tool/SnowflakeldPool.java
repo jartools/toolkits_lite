@@ -35,11 +35,12 @@ public class SnowflakeldPool extends BasicPool<SnowflakeIdWorker> {
 	}
 
 	@Override
-	public SnowflakeIdWorker createObj() {
+	synchronized public SnowflakeIdWorker createObj() {
 		this.workId++;
 		if (this.workId >= maxWid) {
 			this.workId %= maxWid;
-			this.centerId = (this.centerId++) % maxDid;
+			this.centerId++;
+			this.centerId %= maxDid;
 		}
 		SnowflakeIdWorker ret = null;
 		if (sumPobj < maxPobj) {
