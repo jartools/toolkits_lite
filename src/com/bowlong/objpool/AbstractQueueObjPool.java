@@ -17,7 +17,7 @@ public abstract class AbstractQueueObjPool<T> {
 
 	protected final AtomicInteger num = new AtomicInteger();
 
-	protected final T borrow() {
+	protected final T get() {
 		synchronized (num) {
 			synchronized (queues) {
 				if (num.get() > 0) {
@@ -26,7 +26,12 @@ public abstract class AbstractQueueObjPool<T> {
 				}
 			}
 		}
-		return createObj();
+		return null;
+	}
+
+	public final T borrow() {
+		T ret = get();
+		return ret == null ? createObj() : ret;
 	}
 
 	public final void returnObj(T obj) {
