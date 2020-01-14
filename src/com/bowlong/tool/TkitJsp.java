@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
 import com.bowlong.net.http.HttpBaseEx;
-import com.bowlong.objpool.StringBufPool;
 import com.bowlong.third.xml.province.entity.XmlCities;
 import com.bowlong.third.xml.province.entity.XmlCity;
 import com.bowlong.third.xml.province.entity.XmlProvinces;
@@ -248,32 +247,6 @@ public class TkitJsp extends TkitOrigin {
 		}
 	}
 
-	static final boolean isNullUnknownIP(String ip) {
-		if (isEmptyTrim(ip))
-			return true;
-		return "unknown".equalsIgnoreCase(ip);
-	}
-
-	/**
-	 * 获取客户端[使用者]真实的IP<br/>
-	 * 如果使用了反向代理request.getRemoteAddr()获取的地址就不是客户端的真实IP
-	 * 
-	 * @return 客户端真实IP地址,如:202.65.16.220
-	 */
-	static final public String getVisitorIP(HttpServletRequest request) {
-		String ip = request.getHeader("x-forwarded-for");
-		if (isNullUnknownIP(ip)) {
-			ip = request.getHeader("Proxy-Client-IP");
-		}
-		if (isNullUnknownIP(ip)) {
-			ip = request.getHeader("WL-Proxy-Client-IP");
-		}
-		if (isNullUnknownIP(ip)) {
-			ip = request.getRemoteAddr();
-		}
-		return ip;
-	}
-
 	/**
 	 * 取得ip4对应的城市code-Long值
 	 * @param visIP 255.255.255.0
@@ -293,51 +266,6 @@ public class TkitJsp extends TkitOrigin {
 	
 	static final public String getCountryCode(HttpServletRequest request) {
 		return getCountryCode(getVisitorIP(request));
-	}
-
-	/**
-	 * 获取项目的IP地址<br>
-	 * 
-	 * @return 协议://服务器名称:Web应用的端口号 <br/>
-	 *         如：http://127.0.0.1:81
-	 */
-	static final public String getUrlIP(HttpServletRequest request) {
-		StringBuffer buff = StringBufPool.borrowObject();
-		try {
-			// 取得协议，如：http
-			buff.append(request.getScheme());
-			buff.append("://");
-			// 取得您的服务器名称，如：127.0.0.1
-			buff.append(request.getServerName());
-			buff.append(":");
-			// 取得web应用的端口号，如：tomcat默认8080端口
-			buff.append(request.getServerPort());
-			return buff.toString();
-		} catch (Exception e) {
-		} finally {
-			StringBufPool.returnObject(buff);
-		}
-		return "";
-	}
-
-	/**
-	 * 获取项目的IP+项目名称
-	 * 
-	 * @return 协议://服务器名称:Web应用的端口号/Context路径 <br/>
-	 *         如：http://127.0.0.1:81/项目名称
-	 */
-	static final public String getUrlIPProject(HttpServletRequest request) {
-		return getUrlIP(request).concat(request.getContextPath());
-	}
-
-	/**
-	 * 获取项目的IP+项目名称+请求
-	 * 
-	 * @return 协议://服务器名称:Web应用的端口号/uri <br/>
-	 *         如：http://127.0.0.1:81/项目名称/函数
-	 */
-	static final public String getUriAll(HttpServletRequest request) {
-		return getUrlIP(request).concat(request.getRequestURI());
 	}
 
 	static String _dirTmWebRoot = null;
