@@ -123,8 +123,9 @@ public class ListEx extends ExOrigin {
 		if (isEmpty(listStr))
 			return ret;
 		int len = listStr.size();
+		int e = 0;
 		for (int i = 0; i < len; i++) {
-			int e = stringToInt(listStr.get(i));
+			e = stringToInt(listStr.get(i));
 			ret.add(e);
 		}
 		return ret;
@@ -161,8 +162,9 @@ public class ListEx extends ExOrigin {
 		StringReader sr = new StringReader(s);
 		BufferedReader br = new BufferedReader(sr);
 		try {
+			String v;
 			while (true) {
-				String v = br.readLine();
+				v = br.readLine();
 				if (v == null)
 					break;
 				l.add(v);
@@ -202,9 +204,9 @@ public class ListEx extends ExOrigin {
 
 		int count = list.size();
 		int[] result = new int[count];
-
+		Integer v;
 		for (int i = 0; i < count; i++) {
-			Integer v = list.get(i);
+			v = list.get(i);
 			if (v == null)
 				result[i] = 0;
 			result[i] = v.intValue();
@@ -424,9 +426,11 @@ public class ListEx extends ExOrigin {
 		list.addAll(srcList);
 
 		int num = list.size();
+		int p = -1;
+		Object e;
 		for (int n = num; n > 0; n--) {
-			int p = RndEx.nextInt(n);
-			Object e = list.remove(p);
+			p = RndEx.nextInt(n);
+			e = list.remove(p);
 			ret.add(e);
 		}
 		return ret;

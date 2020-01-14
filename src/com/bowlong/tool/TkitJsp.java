@@ -36,8 +36,9 @@ public class TkitJsp extends TkitOrigin {
 		if (isEmpty(orign))
 			return orign;
 		Map result = new HashMap();
+		Object val;
 		for (Object key : orign.keySet()) {
-			Object val = orign.get(key);
+			val = orign.get(key);
 			if (val instanceof Date) {
 				val = format((Date) val, fmt_yyyy_MM_dd_HH_mm_ss);
 			}
@@ -137,11 +138,12 @@ public class TkitJsp extends TkitOrigin {
 			return;
 		List<String> list = ListEx.toList(excepts);
 		Enumeration names = session.getAttributeNames();
+		Object obj;
 		while (names.hasMoreElements()) {
-			Object object = (Object) names.nextElement();
-			if (ListEx.have(list, object))
+			obj = (Object) names.nextElement();
+			if (ListEx.have(list, obj))
 				continue;
-			session.removeAttribute(object.toString());
+			session.removeAttribute(obj.toString());
 		}
 	}
 
@@ -182,8 +184,9 @@ public class TkitJsp extends TkitOrigin {
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null && cookies.length > 0) {
 			// 遍历Cookie
+			Cookie cookie;
 			for (int i = 0; i < cookies.length; i++) {
-				Cookie cookie = cookies[i];
+				cookie = cookies[i];
 				// 此处类似与Map有name和value两个字段,name相等才赋值,并处理编码问题
 				if ("name".equals(cookie.getName())) {
 					name = URLDecoder.decode(cookie.getValue(), "utf-8");

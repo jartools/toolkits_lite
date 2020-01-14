@@ -251,8 +251,9 @@ public class MapEx extends ExOrigin {
 		if (l == null || l.isEmpty())
 			return ret;
 		int len = l.size();
+		Object o;
 		for (int i = 0; i < len; i++) {
-			Object o = l.get(i);
+			o = l.get(i);
 			if (o == null)
 				continue;
 			ret.put(i, o);
@@ -283,21 +284,22 @@ public class MapEx extends ExOrigin {
 			return null;
 		}
 		final Map map = new HashMap((int) (array.length * 1.5));
+		Object obj;
+		Object[] objs;
+		Map.Entry entry;
 		for (int i = 0; i < array.length; i++) {
-			Object object = array[i];
-			if (object instanceof Map.Entry) {
-				Map.Entry entry = (Map.Entry) object;
+			obj = array[i];
+			if (obj instanceof Map.Entry) {
+				entry = (Map.Entry) obj;
 				map.put(entry.getKey(), entry.getValue());
-			} else if (object instanceof Object[]) {
-				Object[] entry = (Object[]) object;
-				if (entry.length < 2) {
-					throw new IllegalArgumentException(
-							"Array element " + i + ", '" + object + "', has a length less than 2");
+			} else if (obj instanceof Object[]) {
+				objs = (Object[]) obj;
+				if (objs.length < 2) {
+					throw new IllegalArgumentException("Array element " + i + ", '" + obj + "', has a length less than 2");
 				}
-				map.put(entry[0], entry[1]);
+				map.put(objs[0], objs[1]);
 			} else {
-				throw new IllegalArgumentException(
-						"Array element " + i + ", '" + object + "', is neither of type Map.Entry nor an Array");
+				throw new IllegalArgumentException("Array element " + i + ", '" + obj + "', is neither of type Map.Entry nor an Array");
 			}
 		}
 		return map;
@@ -614,7 +616,7 @@ public class MapEx extends ExOrigin {
 		}
 		return map;
 	}
-	
+
 	static public <K, V> Map<K, V> toMapClear(Map<K, V> map) {
 		return toMapClear(map, true);
 	}
