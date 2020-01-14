@@ -49,7 +49,8 @@ public class TkitOrigin extends ExToolkit {
 			vals = requ.getParameterValues(key);
 			map = allParams(map, buff, key, vals, isNoFitlerEmpty);
 		}
-		map.put("visitor_ip", getVisitorIP(requ));
+		key = map.containsKey("visitor_ip") ? "visitor_ip2" : "visitor_ip";
+		map.put(key, getVisitorIP(requ));
 		return map;
 	}
 
@@ -71,13 +72,15 @@ public class TkitOrigin extends ExToolkit {
 		List keyList = keys(mapPars);
 		int size = keyList.size();
 		StringBuffer buff = new StringBuffer();
-
+		String key;
+		String[] vals;
 		for (int i = 0; i < size; i++) {
-			String key = (keyList.get(i)).toString();
-			String[] vals = (String[]) mapPars.get(key);
+			key = (keyList.get(i)).toString();
+			vals = (String[]) mapPars.get(key);
 			map = allParams(map, buff, key, vals, isNoFitlerEmpty);
 		}
-		map.put("visitor_ip", getVisitorIP(requ));
+		key = map.containsKey("visitor_ip") ? "visitor_ip2" : "visitor_ip";
+		map.put(key, getVisitorIP(requ));
 		return map;
 	}
 
@@ -91,10 +94,10 @@ public class TkitOrigin extends ExToolkit {
 		Map queMap = new HashMap();
 		if (!isEmpty(params)) {
 			Object val = null;
+			String valStr;
 			for (Object key : params.keySet()) {
 				val = params.get(key);
 				if (val != null) {
-					String valStr = "";
 					if (val instanceof String) {
 						valStr = " like '" + val.toString() + "'";
 					} else {
@@ -135,10 +138,10 @@ public class TkitOrigin extends ExToolkit {
 		Map queMap = new HashMap();
 		if (!isEmpty(params)) {
 			Object val = null;
+			String valStr;
 			for (Object key : params.keySet()) {
 				val = params.get(key);
 				if (val != null) {
-					String valStr = "";
 					if (val instanceof String) {
 						valStr = " like '%" + val.toString() + "%'";
 					} else {
