@@ -26,9 +26,9 @@ public class HttpBaseEx extends InputStreamEx {
 	/** 超时时间为1分钟 */
 	static final public int defaultTimeout = 60000;
 	/** 连接超时时间 */
-	static final public int defaultConRequTimeout = 50000;
+	static final public int defaultConRequTimeout = 59000;
 	/** 回应超时时间 */
-	static final public int defaultSoTimeout = 50000;
+	static final public int defaultSoTimeout = 59000;
 
 	static final protected void logInfo(Object obj, Log objLog) {
 		objLog.info(obj);
