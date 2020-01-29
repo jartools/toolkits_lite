@@ -172,7 +172,7 @@ public class EODateFmt extends EOStrNum {
 	static public final String nowStrYMD_Hm() {
 		return nowStr(fmt_yyyyMMdd_HHmm);
 	}
-	
+
 	/*** 当前系统时间字符串(yyyyMMddHHmm) **/
 	static public final String nowStrYMDHm() {
 		return nowStr(fmt_yyyyMMddHHmm);
@@ -403,7 +403,7 @@ public class EODateFmt extends EOStrNum {
 	static public final boolean isTimeout(long lastTm, long timeout) {
 		if (timeout <= 0)
 			return false;
-		long l2 = System.currentTimeMillis();
+		long l2 = now();
 		return isTimeout(l2, lastTm, timeout);
 	}
 
@@ -546,5 +546,45 @@ public class EODateFmt extends EOStrNum {
 
 	static final public long getZeroLong4Week(int toWeek) {
 		return getZeroLong4Week(nowCalendar(), toWeek);
+	}
+
+	static final public long getDiffNow(long src, boolean isAsc) {
+		long _n = now();
+		return isAsc ? (_n - src) : (src - _n);
+	}
+
+	static final public long getDiffNow(Date v, boolean isAsc) {
+		return getDiffNow(v.getTime(), isAsc);
+	}
+
+	static final public long getDiffNow(Calendar v, boolean isAsc) {
+		return getDiffNow(v.getTimeInMillis(), isAsc);
+	}
+
+	static final public long getDiffNow(String src, String fmt, boolean isAsc) {
+		Date v = parse2Date(src, fmt);
+		if (v == null)
+			return -1;
+		return getDiffNow(v, isAsc);
+	}
+
+	static final public long getDiffNow(long src) {
+		return getDiffNow(src, true);
+	}
+
+	static final public long getDiffNow(Date src) {
+		return getDiffNow(src, true);
+	}
+
+	static final public long getDiffNow(Calendar src) {
+		return getDiffNow(src, true);
+	}
+
+	static final public long getDiffNow(String src, String fmt) {
+		return getDiffNow(src, fmt, true);
+	}
+	
+	static final public long getDiffNow(String src) {
+		return getDiffNow(src, fmt_yyyy_MM_dd_HH_mm_ss);
 	}
 }
