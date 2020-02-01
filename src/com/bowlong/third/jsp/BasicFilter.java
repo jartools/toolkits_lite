@@ -23,16 +23,14 @@ import com.bowlong.tool.TkitJsp;
  * @author Canyon 2017-04-16 23:30
  */
 public abstract class BasicFilter extends TkitJsp implements Filter {
-	static protected String[] badSqlStrs = { " and ", "insert ", "select ", "delete ", "update ", "count",
-			"drop table ", " or ", "char ", "declare", "sitename", "net user", "xp_cmdshell", " like'", " like '",
-			"create ", " from ", "grant ", "use ", "group_concat", "column_name", "truncate table ",
-			"information_schema.columns", "table_schema", "union", " where ", " order by" };
+	static protected String[] badSqlStrs = { " and ", "insert ", "select ", "delete ", "update ", "count", "drop table ", " or ", "char ", "declare", "sitename", "net user", "xp_cmdshell", " like'",
+			" like '", "create ", " from ", "grant ", "use ", "group_concat", "column_name", "truncate table ", "information_schema.columns", "table_schema", "union", " where ", " order by" };
 
 	static public boolean isVTime = false; // 是否验证有效时间
 	static public String key_time = "time_ms"; // 时间字段
 	static protected long ms_bef = TIME_SECOND * 15; // 有效时间段 - 开始(>)
 	static protected long ms_aft = TIME_SECOND * 15; // 有效时间段 - 结束(<)
-	
+
 	static public boolean isCFDef = true; // 错误时是否用默认函数返回
 	static public boolean isPrint = false;
 	static private boolean isInit = false;
@@ -57,12 +55,12 @@ public abstract class BasicFilter extends TkitJsp implements Filter {
 	}
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		req.setCharacterEncoding(strEncoding);
 		res.setCharacterEncoding(strEncoding);
+		_allowAccess(res);
 		preOnFilter(req, res);
 		Map<String, Object> pars = TkitJsp.getAllParams(req, true);
 		String val = req.getRequestURI();
@@ -73,6 +71,14 @@ public abstract class BasicFilter extends TkitJsp implements Filter {
 			return;
 		}
 		chain.doFilter(req, res);
+	}
+
+	private void _allowAccess(HttpServletResponse res) {
+		res.setHeader("Access-Control-Allow-Origin", "*"); // 允许所有域名访问
+		res.setHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS,DELETE");
+		res.setHeader("Access-Control-Max-Age", "3600");
+		res.setHeader("Access-Control-Allow-Headers", "x-requested-with,Authorization");
+		res.setHeader("Access-Control-Allow-Credentials", "true");
 	}
 
 	@Override
@@ -99,10 +105,10 @@ public abstract class BasicFilter extends TkitJsp implements Filter {
 		boolean isFlag = false;
 		curr_ms = now();
 		isFlag = isFilter(uri, pars);
-		
+
 		if (isFlag) {
 			flagState = 1;
-		}else{
+		} else {
 			isFlag = isFilterTime(pars, key_time);
 			if (isFlag) {
 				flagState = 2;
