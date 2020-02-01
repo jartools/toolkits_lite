@@ -42,6 +42,7 @@ public class HttpUriGetEx extends HttpUriEx {
 			// get.setHeader("Connection", "Keep-Alive");
 			get.setHeader("Connection", "close");
 			get.setHeader("User-Agent", Browser.ch360);
+			get.setHeader("Expect", "100-continue"); // 1.1 规则?
 			return execute(get);
 		} catch (Exception e) {
 			logError(e, log);

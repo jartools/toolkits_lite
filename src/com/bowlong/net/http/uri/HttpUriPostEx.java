@@ -51,6 +51,7 @@ public class HttpUriPostEx extends HttpUriEx {
 			post.setHeader("Accept-Charset", charset);
 			post.setHeader("Connection", "close"); // Keep-Alive close
 			post.setHeader("User-Agent", Browser.ch360);
+			post.setHeader("Expect", "100-continue"); // 1.1 规则?
 			return execute(post);
 		} catch (Exception e) {
 			logError(e, log);
