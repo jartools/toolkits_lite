@@ -34,6 +34,7 @@ public class EOURL extends EORuntime {
 	}
 
 	static final public String reCharset(String charset) {
+		Ref<Boolean> refBl = new Ref<Boolean>(false);
 		charset = reCharset(charset, refBl);
 		if (!refBl.val)
 			charset = EncodingEx.UTF_8;
@@ -41,9 +42,7 @@ public class EOURL extends EORuntime {
 	}
 
 	static final public Charset reCharset2(String charset) {
-		charset = reCharset(charset, refBl);
-		if (!refBl.val)
-			charset = EncodingEx.UTF_8;
+		charset = reCharset(charset);
 		return Charset.forName(charset);
 	}
 
@@ -84,9 +83,7 @@ public class EOURL extends EORuntime {
 			return "";
 
 		String ret = "";
-		charset = reCharset(charset, refBl);
-		boolean isSup = refBl.val;
-
+		charset = reCharset(charset);
 		Object[] keys = data.keySet().toArray();
 		if (isOrderKey)
 			Arrays.sort(keys);
@@ -102,10 +99,8 @@ public class EOURL extends EORuntime {
 					continue;
 				v = vv.toString();
 				if (!isEmpty(v)) {
-					if (isSup) {
-						k = urlEncode(k, charset);
-						v = urlEncode(v, charset);
-					}
+					k = urlEncode(k, charset);
+					v = urlEncode(v, charset);
 				}
 				buff.append(k).append("=").append(v);
 				if (i < lens - 1)
@@ -158,7 +153,7 @@ public class EOURL extends EORuntime {
 			if (ind != -1)
 				query = query.substring(ind + 1);
 			String[] params = query.split("&");
-			String k,v;
+			String k, v;
 			for (String item : params) {
 				if (isEmptyTrim(item))
 					continue;
@@ -177,6 +172,7 @@ public class EOURL extends EORuntime {
 	static final public byte[] getBytes(String src, String charset) {
 		byte[] ret = new byte[0];
 		if (!isEmptyTrim(src)) {
+			Ref<Boolean> refBl = new Ref<Boolean>(false);
 			charset = reCharset(charset, refBl);
 			boolean isSup = refBl.val;
 			try {

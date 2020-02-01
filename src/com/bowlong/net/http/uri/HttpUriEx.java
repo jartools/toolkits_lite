@@ -114,17 +114,11 @@ public class HttpUriEx extends HttpBaseEx {
 			return "";
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 			try {
-				charset = reCharset(charset, refBl);
-				boolean isSup = refBl.val;
-
+				charset = reCharset(charset);
 				HttpEntity en = response.getEntity();
 				InputStream ins = en.getContent();
 				byte[] bts = B2InputStream.readStream(ins);
-				if (isSup) {
-					return new String(bts, charset);
-				} else {
-					return new String(bts);
-				}
+				return new String(bts, charset);
 			} catch (Exception e) {
 				return e2s(e);
 			}
@@ -138,19 +132,12 @@ public class HttpUriEx extends HttpBaseEx {
 			return "";
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 			try {
-				charset = reCharset(charset, refBl);
-				boolean isSup = refBl.val;
-
+				charset = reCharset(charset);
 				HttpEntity en = response.getEntity();
 				InputStream ins = en.getContent();
 
 				StringBuffer buff = new StringBuffer();
-				BufferedReader br = null;
-				if (isSup) {
-					br = new BufferedReader(new InputStreamReader(ins, charset));
-				} else {
-					br = new BufferedReader(new InputStreamReader(ins));
-				}
+				BufferedReader br = new BufferedReader(new InputStreamReader(ins, charset));
 				String readLine = null;
 				while ((readLine = br.readLine()) != null) {
 					buff.append(readLine);

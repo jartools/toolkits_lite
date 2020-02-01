@@ -25,27 +25,20 @@ public class HttpUriGetEx extends HttpUriEx {
 			return null;
 		}
 
-		charset = reCharset(charset, refBl);
-		boolean isSup = refBl.val;
+		charset = reCharset(charset);
 
 		try {
 			URL url = null;
 			if (StrEx.isEmptyTrim(params)) {
 				url = new URL(host);
 			} else {
-				if (isSup) {
-					params = URLEncoder.encode(params, charset);
-				}
+				params = URLEncoder.encode(params, charset);
 				url = new URL(host + "?" + params);
 			}
 
 			HttpGet get = new HttpGet(url.toURI());
 			get.setHeader("Accept", "*/*");
-			if (isSup) {
-				get.setHeader("Accept-Charset", charset);
-			} else {
-				get.setHeader("Accept-Charset", EncodingEx.UTF_8);
-			}
+			get.setHeader("Accept-Charset", charset);
 			// get.setHeader("Connection", "Keep-Alive");
 			get.setHeader("Connection", "close");
 			get.setHeader("User-Agent", Browser.ch360);

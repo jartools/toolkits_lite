@@ -9,7 +9,7 @@ import com.bowlong.util.Ref;
  * @version createtime：2015年8月21日下午3:33:23
  */
 public class EOStrNum extends EOBasic {
-	static final public boolean isByte(final String s, final Ref<Byte> ref) {
+	static final public boolean isByte(String s, Ref<Byte> ref) {
 		try {
 			if (s == null || "".equals(s))
 				return false;
@@ -23,11 +23,11 @@ public class EOStrNum extends EOBasic {
 		}
 	}
 
-	static final public boolean isByte(final String s) {
+	static final public boolean isByte(String s) {
 		return isByte(s, null);
 	}
 
-	static final public boolean isShort(final String s, final Ref<Short> ref) {
+	static final public boolean isShort(String s, Ref<Short> ref) {
 		try {
 			if (s == null || "".equals(s))
 				return false;
@@ -41,11 +41,11 @@ public class EOStrNum extends EOBasic {
 		}
 	}
 
-	static final public boolean isShort(final String s) {
+	static final public boolean isShort(String s) {
 		return isShort(s, null);
 	}
 
-	static final public boolean isInt(final String s, final Ref<Integer> ref) {
+	static final public boolean isInt(String s, Ref<Integer> ref) {
 		try {
 			if (s == null || "".equals(s))
 				return false;
@@ -59,11 +59,11 @@ public class EOStrNum extends EOBasic {
 		}
 	}
 
-	static final public boolean isInt(final String s) {
+	static final public boolean isInt(String s) {
 		return isInt(s, null);
 	}
 
-	static final public boolean isLong(final String s, final Ref<Long> ref) {
+	static final public boolean isLong(String s, Ref<Long> ref) {
 		try {
 			if (s == null || "".equals(s))
 				return false;
@@ -77,11 +77,11 @@ public class EOStrNum extends EOBasic {
 		}
 	}
 
-	static final public boolean isLong(final String s) {
+	static final public boolean isLong(String s) {
 		return isLong(s, null);
 	}
 
-	static final public boolean isFloat(final String s, final Ref<Float> ref) {
+	static final public boolean isFloat(String s, Ref<Float> ref) {
 		try {
 			if (s == null || "".equals(s))
 				return false;
@@ -95,11 +95,11 @@ public class EOStrNum extends EOBasic {
 		}
 	}
 
-	static final public boolean isFloat(final String s) {
+	static final public boolean isFloat(String s) {
 		return isFloat(s, null);
 	}
 
-	static final public boolean isDouble(final String s, final Ref<Double> ref) {
+	static final public boolean isDouble(String s, Ref<Double> ref) {
 		try {
 			if (s == null || "".equals(s))
 				return false;
@@ -113,12 +113,12 @@ public class EOStrNum extends EOBasic {
 		}
 	}
 
-	static final public boolean isDouble(final String s) {
+	static final public boolean isDouble(String s) {
 		return isDouble(s, null);
 	}
 
 	//
-	static final public boolean stringToBool(final String s, final boolean v) {
+	static final public boolean stringToBool(String s, boolean v) {
 		try {
 			if ("0".equals(s)) {
 				return false;
@@ -132,21 +132,22 @@ public class EOStrNum extends EOBasic {
 		}
 	}
 
-	static final public boolean stringToBool(final String s) {
+	static final public boolean stringToBool(String s) {
 		return stringToBool(s, false);
 	}
 
-	static final public byte stringToByte(final String s, final byte v) {
+	static final public byte stringToByte(String s, byte v) {
+		Ref<Byte> refByte = new Ref<Byte>((byte) 0);
 		refByte.val = v;
 		isByte(s, refByte);
 		return refByte.val;
 	}
 
-	static final public byte stringToByte(final String s) {
+	static final public byte stringToByte(String s) {
 		return stringToByte(s, (byte) 0);
 	}
 
-	static final public byte[] stringToByte(final String[] v) {
+	static final public byte[] stringToByte(String[] v) {
 		byte[] r = new byte[v.length];
 		int n = 0;
 		for (String s : v) {
@@ -156,17 +157,18 @@ public class EOStrNum extends EOBasic {
 		return r;
 	}
 
-	static final public short stringToShort(final String s, final short v) {
+	static final public short stringToShort(String s, short v) {
+		Ref<Short> refShort = new Ref<Short>((short) 0);
 		refShort.val = v;
 		isShort(s, refShort);
 		return refShort.val;
 	}
 
-	static final public short stringToShort(final String s) {
+	static final public short stringToShort(String s) {
 		return stringToShort(s, (short) 0);
 	}
 
-	static final public short[] stringToShort(final String[] v) {
+	static final public short[] stringToShort(String[] v) {
 		short[] r = new short[v.length];
 		int n = 0;
 		for (String s : v) {
@@ -176,17 +178,18 @@ public class EOStrNum extends EOBasic {
 		return r;
 	}
 
-	static final public int stringToInt(final String s, final int v) {
+	static final public int stringToInt(String s, int v) {
+		Ref<Integer> refInt = new Ref<Integer>(0);
 		refInt.val = v;
 		isInt(s, refInt);
 		return refInt.val;
 	}
 
-	static final public int stringToInt(final String s) {
+	static final public int stringToInt(String s) {
 		return stringToInt(s, 0);
 	}
 
-	static final public int[] stringToInt(final String[] v) {
+	static final public int[] stringToInt(String[] v) {
 		int[] r = new int[v.length];
 		int n = 0;
 		for (String s : v) {
@@ -196,17 +199,18 @@ public class EOStrNum extends EOBasic {
 		return r;
 	}
 
-	static final public long stringToLong(final String s, final long v) {
+	static final public long stringToLong(String s, long v) {
+		Ref<Long> refLong = new Ref<Long>(0L);
 		refLong.val = v;
 		isLong(s, refLong);
 		return refLong.val;
 	}
 
-	static final public long stringToLong(final String s) {
+	static final public long stringToLong(String s) {
 		return stringToLong(s, 0);
 	}
 
-	static final public long[] stringToLong(final String[] v) {
+	static final public long[] stringToLong(String[] v) {
 		long[] r = new long[v.length];
 		int n = 0;
 		for (String s : v) {
@@ -216,17 +220,18 @@ public class EOStrNum extends EOBasic {
 		return r;
 	}
 
-	static final public float stringToFloat(final String s, final float v) {
+	static final public float stringToFloat(String s, float v) {
+		Ref<Float> refFloat = new Ref<Float>(0F);
 		refFloat.val = v;
 		isFloat(s, refFloat);
 		return refFloat.val;
 	}
 
-	static final public float stringToFloat(final String s) {
+	static final public float stringToFloat(String s) {
 		return stringToFloat(s, (float) 0.0);
 	}
 
-	static final public float[] stringToFloat(final String[] v) {
+	static final public float[] stringToFloat(String[] v) {
 		float[] r = new float[v.length];
 		int n = 0;
 		for (String s : v) {
@@ -236,17 +241,18 @@ public class EOStrNum extends EOBasic {
 		return r;
 	}
 
-	static final public double stringToDouble(final String s, final double v) {
+	static final public double stringToDouble(String s, double v) {
+		Ref<Double> refDouble = new Ref<Double>(0D);
 		refDouble.val = v;
 		isDouble(s, refDouble);
 		return refDouble.val;
 	}
 
-	static final public double stringToDouble(final String s) {
+	static final public double stringToDouble(String s) {
 		return stringToDouble(s, 0.0);
 	}
 
-	static final public double[] stringToDouble(final String[] v) {
+	static final public double[] stringToDouble(String[] v) {
 		double[] r = new double[v.length];
 		int n = 0;
 		for (String s : v) {

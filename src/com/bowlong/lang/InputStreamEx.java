@@ -16,6 +16,7 @@ import com.bowlong.io.ByteOutStream;
 import com.bowlong.objpool.ByteOutPool;
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.text.EncodingEx;
+import com.bowlong.util.Ref;
 
 /**
  * 
@@ -29,14 +30,8 @@ public class InputStreamEx extends ExOrigin {
 			return null;
 		try {
 			List<String> reList = new ArrayList<String>();
-			charset = reCharset(charset, refBl);
-			boolean isSup = refBl.val;
-			BufferedReader br = null;
-			if (isSup) {
-				br = new BufferedReader(new InputStreamReader(ins, charset));
-			} else {
-				br = new BufferedReader(new InputStreamReader(ins));
-			}
+			charset = reCharset(charset);
+			BufferedReader br = new BufferedReader(new InputStreamReader(ins, charset));
 			String readLine = null;
 			while ((readLine = br.readLine()) != null) {
 				reList.add(readLine);
@@ -129,6 +124,7 @@ public class InputStreamEx extends ExOrigin {
 		if (ins == null)
 			return "";
 		try {
+			Ref<Boolean> refBl = new Ref<Boolean>(false);
 			charset = reCharset(charset, refBl);
 			boolean isSup = refBl.val;
 			byte[] bts = inps2Bytes(ins);

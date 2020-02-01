@@ -28,10 +28,8 @@ public class HttpUriPostEx extends HttpUriEx {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}
-
-		charset = reCharset(charset, refBl);
-		boolean isSup = refBl.val;
-
+		
+		charset = reCharset(charset);
 		try {
 			URL url = new URL(host);
 			HttpPost post = new HttpPost(url.toURI());
@@ -45,21 +43,12 @@ public class HttpUriPostEx extends HttpUriEx {
 					nvps.add(nvParame);
 				}
 
-				UrlEncodedFormEntity urlencode = null;
-				if (isSup) {
-					urlencode = new UrlEncodedFormEntity(nvps, charset);
-				} else {
-					urlencode = new UrlEncodedFormEntity(nvps);
-				}
+				UrlEncodedFormEntity urlencode = new UrlEncodedFormEntity(nvps, charset);
 				post.setEntity(urlencode);
 				// contentLength = urlencode.getContentLength();
 			}
 			post.setHeader("Accept", "*/*");
-			if (isSup) {
-				post.setHeader("Accept-Charset", charset);
-			} else {
-				post.setHeader("Accept-Charset", EncodingEx.UTF_8);
-			}
+			post.setHeader("Accept-Charset", charset);
 			post.setHeader("Connection", "close"); // Keep-Alive close
 			post.setHeader("User-Agent", Browser.ch360);
 			return execute(post);
@@ -79,27 +68,17 @@ public class HttpUriPostEx extends HttpUriEx {
 			return null;
 		}
 
-		charset = reCharset(charset, refBl);
-		boolean isSup = refBl.val;
+		charset = reCharset(charset);
 
 		try {
 			URL url = new URL(host);
 			HttpPost post = new HttpPost(url.toURI());
 			if (!StrEx.isEmpty(params)) {
-				HttpEntity httpEn = null;
-				if (isSup) {
-					httpEn = new StringEntity(params, charset);
-				} else {
-					httpEn = new StringEntity(params);
-				}
+				HttpEntity httpEn = new StringEntity(params, charset);
 				post.setEntity(httpEn);
 			}
 			post.setHeader("Accept", "*/*");
-			if (isSup) {
-				post.setHeader("Accept-Charset", charset);
-			} else {
-				post.setHeader("Accept-Charset", EncodingEx.UTF_8);
-			}
+			post.setHeader("Accept-Charset", charset);
 			post.setHeader("Connection", "close"); // Keep-Alive close
 			post.setHeader("User-Agent", Browser.ch360);
 			return execute(post);
