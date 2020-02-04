@@ -87,11 +87,14 @@ public class HttpUrlConEx extends HttpBaseEx {
 			// 获取所有响应头字段
 			// Map<String, List<String>> map = conn.getHeaderFields();
 			int respCode = conn.getResponseCode();
+			byte[] _ret = null;
 			if (HttpURLConnection.HTTP_OK == respCode) {
-				return inps2Bytes(conn.getInputStream());
+				_ret = inps2Bytes(conn.getInputStream());
 			} else {
-				return inps2Bytes(conn.getErrorStream());
+				_ret = inps2Bytes(conn.getErrorStream());
 			}
+			conn.disconnect();
+			return _ret;
 		} catch (Exception e) {
 			logError(e, log);
 		}
