@@ -56,6 +56,7 @@ public class TaobaoIP extends ExToolkit {
 	 */
 	public static void main(String[] args) throws Exception {
 		String ip = "133.88.44.178";
+		ip = "171.223.203.174";
 		long _n = now();
 		System.out.println(info(ip));
 		System.out.println("====t1==" + (now() - _n));
