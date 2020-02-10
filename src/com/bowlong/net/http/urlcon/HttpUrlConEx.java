@@ -51,7 +51,6 @@ public class HttpUrlConEx extends HttpBaseEx {
 			conn.setUseCaches(false);
 			// 维持长连接 Keep-Alive close
 			conn.setRequestProperty("Connection", "close");
-			conn.setRequestProperty("Expect", "100-continue"); // 1.1 规则?
 			// 设置接受所有类型
 			conn.setRequestProperty("Accept-Charset", EncodingEx.UTF_8);
 			conn.setRequestProperty("accept", "*/*");
