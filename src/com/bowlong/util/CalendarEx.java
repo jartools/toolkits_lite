@@ -221,7 +221,7 @@ public class CalendarEx extends ExOrigin {
 	}
 	
 	/*** calendar 与  nCalendar 之间相差多少天 **/
-	static public final int diffDayNum4AddMonth(Calendar calendar,Calendar nCalendar) {
+	static public final int diffDayNum4Month(Calendar calendar,Calendar nCalendar) {
 		long t1 = calendar.getTimeInMillis();
 		long t2 = nCalendar.getTimeInMillis();
 		long diff = t2 - t1;
@@ -240,7 +240,7 @@ public class CalendarEx extends ExOrigin {
 		long t1 = calendar.getTimeInMillis();
 		Calendar nCalendar = parse2Cal(t1);
 		nCalendar = addMonth(nCalendar, add);
-		return diffDayNum4AddMonth(calendar, nCalendar);
+		return diffDayNum4Month(calendar, nCalendar);
 	}
 	
 	/*** 到下个月的calender的day 所增加的天数 **/
