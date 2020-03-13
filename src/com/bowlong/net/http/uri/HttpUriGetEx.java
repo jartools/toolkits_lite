@@ -3,12 +3,12 @@ package com.bowlong.net.http.uri;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.http.client.methods.HttpGet;
 
 import com.bowlong.lang.StrEx;
-import com.bowlong.net.http.Browser;
 import com.bowlong.text.EncodingEx;
 
 public class HttpUriGetEx extends HttpUriEx {
@@ -37,12 +37,10 @@ public class HttpUriGetEx extends HttpUriEx {
 			}
 
 			HttpGet get = new HttpGet(url.toURI());
-			get.setHeader("Accept", "*/*");
+			for (Entry<String, String> entry : getMapHead().entrySet()) {
+				get.setHeader(entry.getKey(), entry.getValue());
+			}
 			get.setHeader("Accept-Charset", charset);
-			// get.setHeader("Connection", "Keep-Alive");
-			get.setHeader("Connection", "close");
-			get.setHeader("User-Agent", Browser.ch360);
-			// get.setHeader("Expect", "100-continue"); // 1.1 规则?有问题
 			return execute(get);
 		} catch (Exception e) {
 			logError(e, log);

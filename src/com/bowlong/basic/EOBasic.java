@@ -22,12 +22,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Ex扩展类的起源<br/>
  * Origin -> Base(Basic) -> Toolkit(Tools,Helper) -> Manager(Ex)
+ * 
  * @author Canyon
  * @time 2019-02-14 19:32
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class EOBasic extends EOConfig {
-	
+
 	static final public <T> T toT(Object obj) {
 		return (T) obj;
 	}
@@ -207,6 +208,37 @@ public class EOBasic extends EOConfig {
 		return new HashMap<K, V>();
 	}
 
+	static final public <T> T get(Map map, Object key) {
+		return (T) map.get(key);
+	}
+
+	static final public <K, V> Map<K, V> copy(Map<K, V> from, Map<K, V> to, boolean isReplace) {
+		if (isEmpty(from))
+			return to;
+		if (to == null)
+			to = newMapT();
+		for (K key : from.keySet()) {
+			if (to.containsKey(key)) {
+				if (!isReplace)
+					continue;
+			}
+			to.put(key, from.get(key));
+		}
+		return to;
+	}
+
+	static final public Map copy2(Map from, Map to, boolean isReplace) {
+		return copy(from, to, isReplace);
+	}
+
+	static final public <T> T copyValue(Map from, Map to, Object key) {
+		T v = get(from, key);
+		if (v == null)
+			return null;
+		to.put(key, v);
+		return v;
+	}
+
 	static final public void clear(Map map) {
 		if (map == null)
 			return;
@@ -268,11 +300,11 @@ public class EOBasic extends EOConfig {
 	static final public boolean isEmpty(Queue s) {
 		return (s == null || s.isEmpty());
 	}
-	
+
 	static final public <E> Set<E> newSet() {
 		return Collections.synchronizedSet(new HashSet<E>());
 	}
-	
+
 	static final public boolean isEmpty(Set s) {
 		return (s == null || s.isEmpty());
 	}

@@ -28,7 +28,7 @@ public class HttpUriPostEx extends HttpUriEx {
 		if (StrEx.isEmptyTrim(host)) {
 			return null;
 		}
-		
+
 		charset = reCharset(charset);
 		try {
 			URL url = new URL(host);
@@ -47,11 +47,10 @@ public class HttpUriPostEx extends HttpUriEx {
 				post.setEntity(urlencode);
 				// contentLength = urlencode.getContentLength();
 			}
-			post.setHeader("Accept", "*/*");
+			for (Entry<String, String> entry : getMapHead().entrySet()) {
+				post.setHeader(entry.getKey(), entry.getValue());
+			}
 			post.setHeader("Accept-Charset", charset);
-			post.setHeader("Connection", "close"); // Keep-Alive close
-			post.setHeader("User-Agent", Browser.ch360);
-			// post.setHeader("Expect", "100-continue"); // 1.1 规则? 有问题
 			return execute(post);
 		} catch (Exception e) {
 			logError(e, log);

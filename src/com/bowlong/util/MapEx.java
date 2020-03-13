@@ -50,10 +50,6 @@ public class MapEx extends ExOrigin {
 		return singletonEmptyMap;
 	}
 
-	public static final <K, V> Map<K, V> newHashMap() {
-		return new HashMap<K, V>();
-	}
-
 	public static final <K, V> Map<K, V> newSortedMap() {
 		return Collections.synchronizedMap(new TreeMap<K, V>());
 	}
@@ -92,33 +88,6 @@ public class MapEx extends ExOrigin {
 
 	public static final StaticBucketMap newStaticBucketMap() {
 		return new StaticBucketMap();
-	}
-
-	public static final <T> T copyValue(Map from, Map to, Object key) {
-		T v = get(from, key);
-		if (v == null)
-			return null;
-		to.put(key, v);
-		return v;
-	}
-
-	public static final Map copy(Map from, Map to, boolean isReplace) {
-		if (isEmpty(from))
-			return to;
-		if (to == null)
-			to = newMap();
-		for (Object key : from.keySet()) {
-			if (to.containsKey(key)) {
-				if (!isReplace)
-					continue;
-			}
-			to.put(key, from.get(key));
-		}
-		return to;
-	}
-
-	public static final <T> T get(Map map, Object key) {
-		return (T) map.get(key);
 	}
 
 	public static final boolean getBoolean(Map map, Object key) {
@@ -262,7 +231,7 @@ public class MapEx extends ExOrigin {
 	}
 
 	public static final Map toHashMap(Map map) {
-		Map ret = newHashMap();
+		Map ret = newMapT();
 		ret.putAll(map);
 		return ret;
 	}
@@ -332,7 +301,7 @@ public class MapEx extends ExOrigin {
 	}
 
 	static public final Map<String, String> toMapKV(Map map) {
-		Map<String, String> ret = newHashMap();
+		Map<String, String> ret = newMapT();
 		if (isEmpty(map))
 			return ret;
 		Object keyObj, valObj;
@@ -351,7 +320,7 @@ public class MapEx extends ExOrigin {
 	}
 
 	static public final Map<String, Integer> toMapKVInt(Map map) {
-		Map<String, Integer> ret = newHashMap();
+		Map<String, Integer> ret = newMapT();
 		if (isEmpty(map))
 			return ret;
 		Object keyObj, valObj;
@@ -372,7 +341,7 @@ public class MapEx extends ExOrigin {
 	}
 
 	static public final Map<Integer, String> toMapKIntV(Map map) {
-		Map<Integer, String> ret = newHashMap();
+		Map<Integer, String> ret = newMapT();
 		if (isEmpty(map))
 			return ret;
 		Object keyObj, valObj;
@@ -393,7 +362,7 @@ public class MapEx extends ExOrigin {
 	}
 
 	static public final Map<Integer, Integer> toMapKIntVInt(Map map) {
-		Map<Integer, Integer> ret = newHashMap();
+		Map<Integer, Integer> ret = newMapT();
 		if (isEmpty(map))
 			return ret;
 		Object keyObj, valObj;

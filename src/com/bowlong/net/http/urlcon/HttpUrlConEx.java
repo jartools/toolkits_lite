@@ -6,13 +6,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 
 import com.bowlong.lang.StrEx;
-import com.bowlong.net.http.Browser;
 import com.bowlong.net.http.HttpBaseEx;
-import com.bowlong.text.EncodingEx;
 
 /**
  * URLConnection,HttpURLConnection <br/>
@@ -43,21 +42,16 @@ public class HttpUrlConEx extends HttpBaseEx {
 			}
 			// 打开和URL之间的连接
 			conn = (HttpURLConnection) reqUrl.openConnection();
+			for (Entry<String, String> entry : getMapHead().entrySet()) {
+				conn.setRequestProperty(entry.getKey(), entry.getValue());
+			}
 			// 设置请求数据类型 - 浏览器编码类型
 			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			// 编码格式
-			conn.setRequestProperty("Charset", EncodingEx.UTF_8);
 			// 设置是否使用缓存 - POST不能使用缓存?
 			conn.setUseCaches(false);
-			// 维持长连接 Keep-Alive close
-			conn.setRequestProperty("Connection", "close");
-			// 设置接受所有类型
-			conn.setRequestProperty("Accept-Charset", EncodingEx.UTF_8);
-			conn.setRequestProperty("accept", "*/*");
 			if (isOut) {
 				conn.setRequestProperty("Content-Length", String.valueOf(lens4params));
 			}
-			conn.setRequestProperty("user-agent", Browser.ch360);
 			// 请求超时
 			timeOutCon = (timeOutCon <= 0) ? defaultConRequTimeout : timeOutCon;
 			conn.setConnectTimeout(timeOutCon);
