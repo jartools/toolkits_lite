@@ -42,8 +42,8 @@ public class DaoBuilder extends ExToolkit {
 		Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(conn,
 				tb);
 		String priKey = BeanBuilder.primaryKey(rsmd, cols);
-		String priKeyType = JavaType.getType(rsmd, priKey);
-		String pkBType = JavaType.getBasicType(priKeyType);
+		String priKeyType = JTypeMysql.getType(rsmd, priKey);
+		String pkBType = JTypeMysql.getBasicType(priKeyType);
 		String cols1 = BeanBuilder.columns1(rsmd, cols);
 		// String cols2 = BeanBuilder.columns2(rsmd, columns);
 		String cols3 = BeanBuilder.columns3(rsmd, cols);
@@ -872,7 +872,7 @@ public class DaoBuilder extends ExToolkit {
 				String NON_UNIQUE = String.valueOf(index.get("NON_UNIQUE"));
 				String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 				String COLUMN_NAME_UEN = StrEx.upperN1(COLUMN_NAME_EN);
-				String COLUMN_NAME_TYPE = JavaType.getType(rsmd, COLUMN_NAME);
+				String COLUMN_NAME_TYPE = JTypeMysql.getType(rsmd, COLUMN_NAME);
 				// if(INDEX_NAME.equals("PRIMARY"))
 				// continue;
 				if (NON_UNIQUE.equals("false")) {
@@ -1649,8 +1649,8 @@ public class DaoBuilder extends ExToolkit {
 			// String columnU = StrEx.upperN1(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			String columnUEn = StrEx.upperN1(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeMysql.getType(rsmd, column);
+			String bType = JTypeMysql.getBasicType(javaType);
 			if (!column.equals(priKey)) {
 				if (bType.contains("short") || bType.contains("int")
 						|| bType.contains("long") || bType.contains("float")

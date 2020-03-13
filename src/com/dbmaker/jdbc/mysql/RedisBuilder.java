@@ -28,8 +28,8 @@ public class RedisBuilder extends ExToolkit {
 //				table);
 		String priKey = BeanBuilder.primaryKey(rsmd, columns);
 		String priUKey = StrEx.upperN1(priKey);
-		String priKeyType = JavaType.getType(rsmd, priKey);
-		String pkBType = JavaType.getBasicType(priKeyType);
+		String priKeyType = JTypeMysql.getType(rsmd, priKey);
+		String pkBType = JTypeMysql.getBasicType(priKeyType);
 		// String columns1 = BeanBuilder.columns1(rsmd, columns);
 		// String columns2 = BeanBuilder.columns2(rsmd, columns);
 		// String columns3 = BeanBuilder.columns3(rsmd, columns);

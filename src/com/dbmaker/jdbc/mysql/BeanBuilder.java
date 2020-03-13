@@ -44,8 +44,8 @@ public class BeanBuilder extends ExToolkit {
 		String tbEn = PinYin.getShortPinYin(tb);
 		String tbUEn = StrEx.upperN1(tbEn);
 		String priKey = BeanBuilder.primaryKey(rsmd, columns);
-		String priKeyType = JavaType.getType(rsmd, priKey);
-		String pkBType = JavaType.getBasicType(priKeyType);
+		String priKeyType = JTypeMysql.getType(rsmd, priKey);
+		String pkBType = JTypeMysql.getBasicType(priKeyType);
 		String javaTypes = javaTypes(rsmd, columns);
 		String dataTypes = dataTypes(rsmd, columns);
 		String dbIndexs = dbIndexs(conn, tb);
@@ -144,8 +144,8 @@ public class BeanBuilder extends ExToolkit {
 
 		for (Map<String, Object> m : columns) {
 			String columnName = MapEx.get(m, "columnName");
-			String javaType = JavaType.getType(rsmd, columnName);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeMysql.getType(rsmd, columnName);
+			String bType = JTypeMysql.getBasicType(javaType);
 			sn(sb, "    public %s %s;", bType, columnName);
 		}
 		sn(sb, "");
@@ -194,8 +194,8 @@ public class BeanBuilder extends ExToolkit {
 			String colU = StrEx.upperN(col, 0);
 			String colEn = PinYin.getShortPinYin(col);
 			String colUEn = StrEx.upperN(colEn, 0);
-			String javaType = JavaType.getType(rsmd, col);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeMysql.getType(rsmd, col);
+			String bType = JTypeMysql.getBasicType(javaType);
 
 			if (col.equals(priKey)) {
 				sn(sb, "    @Override");
@@ -374,8 +374,8 @@ public class BeanBuilder extends ExToolkit {
 			String col = MapEx.get(m, "columnName");
 			// String colU = StrEx.upperN(column, 0);
 			String colEn = PinYin.getShortPinYin(col);
-			String javaType = JavaType.getType(rsmd, col);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeMysql.getType(rsmd, col);
+			String bType = JTypeMysql.getBasicType(javaType);
 			if (bType.contains("Date"))
 				sn(sb, "            Date %s = new Date(); \t// %s", colEn, col);
 			else if (bType.contains("String"))
@@ -402,8 +402,8 @@ public class BeanBuilder extends ExToolkit {
 			// String colU = StrEx.upperN(column, 0);
 			String colEn = PinYin.getShortPinYin(col);
 			String colUEn = StrEx.upperN(colEn, 0);
-			String javaType = JavaType.getType(rsmd, col);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeMysql.getType(rsmd, col);
+			String bType = JTypeMysql.getBasicType(javaType);
 			if (bType.contains("Date"))
 				sn(sb, "        Date %s = %s.get%s(); \t// %s", colEn, tbEn, colUEn, col);
 			else
@@ -447,8 +447,8 @@ public class BeanBuilder extends ExToolkit {
 			// String colU = StrEx.upperN(column, 0);
 			String colEn = PinYin.getShortPinYin(col);
 			// String colUEn = StrEx.upperN(columnEn, 0);
-			String javaType = JavaType.getType(rsmd, col);
-			String bbType = JavaType.getBasicType(javaType);
+			String javaType = JTypeMysql.getType(rsmd, col);
+			String bbType = JTypeMysql.getBasicType(javaType);
 			if (bbType.indexOf("int") > -1) {
 				sn(sb, "        case CEn.%s:", col);
 				// sn(sb, " if(fieldEn.equals(\"%s\"))", columnEn);
@@ -474,8 +474,8 @@ public class BeanBuilder extends ExToolkit {
 			String colU = StrEx.upperN(col, 0);
 			String colEn = PinYin.getShortPinYin(col);
 			String colUEn = StrEx.upperN(colEn, 0);
-			String javaType = JavaType.getType(rsmd, col);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeMysql.getType(rsmd, col);
+			String bType = JTypeMysql.getBasicType(javaType);
 			if (bType.indexOf("int") > -1) {
 				sn(sb, "        case CEn.%s:", col);
 				// sn(sb, " if(fieldEn.equals(\"%s\"))", columnEn);
@@ -500,8 +500,8 @@ public class BeanBuilder extends ExToolkit {
 			String columnU = StrEx.upperN(column, 0);
 			String columnEn = PinYin.getShortPinYin(column);
 			String columnUEn = StrEx.upperN(columnEn, 0);
-			String javaType = JavaType.getType(rsmd, column);
-			String basicType = JavaType.getBasicType(javaType);
+			String javaType = JTypeMysql.getType(rsmd, column);
+			String basicType = JTypeMysql.getBasicType(javaType);
 			if (column.equals(priKey))
 				continue;
 
@@ -529,8 +529,8 @@ public class BeanBuilder extends ExToolkit {
 			// String colU = StrEx.upperN(column, 0);
 			String colEn = PinYin.getShortPinYin(col);
 			String colUEn = StrEx.upperN(colEn, 0);
-			String javaType = JavaType.getType(rsmd, col);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeMysql.getType(rsmd, col);
+			String bType = JTypeMysql.getBasicType(javaType);
 			if (col.equals(priKey))
 				continue;
 
@@ -558,8 +558,8 @@ public class BeanBuilder extends ExToolkit {
 			// String colU = StrEx.upperN(column, 0);
 			String colEn = PinYin.getShortPinYin(col);
 			// String colUEn = StrEx.upperN(columnEn, 0);
-			String javaType = JavaType.getType(rsmd, col);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeMysql.getType(rsmd, col);
+			String bType = JTypeMysql.getBasicType(javaType);
 			if (bType.indexOf("double") > -1) {
 				sn(sb, "        case CEn.%s:", col);
 				// sn(sb, " if(\"%s\".equals(fieldEn)) ", columnEn);
@@ -584,8 +584,8 @@ public class BeanBuilder extends ExToolkit {
 			// String colU = StrEx.upperN(column, 0);
 			String colEn = PinYin.getShortPinYin(col);
 			String colUEn = StrEx.upperN(colEn, 0);
-			String javaType = JavaType.getType(rsmd, col);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeMysql.getType(rsmd, col);
+			String bType = JTypeMysql.getBasicType(javaType);
 			if (bType.indexOf("double") > -1) {
 				sn(sb, "        case CEn.%s:", col);
 				// sn(sb, " if(fieldEn.equals(\"%s\"))", columnEn);
@@ -622,8 +622,8 @@ public class BeanBuilder extends ExToolkit {
 			// String colU = StrEx.upperN(column, 0);
 			String colEn = PinYin.getShortPinYin(col);
 			// String columnUEn = StrEx.upperN(columnEn, 0);
-			String javaType = JavaType.getType(rsmd, col);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeMysql.getType(rsmd, col);
+			String bType = JTypeMysql.getBasicType(javaType);
 			if (bType.indexOf("String") > -1) {
 				sn(sb, "        case CEn.%s: ", col);
 				// sn(sb, " if(fieldEn.equals(\"%s\"))", columnEn);
@@ -695,8 +695,8 @@ public class BeanBuilder extends ExToolkit {
 			// String colU = StrEx.upperN(column, 0);
 			String colEn = PinYin.getShortPinYin(col);
 			String colUEn = StrEx.upperN(colEn, 0);
-			String javaType = JavaType.getType(rsmd, col);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeMysql.getType(rsmd, col);
+			String bType = JTypeMysql.getBasicType(javaType);
 			if (bType.indexOf("String") > -1) {
 				sn(sb, "        case CEn.%s:", col);
 				// sn(sb, " if(fieldEn.equals(\"%s\"))", columnEn);
@@ -765,11 +765,11 @@ public class BeanBuilder extends ExToolkit {
 			// String colU = StrEx.upperN(column, 0);
 			String colEn = PinYin.getShortPinYin(col);
 			// String colUEn = StrEx.upperN(columnEn, 0);
-			String javaType = JavaType.getType(rsmd, col);
+			String javaType = JTypeMysql.getType(rsmd, col);
 			// JavaType.getBasicType(javaType);
 			// sn(sb, " %s %s = (%s)e.get(\"%s\");", javaType, column,
 			// javaType, columnEn);
-			String mGet = JavaType.getMapGet(rsmd, col);
+			String mGet = JTypeMysql.getMapGet(rsmd, col);
 			sn(sb, "        %s %s = MapEx.%s(e, \"%s\");", javaType, col, mGet, colEn);
 		}
 		sn(sb, "");
@@ -777,8 +777,8 @@ public class BeanBuilder extends ExToolkit {
 			String col = MapEx.get(m, "columnName");
 			// String colU = StrEx.upperN(column, 0);
 			// String colUEn = StrEx.upperN(columnEn, 0);
-			String javaType = JavaType.getType(rsmd, col);
-			boolean isNumber = JavaType.isNum0Bl(javaType);
+			String javaType = JTypeMysql.getType(rsmd, col);
+			boolean isNumber = JTypeMysql.isNum0Bl(javaType);
 			if (!isNumber) {
 				sn(sb, "        if(%s == null) %s = %s;", col, col, SqlEx.getDefaultValue(javaType));
 			}
@@ -809,15 +809,15 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "");
 		for (Map<String, Object> m : columns) {
 			String col = MapEx.get(m, "columnName");
-			String javaType = JavaType.getType(rsmd, col);
-			String mGet = JavaType.getMapGet(rsmd, col);
+			String javaType = JTypeMysql.getType(rsmd, col);
+			String mGet = JTypeMysql.getMapGet(rsmd, col);
 			sn(sb, "        %s %s = MapEx.%s(e, \"%s\");", javaType, col, mGet, col);
 		}
 		sn(sb, "");
 		for (Map<String, Object> m : columns) {
 			String col = MapEx.get(m, "columnName");
-			String javaType = JavaType.getType(rsmd, col);
-			boolean isNumber = JavaType.isNum0Bl(javaType);
+			String javaType = JTypeMysql.getType(rsmd, col);
+			boolean isNumber = JTypeMysql.isNum0Bl(javaType);
 			if (!isNumber) {
 				sn(sb, "        if(%s == null) %s = %s;", col, col, SqlEx.getDefaultValue(javaType));
 			}
@@ -1198,7 +1198,7 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperN(column, 0);
 			String columnEn = PinYin.getShortPinYin(column);
 			// String columnUEn = StrEx.upperN(columnEn, 0);
-			String javaType = JavaType.getType(rsmd, column);
+			String javaType = JTypeMysql.getType(rsmd, column);
 
 			s(sb, "%s %s", javaType, columnEn);
 			p++;
@@ -1447,7 +1447,7 @@ public class BeanBuilder extends ExToolkit {
 			// String NON_UNIQUE = String.valueOf(m.get("NON_UNIQUE"));
 			String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 			// String COLUMN_NAME_UEN = StrEx.upperN1(COLUMN_NAME_EN);
-			String COLUMN_NAME_TYPE = JavaType.getType(rsmd, COLUMN_NAME);
+			String COLUMN_NAME_TYPE = JTypeMysql.getType(rsmd, COLUMN_NAME);
 			p++;
 			s(sb, "%s %s", COLUMN_NAME_TYPE, COLUMN_NAME_EN);
 			if (p < size)

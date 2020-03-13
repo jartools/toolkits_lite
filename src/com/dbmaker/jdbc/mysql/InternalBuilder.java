@@ -48,8 +48,8 @@ public class InternalBuilder extends ExToolkit {
 		Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(conn,
 				tb);
 		String priKey = BeanBuilder.primaryKey(rsmd, cols);
-		String priKeyType = JavaType.getType(rsmd, priKey);
-		String pkBType = JavaType.getBasicType(priKeyType);
+		String priKeyType = JTypeMysql.getType(rsmd, priKey);
+		String pkBType = JTypeMysql.getBasicType(priKeyType);
 		// 主键是INT
 		boolean isInt4Pk = "Integer".equals(priKeyType);
 
@@ -141,7 +141,7 @@ public class InternalBuilder extends ExToolkit {
 					String NON_UNIQUE = String.valueOf(index.get("NON_UNIQUE"));
 					String COLUMN_NAME_EN = PinYin.getShortPinYin(COL_NAME);
 					String COLUMN_NAME_UEN = StrEx.upperN1(COLUMN_NAME_EN);
-					String COLUMN_NAME_TYPE = JavaType.getType(rsmd, COL_NAME);
+					String COLUMN_NAME_TYPE = JTypeMysql.getType(rsmd, COL_NAME);
 					if (INDEX_NAME.equals("PRIMARY"))
 						continue;
 					if (NON_UNIQUE.equals("false")) { // 唯一数据
@@ -226,8 +226,8 @@ public class InternalBuilder extends ExToolkit {
 					String NON_UNIQUE = String.valueOf(index.get("NON_UNIQUE"));
 					String COL_NAME_EN = PinYin.getShortPinYin(COL_NAME);
 					String COL_NAME_UEN = StrEx.upperN1(COL_NAME_EN);
-					String COL_NAME_TYPE = JavaType.getType(rsmd, COL_NAME);
-					String bType = JavaType.getBasicType(COL_NAME_TYPE);
+					String COL_NAME_TYPE = JTypeMysql.getType(rsmd, COL_NAME);
+					String bType = JTypeMysql.getBasicType(COL_NAME_TYPE);
 
 					if (INDEX_NAME.equals("PRIMARY"))
 						continue;
@@ -333,9 +333,9 @@ public class InternalBuilder extends ExToolkit {
 							String COL_NAME_EN = PinYin
 									.getShortPinYin(COL_NAME);
 							String COL_NAME_UEN = StrEx.upperN1(COL_NAME_EN);
-							String COL_NAME_TYPE = JavaType.getType(rsmd,
+							String COL_NAME_TYPE = JTypeMysql.getType(rsmd,
 									COL_NAME);
-							String bType = JavaType.getBasicType(COL_NAME_TYPE);
+							String bType = JTypeMysql.getBasicType(COL_NAME_TYPE);
 							sn(sb, "              %s v%s = %s.get%s();", bType,
 									COL_NAME_EN, tbEn, COL_NAME_UEN);
 							skey = skey + s("v%s", COL_NAME_EN);
@@ -398,9 +398,9 @@ public class InternalBuilder extends ExToolkit {
 							String COL_NAME_EN = PinYin
 									.getShortPinYin(COL_NAME);
 							String COL_NAME_UEN = StrEx.upperN1(COL_NAME_EN);
-							String COL_NAME_TYPE = JavaType.getType(rsmd,
+							String COL_NAME_TYPE = JTypeMysql.getType(rsmd,
 									COL_NAME);
-							String bType = JavaType.getBasicType(COL_NAME_TYPE);
+							String bType = JTypeMysql.getBasicType(COL_NAME_TYPE);
 
 							sn(sb, "              %s v%s = %s.get%s();", bType,
 									COL_NAME_EN, tbEn, COL_NAME_UEN);
@@ -447,9 +447,9 @@ public class InternalBuilder extends ExToolkit {
 					// String.valueOf(index.get("NON_UNIQUE"));
 					String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 					String COLUMN_NAME_UEN = StrEx.upperN1(COLUMN_NAME_EN);
-					String COLUMN_NAME_TYPE = JavaType.getType(rsmd,
+					String COLUMN_NAME_TYPE = JTypeMysql.getType(rsmd,
 							COLUMN_NAME);
-					String basicType = JavaType.getBasicType(COLUMN_NAME_TYPE);
+					String basicType = JTypeMysql.getBasicType(COLUMN_NAME_TYPE);
 
 					if (INDEX_NAME.equals("PRIMARY"))
 						continue;
@@ -1720,9 +1720,9 @@ public class InternalBuilder extends ExToolkit {
 					String NON_UNIQUE = String.valueOf(index.get("NON_UNIQUE"));
 					String COL_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 					String COL_NAME_UEN = StrEx.upperN1(COL_NAME_EN);
-					String COLUMN_NAME_TYPE = JavaType.getType(rsmd,
+					String COLUMN_NAME_TYPE = JTypeMysql.getType(rsmd,
 							COLUMN_NAME);
-					String bType = JavaType.getBasicType(COLUMN_NAME_TYPE);
+					String bType = JTypeMysql.getBasicType(COLUMN_NAME_TYPE);
 
 					if (INDEX_NAME.equals("PRIMARY"))
 						continue;
@@ -1764,9 +1764,9 @@ public class InternalBuilder extends ExToolkit {
 							String COL_NAME_EN = PinYin
 									.getShortPinYin(COL_NAME);
 							String COL_NAME_UEN = StrEx.upperN1(COL_NAME_EN);
-							String COL_NAME_TYPE = JavaType.getType(rsmd,
+							String COL_NAME_TYPE = JTypeMysql.getType(rsmd,
 									COL_NAME);
-							String bType = JavaType.getBasicType(COL_NAME_TYPE);
+							String bType = JTypeMysql.getBasicType(COL_NAME_TYPE);
 							sn(sb, "            %s v%s = %s.get%s();", bType,
 									COL_NAME_EN, tbEn, COL_NAME_UEN);
 							skey = skey + s("v%s", COL_NAME_EN);
@@ -1787,9 +1787,9 @@ public class InternalBuilder extends ExToolkit {
 							String COL_NAME_EN = PinYin
 									.getShortPinYin(COL_NAME);
 							String COL_NAME_UEN = StrEx.upperN1(COL_NAME_EN);
-							String COL_NAME_TYPE = JavaType.getType(rsmd,
+							String COL_NAME_TYPE = JTypeMysql.getType(rsmd,
 									COL_NAME);
-							String bType = JavaType.getBasicType(COL_NAME_TYPE);
+							String bType = JTypeMysql.getBasicType(COL_NAME_TYPE);
 
 							sn(sb, "            %s v%s = %s.get%s();", bType,
 									COL_NAME_EN, tbEn, COL_NAME_UEN);
@@ -1903,8 +1903,8 @@ public class InternalBuilder extends ExToolkit {
 				String NON_UNIQUE = String.valueOf(index.get("NON_UNIQUE"));
 				String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 				String COLUMN_NAME_UEN = StrEx.upperN1(COLUMN_NAME_EN);
-				String COLUMN_NAME_TYPE = JavaType.getType(rsmd, COLUMN_NAME);
-				String COLUMN_NAME_BTYPE = JavaType
+				String COLUMN_NAME_TYPE = JTypeMysql.getType(rsmd, COLUMN_NAME);
+				String COLUMN_NAME_BTYPE = JTypeMysql
 						.getBasicType(COLUMN_NAME_TYPE);
 				if (INDEX_NAME.equals("PRIMARY"))
 					continue;
@@ -2281,9 +2281,9 @@ public class InternalBuilder extends ExToolkit {
 									.getShortPinYin(COLUMN_NAME);
 							String COLUMN_NAME_UEN = StrEx
 									.upperN1(COLUMN_NAME_EN);
-							String COLUMN_NAME_TYPE = JavaType.getType(rsmd,
+							String COLUMN_NAME_TYPE = JTypeMysql.getType(rsmd,
 									COLUMN_NAME);
-							String COLUMN_NAME_BTYPE = JavaType
+							String COLUMN_NAME_BTYPE = JTypeMysql
 									.getBasicType(COLUMN_NAME_TYPE);
 							if (COLUMN_NAME_BTYPE.equals("String")) {
 								sn(sb,
@@ -2418,9 +2418,9 @@ public class InternalBuilder extends ExToolkit {
 									.getShortPinYin(_COLUMN_NAME);
 							String _COLUMN_NAME_UEN = StrEx
 									.upperN1(_COLUMN_NAME_EN);
-							String _COLUMN_NAME_TYPE = JavaType.getType(rsmd,
+							String _COLUMN_NAME_TYPE = JTypeMysql.getType(rsmd,
 									_COLUMN_NAME);
-							String _basicType = JavaType
+							String _basicType = JTypeMysql
 									.getBasicType(_COLUMN_NAME_TYPE);
 
 							sn(sb, "                %s _%s = e.get%s();",

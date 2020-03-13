@@ -1,37 +1,65 @@
-package com.dbmaker.jdbc.oracle;
+package com.dbmaker.type;
 
 import java.math.BigDecimal;
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.NClob;
-import java.sql.ResultSetMetaData;
 import java.sql.RowId;
-import java.sql.SQLException;
 import java.sql.SQLXML;
 import java.sql.Time;
 
-public class JavaType {
+/**
+ * Java Type 类型 - 重新整理
+ * 
+ * @author Canyon / 龚阳辉
+ * @version createtime：2020年3月13日下午3:6:36
+ */
+public class JType {
 
-	public static String getType(ResultSetMetaData rsmd, String columnName)
-			throws SQLException {
-		int count = rsmd.getColumnCount();
-		for (int i = 1; i <= count; i++) {
-			String key = rsmd.getColumnName(i);
-			if (!key.equals(columnName))
-				continue;
+	static final public String getBasicType(String type) {
+		if (type == null)
+			return null;
 
-			return getType(rsmd, i);
-		}
-		return "";
+		if (type.endsWith("Boolean"))
+			type = "boolean";
+		if (type.endsWith("Byte"))
+			type = "byte";
+		else if (type.endsWith("Short"))
+			type = "short";
+		else if (type.endsWith("Integer"))
+			type = "int";
+		else if (type.endsWith("Long"))
+			type = "long";
+		else if (type.endsWith("Float"))
+			type = "float";
+		else if (type.endsWith("Double"))
+			type = "double";
+
+		return type;
 	}
 
-	public static String getType(ResultSetMetaData rsmd, int i) throws SQLException {
-		int count = rsmd.getColumnCount();
-		if (i > count)
-			return "";
+	static final public boolean isNumber(String tp) {
+		boolean _isRet = false;
+		if (tp == null)
+			return _isRet;
+		tp = tp.toLowerCase();
+		_isRet = tp.endsWith("byte") || tp.endsWith("short") || tp.endsWith("integer") || "int".equals(tp);
+		_isRet = _isRet || tp.endsWith("long") || tp.endsWith("float") || tp.endsWith("double");
+		return _isRet;
+	}
 
-		int columnType = rsmd.getColumnType(i);
+	static final public boolean isNum0Bl(String type) {
+		boolean isNumber = isNumber(type);
+		if (!isNumber) {
+			if ("Boolean".equalsIgnoreCase(type)) {
+				return true;
+			}
+		}
+		return isNumber;
+	}
+
+	static final public String getType(int columnType) {
 		switch (columnType) {
 		case java.sql.Types.ARRAY:
 			return Array.class.getSimpleName();
@@ -52,7 +80,7 @@ public class JavaType {
 		case java.sql.Types.DATE:
 			return java.util.Date.class.getName();
 		case java.sql.Types.DECIMAL:
-			return Integer.class.getName();
+			return BigDecimal.class.getName();
 		case java.sql.Types.DISTINCT:
 			break;
 		case java.sql.Types.DOUBLE:
@@ -96,8 +124,7 @@ public class JavaType {
 		case java.sql.Types.TIME:
 			return Time.class.getName();
 		case java.sql.Types.TIMESTAMP:
-			return java.sql.Timestamp.class.getName();
-			//return oracle.sql.TIMESTAMP.class.getName();
+			return java.util.Date.class.getName();
 		case java.sql.Types.TINYINT:
 			return Byte.class.getSimpleName();
 		case java.sql.Types.VARBINARY:
@@ -109,24 +136,17 @@ public class JavaType {
 		}
 		return "";
 	}
-	
-	public static String getBasicType(String type){
-		if (type.contains("Boolean"))
-			type = "boolean";
-		if (type.contains("Byte"))
-			type = "byte";
-		else if (type.contains("Short"))
-			type = "short";
-		else if (type.contains("Integer"))
-			type = "int";
-		else if (type.contains("Long"))
-			type = "long";
-		else if (type.contains("Float"))
-			type = "float";
-		else if (type.contains("Double"))
-			type = "double";
 
-		return type;
+	static final public String getType4Oracle(int columnType) {
+		switch (columnType) {
+		case java.sql.Types.DECIMAL:
+			return Integer.class.getName();
+		case java.sql.Types.TIMESTAMP:
+			return java.sql.Timestamp.class.getName();
+		// return oracle.sql.TIMESTAMP.class.getName();
+		default:
+			return getType(columnType);
+		}
 	}
-	
+
 }

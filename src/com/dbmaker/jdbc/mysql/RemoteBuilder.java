@@ -43,8 +43,8 @@ public class RemoteBuilder extends ExToolkit {
 		Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(conn,
 				table);
 		String primaryKey = BeanBuilder.primaryKey(rsmd, columns);
-		String primaryKeyType = JavaType.getType(rsmd, primaryKey);
-		String pkBasicType = JavaType.getBasicType(primaryKeyType);
+		String primaryKeyType = JTypeMysql.getType(rsmd, primaryKey);
+		String pkBasicType = JTypeMysql.getBasicType(primaryKeyType);
 		// String columns1 = BeanBuilder.columns1(rsmd, columns);
 		// String columns2 = BeanBuilder.columns2(rsmd, columns);
 		// String columns3 = BeanBuilder.columns3(rsmd, columns);
@@ -115,9 +115,9 @@ public class RemoteBuilder extends ExToolkit {
 					// String.valueOf(index.get("NON_UNIQUE"));
 					String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 					String COLUMN_NAME_UEN = StrEx.upperN1(COLUMN_NAME_EN);
-					String COLUMN_NAME_TYPE = JavaType.getType(rsmd,
+					String COLUMN_NAME_TYPE = JTypeMysql.getType(rsmd,
 							COLUMN_NAME);
-					String basicType = JavaType.getBasicType(COLUMN_NAME_TYPE);
+					String basicType = JTypeMysql.getBasicType(COLUMN_NAME_TYPE);
 
 					if (INDEX_NAME.equals("PRIMARY"))
 						continue;
@@ -417,8 +417,8 @@ public class RemoteBuilder extends ExToolkit {
 				String NON_UNIQUE = String.valueOf(index.get("NON_UNIQUE"));
 				String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 				String COLUMN_NAME_UEN = StrEx.upperN1(COLUMN_NAME_EN);
-				String COLUMN_NAME_TYPE = JavaType.getType(rsmd, COLUMN_NAME);
-				String COLUMN_NAME_BTYPE = JavaType
+				String COLUMN_NAME_TYPE = JTypeMysql.getType(rsmd, COLUMN_NAME);
+				String COLUMN_NAME_BTYPE = JTypeMysql
 						.getBasicType(COLUMN_NAME_TYPE);
 				if (INDEX_NAME.equals("PRIMARY"))
 					continue;

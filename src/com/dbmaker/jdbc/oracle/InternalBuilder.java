@@ -52,8 +52,8 @@ public class InternalBuilder extends ExToolkit {
 		Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(conn,
 				table);
 		String primaryKey = BeanBuilder.primaryKey(conn, table, columns);
-		String primaryKeyType = JavaType.getType(rsmd, primaryKey);
-		String pkBasicType = JavaType.getBasicType(primaryKeyType);
+		String primaryKeyType = JTypeOracle.getType(rsmd, primaryKey);
+		String pkBasicType = JTypeOracle.getBasicType(primaryKeyType);
 		// String columns1 = BeanBuilder.columns1(rsmd, columns);
 		// String columns2 = BeanBuilder.columns2(rsmd, columns);
 		// String columns3 = BeanBuilder.columns3(rsmd, columns);
@@ -124,7 +124,7 @@ public class InternalBuilder extends ExToolkit {
 					String NON_UNIQUE = String.valueOf(index.get("NON_UNIQUE"));
 					String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 					String COLUMN_NAME_UEN = StrEx.upperFirst(COLUMN_NAME_EN);
-					String COLUMN_NAME_TYPE = JavaType.getType(rsmd,
+					String COLUMN_NAME_TYPE = JTypeOracle.getType(rsmd,
 							COLUMN_NAME);
 					if (INDEX_NAME.equals("PRIMARY"))
 						continue;
@@ -234,9 +234,9 @@ public class InternalBuilder extends ExToolkit {
 					String NON_UNIQUE = String.valueOf(index.get("NON_UNIQUE"));
 					String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 					String COLUMN_NAME_UEN = StrEx.upperFirst(COLUMN_NAME_EN);
-					String COLUMN_NAME_TYPE = JavaType.getType(rsmd,
+					String COLUMN_NAME_TYPE = JTypeOracle.getType(rsmd,
 							COLUMN_NAME);
-					String basicType = JavaType.getBasicType(COLUMN_NAME_TYPE);
+					String basicType = JTypeOracle.getBasicType(COLUMN_NAME_TYPE);
 
 					if (INDEX_NAME.equals("PRIMARY")
 							|| COLUMN_NAME.equals(primaryKey))
@@ -281,9 +281,9 @@ public class InternalBuilder extends ExToolkit {
 									.getShortPinYin(COLUMN_NAME);
 							String COLUMN_NAME_UEN = StrEx
 									.upperFirst(COLUMN_NAME_EN);
-							String COLUMN_NAME_TYPE = JavaType.getType(rsmd,
+							String COLUMN_NAME_TYPE = JTypeOracle.getType(rsmd,
 									COLUMN_NAME);
-							String basicType = JavaType
+							String basicType = JTypeOracle
 									.getBasicType(COLUMN_NAME_TYPE);
 
 							sn(sb, "            %s v%s = %s.get%s();",
@@ -307,9 +307,9 @@ public class InternalBuilder extends ExToolkit {
 									.getShortPinYin(COLUMN_NAME);
 							String COLUMN_NAME_UEN = StrEx
 									.upperFirst(COLUMN_NAME_EN);
-							String COLUMN_NAME_TYPE = JavaType.getType(rsmd,
+							String COLUMN_NAME_TYPE = JTypeOracle.getType(rsmd,
 									COLUMN_NAME);
-							String basicType = JavaType
+							String basicType = JTypeOracle
 									.getBasicType(COLUMN_NAME_TYPE);
 
 							sn(sb, "            %s v%s = %s.get%s();",
@@ -356,9 +356,9 @@ public class InternalBuilder extends ExToolkit {
 					// String.valueOf(index.get("NON_UNIQUE"));
 					String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 					String COLUMN_NAME_UEN = StrEx.upperFirst(COLUMN_NAME_EN);
-					String COLUMN_NAME_TYPE = JavaType.getType(rsmd,
+					String COLUMN_NAME_TYPE = JTypeOracle.getType(rsmd,
 							COLUMN_NAME);
-					String basicType = JavaType.getBasicType(COLUMN_NAME_TYPE);
+					String basicType = JTypeOracle.getBasicType(COLUMN_NAME_TYPE);
 
 					if (INDEX_NAME.equals("PRIMARY"))
 						continue;
@@ -628,9 +628,9 @@ public class InternalBuilder extends ExToolkit {
 					// String.valueOf(index.get("NON_UNIQUE"));
 					String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 					String COLUMN_NAME_UEN = StrEx.upperFirst(COLUMN_NAME_EN);
-					String COLUMN_NAME_TYPE = JavaType.getType(rsmd,
+					String COLUMN_NAME_TYPE = JTypeOracle.getType(rsmd,
 							COLUMN_NAME);
-					String basicType = JavaType.getBasicType(COLUMN_NAME_TYPE);
+					String basicType = JTypeOracle.getBasicType(COLUMN_NAME_TYPE);
 
 					if (INDEX_NAME.equals("PRIMARY"))
 						continue;
@@ -1436,8 +1436,8 @@ public class InternalBuilder extends ExToolkit {
 				String NON_UNIQUE = String.valueOf(index.get("NON_UNIQUE"));
 				String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 				String COLUMN_NAME_UEN = StrEx.upperFirst(COLUMN_NAME_EN);
-				String COLUMN_NAME_TYPE = JavaType.getType(rsmd, COLUMN_NAME);
-				String COLUMN_NAME_BTYPE = JavaType
+				String COLUMN_NAME_TYPE = JTypeOracle.getType(rsmd, COLUMN_NAME);
+				String COLUMN_NAME_BTYPE = JTypeOracle
 						.getBasicType(COLUMN_NAME_TYPE);
 				if (INDEX_NAME.equals("PRIMARY"))
 					continue;
@@ -1801,9 +1801,9 @@ public class InternalBuilder extends ExToolkit {
 									.getShortPinYin(COLUMN_NAME);
 							String COLUMN_NAME_UEN = StrEx
 									.upperFirst(COLUMN_NAME_EN);
-							String COLUMN_NAME_TYPE = JavaType.getType(rsmd,
+							String COLUMN_NAME_TYPE = JTypeOracle.getType(rsmd,
 									COLUMN_NAME);
-							String COLUMN_NAME_BTYPE = JavaType
+							String COLUMN_NAME_BTYPE = JTypeOracle
 									.getBasicType(COLUMN_NAME_TYPE);
 							if (COLUMN_NAME_BTYPE.equals("String")) {
 								sn(sb,
@@ -1929,9 +1929,9 @@ public class InternalBuilder extends ExToolkit {
 									.getShortPinYin(_COLUMN_NAME);
 							String _COLUMN_NAME_UEN = StrEx
 									.upperFirst(_COLUMN_NAME_EN);
-							String _COLUMN_NAME_TYPE = JavaType.getType(rsmd,
+							String _COLUMN_NAME_TYPE = JTypeOracle.getType(rsmd,
 									_COLUMN_NAME);
-							String _basicType = JavaType
+							String _basicType = JTypeOracle
 									.getBasicType(_COLUMN_NAME_TYPE);
 
 							sn(sb, "                %s _%s = e.get%s();",

@@ -56,8 +56,8 @@ public class BeanBuilder extends ExToolkit {
 		String tableEn = PinYin.getShortPinYin(table);
 		String tableUEn = Ss(tableEn);
 		String primaryKey = BeanBuilder.primaryKey(conn, table, columns);
-		String primaryKeyType = JavaType.getType(rsmd, primaryKey);
-		String pkBType = JavaType.getBasicType(primaryKeyType);
+		String primaryKeyType = JTypeOracle.getType(rsmd, primaryKey);
+		String pkBType = JTypeOracle.getBasicType(primaryKeyType);
 		String javaTypes = javaTypes(rsmd, columns);
 		String dataTypes = dataTypes(rsmd, columns);
 		String columns1 = columns1(rsmd, columns);
@@ -154,8 +154,8 @@ public class BeanBuilder extends ExToolkit {
 
 		for (Map<String, Object> m : columns) {
 			String columnName = MapEx.get(m, "columnName");
-			String javaType = JavaType.getType(rsmd, columnName);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, columnName);
+			String bType = JTypeOracle.getBasicType(javaType);
 			sn(sb, "    public %s %s;", bType, columnName);
 		}
 		sn(sb, "");
@@ -205,8 +205,8 @@ public class BeanBuilder extends ExToolkit {
 			String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			String bType = JTypeOracle.getBasicType(javaType);
 
 			// if (column.equals(primaryKey)) {
 			// sn(sb, "    public Object _primaryKey() {");
@@ -353,8 +353,8 @@ public class BeanBuilder extends ExToolkit {
 			String column = MapEx.get(m, "columnName");
 			// String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
-			String javaType = JavaType.getType(rsmd, column);
-			String basicType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			String basicType = JTypeOracle.getBasicType(javaType);
 			if (basicType.contains("Date"))
 				sn(sb, "            Date %s = new Date(); \t// %s", columnEn,
 						column);
@@ -396,8 +396,8 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			String bType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			String bType = JTypeOracle.getBasicType(javaType);
 			if (bType.contains("Date"))
 				sn(sb, "        Date %s = %s.get%s(); \t// %s", columnEn,
 						tableEn, columnUEn, column);
@@ -443,8 +443,8 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			// String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			String basicType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			String basicType = JTypeOracle.getBasicType(javaType);
 			if (basicType.indexOf("int") > -1) {
 				sn(sb, "        case \"%s\":", columnEn);
 				sn(sb, "            return %s;", column);
@@ -468,8 +468,8 @@ public class BeanBuilder extends ExToolkit {
 			String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			String basicType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			String basicType = JTypeOracle.getBasicType(javaType);
 			if (basicType.indexOf("int") > -1) {
 				sn(sb, "        case \"%s\":", columnEn);
 				sn(sb, "            return set%s(value2);", columnU);
@@ -495,8 +495,8 @@ public class BeanBuilder extends ExToolkit {
 			String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			String basicType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			String basicType = JTypeOracle.getBasicType(javaType);
 			if (column.equals(primaryKey))
 				continue;
 
@@ -527,8 +527,8 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			String basicType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			String basicType = JTypeOracle.getBasicType(javaType);
 			if (column.equals(primaryKey))
 				continue;
 
@@ -555,8 +555,8 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			// String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			String basicType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			String basicType = JTypeOracle.getBasicType(javaType);
 			if (basicType.indexOf("double") > -1) {
 				sn(sb, "        if(\"%s\".equals(fieldEn)) return %s;",
 						columnEn, column);
@@ -581,8 +581,8 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			String basicType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			String basicType = JTypeOracle.getBasicType(javaType);
 			if (basicType.indexOf("double") > -1) {
 				sn(sb, "        case \"%s\":", columnEn);
 				sn(sb, "            return set%s(value2);", columnUEn);
@@ -606,8 +606,8 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			// String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			String basicType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			String basicType = JTypeOracle.getBasicType(javaType);
 			if (basicType.indexOf("String") > -1) {
 				sn(sb, "        case \"%s\": ", columnEn);
 				sn(sb, "            return %s;", column);
@@ -666,8 +666,8 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			String basicType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			String basicType = JTypeOracle.getBasicType(javaType);
 			if (basicType.indexOf("String") > -1) {
 				sn(sb, "        case \"%s\":", columnEn);
 				sn(sb, "            return set%s(value2);", columnUEn);
@@ -697,8 +697,8 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			String basicType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			String basicType = JTypeOracle.getBasicType(javaType);
 			if (basicType.indexOf("BigDecimal") > -1) {
 				sn(sb, "        case \"%s\":", columnEn);
 				sn(sb, "            return set%s(value2);", columnUEn);
@@ -728,8 +728,8 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			String basicType = JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			String basicType = JTypeOracle.getBasicType(javaType);
 			if (basicType.indexOf("Timestamp") > -1) {
 				sn(sb, "        case \"%s\":", columnEn);
 				sn(sb, "            return set%s(value2);", columnUEn);
@@ -827,8 +827,8 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			// String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			JTypeOracle.getBasicType(javaType);
 			sn(sb, "        %s %s = (%s)e.get(\"%s\");", javaType, column,
 					javaType, columnEn);
 		}
@@ -837,8 +837,8 @@ public class BeanBuilder extends ExToolkit {
 			String column = MapEx.get(m, "columnName");
 			// String columnU = StrEx.upperFirst(column);
 			// String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			JTypeOracle.getBasicType(javaType);
 			sn(sb, "        if(%s == null) %s = %s;", column, column,
 					SqlEx.getDefaultValue(javaType));
 		}
@@ -864,8 +864,8 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			// String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			JTypeOracle.getBasicType(javaType);
 			sn(sb, "        %s %s = (%s)e.get(\"%s\");", javaType, column,
 					javaType, columnEn);
 		}
@@ -874,8 +874,8 @@ public class BeanBuilder extends ExToolkit {
 			String column = MapEx.get(m, "columnName");
 			// String columnU = StrEx.upperFirst(column);
 			// String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			JTypeOracle.getBasicType(javaType);
 			sn(sb, "        if(%s == null) %s = %s;", column, column,
 					SqlEx.getDefaultValue(javaType));
 		}
@@ -902,7 +902,7 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			// String columnEn = PinYin.getShortPinYin(column);
 			// String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
+			String javaType = JTypeOracle.getType(rsmd, column);
 			// JavaType.getBasicType(javaType);
 			sn(sb, "        %s %s = (%s)e.get(\"%s\");", javaType, column,
 					javaType, column);
@@ -912,8 +912,8 @@ public class BeanBuilder extends ExToolkit {
 			String column = MapEx.get(m, "columnName");
 			// String columnU = StrEx.upperFirst(column);
 			// String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
-			JavaType.getBasicType(javaType);
+			String javaType = JTypeOracle.getType(rsmd, column);
+			JTypeOracle.getBasicType(javaType);
 			sn(sb, "        if(%s == null) %s = %s;", column, column,
 					SqlEx.getDefaultValue(javaType));
 		}
@@ -1230,7 +1230,7 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			String columnEn = PinYin.getShortPinYin(column);
 			// String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
+			String javaType = JTypeOracle.getType(rsmd, column);
 
 			s(sb, "%s %s", javaType, columnEn);
 			p++;
@@ -1318,7 +1318,7 @@ public class BeanBuilder extends ExToolkit {
 			// String columnU = StrEx.upperFirst(column);
 			// String columnEn = PinYin.getShortPinYin(column);
 			// String columnUEn = StrEx.upperFirst(columnEn);
-			String javaType = JavaType.getType(rsmd, column);
+			String javaType = JTypeOracle.getType(rsmd, column);
 			p++;
 			if (isAutoIncrement)
 				continue;
@@ -1516,7 +1516,7 @@ public class BeanBuilder extends ExToolkit {
 			// String NON_UNIQUE = String.valueOf(m.get("NON_UNIQUE"));
 			String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 			// String COLUMN_NAME_UEN = StrEx.upperFirst(COLUMN_NAME_EN);
-			String COLUMN_NAME_TYPE = JavaType.getType(rsmd, COLUMN_NAME);
+			String COLUMN_NAME_TYPE = JTypeOracle.getType(rsmd, COLUMN_NAME);
 			p++;
 			s(sb, "%s %s", COLUMN_NAME_TYPE, COLUMN_NAME_EN);
 			if (p < size)

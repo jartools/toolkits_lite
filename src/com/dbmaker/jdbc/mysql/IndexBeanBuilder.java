@@ -49,7 +49,7 @@ public class IndexBeanBuilder extends ExToolkit {
 			Map<String, Object> c = getMap(mapConluns, s);
 			String cn = getString(c, "COLUMN_NAME");
 			String jtype = SqlEx.toJavaType(getInt(c, "DATA_TYPE"));
-			String btype = JavaType.getBasicType(jtype);
+			String btype = JTypeMysql.getBasicType(jtype);
 			sb.pn("    public ${1} ${2};", btype, cn);
 		}
 		sb.pn("");
