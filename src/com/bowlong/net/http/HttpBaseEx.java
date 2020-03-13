@@ -27,9 +27,9 @@ public class HttpBaseEx extends InputStreamEx {
 	/** 超时时间为1分钟 */
 	static final public int defaultTimeout = 60000;
 	/** 连接超时时间 */
-	static final public int defaultConRequTimeout = 59000;
+	static final public int defaultConRequTimeout = 59500;
 	/** 回应超时时间 */
-	static final public int defaultSoTimeout = 59000;
+	static final public int defaultSoTimeout = 59500;
 
 	static private Map<String, String> mdefHead = newMapT(), mcustHead = newMapT();
 
@@ -44,7 +44,9 @@ public class HttpBaseEx extends InputStreamEx {
 			// 编码格式
 			mdefHead.put("Charset", EncodingEx.UTF_8);
 			mdefHead.put("User-Agent", Browser.ch360);
-			// post.setHeader("Expect", "100-continue"); // 1.1 规则? 有问题
+			// mdefHead.put("Expect", "100-continue"); // 1.1 规则? 有问题
+			// 设置请求数据类型 - 浏览器编码类型
+			mdefHead.put("Content-Type", "application/x-www-form-urlencoded");
 		}
 		return mdefHead;
 	}

@@ -45,8 +45,6 @@ public class HttpUrlConEx extends HttpBaseEx {
 			for (Entry<String, String> entry : getMapHead().entrySet()) {
 				conn.setRequestProperty(entry.getKey(), entry.getValue());
 			}
-			// 设置请求数据类型 - 浏览器编码类型
-			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			// 设置是否使用缓存 - POST不能使用缓存?
 			conn.setUseCaches(false);
 			if (isOut) {
