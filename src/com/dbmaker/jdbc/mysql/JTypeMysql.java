@@ -2,7 +2,7 @@ package com.dbmaker.jdbc.mysql;
 
 import java.sql.ResultSetMetaData;
 
-import com.dbmaker.type.JType;
+import com.bowlong.sql.JType;
 
 public class JTypeMysql extends JType {
 	

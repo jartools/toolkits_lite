@@ -1,6 +1,6 @@
 package com.dbmaker.freemarker.sk.decode;
 
-import com.dbmaker.type.JType;
+import com.bowlong.sql.JType;
 
 /**
  * @UserName : SandKing
