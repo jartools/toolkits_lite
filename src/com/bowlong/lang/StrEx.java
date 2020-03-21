@@ -43,7 +43,7 @@ public final class StrEx extends ExOrigin {
 	}
 
 	/** 格式化字符串使其长度为n，不足长度是在前面补上“空格字符” **/
-	public static final String fixNStr(final String s, final int n) {
+	public static final String fixNSpace(final String s, final int n) {
 		return String.format("%" + n + "s", s);
 	}
 

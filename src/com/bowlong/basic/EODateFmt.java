@@ -583,8 +583,16 @@ public class EODateFmt extends EOStrNum {
 	static final public long getDiffNow(String src, String fmt) {
 		return getDiffNow(src, fmt, true);
 	}
-	
+
 	static final public long getDiffNow(String src) {
 		return getDiffNow(src, fmt_yyyy_MM_dd_HH_mm_ss);
+	}
+
+	static final public long cs2Java(long csTicks) {
+		return (csTicks - 621355968000000000L) / 10000;
+	}
+
+	static final public long java2Cs(long ms) {
+		return (ms * 10000) + 621355968000000000L;
 	}
 }
