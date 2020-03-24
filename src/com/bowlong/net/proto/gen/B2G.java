@@ -243,11 +243,9 @@ public class B2G {
 			return "getDouble";
 		} else if (r.equals("String")) {
 			return "getString";
-		} else if (r.equals("Map") || r.equals("Hashtable")
-				|| r.equals("HashMap") || r.equals("NewMap")) {
+		} else if (r.equals("Map") || r.equals("Hashtable") || r.equals("HashMap") || r.equals("NewMap")) {
 			return "getMap";
-		} else if (r.equals("List") || r.equals("Vector")
-				|| r.equals("ArrayList") || r.equals("NewList")) {
+		} else if (r.equals("List") || r.equals("Vector") || r.equals("ArrayList") || r.equals("NewList")) {
 			return "getList";
 		} else if (r.contains("byte[]") || r.contains("[B")) {
 			return "getBytes";
@@ -324,7 +322,7 @@ public class B2G {
 			return "";
 		return a.def();
 	}
-	
+
 	public static final String getColumn(Field f) {
 		B2Field a = f.getAnnotation(B2Field.class);
 		if (a == null)

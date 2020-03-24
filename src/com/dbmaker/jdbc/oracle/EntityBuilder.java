@@ -21,8 +21,7 @@ public class EntityBuilder extends ExToolkit {
 		String db = "XE";
 		String user = "sa";
 		String password = "12345670";
-		try (Connection conn = SqlEx.newOracleConnection(host, port, db, user,
-				password);) {
+		try (Connection conn = SqlEx.newOracleConnection(host, port, db, user, password);) {
 
 			String bpackage = "fych.db";
 			String appContext = "fych.context.AppContext";
@@ -35,8 +34,7 @@ public class EntityBuilder extends ExToolkit {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static String build(Connection conn, ResultSet rs, String pkg,
-			String appContext, String db, String TABLENAME) throws Exception {
+	public static String build(Connection conn, ResultSet rs, String pkg, String appContext, String db, String TABLENAME) throws Exception {
 		TABLENAME = TABLENAME.replace("\"", "");
 		StringBuffer sb = new StringBuffer();
 
@@ -68,23 +66,20 @@ public class EntityBuilder extends ExToolkit {
 		sn(sb, "//%s - %s", catalogName, table);
 		sn(sb, "// @SuppressWarnings({ \"static-access\" })");
 		sn(sb, "public class %sEntity extends %sInternal{", tableUEn, tableUEn);
-		sn(sb, "    static Log log = LogFactory.getLog(%sEntity.class);",
-				tableUEn);
+		sn(sb, "    static Log log = LogFactory.getLog(%sEntity.class);", tableUEn);
 		sn(sb, "");
-		sn(sb, "    public static final %sEntity my = new %sEntity();",
-				tableUEn, tableUEn);
+		sn(sb, "    public static final %sEntity my = new %sEntity();", tableUEn, tableUEn);
 		sn(sb, "");
 
-		// sn(sb, "    public static long TIMEOUT(){");
-		// sn(sb, "        return 0;");
-		// sn(sb, "    }");
+		// sn(sb, " public static long TIMEOUT(){");
+		// sn(sb, " return 0;");
+		// sn(sb, " }");
 		// sn(sb, "");
 
 		sn(sb, "    static %sDAO %sDAO = null;", tableUEn, tableUEn);
 		sn(sb, "    public static %sDAO %sDAO() {", tableUEn, tableUEn);
 		sn(sb, "        if( %sDAO == null)", tableUEn);
-		sn(sb, "            %sDAO = new %sDAO(%s.ds());", tableUEn, tableUEn,
-				appContext);
+		sn(sb, "            %sDAO = new %sDAO(%s.ds());", tableUEn, tableUEn, appContext);
 		sn(sb, "        return %sDAO;", tableUEn);
 		sn(sb, "    }");
 		sn(sb, "");
@@ -92,99 +87,97 @@ public class EntityBuilder extends ExToolkit {
 		sn(sb, "//    static %sDAO %sDAO99 = null;", tableUEn, tableUEn);
 		sn(sb, "//    public static %sDAO %sDAO99() {", tableUEn, tableUEn);
 		sn(sb, "//        if( %sDAO99 == null)", tableUEn);
-		sn(sb, "//            %sDAO99 = new %sDAO(%s.ds99());", tableUEn,
-				tableUEn, appContext);
+		sn(sb, "//            %sDAO99 = new %sDAO(%s.ds99());", tableUEn, tableUEn, appContext);
 		sn(sb, "//        return %sDAO99;", tableUEn);
 		sn(sb, "//    }");
 		sn(sb, "");
 
-		// sn(sb, "    public static void insertDdTry(final %s %s) {", tableUEn,
+		// sn(sb, " public static void insertDdTry(final %s %s) {", tableUEn,
 		// tableEn);
-		// sn(sb, "        execute(new Runnable() {");
-		// sn(sb, "            public void run() {");
-		// sn(sb, "                %sDAO DAO = %sDAO();", tableUEn, tableUEn);
-		// sn(sb, "                String TABLENAME2 = DAO.TABLEDD();");
-		// sn(sb, "                try {");
-		// sn(sb, "                    int n = DAO.insert(%s, TABLENAME2);",
+		// sn(sb, " execute(new Runnable() {");
+		// sn(sb, " public void run() {");
+		// sn(sb, " %sDAO DAO = %sDAO();", tableUEn, tableUEn);
+		// sn(sb, " String TABLENAME2 = DAO.TABLEDD();");
+		// sn(sb, " try {");
+		// sn(sb, " int n = DAO.insert(%s, TABLENAME2);",
 		// tableEn);
-		// sn(sb, "                    if(n <= 0){");
-		// sn(sb, "                        createTable(DAO, TABLENAME2);");
+		// sn(sb, " if(n <= 0){");
+		// sn(sb, " createTable(DAO, TABLENAME2);");
 		// sn(sb,
-		// "                        log.info(\"new table:\" + TABLENAME2);");
-		// sn(sb, "                        DAO.insert(%s, TABLENAME2);",
+		// " log.info(\"new table:\" + TABLENAME2);");
+		// sn(sb, " DAO.insert(%s, TABLENAME2);",
 		// tableEn);
-		// sn(sb, "                    }");
-		// sn(sb, "                } catch (Exception e) {");
-		// sn(sb, "                    log.info(e2s(e));");
-		// sn(sb, "                }");
-		// sn(sb, "            }");
-		// sn(sb, "        });");
-		// sn(sb, "    }");
+		// sn(sb, " }");
+		// sn(sb, " } catch (Exception e) {");
+		// sn(sb, " log.info(e2s(e));");
+		// sn(sb, " }");
+		// sn(sb, " }");
+		// sn(sb, " });");
+		// sn(sb, " }");
 		// sn(sb, "");
 
-		// sn(sb, "    public static void insertDdTry(final List<%s> %ss) {",
+		// sn(sb, " public static void insertDdTry(final List<%s> %ss) {",
 		// tableUEn, tableEn);
-		// sn(sb, "        insert(%ss);", tableEn);
-		// sn(sb, "        SqlEx.execute4Fixed(new Runnable() {");
-		// sn(sb, "            public void run() {");
-		// sn(sb, "                %sDAO DAO = %sDAO();", tableUEn, tableUEn);
-		// sn(sb, "                String TABLENAME2 = DAO.TABLEDD();");
+		// sn(sb, " insert(%ss);", tableEn);
+		// sn(sb, " SqlEx.execute4Fixed(new Runnable() {");
+		// sn(sb, " public void run() {");
+		// sn(sb, " %sDAO DAO = %sDAO();", tableUEn, tableUEn);
+		// sn(sb, " String TABLENAME2 = DAO.TABLEDD();");
 		// sn(sb,
-		// "                boolean b = SqlEx.isTableExist(DAO.ds, TABLENAME2);");
-		// sn(sb, "                if(!b) {");
-		// sn(sb, "                    log.info(\"new table:\" + TABLENAME2);");
-		// sn(sb, "                    DAO.createTable(TABLENAME2);");
-		// sn(sb, "                }");
-		// sn(sb, "                DAO.insert(%ss, TABLENAME2);", tableEn);
-		// sn(sb, "            }");
-		// sn(sb, "        });");
-		// sn(sb, "    }");
+		// " boolean b = SqlEx.isTableExist(DAO.ds, TABLENAME2);");
+		// sn(sb, " if(!b) {");
+		// sn(sb, " log.info(\"new table:\" + TABLENAME2);");
+		// sn(sb, " DAO.createTable(TABLENAME2);");
+		// sn(sb, " }");
+		// sn(sb, " DAO.insert(%ss, TABLENAME2);", tableEn);
+		// sn(sb, " }");
+		// sn(sb, " });");
+		// sn(sb, " }");
 		// sn(sb, "");
 
-		// sn(sb, "    public static void insertMmTry(final %s %s) {", tableUEn,
+		// sn(sb, " public static void insertMmTry(final %s %s) {", tableUEn,
 		// tableEn);
-		// sn(sb, "        execute(new Runnable() {");
-		// sn(sb, "            public void run() {");
-		// sn(sb, "        %sDAO DAO = %sDAO();", tableUEn, tableUEn);
-		// sn(sb, "        String TABLENAME2 = DAO.TABLEMM();");
-		// sn(sb, "        try {");
-		// sn(sb, "            int n = DAO.insert(%s, TABLENAME2);", tableEn);
-		// sn(sb, "            if(n <= 0){");
-		// sn(sb, "                createNoUniqueTable(DAO, TABLENAME2);");
-		// sn(sb, "                log.info(\"new table:\" + TABLENAME2);");
-		// sn(sb, "                DAO.insert(%s, TABLENAME2);", tableEn);
-		// sn(sb, "            }");
-		// sn(sb, "        } catch (Exception e) {");
-		// sn(sb, "            log.info(e2s(e));");
-		// sn(sb, "        }");
-		// sn(sb, "    }");
-		// sn(sb, "        });");
-		// sn(sb, "    }");
+		// sn(sb, " execute(new Runnable() {");
+		// sn(sb, " public void run() {");
+		// sn(sb, " %sDAO DAO = %sDAO();", tableUEn, tableUEn);
+		// sn(sb, " String TABLENAME2 = DAO.TABLEMM();");
+		// sn(sb, " try {");
+		// sn(sb, " int n = DAO.insert(%s, TABLENAME2);", tableEn);
+		// sn(sb, " if(n <= 0){");
+		// sn(sb, " createNoUniqueTable(DAO, TABLENAME2);");
+		// sn(sb, " log.info(\"new table:\" + TABLENAME2);");
+		// sn(sb, " DAO.insert(%s, TABLENAME2);", tableEn);
+		// sn(sb, " }");
+		// sn(sb, " } catch (Exception e) {");
+		// sn(sb, " log.info(e2s(e));");
+		// sn(sb, " }");
+		// sn(sb, " }");
+		// sn(sb, " });");
+		// sn(sb, " }");
 		// sn(sb, "");
 
-		// sn(sb, "    public static void insertMmTry(final List<%s> %ss) {",
+		// sn(sb, " public static void insertMmTry(final List<%s> %ss) {",
 		// tableUEn, tableEn);
-		// sn(sb, "        insert(%ss);", tableEn);
-		// sn(sb, "        SqlEx.execute4Fixed(new Runnable() {");
-		// sn(sb, "            public void run() {");
-		// sn(sb, "                %sDAO DAO = %sDAO();", tableUEn, tableUEn);
-		// sn(sb, "                String TABLENAME2 = DAO.TABLEMM();");
+		// sn(sb, " insert(%ss);", tableEn);
+		// sn(sb, " SqlEx.execute4Fixed(new Runnable() {");
+		// sn(sb, " public void run() {");
+		// sn(sb, " %sDAO DAO = %sDAO();", tableUEn, tableUEn);
+		// sn(sb, " String TABLENAME2 = DAO.TABLEMM();");
 		// sn(sb,
-		// "                boolean b = SqlEx.isTableExist(DAO.ds, TABLENAME2);");
-		// sn(sb, "                if(!b) {");
-		// sn(sb, "                    log.info(\"new table:\" + TABLENAME2);");
-		// sn(sb, "                    DAO.createTable(TABLENAME2);");
-		// sn(sb, "                }");
-		// sn(sb, "                DAO.insert(%ss, TABLENAME2);", tableEn);
-		// sn(sb, "            }");
-		// sn(sb, "        });");
-		// sn(sb, "    }");
+		// " boolean b = SqlEx.isTableExist(DAO.ds, TABLENAME2);");
+		// sn(sb, " if(!b) {");
+		// sn(sb, " log.info(\"new table:\" + TABLENAME2);");
+		// sn(sb, " DAO.createTable(TABLENAME2);");
+		// sn(sb, " }");
+		// sn(sb, " DAO.insert(%ss, TABLENAME2);", tableEn);
+		// sn(sb, " }");
+		// sn(sb, " });");
+		// sn(sb, " }");
 		// sn(sb, "");
 
 		// 被其他表关联的主键
 		if (eks.size() > 0) {
-			sn(sb, "    // public void loadLinked(final %s %s) {", tableUEn,
-					tableEn);
+			sn(sb, "    // public void loadLinked(final %s %s) {", tableUEn, tableEn);
 			sn(sb, "        // if(%s == null) return;", tableEn);
 			for (Map m : eks) {
 				String t = MapEx.get(m, "FKTABLE_NAME");
@@ -193,11 +186,9 @@ public class EntityBuilder extends ExToolkit {
 				String c = MapEx.get(m, "FKCOLUMN_NAME");
 				String cUn = PinYin.getShortPinYin(c);
 				String cUen = StrEx.upperFirst(cUn);
-				Map<String, List<Map<String, Object>>> indexs = SqlEx
-						.getIndexs(conn, t);
+				Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(conn, t);
 				if (BeanBuilder.isNonUnique(indexs, c)) {
-					sn(sb, "        // %s %ss = %s.get%sFk%s(); // %s", tUen,
-							tUn, tableEn, tUen, cUen, t);
+					sn(sb, "        // %s %ss = %s.get%sFk%s(); // %s", tUen, tUn, tableEn, tUen, cUen, t);
 				} else {
 				}
 			}
@@ -208,12 +199,10 @@ public class EntityBuilder extends ExToolkit {
 				String c = MapEx.get(m, "FKCOLUMN_NAME");
 				String cUn = PinYin.getShortPinYin(c);
 				String cUen = StrEx.upperFirst(cUn);
-				Map<String, List<Map<String, Object>>> indexs = SqlEx
-						.getIndexs(conn, t);
+				Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(conn, t);
 				if (BeanBuilder.isNonUnique(indexs, c)) {
 				} else {
-					sn(sb, "        // List<%s> %ss = %s.get%ssFk%s(); // %s",
-							tUen, tUn, tableEn, tUen, cUen, t);
+					sn(sb, "        // List<%s> %ss = %s.get%ssFk%s(); // %s", tUen, tUn, tableEn, tUen, cUen, t);
 				}
 			}
 			sn(sb, "    // }");
@@ -229,8 +218,7 @@ public class EntityBuilder extends ExToolkit {
 	}
 
 	public static String Ss(String s) {
-		return s.substring(0, 1).toUpperCase()
-				+ s.substring(1, s.length()).toLowerCase();
+		return s.substring(0, 1).toUpperCase() + s.substring(1, s.length()).toLowerCase();
 	}
 
 }

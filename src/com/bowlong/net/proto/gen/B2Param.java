@@ -9,5 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface B2Param {
 	String oType() default "";
+
 	boolean isOut() default false;
 }

@@ -13,16 +13,15 @@ import com.bowlong.lang.NumEx;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class B2OutEncoder {
 
-	public static final void write(ByteBuffer buff, byte b){
+	public static final void write(ByteBuffer buff, byte b) {
 		buff.put(b);
 	}
-	
+
 	public static final void writeNull(ByteBuffer os) throws IOException {
 		write(os, B2Type.NULL);
 	}
 
-	public static final void writeBoolean(ByteBuffer os, boolean v)
-			throws IOException {
+	public static final void writeBoolean(ByteBuffer os, boolean v) throws IOException {
 		if (v)
 			write(os, B2Type.BOOLEAN_TRUE);
 		else
@@ -43,7 +42,7 @@ public class B2OutEncoder {
 			write(os, B2Type.SHORT_0);
 		else if (v >= NumEx.BYTE_MIN_VALUE && v <= NumEx.BYTE_MAX_VALUE) {
 			write(os, B2Type.SHORT_8B);
-			write(os, (byte)v);
+			write(os, (byte) v);
 		} else {
 			write(os, B2Type.SHORT_16B);
 			write(os, (byte) ((v >> 8) & 0xff));
@@ -158,7 +157,7 @@ public class B2OutEncoder {
 		default:
 			if (v >= NumEx.BYTE_MIN_VALUE && v <= NumEx.BYTE_MAX_VALUE) {
 				write(os, B2Type.INT_8B);
-				write(os, (byte)v);
+				write(os, (byte) v);
 			} else if (v >= NumEx.SHORT_MIN_VALUE && v <= NumEx.SHORT_MAX_VALUE) {
 				write(os, B2Type.INT_16B);
 				write(os, (byte) ((v >> 8) & 0xff));
@@ -237,12 +236,12 @@ public class B2OutEncoder {
 			writeInt(os, v[i]);
 		}
 	}
-	
+
 	public static final void writeInt2DArray(ByteBuffer os, int[][] v) throws IOException {
 		int len = v.length;
-		if(len <= 0){
+		if (len <= 0) {
 			write(os, B2Type.INT_2D_ARRAY_0);
-			return ;
+			return;
 		}
 		write(os, B2Type.INT_2D_ARRAY);
 		writeInt(os, len);
@@ -250,7 +249,7 @@ public class B2OutEncoder {
 			writeIntArray(os, v[i]);
 		}
 	}
-	
+
 	public static final void writeLong(ByteBuffer os, long v) throws IOException {
 		if (v == 0) {
 			write(os, B2Type.LONG_0);
@@ -280,24 +279,23 @@ public class B2OutEncoder {
 		}
 	}
 
-	public static final void writeDouble(ByteBuffer os, double var)
-			throws IOException {
+	public static final void writeDouble(ByteBuffer os, double var) throws IOException {
 		long v = Double.doubleToLongBits(var);
 		if (v == 0) {
 			write(os, B2Type.DOUBLE_0);
-//		} else if (v >= NumEx.Byte_MIN_VALUE && v <= NumEx.Byte_MAX_VALUE) {
-//			write(os, B2Type.DOUBLE_8B);
-//			write(os, (int) v);
-//		} else if (v >= NumEx.Short_MIN_VALUE && v <= NumEx.Short_MAX_VALUE) {
-//			write(os, B2Type.DOUBLE_16B);
-//			write(os, (byte) ((v >> 8) & 0xff));
-//			write(os, (byte) ((v >> 0) & 0xff));
-//		} else if (v >= NumEx.Integer_MIN_VALUE && v <= NumEx.Integer_MAX_VALUE) {
-//			write(os, B2Type.DOUBLE_32B);
-//			write(os, (byte) ((v >> 24) & 0xff));
-//			write(os, (byte) ((v >> 16) & 0xff));
-//			write(os, (byte) ((v >> 8) & 0xff));
-//			write(os, (byte) ((v >> 0) & 0xff));
+			// } else if (v >= NumEx.Byte_MIN_VALUE && v <= NumEx.Byte_MAX_VALUE) {
+			// write(os, B2Type.DOUBLE_8B);
+			// write(os, (int) v);
+			// } else if (v >= NumEx.Short_MIN_VALUE && v <= NumEx.Short_MAX_VALUE) {
+			// write(os, B2Type.DOUBLE_16B);
+			// write(os, (byte) ((v >> 8) & 0xff));
+			// write(os, (byte) ((v >> 0) & 0xff));
+			// } else if (v >= NumEx.Integer_MIN_VALUE && v <= NumEx.Integer_MAX_VALUE) {
+			// write(os, B2Type.DOUBLE_32B);
+			// write(os, (byte) ((v >> 24) & 0xff));
+			// write(os, (byte) ((v >> 16) & 0xff));
+			// write(os, (byte) ((v >> 8) & 0xff));
+			// write(os, (byte) ((v >> 0) & 0xff));
 		} else {
 			write(os, B2Type.DOUBLE_64B);
 			write(os, (byte) ((v >> 56) & 0xff));
@@ -311,8 +309,7 @@ public class B2OutEncoder {
 		}
 	}
 
-	public static final void writeString(ByteBuffer os, String v)
-			throws IOException {
+	public static final void writeString(ByteBuffer os, String v) throws IOException {
 		if (v == null) {
 			writeNull(os);
 		} else {
@@ -538,7 +535,7 @@ public class B2OutEncoder {
 			}
 
 			for (int i = 0; i < len; i++) {
-				//Object object = v.elementAt(i);
+				// Object object = v.elementAt(i);
 				Object object = v.get(i);
 				writeObject(os, object);
 			}
@@ -619,7 +616,7 @@ public class B2OutEncoder {
 				writeInt(os, len);
 				break;
 			}
-			
+
 			Set<Entry> entrys = v.entrySet();
 			for (Entry e : entrys) {
 				Object key = e.getKey();
@@ -627,20 +624,19 @@ public class B2OutEncoder {
 				writeObject(os, key);
 				writeObject(os, var);
 			}
-			
-//			Enumeration keys = v.keys();
-//			Iterator keys = v.keySet().iterator();
-//			while (keys.hasNext()) {
-//				Object key = keys.next();
-//				Object var = v.get(key);
-//				writeObject(os, key);
-//				writeObject(os, var);
-//			}
+
+			// Enumeration keys = v.keys();
+			// Iterator keys = v.keySet().iterator();
+			// while (keys.hasNext()) {
+			// Object key = keys.next();
+			// Object var = v.get(key);
+			// writeObject(os, key);
+			// writeObject(os, var);
+			// }
 		}
 	}
 
-	public static final void writeObject(ByteBuffer os, Object object)
-			throws Exception {
+	public static final void writeObject(ByteBuffer os, Object object) throws Exception {
 		if (object == null) {
 			writeNull(os);
 		} else if (object instanceof Map) {
@@ -676,7 +672,7 @@ public class B2OutEncoder {
 		} else if (object instanceof int[]) {
 			int[] v = (int[]) object;
 			writeIntArray(os, v);
-		} else if(object instanceof int[][]){
+		} else if (object instanceof int[][]) {
 			int[][] v = (int[][]) object;
 			writeInt2DArray(os, v);
 		} else {
@@ -685,31 +681,30 @@ public class B2OutEncoder {
 	}
 
 	// ////////////////////////////////
-	protected static final void printString(ByteBuffer os, byte[] v)
-			throws IOException {
+	protected static final void printString(ByteBuffer os, byte[] v) throws IOException {
 		os.put(v);
 	}
 
-//	protected static final void printString(ByteBuffer os, String v)
-//			throws IOException {
-//		printString(os, v, 0, v.length());
-//	}
-//
-//	protected static final void printString(ByteBuffer os, String v, int offset,
-//			int length) throws IOException {
-//		for (int i = 0; i < length; i++) {
-//			char ch = v.charAt(i + offset);
-//
-//			if (ch < 0x80)
-//				write(os, (byte)ch);
-//			else if (ch < 0x800) {
-//				write(os, (byte) (0xc0 + ((ch >> 6) & 0x1f)));
-//				write(os, (byte) (0x80 + (ch & 0x3f)));
-//			} else {
-//				write(os, (byte) (0xe0 + ((ch >> 12) & 0xf)));
-//				write(os, (byte) (0x80 + ((ch >> 6) & 0x3f)));
-//				write(os, (byte) (0x80 + (ch & 0x3f)));
-//			}
-//		}
-//	}
+	// protected static final void printString(ByteBuffer os, String v)
+	// throws IOException {
+	// printString(os, v, 0, v.length());
+	// }
+	//
+	// protected static final void printString(ByteBuffer os, String v, int offset,
+	// int length) throws IOException {
+	// for (int i = 0; i < length; i++) {
+	// char ch = v.charAt(i + offset);
+	//
+	// if (ch < 0x80)
+	// write(os, (byte)ch);
+	// else if (ch < 0x800) {
+	// write(os, (byte) (0xc0 + ((ch >> 6) & 0x1f)));
+	// write(os, (byte) (0x80 + (ch & 0x3f)));
+	// } else {
+	// write(os, (byte) (0xe0 + ((ch >> 12) & 0xf)));
+	// write(os, (byte) (0x80 + ((ch >> 6) & 0x3f)));
+	// write(os, (byte) (0x80 + (ch & 0x3f)));
+	// }
+	// }
+	// }
 }

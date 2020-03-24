@@ -53,8 +53,7 @@ public class Async {
 		return THREAD_POOL;
 	}
 
-	public static final ExecutorService newExecutor(final int min,
-			final int max, final String name) {
+	public static final ExecutorService newExecutor(final int min, final int max, final String name) {
 		return ThreadEx.newThreadExecutor(min, max);
 	}
 
@@ -77,14 +76,12 @@ public class Async {
 	}
 
 	public static class ForExcept {
-		static final FutureTask<Exception> execute(final ExecutorService es,
-				final FutureTask<Exception> task) {
+		static final FutureTask<Exception> execute(final ExecutorService es, final FutureTask<Exception> task) {
 			es.submit(task);
 			return task;
 		}
 
-		static final FutureTask<Exception> execute(final ExecutorService es,
-				final Callable<Exception> task) {
+		static final FutureTask<Exception> execute(final ExecutorService es, final Callable<Exception> task) {
 			FutureTask<Exception> ft = new FutureTask<Exception>(task);
 			return execute(es, ft);
 		}
@@ -94,22 +91,18 @@ public class Async {
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<Exception> exec(final CallableExcept ce,
-				Queue<FutureTask<Exception>> outQueue) {
+		public static final FutureTask<Exception> exec(final CallableExcept ce, Queue<FutureTask<Exception>> outQueue) {
 			final FutureTask<Exception> f = exec(ce);
 			if (outQueue != null)
 				outQueue.add(f);
 			return f;
 		}
 
-		public static final FutureTask<Exception> exec(
-				final ExecutorService es, final CallableExcept ce) {
+		public static final FutureTask<Exception> exec(final ExecutorService es, final CallableExcept ce) {
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<Exception> exec(
-				final ExecutorService es, final CallableExcept ce,
-				Queue<FutureTask<Exception>> outQueue) {
+		public static final FutureTask<Exception> exec(final ExecutorService es, final CallableExcept ce, Queue<FutureTask<Exception>> outQueue) {
 			final FutureTask<Exception> f = exec(es, ce);
 			if (outQueue != null)
 				outQueue.add(f);
@@ -120,9 +113,7 @@ public class Async {
 			return new LinkedList<FutureTask<Exception>>();
 		}
 
-		public static final Exception findExcept(
-				final Queue<FutureTask<Exception>> outQueue)
-				throws InterruptedException, ExecutionException {
+		public static final Exception findExcept(final Queue<FutureTask<Exception>> outQueue) throws InterruptedException, ExecutionException {
 			if (outQueue == null || outQueue.isEmpty())
 				return null;
 			while (!outQueue.isEmpty()) {
@@ -136,14 +127,12 @@ public class Async {
 	}
 
 	public static class ForObject {
-		static final FutureTask<Object> execute(final ExecutorService es,
-				final FutureTask<Object> task) {
+		static final FutureTask<Object> execute(final ExecutorService es, final FutureTask<Object> task) {
 			es.submit(task);
 			return task;
 		}
 
-		static final FutureTask<Object> execute(final ExecutorService es,
-				final Callable<Object> task) {
+		static final FutureTask<Object> execute(final ExecutorService es, final Callable<Object> task) {
 			FutureTask<Object> ft = new FutureTask<Object>(task);
 			return execute(es, ft);
 		}
@@ -153,13 +142,11 @@ public class Async {
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<Object> exec(final ExecutorService es,
-				final CallableForObject ce) {
+		public static final FutureTask<Object> exec(final ExecutorService es, final CallableForObject ce) {
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<Object> exec(final CallableForObject ce,
-				Queue<Object> outQueue) {
+		public static final FutureTask<Object> exec(final CallableForObject ce, Queue<Object> outQueue) {
 			FutureTask<Object> f = exec(ce);
 			if (outQueue != null)
 				outQueue.add(f);
@@ -172,14 +159,12 @@ public class Async {
 	}
 
 	public static class ForString {
-		static final FutureTask<String> execute(final ExecutorService es,
-				final FutureTask<String> task) {
+		static final FutureTask<String> execute(final ExecutorService es, final FutureTask<String> task) {
 			es.submit(task);
 			return task;
 		}
 
-		static final FutureTask<String> execute(final ExecutorService es,
-				final Callable<String> task) {
+		static final FutureTask<String> execute(final ExecutorService es, final Callable<String> task) {
 			FutureTask<String> ft = new FutureTask<String>(task);
 			return execute(es, ft);
 		}
@@ -189,22 +174,18 @@ public class Async {
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<String> exec(final CallableForString ce,
-				final Queue<FutureTask<String>> outQueue) {
+		public static final FutureTask<String> exec(final CallableForString ce, final Queue<FutureTask<String>> outQueue) {
 			FutureTask<String> f = exec(ce);
 			if (outQueue != null)
 				outQueue.add(f);
 			return f;
 		}
 
-		public static final FutureTask<String> exec(final ExecutorService es,
-				final CallableForString ce) {
+		public static final FutureTask<String> exec(final ExecutorService es, final CallableForString ce) {
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<String> exec(final ExecutorService es,
-				final CallableForString ce,
-				final Queue<FutureTask<String>> outQueue) {
+		public static final FutureTask<String> exec(final ExecutorService es, final CallableForString ce, final Queue<FutureTask<String>> outQueue) {
 			FutureTask<String> f = exec(es, ce);
 			if (outQueue != null)
 				outQueue.add(f);
@@ -214,14 +195,12 @@ public class Async {
 	}
 
 	public static class ForBytes {
-		static final FutureTask<byte[]> execute(final ExecutorService es,
-				final FutureTask<byte[]> task) {
+		static final FutureTask<byte[]> execute(final ExecutorService es, final FutureTask<byte[]> task) {
 			es.submit(task);
 			return task;
 		}
 
-		static final FutureTask<byte[]> execute(final ExecutorService es,
-				final Callable<byte[]> task) {
+		static final FutureTask<byte[]> execute(final ExecutorService es, final Callable<byte[]> task) {
 			FutureTask<byte[]> ft = new FutureTask<byte[]>(task);
 			return execute(es, ft);
 		}
@@ -231,22 +210,18 @@ public class Async {
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<byte[]> exec(final CallableForBytes ce,
-				final Queue<FutureTask<byte[]>> outQueue) {
+		public static final FutureTask<byte[]> exec(final CallableForBytes ce, final Queue<FutureTask<byte[]>> outQueue) {
 			FutureTask<byte[]> f = exec(ce);
 			if (outQueue != null)
 				outQueue.add(f);
 			return f;
 		}
 
-		public static final FutureTask<byte[]> exec(final ExecutorService es,
-				final CallableForBytes ce) {
+		public static final FutureTask<byte[]> exec(final ExecutorService es, final CallableForBytes ce) {
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<byte[]> exec(final ExecutorService es,
-				final CallableForBytes ce,
-				final Queue<FutureTask<byte[]>> outQueue) {
+		public static final FutureTask<byte[]> exec(final ExecutorService es, final CallableForBytes ce, final Queue<FutureTask<byte[]>> outQueue) {
 			FutureTask<byte[]> f = exec(es, ce);
 			if (outQueue != null)
 				outQueue.add(f);
@@ -256,14 +231,12 @@ public class Async {
 	}
 
 	public static class ForMap {
-		static final FutureTask<Map> execute(final ExecutorService es,
-				final FutureTask<Map> task) {
+		static final FutureTask<Map> execute(final ExecutorService es, final FutureTask<Map> task) {
 			es.submit(task);
 			return task;
 		}
 
-		static final FutureTask<Map> execute(final ExecutorService es,
-				final Callable<Map> task) {
+		static final FutureTask<Map> execute(final ExecutorService es, final Callable<Map> task) {
 			FutureTask<Map> ft = new FutureTask<Map>(task);
 			return execute(es, ft);
 		}
@@ -273,21 +246,18 @@ public class Async {
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<Map> exec(final CallableForMap ce,
-				final Queue<FutureTask<Map>> outQueue) {
+		public static final FutureTask<Map> exec(final CallableForMap ce, final Queue<FutureTask<Map>> outQueue) {
 			FutureTask<Map> f = exec(ce);
 			if (outQueue != null)
 				outQueue.add(f);
 			return f;
 		}
 
-		public static final FutureTask<Map> exec(final ExecutorService es,
-				final CallableForMap ce) {
+		public static final FutureTask<Map> exec(final ExecutorService es, final CallableForMap ce) {
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<Map> exec(final ExecutorService es,
-				final CallableForMap ce, final Queue<FutureTask<Map>> outQueue) {
+		public static final FutureTask<Map> exec(final ExecutorService es, final CallableForMap ce, final Queue<FutureTask<Map>> outQueue) {
 			FutureTask<Map> f = exec(es, ce);
 			if (outQueue != null)
 				outQueue.add(f);
@@ -297,14 +267,12 @@ public class Async {
 	}
 
 	public static class ForList {
-		static final FutureTask<List> execute(final ExecutorService es,
-				final FutureTask<List> task) {
+		static final FutureTask<List> execute(final ExecutorService es, final FutureTask<List> task) {
 			es.submit(task);
 			return task;
 		}
 
-		static final FutureTask<List> execute(final ExecutorService es,
-				final Callable<List> task) {
+		static final FutureTask<List> execute(final ExecutorService es, final Callable<List> task) {
 			FutureTask<List> ft = new FutureTask<List>(task);
 			return execute(es, ft);
 		}
@@ -314,21 +282,18 @@ public class Async {
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<List> exec(final CallableForList ce,
-				final Queue<FutureTask<List>> outQueue) {
+		public static final FutureTask<List> exec(final CallableForList ce, final Queue<FutureTask<List>> outQueue) {
 			FutureTask<List> f = exec(ce);
 			if (outQueue != null)
 				outQueue.add(f);
 			return f;
 		}
 
-		public static final FutureTask<List> exec(final ExecutorService es,
-				final CallableForList ce) {
+		public static final FutureTask<List> exec(final ExecutorService es, final CallableForList ce) {
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<List> exec(final ExecutorService es,
-				final CallableForList ce, final Queue<FutureTask<List>> outQueue) {
+		public static final FutureTask<List> exec(final ExecutorService es, final CallableForList ce, final Queue<FutureTask<List>> outQueue) {
 			FutureTask<List> f = exec(es, ce);
 			if (outQueue != null)
 				outQueue.add(f);
@@ -338,41 +303,33 @@ public class Async {
 	}
 
 	public static class ForResultSet {
-		static final FutureTask<ResultSet> execute(final ExecutorService es,
-				final FutureTask<ResultSet> task) {
+		static final FutureTask<ResultSet> execute(final ExecutorService es, final FutureTask<ResultSet> task) {
 			es.submit(task);
 			return task;
 		}
 
-		static final FutureTask<ResultSet> execute(final ExecutorService es,
-				final Callable<ResultSet> task) {
+		static final FutureTask<ResultSet> execute(final ExecutorService es, final Callable<ResultSet> task) {
 			FutureTask<ResultSet> ft = new FutureTask<ResultSet>(task);
 			return execute(es, ft);
 		}
 
-		public static final FutureTask<ResultSet> exec(
-				final CallableForResultSet ce) {
+		public static final FutureTask<ResultSet> exec(final CallableForResultSet ce) {
 			ExecutorService es = getThreadPool();
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<ResultSet> exec(
-				final CallableForResultSet ce,
-				final Queue<FutureTask<ResultSet>> outQueue) {
+		public static final FutureTask<ResultSet> exec(final CallableForResultSet ce, final Queue<FutureTask<ResultSet>> outQueue) {
 			FutureTask<ResultSet> f = exec(ce);
 			if (outQueue != null)
 				outQueue.add(f);
 			return f;
 		}
 
-		public static final FutureTask<ResultSet> exec(
-				final ExecutorService es, final CallableForResultSet ce) {
+		public static final FutureTask<ResultSet> exec(final ExecutorService es, final CallableForResultSet ce) {
 			return execute(es, ce);
 		}
 
-		public static final FutureTask<ResultSet> exec(
-				final ExecutorService es, final CallableForResultSet ce,
-				final Queue<FutureTask<ResultSet>> outQueue) {
+		public static final FutureTask<ResultSet> exec(final ExecutorService es, final CallableForResultSet ce, final Queue<FutureTask<ResultSet>> outQueue) {
 			FutureTask<ResultSet> f = exec(es, ce);
 			if (outQueue != null)
 				outQueue.add(f);
@@ -391,8 +348,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<byte[]> readFully(
-				final ExecutorService es, final File fn) {
+		public static final FutureTask<byte[]> readFully(final ExecutorService es, final File fn) {
 			FutureTask<byte[]> f = ForBytes.exec(es, new CallableForBytes() {
 				public byte[] exec() throws Exception {
 					return FileEx.readFully(fn);
@@ -401,25 +357,21 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<byte[]> readFully(final File fn,
-				final Queue<FutureTask<byte[]>> outQueue) {
+		public static final FutureTask<byte[]> readFully(final File fn, final Queue<FutureTask<byte[]>> outQueue) {
 			FutureTask<byte[]> f = readFully(fn);
 			if (outQueue != null)
 				outQueue.add(f);
 			return f;
 		}
 
-		public static final FutureTask<byte[]> readFully(
-				final ExecutorService es, final File fn,
-				final Queue<FutureTask<byte[]>> outQueue) {
+		public static final FutureTask<byte[]> readFully(final ExecutorService es, final File fn, final Queue<FutureTask<byte[]>> outQueue) {
 			FutureTask<byte[]> f = readFully(es, fn);
 			if (outQueue != null)
 				outQueue.add(f);
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeFully(final File fn,
-				final byte[] buf) {
+		public static final FutureTask<Exception> writeFully(final File fn, final byte[] buf) {
 			FutureTask<Exception> f = ForExcept.exec(new CallableExcept() {
 				public void exec() throws Exception {
 					FileEx.write(fn, buf);
@@ -428,8 +380,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeFully(
-				final ExecutorService es, final File fn, final byte[] buf) {
+		public static final FutureTask<Exception> writeFully(final ExecutorService es, final File fn, final byte[] buf) {
 			FutureTask<Exception> f = ForExcept.exec(es, new CallableExcept() {
 				public void exec() throws Exception {
 					FileEx.write(fn, buf);
@@ -438,17 +389,14 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeFully(final File fn,
-				final byte[] buf, final Queue<FutureTask<Exception>> outQueue) {
+		public static final FutureTask<Exception> writeFully(final File fn, final byte[] buf, final Queue<FutureTask<Exception>> outQueue) {
 			FutureTask<Exception> f = writeFully(fn, buf);
 			if (outQueue != null)
 				outQueue.add(f);
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeFully(
-				final ExecutorService es, final File fn, final byte[] buf,
-				final Queue<FutureTask<Exception>> outQueue) {
+		public static final FutureTask<Exception> writeFully(final ExecutorService es, final File fn, final byte[] buf, final Queue<FutureTask<Exception>> outQueue) {
 			FutureTask<Exception> f = writeFully(es, fn, buf);
 			if (outQueue != null)
 				outQueue.add(f);
@@ -464,8 +412,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<String> readText(
-				final ExecutorService es, final File fn) {
+		public static final FutureTask<String> readText(final ExecutorService es, final File fn) {
 			FutureTask<String> f = ForString.exec(es, new CallableForString() {
 				public String exec() throws Exception {
 					return FileEx.readText(fn);
@@ -474,50 +421,41 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<String> readText(final File fn,
-				final Queue<FutureTask<String>> outQueue) {
+		public static final FutureTask<String> readText(final File fn, final Queue<FutureTask<String>> outQueue) {
 			FutureTask<String> f = readText(fn);
 			if (outQueue != null)
 				outQueue.add(f);
 			return f;
 		}
 
-		public static final FutureTask<String> readText(
-				final ExecutorService es, final File fn,
-				final Queue<FutureTask<String>> outQueue) {
+		public static final FutureTask<String> readText(final ExecutorService es, final File fn, final Queue<FutureTask<String>> outQueue) {
 			FutureTask<String> f = readText(es, fn);
 			if (outQueue != null)
 				outQueue.add(f);
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeText(final File fn,
-				final String str) {
+		public static final FutureTask<Exception> writeText(final File fn, final String str) {
 			Charset charset = Encoding.UTF8;
 			return writeText(fn, str, charset);
 		}
 
-		public static final FutureTask<Exception> writeText(
-				final ExecutorService es, final File fn, final String str) {
+		public static final FutureTask<Exception> writeText(final ExecutorService es, final File fn, final String str) {
 			Charset charset = Encoding.UTF8;
 			return writeText(es, fn, str, charset);
 		}
 
-		public static final FutureTask<Exception> writeText(final File fn,
-				final String str, Queue<FutureTask<Exception>> outQueue) {
+		public static final FutureTask<Exception> writeText(final File fn, final String str, Queue<FutureTask<Exception>> outQueue) {
 			Charset charset = Encoding.UTF8;
 			return writeText(fn, str, charset, outQueue);
 		}
 
-		public static final FutureTask<Exception> writeText(
-				final ExecutorService es, final File fn, final String str,
-				Queue<FutureTask<Exception>> outQueue) {
+		public static final FutureTask<Exception> writeText(final ExecutorService es, final File fn, final String str, Queue<FutureTask<Exception>> outQueue) {
 			Charset charset = Encoding.UTF8;
 			return writeText(es, fn, str, charset, outQueue);
 		}
 
-		public static final FutureTask<Exception> writeText(final File fn,
-				final String str, final Charset charset) {
+		public static final FutureTask<Exception> writeText(final File fn, final String str, final Charset charset) {
 			FutureTask<Exception> f = ForExcept.exec(new CallableExcept() {
 				public void exec() throws Exception {
 					FileEx.writeText(fn, str, charset);
@@ -526,9 +464,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeText(
-				final ExecutorService es, final File fn, final String str,
-				final Charset charset) {
+		public static final FutureTask<Exception> writeText(final ExecutorService es, final File fn, final String str, final Charset charset) {
 			FutureTask<Exception> f = ForExcept.exec(es, new CallableExcept() {
 				public void exec() throws Exception {
 					FileEx.writeText(fn, str, charset);
@@ -537,18 +473,14 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeText(final File fn,
-				final String str, final Charset charset,
-				Queue<FutureTask<Exception>> outQueue) {
+		public static final FutureTask<Exception> writeText(final File fn, final String str, final Charset charset, Queue<FutureTask<Exception>> outQueue) {
 			FutureTask<Exception> f = writeText(fn, str, charset);
 			if (outQueue != null)
 				outQueue.add(f);
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeText(
-				final ExecutorService es, final File fn, final String str,
-				final Charset charset, Queue<FutureTask<Exception>> outQueue) {
+		public static final FutureTask<Exception> writeText(final ExecutorService es, final File fn, final String str, final Charset charset, Queue<FutureTask<Exception>> outQueue) {
 			FutureTask<Exception> f = writeText(es, fn, str, charset);
 			if (outQueue != null)
 				outQueue.add(f);
@@ -567,8 +499,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<String> toJSONString(
-				final ExecutorService es, final Map map) {
+		public static final FutureTask<String> toJSONString(final ExecutorService es, final Map map) {
 			FutureTask<String> f = ForString.exec(es, new CallableForString() {
 				public String exec() throws Exception {
 					return FastJSON.format(map);
@@ -577,20 +508,17 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeTo(final File fn,
-				final Map map) {
+		public static final FutureTask<Exception> writeTo(final File fn, final Map map) {
 			final Charset charset = Encoding.UTF8;
 			return writeTo(fn, map, charset);
 		}
 
-		public static final FutureTask<Exception> writeTo(
-				final ExecutorService es, final File fn, final Map map) {
+		public static final FutureTask<Exception> writeTo(final ExecutorService es, final File fn, final Map map) {
 			final Charset charset = Encoding.UTF8;
 			return writeTo(es, fn, map, charset);
 		}
 
-		public static final FutureTask<Exception> writeTo(final File fn,
-				final Map map, final Charset charset) {
+		public static final FutureTask<Exception> writeTo(final File fn, final Map map, final Charset charset) {
 			FutureTask<Exception> f = ForExcept.exec(new CallableExcept() {
 				public void exec() throws Exception {
 					String str = FastJSON.format(map);
@@ -600,9 +528,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeTo(
-				final ExecutorService es, final File fn, final Map map,
-				final Charset charset) {
+		public static final FutureTask<Exception> writeTo(final ExecutorService es, final File fn, final Map map, final Charset charset) {
 			FutureTask<Exception> f = ForExcept.exec(es, new CallableExcept() {
 				public void exec() throws Exception {
 					String str = FastJSON.format(map);
@@ -621,8 +547,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<String> toJSONString(
-				final ExecutorService es, final List list) {
+		public static final FutureTask<String> toJSONString(final ExecutorService es, final List list) {
 			FutureTask<String> f = ForString.exec(es, new CallableForString() {
 				public String exec() throws Exception {
 					return FastJSON.format(list);
@@ -631,8 +556,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeTo(final File fn,
-				final List list, final Charset charset) {
+		public static final FutureTask<Exception> writeTo(final File fn, final List list, final Charset charset) {
 			FutureTask<Exception> f = ForExcept.exec(new CallableExcept() {
 				public void exec() throws Exception {
 					String str = FastJSON.format(list);
@@ -642,9 +566,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeTo(
-				final ExecutorService es, final File fn, final List list,
-				final Charset charset) {
+		public static final FutureTask<Exception> writeTo(final ExecutorService es, final File fn, final List list, final Charset charset) {
 			FutureTask<Exception> f = ForExcept.exec(es, new CallableExcept() {
 				public void exec() throws Exception {
 					String str = FastJSON.format(list);
@@ -654,14 +576,12 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeTo(final File fn,
-				final List list) {
+		public static final FutureTask<Exception> writeTo(final File fn, final List list) {
 			final Charset charset = Encoding.UTF8;
 			return writeTo(fn, list, charset);
 		}
 
-		public static final FutureTask<Exception> writeTo(
-				final ExecutorService es, final File fn, final List list) {
+		public static final FutureTask<Exception> writeTo(final ExecutorService es, final File fn, final List list) {
 			final Charset charset = Encoding.UTF8;
 			return writeTo(es, fn, list, charset);
 		}
@@ -675,8 +595,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Map> parseMap(final ExecutorService es,
-				final String json) {
+		public static final FutureTask<Map> parseMap(final ExecutorService es, final String json) {
 			FutureTask<Map> f = ForMap.exec(es, new CallableForMap() {
 				public Map exec() throws Exception {
 					return FastJSON.parseMap(json);
@@ -699,8 +618,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Map> parseMap(final ExecutorService es,
-				final File fn) {
+		public static final FutureTask<Map> parseMap(final ExecutorService es, final File fn) {
 			FutureTask<Map> f = ForMap.exec(es, new CallableForMap() {
 				public Map exec() throws Exception {
 					if (FileEx.isEmpty(fn))
@@ -723,8 +641,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<List> parseList(
-				final ExecutorService es, final String json) {
+		public static final FutureTask<List> parseList(final ExecutorService es, final String json) {
 			FutureTask<List> f = ForList.exec(es, new CallableForList() {
 				public List exec() throws Exception {
 					return FastJSON.parseList(json);
@@ -747,8 +664,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<List> parseList(
-				final ExecutorService es, final File fn) {
+		public static final FutureTask<List> parseList(final ExecutorService es, final File fn) {
 			FutureTask<List> f = ForList.exec(es, new CallableForList() {
 				public List exec() throws Exception {
 					if (FileEx.isEmpty(fn))
@@ -774,8 +690,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<byte[]> toBytes(
-				final ExecutorService es, final Map map) {
+		public static final FutureTask<byte[]> toBytes(final ExecutorService es, final Map map) {
 			FutureTask<byte[]> f = ForBytes.exec(es, new CallableForBytes() {
 				public byte[] exec() throws Exception {
 					return B2Helper.toBytes(map);
@@ -784,8 +699,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeTo(final File fn,
-				final Map map) {
+		public static final FutureTask<Exception> writeTo(final File fn, final Map map) {
 			FutureTask<Exception> f = ForExcept.exec(new CallableExcept() {
 				public void exec() throws Exception {
 					byte[] buf = B2Helper.toBytes(map);
@@ -795,8 +709,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeTo(
-				final ExecutorService es, final File fn, final Map map) {
+		public static final FutureTask<Exception> writeTo(final ExecutorService es, final File fn, final Map map) {
 			FutureTask<Exception> f = ForExcept.exec(es, new CallableExcept() {
 				public void exec() throws Exception {
 					byte[] buf = B2Helper.toBytes(map);
@@ -815,8 +728,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<byte[]> toBytes(
-				final ExecutorService es, final List list) {
+		public static final FutureTask<byte[]> toBytes(final ExecutorService es, final List list) {
 			FutureTask<byte[]> f = ForBytes.exec(es, new CallableForBytes() {
 				public byte[] exec() throws Exception {
 					return B2Helper.toBytes(list);
@@ -825,8 +737,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeTo(final File fn,
-				final List list) {
+		public static final FutureTask<Exception> writeTo(final File fn, final List list) {
 			FutureTask<Exception> f = ForExcept.exec(new CallableExcept() {
 				public void exec() throws Exception {
 					byte[] buf = B2Helper.toBytes(list);
@@ -836,8 +747,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Exception> writeTo(
-				final ExecutorService es, final File fn, final List list) {
+		public static final FutureTask<Exception> writeTo(final ExecutorService es, final File fn, final List list) {
 			FutureTask<Exception> f = ForExcept.exec(es, new CallableExcept() {
 				public void exec() throws Exception {
 					byte[] buf = B2Helper.toBytes(list);
@@ -856,8 +766,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Map> parseMap(final ExecutorService es,
-				final byte[] buf) {
+		public static final FutureTask<Map> parseMap(final ExecutorService es, final byte[] buf) {
 			FutureTask<Map> f = ForMap.exec(es, new CallableForMap() {
 				public Map exec() throws Exception {
 					return B2Helper.toMap(buf);
@@ -876,8 +785,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Map> parseMap(final ExecutorService es,
-				final File fn) {
+		public static final FutureTask<Map> parseMap(final ExecutorService es, final File fn) {
 			FutureTask<Map> f = ForMap.exec(es, new CallableForMap() {
 				public Map exec() throws Exception {
 					final byte[] buf = FileEx.readFully(fn);
@@ -899,8 +807,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<Map> parseMap(final ExecutorService es,
-				final URL url) {
+		public static final FutureTask<Map> parseMap(final ExecutorService es, final URL url) {
 			FutureTask<Map> f = ForMap.exec(es, new CallableForMap() {
 				public Map exec() throws Exception {
 					try (InputStream in = url.openStream();) {
@@ -921,8 +828,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<List> parseList(
-				final ExecutorService es, final byte[] buf) {
+		public static final FutureTask<List> parseList(final ExecutorService es, final byte[] buf) {
 			FutureTask<List> f = ForList.exec(es, new CallableForList() {
 				public List exec() throws Exception {
 					return B2Helper.toList(buf);
@@ -941,8 +847,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<List> parseList(
-				final ExecutorService es, final File fn) {
+		public static final FutureTask<List> parseList(final ExecutorService es, final File fn) {
 			FutureTask<List> f = ForList.exec(es, new CallableForList() {
 				public List exec() throws Exception {
 					final byte[] buf = FileEx.readFully(fn);
@@ -964,8 +869,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<List> parseList(
-				final ExecutorService es, final URL url) {
+		public static final FutureTask<List> parseList(final ExecutorService es, final URL url) {
 			FutureTask<List> f = ForList.exec(es, new CallableForList() {
 				public List exec() throws Exception {
 					try (InputStream in = url.openStream();) {
@@ -988,8 +892,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<byte[]> readUrl(
-				final ExecutorService es, final URL url) {
+		public static final FutureTask<byte[]> readUrl(final ExecutorService es, final URL url) {
 			FutureTask<byte[]> f = ForBytes.exec(es, new CallableForBytes() {
 				public byte[] exec() throws Exception {
 					return HttpEx.readUrl(url);
@@ -998,8 +901,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<String> readUrl(final URL url,
-				final Charset charset) {
+		public static final FutureTask<String> readUrl(final URL url, final Charset charset) {
 			FutureTask<String> f = ForString.exec(new CallableForString() {
 				public String exec() throws Exception {
 					byte[] buf = HttpEx.readUrl(url);
@@ -1011,8 +913,7 @@ public class Async {
 			return f;
 		}
 
-		public static final FutureTask<String> readUrl(
-				final ExecutorService es, final URL url, final Charset charset) {
+		public static final FutureTask<String> readUrl(final ExecutorService es, final URL url, final Charset charset) {
 			FutureTask<String> f = ForString.exec(es, new CallableForString() {
 				public String exec() throws Exception {
 					byte[] buf = HttpEx.readUrl(url);
@@ -1047,8 +948,7 @@ public class Async {
 		return f;
 	}
 
-	public static final Future exec(final Runnable r,
-			final Queue<Future> outQueue) {
+	public static final Future exec(final Runnable r, final Queue<Future> outQueue) {
 		Future f = exec(r);
 		if (outQueue != null)
 			outQueue.add(f);
@@ -1062,14 +962,12 @@ public class Async {
 		return f;
 	}
 
-	public static final <T> Future<T> exec(final ExecutorService es,
-			final Callable<T> task) {
+	public static final <T> Future<T> exec(final ExecutorService es, final Callable<T> task) {
 		Future<T> f = es.submit(task);
 		return f;
 	}
 
-	public static final <T> Future<T> exec(final Callable<T> task,
-			final Queue<Future> outQueue) {
+	public static final <T> Future<T> exec(final Callable<T> task, final Queue<Future> outQueue) {
 		Future<T> f = exec(task);
 		if (outQueue != null)
 			outQueue.add(f);
@@ -1080,8 +978,7 @@ public class Async {
 		return new LinkedList<Future>();
 	}
 
-	public static final void waitDone(final Queue<Future> outQueue)
-			throws InterruptedException, ExecutionException {
+	public static final void waitDone(final Queue<Future> outQueue) throws InterruptedException, ExecutionException {
 		if (outQueue == null || outQueue.isEmpty())
 			return;
 		while (!outQueue.isEmpty()) {
@@ -1111,23 +1008,20 @@ public class Async {
 		return f;
 	}
 
-	public static final <T> ForkJoinTask<T> fork(final ForkJoinPool fjp,
-			final ForkJoinTask<T> task) {
+	public static final <T> ForkJoinTask<T> fork(final ForkJoinPool fjp, final ForkJoinTask<T> task) {
 		if (fjp == null || task == null)
 			return null;
 		return fjp.submit(task);
 	}
 
-	public static final <T> ForkJoinTask<T> fork(final ForkJoinTask<T> task,
-			final Queue<ForkJoinTask> outQueue) {
+	public static final <T> ForkJoinTask<T> fork(final ForkJoinTask<T> task, final Queue<ForkJoinTask> outQueue) {
 		ForkJoinTask<T> f = fork(task);
 		if (outQueue != null)
 			outQueue.add(f);
 		return f;
 	}
 
-	public static final <T> ForkJoinTask<T> fork(final ForkJoinPool fjp,
-			final ForkJoinTask<T> task, final Queue<ForkJoinTask> outQueue) {
+	public static final <T> ForkJoinTask<T> fork(final ForkJoinPool fjp, final ForkJoinTask<T> task, final Queue<ForkJoinTask> outQueue) {
 		ForkJoinTask<T> f = fork(fjp, task);
 		if (outQueue != null)
 			outQueue.add(f);
@@ -1141,22 +1035,19 @@ public class Async {
 		return f;
 	}
 
-	public static final <T> ForkJoinTask<T> fork(final ForkJoinPool fjp,
-			final RecursiveTask<T> task) {
+	public static final <T> ForkJoinTask<T> fork(final ForkJoinPool fjp, final RecursiveTask<T> task) {
 		ForkJoinTask<T> f = fjp.submit(task);
 		return f;
 	}
 
-	public static final <T> ForkJoinTask<T> fork(final RecursiveTask<T> task,
-			final Queue<ForkJoinTask> outQueue) {
+	public static final <T> ForkJoinTask<T> fork(final RecursiveTask<T> task, final Queue<ForkJoinTask> outQueue) {
 		ForkJoinTask<T> f = fork(task);
 		if (outQueue != null)
 			outQueue.add(f);
 		return f;
 	}
 
-	public static final <T> ForkJoinTask<T> fork(final ForkJoinPool fjp,
-			final RecursiveTask<T> task, final Queue<ForkJoinTask> outQueue) {
+	public static final <T> ForkJoinTask<T> fork(final ForkJoinPool fjp, final RecursiveTask<T> task, final Queue<ForkJoinTask> outQueue) {
 		ForkJoinTask<T> f = fork(fjp, task);
 		if (outQueue != null)
 			outQueue.add(f);
@@ -1167,8 +1058,7 @@ public class Async {
 		return new LinkedList<ForkJoinTask>();
 	}
 
-	public static final void waitForks(final Queue<ForkJoinTask> outQueue)
-			throws InterruptedException, ExecutionException {
+	public static final void waitForks(final Queue<ForkJoinTask> outQueue) throws InterruptedException, ExecutionException {
 		if (outQueue == null || outQueue.isEmpty())
 			return;
 		while (!outQueue.isEmpty()) {
@@ -1177,9 +1067,7 @@ public class Async {
 		}
 	}
 
-	public static final Exception findForksExcept(
-			final Queue<ForkJoinTask<Exception>> outQueue)
-			throws InterruptedException, ExecutionException {
+	public static final Exception findForksExcept(final Queue<ForkJoinTask<Exception>> outQueue) throws InterruptedException, ExecutionException {
 		if (outQueue == null || outQueue.isEmpty())
 			return null;
 		while (!outQueue.isEmpty()) {

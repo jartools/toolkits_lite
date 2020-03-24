@@ -30,8 +30,7 @@ public class RMIBuilder extends ExToolkit {
 		}
 	}
 
-	public static String build(Connection conn, ResultSet rs, String pkg,
-			String appContext, boolean batch) throws Exception {
+	public static String build(Connection conn, ResultSet rs, String pkg, String appContext, boolean batch) throws Exception {
 		StringBuffer sb = new StringBuffer();
 
 		ResultSetMetaData rsmd = rs.getMetaData();
@@ -40,8 +39,7 @@ public class RMIBuilder extends ExToolkit {
 		String table = (String) columns.get(0).get("tableName");
 		String tableEn = PinYin.getShortPinYin(table);
 		String tableUEn = StrEx.upperN1(tableEn);
-		Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(conn,
-				table);
+		Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(conn, table);
 		String primaryKey = BeanBuilder.primaryKey(rsmd, columns);
 		String primaryKeyType = JTypeMysql.getType(rsmd, primaryKey);
 		String pkBasicType = JTypeMysql.getBasicType(primaryKeyType);
@@ -64,27 +62,20 @@ public class RMIBuilder extends ExToolkit {
 
 		sn(sb, "");
 		sn(sb, "//%s - %s", catalogName, table);
-		sn(sb,
-				"public interface %sRMI extends Remote, Serializable, Cloneable {",
-				tableUEn);
+		sn(sb, "public interface %sRMI extends Remote, Serializable, Cloneable {", tableUEn);
 		sn(sb, "");
 
 		// /////////////////////
 		sn(sb, "    public int count() throws RemoteException;");
 		sn(sb, "");
 
-		sn(sb,
-				"    public int count(String TABLENAME2) throws RemoteException;");
+		sn(sb, "    public int count(String TABLENAME2) throws RemoteException;");
 		sn(sb, "");
 
-		sn(sb,
-				"    public List<%s> sort(List<%s> %ss)  throws RemoteException;",
-				tableUEn, tableUEn, tableEn);
+		sn(sb, "    public List<%s> sort(List<%s> %ss)  throws RemoteException;", tableUEn, tableUEn, tableEn);
 		sn(sb, "");
 
-		sn(sb,
-				"    public List<%s> sortReverse(List<%s> %ss)  throws RemoteException;",
-				tableUEn, tableUEn, tableEn);
+		sn(sb, "    public List<%s> sortReverse(List<%s> %ss)  throws RemoteException;", tableUEn, tableUEn, tableEn);
 		sn(sb, "");
 
 		{
@@ -101,90 +92,64 @@ public class RMIBuilder extends ExToolkit {
 					// String.valueOf(index.get("NON_UNIQUE"));
 					String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 					String COLUMN_NAME_UEN = StrEx.upperN1(COLUMN_NAME_EN);
-					String COLUMN_NAME_TYPE = JTypeMysql.getType(rsmd,
-							COLUMN_NAME);
+					String COLUMN_NAME_TYPE = JTypeMysql.getType(rsmd, COLUMN_NAME);
 					String basicType = JTypeMysql.getBasicType(COLUMN_NAME_TYPE);
 
 					if (INDEX_NAME.equals("PRIMARY"))
 						continue;
 
-					if (!basicType.equals("int")
-							&& !basicType.equals("java.util.Date"))
+					if (!basicType.equals("int") && !basicType.equals("java.util.Date"))
 						continue;
 
-					sn(sb,
-							"    public List<%s> sort%s(List<%s> %ss) throws RemoteException;",
-							tableUEn, COLUMN_NAME_UEN, tableUEn, tableEn);
+					sn(sb, "    public List<%s> sort%s(List<%s> %ss) throws RemoteException;", tableUEn, COLUMN_NAME_UEN, tableUEn, tableEn);
 					sn(sb, "");
-					sn(sb,
-							"    public List<%s> sort%sRo(List<%s> %ss) throws RemoteException;",
-							tableUEn, COLUMN_NAME_UEN, tableUEn, tableEn);
+					sn(sb, "    public List<%s> sort%sRo(List<%s> %ss) throws RemoteException;", tableUEn, COLUMN_NAME_UEN, tableUEn, tableEn);
 					sn(sb, "");
 				} else { // 多索引
 				}
 			}
 		}
 
-		sn(sb, "    public %s insert(%s %s) throws RemoteException;", tableUEn,
-				tableUEn, tableEn);
+		sn(sb, "    public %s insert(%s %s) throws RemoteException;", tableUEn, tableUEn, tableEn);
 		sn(sb, "");
 
-		sn(sb,
-				"    public %s insert(%s %s, String TABLENAME2) throws RemoteException;",
-				tableUEn, tableUEn, tableEn);
+		sn(sb, "    public %s insert(%s %s, String TABLENAME2) throws RemoteException;", tableUEn, tableUEn, tableEn);
 		sn(sb, "");
 
-		sn(sb, "    public %s insert2(%s %s) throws RemoteException;",
-				tableUEn, tableUEn, tableEn);
+		sn(sb, "    public %s insert2(%s %s) throws RemoteException;", tableUEn, tableUEn, tableEn);
 		sn(sb, "");
 
-		sn(sb,
-				"    public %s insert2(%s %s, String TABLENAME2) throws RemoteException;",
-				tableUEn, tableUEn, tableEn);
+		sn(sb, "    public %s insert2(%s %s, String TABLENAME2) throws RemoteException;", tableUEn, tableUEn, tableEn);
 		sn(sb, "");
 
 		if (batch) { // 批处理
-			sn(sb,
-					"    public int[] insert(List<%s> %ss) throws RemoteException;",
-					tableUEn, tableEn);
+			sn(sb, "    public int[] insert(List<%s> %ss) throws RemoteException;", tableUEn, tableEn);
 			sn(sb, "");
 
-			sn(sb,
-					"    public int[] insert(List<%s> %ss, String TABLENAME2) throws RemoteException;",
-					tableUEn, tableEn, tableUEn, tableEn);
+			sn(sb, "    public int[] insert(List<%s> %ss, String TABLENAME2) throws RemoteException;", tableUEn, tableEn, tableUEn, tableEn);
 			sn(sb, "");
 		}
 
-		sn(sb, "    public int delete(%s %s) throws RemoteException;",
-				pkBasicType, primaryKey);
+		sn(sb, "    public int delete(%s %s) throws RemoteException;", pkBasicType, primaryKey);
 		sn(sb, "");
 
-		sn(sb,
-				"    public int delete(%s %s, String TABLENAME2) throws RemoteException;",
-				pkBasicType, primaryKey);
+		sn(sb, "    public int delete(%s %s, String TABLENAME2) throws RemoteException;", pkBasicType, primaryKey);
 		sn(sb, "");
 
 		if (batch) { // 批处理
-			sn(sb, "    public int[] delete(%s[] %ss) throws RemoteException;",
-					pkBasicType, primaryKey);
+			sn(sb, "    public int[] delete(%s[] %ss) throws RemoteException;", pkBasicType, primaryKey);
 			sn(sb, "");
 
-			sn(sb,
-					"    public int[] delete(%s[] %ss,String TABLENAME2)throws RemoteException;",
-					pkBasicType, primaryKey);
+			sn(sb, "    public int[] delete(%s[] %ss,String TABLENAME2)throws RemoteException;", pkBasicType, primaryKey);
 			sn(sb, "");
 
 		}
 
 		if (batch) {
-			sn(sb,
-					"    public int deleteIn(List<%s> keys) throws RemoteException;",
-					primaryKeyType);
+			sn(sb, "    public int deleteIn(List<%s> keys) throws RemoteException;", primaryKeyType);
 			sn(sb, "");
 
-			sn(sb,
-					"    public int deleteIn(List<%s> keys, String TABLENAME2) throws RemoteException;",
-					primaryKeyType);
+			sn(sb, "    public int deleteIn(List<%s> keys, String TABLENAME2) throws RemoteException;", primaryKeyType);
 			sn(sb, "");
 
 		}
@@ -192,112 +157,77 @@ public class RMIBuilder extends ExToolkit {
 		sn(sb, "    public List<%s> getAll() throws RemoteException;", tableUEn);
 		sn(sb, "");
 
-		sn(sb,
-				"    public List<%s> getAll(String TABLENAME2) throws RemoteException;",
-				tableUEn);
+		sn(sb, "    public List<%s> getAll(String TABLENAME2) throws RemoteException;", tableUEn);
 		sn(sb, "");
 
-		sn(sb, "    public List<%s> getNoSortAll() throws RemoteException;",
-				tableUEn);
+		sn(sb, "    public List<%s> getNoSortAll() throws RemoteException;", tableUEn);
 		sn(sb, "");
 
-		sn(sb,
-				"    public List<%s> getNoSortAll(String TABLENAME2) throws RemoteException;",
-				tableUEn);
+		sn(sb, "    public List<%s> getNoSortAll(String TABLENAME2) throws RemoteException;", tableUEn);
 		sn(sb, "");
 
-		sn(sb, "    public List<%s> getPks() throws RemoteException;",
-				primaryKeyType);
+		sn(sb, "    public List<%s> getPks() throws RemoteException;", primaryKeyType);
 		sn(sb, "");
 
-		sn(sb,
-				"    public List<%s> getPks(String TABLENAME2) throws RemoteException;",
-				primaryKeyType);
+		sn(sb, "    public List<%s> getPks(String TABLENAME2) throws RemoteException;", primaryKeyType);
 		sn(sb, "");
 
-		sn(sb, "    public List<%s> getInIndex() throws RemoteException;",
-				tableUEn);
+		sn(sb, "    public List<%s> getInIndex() throws RemoteException;", tableUEn);
 		sn(sb, "");
 
-		sn(sb,
-				"    public List<%s> getInIndex(String TABLENAME2) throws RemoteException;",
-				tableUEn);
+		sn(sb, "    public List<%s> getInIndex(String TABLENAME2) throws RemoteException;", tableUEn);
 		sn(sb, "");
 
 		if (batch) {
-			sn(sb,
-					"    public List<%s> getIn(List<%s> keys) throws RemoteException;",
-					tableUEn, primaryKeyType);
+			sn(sb, "    public List<%s> getIn(List<%s> keys) throws RemoteException;", tableUEn, primaryKeyType);
 			sn(sb, "");
 
-			sn(sb,
-					"    public List<%s> getIn(List<%s> keys, String TABLENAME2) throws RemoteException;",
-					tableUEn, primaryKeyType);
+			sn(sb, "    public List<%s> getIn(List<%s> keys, String TABLENAME2) throws RemoteException;", tableUEn, primaryKeyType);
 			sn(sb, "");
 
-			sn(sb,
-					"    public List<%s> getNoSortIn(List<%s> keys) throws RemoteException;",
-					tableUEn, primaryKeyType);
+			sn(sb, "    public List<%s> getNoSortIn(List<%s> keys) throws RemoteException;", tableUEn, primaryKeyType);
 			sn(sb, "");
 
-			sn(sb,
-					"    public List<%s> getNoSortIn(List<%s> keys, String TABLENAME2) throws RemoteException;",
-					tableUEn, primaryKeyType);
+			sn(sb, "    public List<%s> getNoSortIn(List<%s> keys, String TABLENAME2) throws RemoteException;", tableUEn, primaryKeyType);
 			sn(sb, "");
 
 		}
 
-		sn(sb, "    public List<%s> getLast(int num) throws RemoteException;",
-				tableUEn);
+		sn(sb, "    public List<%s> getLast(int num) throws RemoteException;", tableUEn);
 		sn(sb, "");
 
-		sn(sb,
-				"    public List<%s> getLast(int num, String TABLENAME2) throws RemoteException;",
-				tableUEn);
+		sn(sb, "    public List<%s> getLast(int num, String TABLENAME2) throws RemoteException;", tableUEn);
 		sn(sb, "");
 
 		sn(sb, "    public %s last() throws RemoteException;", tableUEn);
 		sn(sb, "");
 
-		sn(sb, "    public %s last(String TABLENAME2) throws RemoteException;",
-				tableUEn);
+		sn(sb, "    public %s last(String TABLENAME2) throws RemoteException;", tableUEn);
 		sn(sb, "");
 
-		sn(sb, "    public List<%s> getGtKey(%s %s) throws RemoteException;",
-				tableUEn, pkBasicType, primaryKey);
+		sn(sb, "    public List<%s> getGtKey(%s %s) throws RemoteException;", tableUEn, pkBasicType, primaryKey);
 		sn(sb, "");
 
-		sn(sb,
-				"    public List<%s> getGtKey(%s %s, String TABLENAME2) throws RemoteException;",
-				tableUEn, pkBasicType, primaryKey);
+		sn(sb, "    public List<%s> getGtKey(%s %s, String TABLENAME2) throws RemoteException;", tableUEn, pkBasicType, primaryKey);
 		sn(sb, "");
 
-		sn(sb, "    public %s getByKey(%s %s) throws RemoteException;",
-				tableUEn, pkBasicType, primaryKey);
+		sn(sb, "    public %s getByKey(%s %s) throws RemoteException;", tableUEn, pkBasicType, primaryKey);
 		sn(sb, "");
 
-		sn(sb,
-				"    public %s getByKey(%s %s, String TABLENAME2) throws RemoteException;",
-				tableUEn, pkBasicType, primaryKey);
+		sn(sb, "    public %s getByKey(%s %s, String TABLENAME2) throws RemoteException;", tableUEn, pkBasicType, primaryKey);
 		sn(sb, "");
 
-		sn(sb,
-				"    public List<%s> getByPage(int page, int size) throws RemoteException;",
-				tableUEn);
+		sn(sb, "    public List<%s> getByPage(int page, int size) throws RemoteException;", tableUEn);
 		sn(sb, "");
 
-		sn(sb,
-				"    public List<%s> getByPage(int page, int size, String TABLENAME2) throws RemoteException;",
-				tableUEn);
+		sn(sb, "    public List<%s> getByPage(int page, int size, String TABLENAME2) throws RemoteException;", tableUEn);
 		sn(sb, "");
 
 		// //
-		sn(sb, "    public int pageCount(int size) throws RemoteException;",
-				tableUEn);
+		sn(sb, "    public int pageCount(int size) throws RemoteException;", tableUEn);
 		sn(sb, "");
 
-		sn(sb,
-				"    public int pageCount(int size, String TABLENAME2) throws RemoteException;");
+		sn(sb, "    public int pageCount(int size, String TABLENAME2) throws RemoteException;");
 		sn(sb, "");
 
 		Iterator<String> it = indexs.keySet().iterator();
@@ -313,71 +243,44 @@ public class RMIBuilder extends ExToolkit {
 				String COLUMN_NAME_EN = PinYin.getShortPinYin(COLUMN_NAME);
 				String COLUMN_NAME_UEN = StrEx.upperN1(COLUMN_NAME_EN);
 				String COLUMN_NAME_TYPE = JTypeMysql.getType(rsmd, COLUMN_NAME);
-				String COLUMN_NAME_BTYPE = JTypeMysql
-						.getBasicType(COLUMN_NAME_TYPE);
+				String COLUMN_NAME_BTYPE = JTypeMysql.getBasicType(COLUMN_NAME_TYPE);
 				if (INDEX_NAME.equals("PRIMARY"))
 					continue;
 				if (COLUMN_NAME_TYPE.equals("java.util.Date"))
 					continue;
 				if (NON_UNIQUE.equals("false")) {
-					sn(sb,
-							"    public %s getBy%s(%s %s) throws RemoteException;",
-							tableUEn, COLUMN_NAME_UEN, COLUMN_NAME_TYPE,
-							COLUMN_NAME_EN);
+					sn(sb, "    public %s getBy%s(%s %s) throws RemoteException;", tableUEn, COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
 					sn(sb, "");
 
-					sn(sb,
-							"    public %s getBy%s(%s %s, String TABLENAME2) throws RemoteException;",
-							tableUEn, COLUMN_NAME_UEN, COLUMN_NAME_TYPE,
-							COLUMN_NAME_EN);
+					sn(sb, "    public %s getBy%s(%s %s, String TABLENAME2) throws RemoteException;", tableUEn, COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
 					sn(sb, "");
 
 				} else {
-					sn(sb,
-							"    public int countBy%s(%s %s) throws RemoteException;",
-							COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
+					sn(sb, "    public int countBy%s(%s %s) throws RemoteException;", COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
 					sn(sb, "");
 
-					sn(sb,
-							"    public int countBy%s(%s %s, String TABLENAME2) throws RemoteException;",
-							COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
+					sn(sb, "    public int countBy%s(%s %s, String TABLENAME2) throws RemoteException;", COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
 					sn(sb, "");
 
-					sn(sb,
-							"    public List<%s> getBy%s(%s %s) throws RemoteException;",
-							tableUEn, COLUMN_NAME_UEN, COLUMN_NAME_TYPE,
-							COLUMN_NAME_EN);
+					sn(sb, "    public List<%s> getBy%s(%s %s) throws RemoteException;", tableUEn, COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
 					sn(sb, "");
 
-					sn(sb,
-							"    public List<%s> getBy%s(%s %s, String TABLENAME2) throws RemoteException;",
-							tableUEn, COLUMN_NAME_UEN, COLUMN_NAME_TYPE,
-							COLUMN_NAME_EN);
+					sn(sb, "    public List<%s> getBy%s(%s %s, String TABLENAME2) throws RemoteException;", tableUEn, COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
 					sn(sb, "");
 				}
 
 				// like
 				if (COLUMN_NAME_TYPE.equals("String")) {
-					sn(sb,
-							"    public int countLike%s(%s %s) throws RemoteException;",
-							COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
+					sn(sb, "    public int countLike%s(%s %s) throws RemoteException;", COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
 					sn(sb, "");
 
-					sn(sb,
-							"    public int countLike%s(%s %s, String TABLENAME2) throws RemoteException;",
-							COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
+					sn(sb, "    public int countLike%s(%s %s, String TABLENAME2) throws RemoteException;", COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
 					sn(sb, "");
 
-					sn(sb,
-							"    public List<%s> getLike%s(%s %s) throws RemoteException;",
-							tableUEn, COLUMN_NAME_UEN, COLUMN_NAME_TYPE,
-							COLUMN_NAME_EN);
+					sn(sb, "    public List<%s> getLike%s(%s %s) throws RemoteException;", tableUEn, COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
 					sn(sb, "");
 
-					sn(sb,
-							"    public List<%s> getLike%s(%s %s, String TABLENAME2) throws RemoteException;",
-							tableUEn, COLUMN_NAME_UEN, COLUMN_NAME_TYPE,
-							COLUMN_NAME_EN);
+					sn(sb, "    public List<%s> getLike%s(%s %s, String TABLENAME2) throws RemoteException;", tableUEn, COLUMN_NAME_UEN, COLUMN_NAME_TYPE, COLUMN_NAME_EN);
 					sn(sb, "");
 
 				}
@@ -400,35 +303,24 @@ public class RMIBuilder extends ExToolkit {
 				// String index4 = BeanBuilder.index4(rsmd, idx);
 				String index5 = BeanBuilder.index5(rsmd, idx);
 				if (NON_UNIQUE.equals("false")) { // 唯一数据
-					sn(sb, "    public %s getBy%s(%s) throws RemoteException;",
-							tableUEn, index1, index2);
+					sn(sb, "    public %s getBy%s(%s) throws RemoteException;", tableUEn, index1, index2);
 					sn(sb, "");
 
-					sn(sb,
-							"    public %s getBy%s(%s, String TABLENAME2) throws RemoteException;",
-							tableUEn, index1, index2);
+					sn(sb, "    public %s getBy%s(%s, String TABLENAME2) throws RemoteException;", tableUEn, index1, index2);
 					sn(sb, "");
 				} else { // 非唯一数据
 					{
-						sn(sb,
-								"    public int countBy%s(%s) throws RemoteException;",
-								index1, index2);
+						sn(sb, "    public int countBy%s(%s) throws RemoteException;", index1, index2);
 						sn(sb, "");
 
-						sn(sb,
-								"    public int countBy%s(%s, String TABLENAME2) throws RemoteException;",
-								index1, index2);
+						sn(sb, "    public int countBy%s(%s, String TABLENAME2) throws RemoteException;", index1, index2);
 						sn(sb, "");
 					}
 					{
-						sn(sb,
-								"    public List<%s> getBy%s(%s) throws RemoteException;",
-								tableUEn, index1, index2);
+						sn(sb, "    public List<%s> getBy%s(%s) throws RemoteException;", tableUEn, index1, index2);
 						sn(sb, "");
 
-						sn(sb,
-								"    public List<%s> getBy%s(%s, String TABLENAME2) throws RemoteException;",
-								tableUEn, index1, index2);
+						sn(sb, "    public List<%s> getBy%s(%s, String TABLENAME2) throws RemoteException;", tableUEn, index1, index2);
 						sn(sb, "");
 					}
 
@@ -437,13 +329,10 @@ public class RMIBuilder extends ExToolkit {
 
 		}
 
-		sn(sb, "    public %s update(%s %s) throws RemoteException;", tableUEn,
-				tableUEn, tableEn);
+		sn(sb, "    public %s update(%s %s) throws RemoteException;", tableUEn, tableUEn, tableEn);
 		sn(sb, "");
 
-		sn(sb,
-				"    public %s update(%s %s, String TABLENAME2) throws RemoteException;",
-				tableUEn, tableUEn, tableEn);
+		sn(sb, "    public %s update(%s %s, String TABLENAME2) throws RemoteException;", tableUEn, tableUEn, tableEn);
 		sn(sb, "");
 
 		sn(sb, "}");

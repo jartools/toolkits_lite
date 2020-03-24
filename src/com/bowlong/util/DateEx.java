@@ -73,7 +73,7 @@ public class DateEx extends ExOrigin {
 		boolean r = week == 0 || week == 6;
 		return r;
 	}
-	
+
 	static public final boolean isWeekEnd() {
 		return isWeekEnd(nowDate());
 	}

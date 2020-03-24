@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * @version createtime：2015年8月15日 下午2:47:45
  */
 public class NumBigDecimalEx {
-	
+
 	static public final int getVal4Int(BigDecimal origin) {
 		if (origin == null) {
 			return 0;

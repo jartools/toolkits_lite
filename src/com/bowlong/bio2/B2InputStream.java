@@ -20,7 +20,7 @@ import com.bowlong.util.Ref;
 // 两者在性能上没什么差异。
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class B2InputStream extends InputStreamEx{
+public class B2InputStream extends InputStreamEx {
 
 	public final static byte _readByte(InputStream in) throws IOException {
 		int ch = in.read();
@@ -118,8 +118,7 @@ public class B2InputStream extends InputStreamEx{
 			int value3 = _readByte(is);
 			int value4 = _readByte(is);
 
-			int v = ((value1 & 0xff) << 24) + ((value2 & 0xff) << 16)
-					+ ((value3 & 0xff) << 8) + ((value4 & 0xff) << 0);
+			int v = ((value1 & 0xff) << 24) + ((value2 & 0xff) << 16) + ((value3 & 0xff) << 8) + ((value4 & 0xff) << 0);
 			return v;
 		}
 		default:
@@ -127,8 +126,7 @@ public class B2InputStream extends InputStreamEx{
 		}
 	}
 
-	private static final int[] readIntArray(InputStream is, int len)
-			throws Exception {
+	private static final int[] readIntArray(InputStream is, int len) throws Exception {
 		int[] ret = new int[len];
 		for (int i = 0; i < len; i++) {
 			int v = readInt(is);
@@ -137,8 +135,7 @@ public class B2InputStream extends InputStreamEx{
 		return ret;
 	}
 
-	private static final int[][] readInt2DArray(InputStream is, int len)
-			throws Exception {
+	private static final int[][] readInt2DArray(InputStream is, int len) throws Exception {
 		int[][] ret = new int[len][];
 		for (int i = 0; i < len; i++) {
 			Object o = readObject(is);
@@ -148,8 +145,7 @@ public class B2InputStream extends InputStreamEx{
 		return ret;
 	}
 
-	private static final NewList readList(InputStream is, int len)
-			throws Exception {
+	private static final NewList readList(InputStream is, int len) throws Exception {
 		NewList ret = new NewList();
 		for (int i = 0; i < len; i++) {
 			Object o = readObject(is);
@@ -159,8 +155,7 @@ public class B2InputStream extends InputStreamEx{
 		return ret;
 	}
 
-	private static final NewMap readMap(InputStream is, int len)
-			throws Exception {
+	private static final NewMap readMap(InputStream is, int len) throws Exception {
 		NewMap ret = new NewMap();
 		for (int i = 0; i < len; i++) {
 			Object key = readObject(is);
@@ -177,8 +172,7 @@ public class B2InputStream extends InputStreamEx{
 	}
 
 	/*** 读取流中前面的字符，看是否有bom，如果有bom，将bom头先读掉丢弃 */
-	public static final InputStream dropBomByInps(InputStream in)
-			throws IOException {
+	public static final InputStream dropBomByInps(InputStream in) throws IOException {
 		PushbackInputStream backInps = new PushbackInputStream(in);
 		int ch = backInps.read();
 		if (ch != 0xEF) {
@@ -407,8 +401,7 @@ public class B2InputStream extends InputStreamEx{
 			int v2 = _readByte(is);
 			int v3 = _readByte(is);
 			int v4 = _readByte(is);
-			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16)
-					+ ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
+			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16) + ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
 			return new Integer(v);
 		}
 		case B2Type.STR_0: {
@@ -627,8 +620,7 @@ public class B2InputStream extends InputStreamEx{
 			int v2 = _readByte(is);
 			int v3 = _readByte(is);
 			int v4 = _readByte(is);
-			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16)
-					+ ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
+			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16) + ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
 			return new Long(v);
 		}
 		case B2Type.LONG_64B: {
@@ -636,10 +628,8 @@ public class B2InputStream extends InputStreamEx{
 			for (int i = 0; i < 8; i++) {
 				b[i] = (byte) _readByte(is);
 			}
-			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16)
-					+ ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
-			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16)
-					+ ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
+			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16) + ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
+			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16) + ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
 			long v = (high << 32) + (0xffffffffL & low);
 			return new Long(v);
 		}
@@ -648,10 +638,8 @@ public class B2InputStream extends InputStreamEx{
 			for (int i = 0; i < 8; i++) {
 				b[i] = (byte) _readByte(is);
 			}
-			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16)
-					+ ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
-			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16)
-					+ ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
+			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16) + ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
+			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16) + ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
 			long v = (high << 32) + (0xffffffffL & low);
 			return new java.util.Date(v);
 		}
@@ -684,10 +672,8 @@ public class B2InputStream extends InputStreamEx{
 			for (int i = 0; i < 8; i++) {
 				b[i] = (byte) _readByte(is);
 			}
-			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16)
-					+ ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
-			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16)
-					+ ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
+			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16) + ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
+			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16) + ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
 			long v = (high << 32) + (0xffffffffL & low);
 			double ret = Double.longBitsToDouble(v);
 			return new Double(ret);
@@ -770,8 +756,7 @@ public class B2InputStream extends InputStreamEx{
 	}
 
 	// //////////////////////////////////
-	protected static final String readStringImpl(InputStream is, int length)
-			throws IOException {
+	protected static final String readStringImpl(InputStream is, int length) throws IOException {
 		if (length <= 0)
 			return "";
 
@@ -780,8 +765,7 @@ public class B2InputStream extends InputStreamEx{
 		return new String(b, B2Type.UTF8);
 	}
 
-	protected static final String readStringImpl2(InputStream is, int length)
-			throws IOException {
+	protected static final String readStringImpl2(InputStream is, int length) throws IOException {
 		if (length <= 0)
 			return "";
 
@@ -793,8 +777,7 @@ public class B2InputStream extends InputStreamEx{
 		return new String(b, B2Type.UTF8);
 	}
 
-	public final static byte _readByte(byte[] in, Ref<Integer> rv)
-			throws IOException {
+	public final static byte _readByte(byte[] in, Ref<Integer> rv) throws IOException {
 		if (rv.val >= in.length)
 			throw new EOFException();
 
@@ -802,8 +785,7 @@ public class B2InputStream extends InputStreamEx{
 		return (byte) (ch);
 	}
 
-	public final static byte[] _readBytes(byte[] in, Ref<Integer> rv, int len)
-			throws IOException {
+	public final static byte[] _readBytes(byte[] in, Ref<Integer> rv, int len) throws IOException {
 		if ((rv.val + len) >= in.length)
 			throw new EOFException();
 
@@ -816,8 +798,7 @@ public class B2InputStream extends InputStreamEx{
 	// return is.read();
 	// }
 
-	public static final int readInt(byte[] in, Ref<Integer> rv)
-			throws IOException {
+	public static final int readInt(byte[] in, Ref<Integer> rv) throws IOException {
 		byte tag = _readByte(in, rv);
 		switch (tag) {
 		case B2Type.INT_N1:
@@ -893,8 +874,7 @@ public class B2InputStream extends InputStreamEx{
 			return v;
 		}
 		case B2Type.INT_16B: {
-			short v = (short) (((_readByte(in, rv) & 0xff) << 8) + ((_readByte(
-					in, rv) & 0xff) << 0));
+			short v = (short) (((_readByte(in, rv) & 0xff) << 8) + ((_readByte(in, rv) & 0xff) << 0));
 			return v;
 		}
 		case B2Type.INT_32B: {
@@ -903,8 +883,7 @@ public class B2InputStream extends InputStreamEx{
 			int value3 = _readByte(in, rv);
 			int value4 = _readByte(in, rv);
 
-			int v = ((value1 & 0xff) << 24) + ((value2 & 0xff) << 16)
-					+ ((value3 & 0xff) << 8) + ((value4 & 0xff) << 0);
+			int v = ((value1 & 0xff) << 24) + ((value2 & 0xff) << 16) + ((value3 & 0xff) << 8) + ((value4 & 0xff) << 0);
 			return v;
 		}
 		default:
@@ -912,8 +891,7 @@ public class B2InputStream extends InputStreamEx{
 		}
 	}
 
-	private static final int[] readIntArray(byte[] in, Ref<Integer> rv, int len)
-			throws Exception {
+	private static final int[] readIntArray(byte[] in, Ref<Integer> rv, int len) throws Exception {
 		int[] ret = new int[len];
 		for (int i = 0; i < len; i++) {
 			int v = readInt(in, rv);
@@ -922,8 +900,7 @@ public class B2InputStream extends InputStreamEx{
 		return ret;
 	}
 
-	private static final int[][] readInt2DArray(byte[] in, Ref<Integer> rv,
-			int len) throws Exception {
+	private static final int[][] readInt2DArray(byte[] in, Ref<Integer> rv, int len) throws Exception {
 		int[][] ret = new int[len][];
 		for (int i = 0; i < len; i++) {
 			Object o = readObject(in, rv);
@@ -933,8 +910,7 @@ public class B2InputStream extends InputStreamEx{
 		return ret;
 	}
 
-	private static final NewList readList(byte[] in, Ref<Integer> rv, int len)
-			throws Exception {
+	private static final NewList readList(byte[] in, Ref<Integer> rv, int len) throws Exception {
 		NewList ret = new NewList();
 		for (int i = 0; i < len; i++) {
 			Object o = readObject(in, rv);
@@ -944,8 +920,7 @@ public class B2InputStream extends InputStreamEx{
 		return ret;
 	}
 
-	private static final NewMap readMap(byte[] in, Ref<Integer> rv, int len)
-			throws Exception {
+	private static final NewMap readMap(byte[] in, Ref<Integer> rv, int len) throws Exception {
 		NewMap ret = new NewMap();
 		for (int i = 0; i < len; i++) {
 			Object key = readObject(in, rv);
@@ -957,13 +932,11 @@ public class B2InputStream extends InputStreamEx{
 		return ret;
 	}
 
-	public static final NewMap readMap(byte[] in, Ref<Integer> rv)
-			throws Exception {
+	public static final NewMap readMap(byte[] in, Ref<Integer> rv) throws Exception {
 		return (NewMap) readObject(in, rv);
 	}
 
-	public static final Object readObject(byte[] in, Ref<Integer> rv)
-			throws Exception {
+	public static final Object readObject(byte[] in, Ref<Integer> rv) throws Exception {
 		byte tag = (byte) _readByte(in, rv);
 		switch (tag) {
 		case B2Type.NULL: {
@@ -1128,8 +1101,7 @@ public class B2InputStream extends InputStreamEx{
 			return new Integer(v);
 		}
 		case B2Type.INT_16B: {
-			short v = (short) (((_readByte(in, rv) & 0xff) << 8) + ((_readByte(
-					in, rv) & 0xff) << 0));
+			short v = (short) (((_readByte(in, rv) & 0xff) << 8) + ((_readByte(in, rv) & 0xff) << 0));
 			return new Integer(v);
 		}
 		case B2Type.INT_32B: {
@@ -1137,8 +1109,7 @@ public class B2InputStream extends InputStreamEx{
 			int v2 = _readByte(in, rv);
 			int v3 = _readByte(in, rv);
 			int v4 = _readByte(in, rv);
-			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16)
-					+ ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
+			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16) + ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
 			return new Integer(v);
 		}
 		case B2Type.STR_0: {
@@ -1336,8 +1307,7 @@ public class B2InputStream extends InputStreamEx{
 			return new Short(v);
 		}
 		case B2Type.SHORT_16B: {
-			short v = (short) (((_readByte(in, rv) & 0xff) << 8) + ((_readByte(
-					in, rv) & 0xff) << 0));
+			short v = (short) (((_readByte(in, rv) & 0xff) << 8) + ((_readByte(in, rv) & 0xff) << 0));
 			return new Short(v);
 		}
 		case B2Type.LONG_0: {
@@ -1357,8 +1327,7 @@ public class B2InputStream extends InputStreamEx{
 			int v2 = _readByte(in, rv);
 			int v3 = _readByte(in, rv);
 			int v4 = _readByte(in, rv);
-			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16)
-					+ ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
+			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16) + ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
 			return new Long(v);
 		}
 		case B2Type.LONG_64B: {
@@ -1366,10 +1335,8 @@ public class B2InputStream extends InputStreamEx{
 			for (int i = 0; i < 8; i++) {
 				b[i] = (byte) _readByte(in, rv);
 			}
-			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16)
-					+ ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
-			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16)
-					+ ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
+			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16) + ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
+			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16) + ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
 			long v = (high << 32) + (0xffffffffL & low);
 			return new Long(v);
 		}
@@ -1378,10 +1345,8 @@ public class B2InputStream extends InputStreamEx{
 			for (int i = 0; i < 8; i++) {
 				b[i] = (byte) _readByte(in, rv);
 			}
-			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16)
-					+ ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
-			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16)
-					+ ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
+			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16) + ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
+			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16) + ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
 			long v = (high << 32) + (0xffffffffL & low);
 			return new java.util.Date(v);
 		}
@@ -1414,10 +1379,8 @@ public class B2InputStream extends InputStreamEx{
 			for (int i = 0; i < 8; i++) {
 				b[i] = (byte) _readByte(in, rv);
 			}
-			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16)
-					+ ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
-			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16)
-					+ ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
+			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16) + ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
+			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16) + ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
 			long v = (high << 32) + (0xffffffffL & low);
 			double ret = Double.longBitsToDouble(v);
 			return new Double(ret);
@@ -1496,8 +1459,7 @@ public class B2InputStream extends InputStreamEx{
 	}
 
 	// //////////////////////////////////
-	protected static final String readStringImpl(byte[] in, Ref<Integer> rv,
-			int length) throws IOException {
+	protected static final String readStringImpl(byte[] in, Ref<Integer> rv, int length) throws IOException {
 		if (length <= 0)
 			return "";
 
@@ -1505,8 +1467,7 @@ public class B2InputStream extends InputStreamEx{
 		return new String(b, B2Type.UTF8);
 	}
 
-	protected static final String readStringImpl2(byte[] in, Ref<Integer> rv,
-			int length) throws IOException {
+	protected static final String readStringImpl2(byte[] in, Ref<Integer> rv, int length) throws IOException {
 		if (length <= 0)
 			return "";
 

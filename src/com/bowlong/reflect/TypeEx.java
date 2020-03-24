@@ -140,7 +140,7 @@ public class TypeEx {
 			return "byte[]";
 		return tname;
 	}
-	
+
 	public static String getObjectType(String tname) {
 		if (tname.endsWith("Boolean") || tname.equals("boolean"))
 			return "Boolean";
@@ -203,7 +203,7 @@ public class TypeEx {
 			return String.valueOf(v);
 		else if (t.endsWith("String"))
 			return String.format("\"%s\"", v);
-		else if(t.endsWith("BigDecimal")){
+		else if (t.endsWith("BigDecimal")) {
 			return String.format("new java.math.BigDecimal(%s)", v);
 		}
 		return String.valueOf(v);

@@ -48,8 +48,7 @@ public class DataSet extends JdbcTemplet {
 		return count("");
 	}
 
-	public final int pageCount(String c, int size)
-			throws SQLException {
+	public final int pageCount(String c, int size) throws SQLException {
 		int count = count(c);
 		return super.pageCount(count, size);
 	}
@@ -66,8 +65,7 @@ public class DataSet extends JdbcTemplet {
 		return queryForList4C("", c2);
 	}
 
-	public final <T> T queryForObject4C(String c, Class c2)
-			throws Exception {
+	public final <T> T queryForObject4C(String c, Class c2) throws Exception {
 		List<T> dataset = queryForList4C(c, c2);
 		if (dataset == null || dataset.isEmpty())
 			return null;
@@ -95,8 +93,7 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final <T> List<T> queryForList4C(String c, Class c2)
-			throws Exception {
+	public final <T> List<T> queryForList4C(String c, Class c2) throws Exception {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			sb.append("SELECT * FROM ").append(TABLENAME);
@@ -110,14 +107,12 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final List<Map<String, Object>> queryForList4C(String c, int begin,
-			int num) throws SQLException {
+	public final List<Map<String, Object>> queryForList4C(String c, int begin, int num) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			sb.append("SELECT * FROM ").append(TABLENAME);
 			if (c != null && !c.isEmpty()) {
-				sb.append(" WHERE ").append(c).append(" LIMIT ").append(begin)
-						.append(", ").append(num);
+				sb.append(" WHERE ").append(c).append(" LIMIT ").append(begin).append(", ").append(num);
 			}
 			String sql = sb.toString();
 			return super.queryForList(sql);
@@ -126,14 +121,12 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final <T> List<T> queryForList4C(String c, Class c2,
-			int begin, int num) throws Exception {
+	public final <T> List<T> queryForList4C(String c, Class c2, int begin, int num) throws Exception {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			sb.append("SELECT * FROM ").append(TABLENAME);
 			if (c != null && !c.isEmpty()) {
-				sb.append(" WHERE ").append(c).append(" LIMIT ").append(begin)
-						.append(", ").append(num);
+				sb.append(" WHERE ").append(c).append(" LIMIT ").append(begin).append(", ").append(num);
 			}
 			String sql = sb.toString();
 			return super.queryForList(sql, c2);
@@ -142,13 +135,11 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final List<Map<String, Object>> queryForList4C(int begin, int num)
-			throws SQLException {
+	public final List<Map<String, Object>> queryForList4C(int begin, int num) throws SQLException {
 		return queryForList4C("", begin, num);
 	}
 
-	public final <T> List<T> queryForList4C(Class c2, int begin,
-			int num) throws Exception {
+	public final <T> List<T> queryForList4C(Class c2, int begin, int num) throws Exception {
 		return queryForList4C("", c2, begin, num);
 	}
 
@@ -187,13 +178,11 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final int update(BeanSupport x, String c)
-			throws SQLException {
+	public final int update(BeanSupport x, String c) throws SQLException {
 		return update(x.toBasicMap(), c);
 	}
 
-	public final int update(Map<String, Object> m, String c)
-			throws SQLException {
+	public final int update(Map<String, Object> m, String c) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			List<String> keys = newList();
@@ -217,8 +206,7 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final int delete(Map m, String c)
-			throws SQLException {
+	public final int delete(Map m, String c) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			sb.append("DELETE FROM ");
@@ -234,8 +222,7 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public final int delete(BeanSupport x, String c)
-			throws SQLException {
+	public final int delete(BeanSupport x, String c) throws SQLException {
 		return delete(x.toBasicMap(), c);
 	}
 

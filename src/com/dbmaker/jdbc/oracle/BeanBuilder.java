@@ -27,8 +27,7 @@ public class BeanBuilder extends ExToolkit {
 		String db = "XE";
 		String user = "sa";
 		String password = "12345670";
-		try (Connection conn = SqlEx.newOracleConnection(host, port, db, user,
-				password);) {
+		try (Connection conn = SqlEx.newOracleConnection(host, port, db, user, password);) {
 
 			String bpackage = "fych.db";
 
@@ -40,8 +39,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static String build(Connection conn, ResultSet rs, String pkg,
-			String DB, String TABLENAME) throws Exception {
+	public static String build(Connection conn, ResultSet rs, String pkg, String DB, String TABLENAME) throws Exception {
 		TABLENAME = TABLENAME.replace("\"", "");
 		ResultSetMetaData rsmd = rs.getMetaData();
 		List<Map<String, Object>> columns = SqlEx.getColumns(rs);
@@ -81,11 +79,9 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "");
 		sn(sb, "//%s - %s", catalogName, table);
 		sn(sb, "@SuppressWarnings({\"rawtypes\",  \"unchecked\", \"serial\" })");
-		sn(sb, "public class %s extends com.bowlong.sql.oracle.BeanSupport {",
-				tableUEn);
+		sn(sb, "public class %s extends com.bowlong.sql.oracle.BeanSupport {", tableUEn);
 		sn(sb, "");
-		sn(sb, "    private static final %s _me = new %s();", tableUEn,
-				tableUEn);
+		sn(sb, "    private static final %s _me = new %s();", tableUEn, tableUEn);
 		sn(sb, "");
 		sn(sb, "    public static String TABLENAME = \"%s\";", table);
 		sn(sb, "");
@@ -97,36 +93,35 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "");
 		sn(sb, "    public static String[][] dbIndexs ={%s};", dbIndexs);
 		sn(sb, "");
-		// sn(sb, "    public static ModifyScheduler _scheduler;");
-		// sn(sb, "    public static void newModifyScheduler() {");
-		// sn(sb, "        setModifyScheduler(new ModifyScheduler());");
-		// sn(sb, "    }");
+		// sn(sb, " public static ModifyScheduler _scheduler;");
+		// sn(sb, " public static void newModifyScheduler() {");
+		// sn(sb, " setModifyScheduler(new ModifyScheduler());");
+		// sn(sb, " }");
 		// sn(sb,
-		// "    public static void setModifyScheduler(ModifyScheduler scheduler) {");
-		// sn(sb, "        long initialDelay = 60 * 1000;");
-		// sn(sb, "        long delay = 10 * 1000;");
+		// " public static void setModifyScheduler(ModifyScheduler scheduler) {");
+		// sn(sb, " long initialDelay = 60 * 1000;");
+		// sn(sb, " long delay = 10 * 1000;");
 		// sn(sb,
-		// "        setModifyScheduler(scheduler, initialDelay, delay);");
-		// sn(sb, "    }");
+		// " setModifyScheduler(scheduler, initialDelay, delay);");
+		// sn(sb, " }");
 		// sn(sb,
-		// "    public static void setModifyScheduler(ModifyScheduler scheduler, long initialDelay, long delay){");
-		// sn(sb, "        _scheduler = scheduler;");
-		// sn(sb, "        if( _scheduler == null ) return;");
-		// sn(sb, "        _scheduler.schedule(initialDelay, delay);");
-		// sn(sb, "    }");
+		// " public static void setModifyScheduler(ModifyScheduler scheduler, long
+		// initialDelay, long delay){");
+		// sn(sb, " _scheduler = scheduler;");
+		// sn(sb, " if( _scheduler == null ) return;");
+		// sn(sb, " _scheduler.schedule(initialDelay, delay);");
+		// sn(sb, " }");
 		// sn(sb, "");
 		sn(sb, "    public static BeanEvent _event;");
 		sn(sb, "    public static void setEvent(BeanEvent evt){");
 		sn(sb, "        _event = evt;");
 		sn(sb, "    }");
-		sn(sb,
-				"    public void doEvent(String key, Object oldValue, Object newValue){");
+		sn(sb, "    public void doEvent(String key, Object oldValue, Object newValue){");
 		sn(sb, "        if(_event == null) return;");
 		if (pkBType.contains("int") || pkBType.contains("long")) {
 			sn(sb, "        if(%s <= 0) return;", primaryKey);
 		} else if (pkBType.contains("String")) {
-			sn(sb, "        if(%s == null || %s.isEmpty()) return;",
-					primaryKey, primaryKey);
+			sn(sb, "        if(%s == null || %s.isEmpty()) return;", primaryKey, primaryKey);
 		}
 		sn(sb, "        _event.doEvent(this, key, oldValue, newValue);");
 		sn(sb, "    }");
@@ -162,9 +157,9 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "    public Map extension = new HashMap();");
 		sn(sb, "");
 
-		// sn(sb, "    public String _tableId() {");
-		// sn(sb, "        return TABLENAME;");
-		// sn(sb, "    }");
+		// sn(sb, " public String _tableId() {");
+		// sn(sb, " return TABLENAME;");
+		// sn(sb, " }");
 
 		// 被其他表关联的主键
 		for (Map m : eks) {
@@ -174,11 +169,9 @@ public class BeanBuilder extends ExToolkit {
 			String c = MapEx.get(m, "FKCOLUMN_NAME");
 			String cUn = PinYin.getShortPinYin(c);
 			String cUen = StrEx.upperFirst(cUn);
-			Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(
-					conn, t);
+			Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(conn, t);
 			if (isNonUnique(indexs, c)) {
-				sn(sb, "    // public %s linked%sFk%s = null; // %s", tUen,
-						tUen, cUen, t);
+				sn(sb, "    // public %s linked%sFk%s = null; // %s", tUen, tUen, cUen, t);
 			} else {
 			}
 		}
@@ -189,13 +182,10 @@ public class BeanBuilder extends ExToolkit {
 			String c = MapEx.get(m, "FKCOLUMN_NAME");
 			String cUn = PinYin.getShortPinYin(c);
 			String cUen = StrEx.upperFirst(cUn);
-			Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(
-					conn, t);
+			Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(conn, t);
 			if (isNonUnique(indexs, c)) {
 			} else {
-				sn(sb,
-						"    // public List<%s> linked%ssFK%s = new Vector<%s>(); // %s",
-						tUen, tUen, cUen, tUen, t);
+				sn(sb, "    // public List<%s> linked%ssFK%s = new Vector<%s>(); // %s", tUen, tUen, cUen, tUen, t);
 			}
 		}
 		sn(sb, "");
@@ -209,9 +199,9 @@ public class BeanBuilder extends ExToolkit {
 			String bType = JTypeOracle.getBasicType(javaType);
 
 			// if (column.equals(primaryKey)) {
-			// sn(sb, "    public Object _primaryKey() {");
-			// sn(sb, "        return %s;", column);
-			// sn(sb, "    }");
+			// sn(sb, " public Object _primaryKey() {");
+			// sn(sb, " return %s;", column);
+			// sn(sb, " }");
 			// sn(sb, "");
 			// }
 
@@ -219,8 +209,7 @@ public class BeanBuilder extends ExToolkit {
 			sn(sb, "        return %s;", column);
 			sn(sb, "    }");
 			sn(sb, "");
-			sn(sb, "    public %s set%s(%s %s){", tableUEn, columnU, bType,
-					columnEn);
+			sn(sb, "    public %s set%s(%s %s){", tableUEn, columnU, bType, columnEn);
 			if (!column.equals(primaryKey)) {
 				sn(sb, "        %s _old = %s;", bType, column);
 				sn(sb, "        this.%s = %s;", column, columnEn);
@@ -233,42 +222,28 @@ public class BeanBuilder extends ExToolkit {
 			sn(sb, "");
 
 			if (!column.equals(primaryKey)) {
-				if (bType.contains("short") || bType.contains("int")
-						|| bType.contains("long") || bType.contains("float")
-						|| bType.contains("double")) {
-					sn(sb, "    public %s change%s(%s %s){", tableUEn,
-							columnUEn, bType, columnEn);
-					sn(sb, "        return set%s(%s + %s);", columnUEn, column,
-							columnEn);
+				if (bType.contains("short") || bType.contains("int") || bType.contains("long") || bType.contains("float") || bType.contains("double")) {
+					sn(sb, "    public %s change%s(%s %s){", tableUEn, columnUEn, bType, columnEn);
+					sn(sb, "        return set%s(%s + %s);", columnUEn, column, columnEn);
 					sn(sb, "    }");
 					sn(sb, "");
 
-					sn(sb, "    public %s change%sWithMin(%s %s, %s _min){",
-							tableUEn, columnUEn, bType, columnEn, bType);
-					sn(sb, "        %s _v2 = this.%s + %s;", bType, column,
-							columnEn);
-					sn(sb, "        return set%s(_v2 < _min  ? _min : _v2);",
-							columnUEn);
+					sn(sb, "    public %s change%sWithMin(%s %s, %s _min){", tableUEn, columnUEn, bType, columnEn, bType);
+					sn(sb, "        %s _v2 = this.%s + %s;", bType, column, columnEn);
+					sn(sb, "        return set%s(_v2 < _min  ? _min : _v2);", columnUEn);
 					sn(sb, "    }");
 					sn(sb, "");
 
-					sn(sb, "    public %s change%sWithMax(%s %s, %s _max){",
-							tableUEn, columnUEn, bType, columnEn, bType);
-					sn(sb, "        %s _v2 = this.%s + %s;", bType, column,
-							columnEn);
-					sn(sb, "        return set%s(_v2 > _max  ? _max : _v2);",
-							columnUEn);
+					sn(sb, "    public %s change%sWithMax(%s %s, %s _max){", tableUEn, columnUEn, bType, columnEn, bType);
+					sn(sb, "        %s _v2 = this.%s + %s;", bType, column, columnEn);
+					sn(sb, "        return set%s(_v2 > _max  ? _max : _v2);", columnUEn);
 					sn(sb, "    }");
 					sn(sb, "");
 
-					sn(sb,
-							"    public %s change%sWithMinMax(%s %s, %s _min, %s _max){",
-							tableUEn, columnUEn, bType, columnEn, bType, bType);
-					sn(sb, "        %s _v2 = this.%s + %s;", bType, column,
-							columnEn);
+					sn(sb, "    public %s change%sWithMinMax(%s %s, %s _min, %s _max){", tableUEn, columnUEn, bType, columnEn, bType, bType);
+					sn(sb, "        %s _v2 = this.%s + %s;", bType, column, columnEn);
 					sn(sb, "        _v2 = _v2 > _max  ? _max : _v2;");
-					sn(sb, "        return set%s(_v2 < _min  ? _min : _v2);",
-							columnUEn);
+					sn(sb, "        return set%s(_v2 < _min  ? _min : _v2);", columnUEn);
 					sn(sb, "    }");
 					sn(sb, "");
 
@@ -282,28 +257,27 @@ public class BeanBuilder extends ExToolkit {
 			sn(sb, "        return %s;", column);
 			sn(sb, "    }");
 			sn(sb, "");
-			sn(sb, "    public %s set%s(%s %s){", tableUEn, columnUEn, bType,
-					columnEn);
+			sn(sb, "    public %s set%s(%s %s){", tableUEn, columnUEn, bType, columnEn);
 			sn(sb, "        return set%s(%s);", column, columnEn);
 			sn(sb, "    }");
 			sn(sb, "");
 
-			// sn(sb, "    public Map put%s(Map map){", columnUEn);
-			// sn(sb, "        return put%s(map, \"%s\");", columnUEn,
+			// sn(sb, " public Map put%s(Map map){", columnUEn);
+			// sn(sb, " return put%s(map, \"%s\");", columnUEn,
 			// columnEn);
-			// sn(sb, "    }");
+			// sn(sb, " }");
 			// sn(sb, "");
 			//
-			// sn(sb, "    public Map put%s(Map map, String key){", columnUEn);
-			// sn(sb, "        map.put(key, %s);", column);
-			// sn(sb, "        return map;");
-			// sn(sb, "    }");
+			// sn(sb, " public Map put%s(Map map, String key){", columnUEn);
+			// sn(sb, " map.put(key, %s);", column);
+			// sn(sb, " return map;");
+			// sn(sb, " }");
 			// sn(sb, "");
 			//
-			// sn(sb, "    public Map put%s(Map map, int key){", columnUEn);
-			// sn(sb, "        map.put(key, %s);", column);
-			// sn(sb, "        return map;");
-			// sn(sb, "    }");
+			// sn(sb, " public Map put%s(Map map, int key){", columnUEn);
+			// sn(sb, " map.put(key, %s);", column);
+			// sn(sb, " return map;");
+			// sn(sb, " }");
 			// sn(sb, "");
 
 		}
@@ -322,8 +296,7 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb, "    public static %s new%s(%s %s) {", tableUEn, tableUEn,
-				tableUEn, tableEn);
+		sn(sb, "    public static %s new%s(%s %s) {", tableUEn, tableUEn, tableUEn, tableEn);
 		sn(sb, "        %s result = new %s();", tableUEn, tableUEn);
 		for (Map<String, Object> m : columns) {
 			String column = MapEx.get(m, "columnName");
@@ -337,8 +310,7 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb, "    public %s createFor(ResultSet rs) throws SQLException {",
-				tableUEn);
+		sn(sb, "    public %s createFor(ResultSet rs) throws SQLException {", tableUEn);
 		sn(sb, "        Map e = SqlEx.toMap(rs);");
 		sn(sb, "        return originalTo(e);");
 		sn(sb, "    }");
@@ -356,38 +328,23 @@ public class BeanBuilder extends ExToolkit {
 			String javaType = JTypeOracle.getType(rsmd, column);
 			String basicType = JTypeOracle.getBasicType(javaType);
 			if (basicType.contains("Date"))
-				sn(sb, "            Date %s = new Date(); \t// %s", columnEn,
-						column);
+				sn(sb, "            Date %s = new Date(); \t// %s", columnEn, column);
 			else if (basicType.contains("String"))
-				sn(sb, "            %s %s = \"\"; \t// %s", basicType,
-						columnEn, column);
-			else if (basicType.contains("boolean")
-					|| basicType.contains("Boolean"))
-				sn(sb, "            %s %s = true; \t// %s", basicType,
-						columnEn, column);
-			else if (basicType.contains("short") || basicType.contains("Short")
-					|| basicType.contains("int") || basicType.contains("int")
-					|| basicType.contains("long") || basicType.contains("long"))
-				sn(sb, "            %s %s = 0; \t// %s", basicType, columnEn,
-						column);
-			else if (basicType.contains("float") || basicType.contains("Float")
-					|| basicType.contains("double")
-					|| basicType.contains("Double"))
-				sn(sb, "            %s %s = 0.0; \t// %s", basicType, columnEn,
-						column);
+				sn(sb, "            %s %s = \"\"; \t// %s", basicType, columnEn, column);
+			else if (basicType.contains("boolean") || basicType.contains("Boolean"))
+				sn(sb, "            %s %s = true; \t// %s", basicType, columnEn, column);
+			else if (basicType.contains("short") || basicType.contains("Short") || basicType.contains("int") || basicType.contains("int") || basicType.contains("long") || basicType.contains("long"))
+				sn(sb, "            %s %s = 0; \t// %s", basicType, columnEn, column);
+			else if (basicType.contains("float") || basicType.contains("Float") || basicType.contains("double") || basicType.contains("Double"))
+				sn(sb, "            %s %s = 0.0; \t// %s", basicType, columnEn, column);
 			else if (basicType.contains("byte[]"))
-				sn(sb, "            %s %s = new byte[0]; \t// %s", basicType,
-						columnEn, column);
+				sn(sb, "            %s %s = new byte[0]; \t// %s", basicType, columnEn, column);
 			else if (basicType.contains("BigDecimal"))
-				sn(sb,
-						"            java.math.BigDecimal %s = new java.math.BigDecimal(0); \t// %s",
-						columnEn, column);
+				sn(sb, "            java.math.BigDecimal %s = new java.math.BigDecimal(0); \t// %s", columnEn, column);
 			else
-				sn(sb, "            %s %s = ; \t// %s", basicType, columnEn,
-						column);
+				sn(sb, "            %s %s = ; \t// %s", basicType, columnEn, column);
 		}
-		sn(sb, "            %s = %s.new%s(%s);", tableEn, tableUEn, tableUEn,
-				columns10);
+		sn(sb, "            %s = %s.new%s(%s);", tableEn, tableUEn, tableUEn, columns10);
 		sn(sb, "        }");
 		sn(sb, "        %s = %s.insert();", tableEn, tableEn);
 		sn(sb, "");
@@ -399,11 +356,9 @@ public class BeanBuilder extends ExToolkit {
 			String javaType = JTypeOracle.getType(rsmd, column);
 			String bType = JTypeOracle.getBasicType(javaType);
 			if (bType.contains("Date"))
-				sn(sb, "        Date %s = %s.get%s(); \t// %s", columnEn,
-						tableEn, columnUEn, column);
+				sn(sb, "        Date %s = %s.get%s(); \t// %s", columnEn, tableEn, columnUEn, column);
 			else
-				sn(sb, "        %s %s = %s.get%s(); \t// %s", bType, columnEn,
-						tableEn, columnUEn, column);
+				sn(sb, "        %s %s = %s.get%s(); \t// %s", bType, columnEn, tableEn, columnUEn, column);
 		}
 		sn(sb, "    }");
 		sn(sb, "    */");
@@ -413,22 +368,20 @@ public class BeanBuilder extends ExToolkit {
 		 * sn(sb, "    public List toList(){"); sn(sb,
 		 * "        List result = new Vector();"); sn(sb,
 		 * "        result.add(TABLENAME);"); sn(sb,
-		 * "        result.add(\"%s.bean.\");", pkg, tableUEn); for (Map<String,
-		 * Object> m : columns) { String column = MapEx.get(m, "columnName"); //
-		 * String columnU = StrEx.upperFirst(column); // String columnEn =
+		 * "        result.add(\"%s.bean.\");", pkg, tableUEn); for (Map<String, Object>
+		 * m : columns) { String column = MapEx.get(m, "columnName"); // String columnU
+		 * = StrEx.upperFirst(column); // String columnEn =
 		 * PinYin.getShortPinYin(column); // String columnUEn =
-		 * StrEx.upperFirst(columnEn); // String javaType =
-		 * JavaType.getType(rsmd, column); sn(sb, "        result.add(%s);",
-		 * column); } sn(sb, "        return result;"); sn(sb, "    }"); sn(sb,
-		 * "");
+		 * StrEx.upperFirst(columnEn); // String javaType = JavaType.getType(rsmd,
+		 * column); sn(sb, "        result.add(%s);", column); } sn(sb,
+		 * "        return result;"); sn(sb, "    }"); sn(sb, "");
 		 * 
 		 * sn(sb, "    public static %s listTo(List list){", tableUEn); sn(sb,
-		 * "        %s result = new %s();", tableUEn, tableUEn, tableEn); int x
-		 * = 0; for (Map<String, Object> m : columns) { String column =
-		 * MapEx.get(m, "columnName"); String javaType = JavaType.getType(rsmd,
-		 * column); sn(sb, "        result.%s = (%s)list.get(%d);", column,
-		 * javaType, x++); } x = 0; sn(sb, "        return result;"); sn(sb,
-		 * "    }"); sn(sb, "");
+		 * "        %s result = new %s();", tableUEn, tableUEn, tableEn); int x = 0; for
+		 * (Map<String, Object> m : columns) { String column = MapEx.get(m,
+		 * "columnName"); String javaType = JavaType.getType(rsmd, column); sn(sb,
+		 * "        result.%s = (%s)list.get(%d);", column, javaType, x++); } x = 0;
+		 * sn(sb, "        return result;"); sn(sb, "    }"); sn(sb, "");
 		 */
 		sn(sb, "    public int valueZhInt(String fieldZh){");
 		sn(sb, "        String fieldEn = PinYin.getShortPinYin(fieldZh);");
@@ -480,15 +433,13 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb, "    public %s changeZhInt(String fieldZh, int value2) {",
-				tableUEn);
+		sn(sb, "    public %s changeZhInt(String fieldZh, int value2) {", tableUEn);
 		sn(sb, "        String fieldEn = PinYin.getShortPinYin(fieldZh);");
 		sn(sb, "        return changeInt(fieldEn, value2);");
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb, "    public %s changeInt(String fieldEn, int value2) {",
-				tableUEn);
+		sn(sb, "    public %s changeInt(String fieldEn, int value2) {", tableUEn);
 		sn(sb, "        switch(fieldEn){");
 		for (Map<String, Object> m : columns) {
 			String column = MapEx.get(m, "columnName");
@@ -510,17 +461,13 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb,
-				"    public %s changeZhIntWithMin(String fieldZh, int value2, int _min) {",
-				tableUEn);
+		sn(sb, "    public %s changeZhIntWithMin(String fieldZh, int value2, int _min) {", tableUEn);
 		sn(sb, "        String fieldEn = PinYin.getShortPinYin(fieldZh);");
 		sn(sb, "        return changeIntWithMin(fieldEn, value2, _min);");
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb,
-				"    public %s changeIntWithMin(String fieldEn, int value2, int _min) {",
-				tableUEn);
+		sn(sb, "    public %s changeIntWithMin(String fieldEn, int value2, int _min) {", tableUEn);
 		sn(sb, "        switch(fieldEn){");
 		for (Map<String, Object> m : columns) {
 			String column = MapEx.get(m, "columnName");
@@ -534,8 +481,7 @@ public class BeanBuilder extends ExToolkit {
 
 			if (basicType.indexOf("int") > -1) {
 				sn(sb, "        case \"%s\":", columnEn);
-				sn(sb, "            return change%sWithMin(value2, _min);",
-						columnUEn);
+				sn(sb, "            return change%sWithMin(value2, _min);", columnUEn);
 			}
 		}
 		sn(sb, "        }");
@@ -558,23 +504,20 @@ public class BeanBuilder extends ExToolkit {
 			String javaType = JTypeOracle.getType(rsmd, column);
 			String basicType = JTypeOracle.getBasicType(javaType);
 			if (basicType.indexOf("double") > -1) {
-				sn(sb, "        if(\"%s\".equals(fieldEn)) return %s;",
-						columnEn, column);
+				sn(sb, "        if(\"%s\".equals(fieldEn)) return %s;", columnEn, column);
 			}
 		}
 		sn(sb, "        return 0;");
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb, "    public %s setZhDouble(String fieldZh, double value2) {",
-				tableUEn);
+		sn(sb, "    public %s setZhDouble(String fieldZh, double value2) {", tableUEn);
 		sn(sb, "        String fieldEn = PinYin.getShortPinYin(fieldZh);");
 		sn(sb, "        return setDouble(fieldEn, value2);");
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb, "    public %s setDouble(String fieldEn, double value2) {",
-				tableUEn);
+		sn(sb, "    public %s setDouble(String fieldEn, double value2) {", tableUEn);
 		sn(sb, "        switch(fieldEn) {");
 		for (Map<String, Object> m : columns) {
 			String column = MapEx.get(m, "columnName");
@@ -651,15 +594,13 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb, "    public %s setZhStr(String fieldZh, String value2) {",
-				tableUEn);
+		sn(sb, "    public %s setZhStr(String fieldZh, String value2) {", tableUEn);
 		sn(sb, "        String fieldEn = PinYin.getShortPinYin(fieldZh);");
 		sn(sb, "        return setStr(fieldEn, value2);");
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb, "    public %s setStr(String fieldEn, String value2) {",
-				tableUEn);
+		sn(sb, "    public %s setStr(String fieldEn, String value2) {", tableUEn);
 		sn(sb, "        switch(fieldEn) {");
 		for (Map<String, Object> m : columns) {
 			String column = MapEx.get(m, "columnName");
@@ -674,23 +615,18 @@ public class BeanBuilder extends ExToolkit {
 			}
 		}
 		sn(sb, "        }");
-		sn(sb,
-				"        // throw new IOException(\"fieldEn:\" + fieldEn + \" Not Found.\");");
+		sn(sb, "        // throw new IOException(\"fieldEn:\" + fieldEn + \" Not Found.\");");
 		sn(sb, "        return this;");
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb,
-				"    public %s setZhBigDecimal(String fieldZh, java.math.BigDecimal value2) {",
-				tableUEn);
+		sn(sb, "    public %s setZhBigDecimal(String fieldZh, java.math.BigDecimal value2) {", tableUEn);
 		sn(sb, "        String fieldEn = PinYin.getShortPinYin(fieldZh);");
 		sn(sb, "        return setBigDecimal(fieldEn, value2);");
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb,
-				"    public %s setBigDecimal(String fieldEn, java.math.BigDecimal value2) {",
-				tableUEn);
+		sn(sb, "    public %s setBigDecimal(String fieldEn, java.math.BigDecimal value2) {", tableUEn);
 		sn(sb, "        switch(fieldEn) {");
 		for (Map<String, Object> m : columns) {
 			String column = MapEx.get(m, "columnName");
@@ -705,23 +641,18 @@ public class BeanBuilder extends ExToolkit {
 			}
 		}
 		sn(sb, "        }");
-		sn(sb,
-				"        // throw new IOException(\"fieldEn:\" + fieldEn + \" Not Found.\");");
+		sn(sb, "        // throw new IOException(\"fieldEn:\" + fieldEn + \" Not Found.\");");
 		sn(sb, "        return this;");
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb,
-				"    public %s setZhTimestamp(String fieldZh, java.sql.Timestamp value2) {",
-				tableUEn);
+		sn(sb, "    public %s setZhTimestamp(String fieldZh, java.sql.Timestamp value2) {", tableUEn);
 		sn(sb, "        String fieldEn = PinYin.getShortPinYin(fieldZh);");
 		sn(sb, "        return setTimestamp(fieldEn, value2);");
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb,
-				"    public %s setTimestamp(String fieldEn, java.sql.Timestamp value2) {",
-				tableUEn);
+		sn(sb, "    public %s setTimestamp(String fieldEn, java.sql.Timestamp value2) {", tableUEn);
 		sn(sb, "        switch(fieldEn) {");
 		for (Map<String, Object> m : columns) {
 			String column = MapEx.get(m, "columnName");
@@ -736,8 +667,7 @@ public class BeanBuilder extends ExToolkit {
 			}
 		}
 		sn(sb, "        }");
-		sn(sb,
-				"        // throw new IOException(\"fieldEn:\" + fieldEn + \" Not Found.\");");
+		sn(sb, "        // throw new IOException(\"fieldEn:\" + fieldEn + \" Not Found.\");");
 		sn(sb, "        return this;");
 		sn(sb, "    }");
 		sn(sb, "");
@@ -750,8 +680,7 @@ public class BeanBuilder extends ExToolkit {
 
 		sn(sb, "    public %s setJson(String fieldEn, Object o2) {", tableUEn);
 		sn(sb, "        try {");
-		sn(sb,
-				"            String value2 = com.bowlong.json.JSON.toJSONString(o2);");
+		sn(sb, "            String value2 = com.bowlong.json.JSON.toJSONString(o2);");
 		sn(sb, "            return setStr(fieldEn, value2);");
 		sn(sb, "        } catch (Exception e) {");
 		sn(sb, "            e.printStackTrace();");
@@ -763,8 +692,7 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "    public Map toMap(){");
 		sn(sb, "        Map result = new HashMap();");
 		sn(sb, "        result.put(\"_TABLENAME\", TABLENAME);");
-		sn(sb, "        result.put(\"_CLASSNAME\", \"%s.bean.%s\");", pkg,
-				tableUEn);
+		sn(sb, "        result.put(\"_CLASSNAME\", \"%s.bean.%s\");", pkg, tableUEn);
 		for (Map<String, Object> m : columns) {
 			String column = MapEx.get(m, "columnName");
 			// String columnU = StrEx.upperFirst(column);
@@ -794,8 +722,7 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "    public Map toOriginalMap(){");
 		sn(sb, "        Map result = new HashMap();");
 		sn(sb, "        result.put(\"_TABLENAME\", TABLENAME);");
-		sn(sb, "        result.put(\"_CLASSNAME\", \"%s.bean.%s\");", pkg,
-				tableUEn);
+		sn(sb, "        result.put(\"_CLASSNAME\", \"%s.bean.%s\");", pkg, tableUEn);
 		for (Map<String, Object> m : columns) {
 			String column = MapEx.get(m, "columnName");
 			// String columnU = StrEx.upperFirst(column);
@@ -811,14 +738,13 @@ public class BeanBuilder extends ExToolkit {
 		/*
 		 * sn(sb, "    public Map toMapCN(){"); sn(sb,
 		 * "        Map result = new HashMap();"); sn(sb,
-		 * "        result.put(\"_TABLENAME\", TABLENAME);"); for (Map<String,
-		 * Object> m : columns) { String column = MapEx.get(m, "columnName"); //
-		 * String columnU = StrEx.upperFirst(column); // String columnEn =
-		 * PinYin.getShortPinYin(column); // String columnUEn =
-		 * StrEx.upperFirst(columnEn); // String javaType =
-		 * JavaType.getType(rsmd, column); sn(sb,
-		 * "        result.put(\"%s\", %s);", column, column); } sn(sb,
-		 * "        return result;"); sn(sb, "    }"); sn(sb, "");
+		 * "        result.put(\"_TABLENAME\", TABLENAME);"); for (Map<String, Object> m
+		 * : columns) { String column = MapEx.get(m, "columnName"); // String columnU =
+		 * StrEx.upperFirst(column); // String columnEn = PinYin.getShortPinYin(column);
+		 * // String columnUEn = StrEx.upperFirst(columnEn); // String javaType =
+		 * JavaType.getType(rsmd, column); sn(sb, "        result.put(\"%s\", %s);",
+		 * column, column); } sn(sb, "        return result;"); sn(sb, "    }"); sn(sb,
+		 * "");
 		 */
 
 		sn(sb, "    public %s mapToObject(Map e){", tableUEn);
@@ -829,8 +755,7 @@ public class BeanBuilder extends ExToolkit {
 			// String columnUEn = StrEx.upperFirst(columnEn);
 			String javaType = JTypeOracle.getType(rsmd, column);
 			JTypeOracle.getBasicType(javaType);
-			sn(sb, "        %s %s = (%s)e.get(\"%s\");", javaType, column,
-					javaType, columnEn);
+			sn(sb, "        %s %s = (%s)e.get(\"%s\");", javaType, column, javaType, columnEn);
 		}
 		sn(sb, "");
 		for (Map<String, Object> m : columns) {
@@ -839,8 +764,7 @@ public class BeanBuilder extends ExToolkit {
 			// String columnUEn = StrEx.upperFirst(columnEn);
 			String javaType = JTypeOracle.getType(rsmd, column);
 			JTypeOracle.getBasicType(javaType);
-			sn(sb, "        if(%s == null) %s = %s;", column, column,
-					SqlEx.getDefaultValue(javaType));
+			sn(sb, "        if(%s == null) %s = %s;", column, column, SqlEx.getDefaultValue(javaType));
 		}
 		sn(sb, "");
 		for (Map<String, Object> m : columns) {
@@ -866,8 +790,7 @@ public class BeanBuilder extends ExToolkit {
 			// String columnUEn = StrEx.upperFirst(columnEn);
 			String javaType = JTypeOracle.getType(rsmd, column);
 			JTypeOracle.getBasicType(javaType);
-			sn(sb, "        %s %s = (%s)e.get(\"%s\");", javaType, column,
-					javaType, columnEn);
+			sn(sb, "        %s %s = (%s)e.get(\"%s\");", javaType, column, javaType, columnEn);
 		}
 		sn(sb, "");
 		for (Map<String, Object> m : columns) {
@@ -876,8 +799,7 @@ public class BeanBuilder extends ExToolkit {
 			// String columnUEn = StrEx.upperFirst(columnEn);
 			String javaType = JTypeOracle.getType(rsmd, column);
 			JTypeOracle.getBasicType(javaType);
-			sn(sb, "        if(%s == null) %s = %s;", column, column,
-					SqlEx.getDefaultValue(javaType));
+			sn(sb, "        if(%s == null) %s = %s;", column, column, SqlEx.getDefaultValue(javaType));
 		}
 		sn(sb, "");
 		for (Map<String, Object> m : columns) {
@@ -893,8 +815,7 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "    }");
 		sn(sb, "");
 
-		sn(sb, "    public static final %s originalTo(Map e){", tableUEn,
-				tableUEn);
+		sn(sb, "    public static final %s originalTo(Map e){", tableUEn, tableUEn);
 		sn(sb, "        %s result = new %s();", tableUEn, tableUEn);
 		sn(sb, "");
 		for (Map<String, Object> m : columns) {
@@ -904,8 +825,7 @@ public class BeanBuilder extends ExToolkit {
 			// String columnUEn = StrEx.upperFirst(columnEn);
 			String javaType = JTypeOracle.getType(rsmd, column);
 			// JavaType.getBasicType(javaType);
-			sn(sb, "        %s %s = (%s)e.get(\"%s\");", javaType, column,
-					javaType, column);
+			sn(sb, "        %s %s = (%s)e.get(\"%s\");", javaType, column, javaType, column);
 		}
 		sn(sb, "");
 		for (Map<String, Object> m : columns) {
@@ -914,8 +834,7 @@ public class BeanBuilder extends ExToolkit {
 			// String columnUEn = StrEx.upperFirst(columnEn);
 			String javaType = JTypeOracle.getType(rsmd, column);
 			JTypeOracle.getBasicType(javaType);
-			sn(sb, "        if(%s == null) %s = %s;", column, column,
-					SqlEx.getDefaultValue(javaType));
+			sn(sb, "        if(%s == null) %s = %s;", column, column, SqlEx.getDefaultValue(javaType));
 		}
 		sn(sb, "");
 		for (Map<String, Object> m : columns) {
@@ -944,16 +863,13 @@ public class BeanBuilder extends ExToolkit {
 			String c = MapEx.get(m, "FKCOLUMN_NAME");
 			String cUn = PinYin.getShortPinYin(c);
 			String cUen = StrEx.upperFirst(cUn);
-			sn(sb, "    public final %s get%sFk%s() { // %s - %s", Ss(tUen),
-					Ss(tUen), cUen, t, c);
+			sn(sb, "    public final %s get%sFk%s() { // %s - %s", Ss(tUen), Ss(tUen), cUen, t, c);
 			sn(sb, "        return %sEntity.getByKey(%s);", Ss(tUen), c);
 			sn(sb, "    }");
 			sn(sb, "");
 
-			sn(sb, "    public final int count%sFk%s() { // %s - %s", Ss(tUen),
-					Ss(cUen), t, c);
-			sn(sb, "        return get%sFk%s() == null ? 0 : 1;", Ss(tUen),
-					cUen);
+			sn(sb, "    public final int count%sFk%s() { // %s - %s", Ss(tUen), Ss(cUen), t, c);
+			sn(sb, "        return get%sFk%s() == null ? 0 : 1;", Ss(tUen), cUen);
 			sn(sb, "    }");
 			sn(sb, "");
 
@@ -968,45 +884,34 @@ public class BeanBuilder extends ExToolkit {
 			String cUn = PinYin.getShortPinYin(c);
 			String cUen = StrEx.upperFirst(cUn);
 			String p = MapEx.get(m, "PKCOLUMN_NAME");
-			Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(
-					conn, t);
+			Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(conn, t);
 
 			if (isNonUnique(indexs, c)) {
-				sn(sb, "    public final %s get%sFk%s() { // %s - %s",
-						Ss(tUen), Ss(tUen), cUen, t, c);
-				sn(sb, "        return %sEntity.getBy%s(%s);", Ss(tUen), cUen,
-						p);
+				sn(sb, "    public final %s get%sFk%s() { // %s - %s", Ss(tUen), Ss(tUen), cUen, t, c);
+				sn(sb, "        return %sEntity.getBy%s(%s);", Ss(tUen), cUen, p);
 				sn(sb, "    }");
 				sn(sb, "");
 
-				sn(sb, "    public final int count%sFk%s() { // %s - %s ",
-						Ss(tUen), Ss(cUen), t, c);
-				sn(sb, "        return get%sFk%s() == null ? 0 : 1;", Ss(tUen),
-						cUen);
+				sn(sb, "    public final int count%sFk%s() { // %s - %s ", Ss(tUen), Ss(cUen), t, c);
+				sn(sb, "        return get%sFk%s() == null ? 0 : 1;", Ss(tUen), cUen);
 				sn(sb, "    }");
 				sn(sb, "");
 
 			} else {
-				sn(sb, "    public final List<%s> get%ssFk%s() { // %s - %s",
-						Ss(tUen), Ss(tUen), cUen, t, c);
-				sn(sb, "        return %sEntity.getBy%s(%s);", Ss(tUen), cUen,
-						p);
+				sn(sb, "    public final List<%s> get%ssFk%s() { // %s - %s", Ss(tUen), Ss(tUen), cUen, t, c);
+				sn(sb, "        return %sEntity.getBy%s(%s);", Ss(tUen), cUen, p);
 				sn(sb, "    }");
 				sn(sb, "");
 
-				sn(sb, "    public final int count%ssFk%s() { // %s - %s",
-						Ss(tUen), Ss(cUen), t, c);
-				sn(sb, "        return %sEntity.countBy%s(%s);", Ss(tUen),
-						cUen, p);
+				sn(sb, "    public final int count%ssFk%s() { // %s - %s", Ss(tUen), Ss(cUen), t, c);
+				sn(sb, "        return %sEntity.countBy%s(%s);", Ss(tUen), cUen, p);
 				sn(sb, "    }");
 				sn(sb, "");
 
 			}
 		}
-		sn(sb, "    public static final %s loadByKey(%s %s) {", Ss(tableUEn),
-				pkBType, primaryKey);
-		sn(sb, "        return %sEntity.getByKey(%s);", Ss(tableUEn),
-				primaryKey);
+		sn(sb, "    public static final %s loadByKey(%s %s) {", Ss(tableUEn), pkBType, primaryKey);
+		sn(sb, "        return %sEntity.getByKey(%s);", Ss(tableUEn), primaryKey);
 		sn(sb, "    }");
 		sn(sb, "");
 
@@ -1018,9 +923,9 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "    }");
 		sn(sb, "");
 
-		// sn(sb, "    public final %s insert2() {", tableUEn);
-		// sn(sb, "        return %sEntity.insert2(this);", tableUEn);
-		// sn(sb, "    }");
+		// sn(sb, " public final %s insert2() {", tableUEn);
+		// sn(sb, " return %sEntity.insert2(this);", tableUEn);
+		// sn(sb, " }");
 		// sn(sb, "");
 
 		sn(sb, "    public final %s update() {", tableUEn);
@@ -1028,16 +933,16 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "    }");
 		sn(sb, "");
 
-		// sn(sb, "    public boolean asyncUpdate() {");
-		// sn(sb, "        if( _scheduler == null ) return false;");
-		// sn(sb, "        if(%s <= 0) return false;", primaryKey);
-		// sn(sb, "        return _scheduler.putTo( this );");
-		// sn(sb, "    }");
+		// sn(sb, " public boolean asyncUpdate() {");
+		// sn(sb, " if( _scheduler == null ) return false;");
+		// sn(sb, " if(%s <= 0) return false;", primaryKey);
+		// sn(sb, " return _scheduler.putTo( this );");
+		// sn(sb, " }");
 		// sn(sb, "");
 
-		// sn(sb, "    public final %s update2() {", tableUEn);
-		// sn(sb, "        return %sEntity.update2(this);", tableUEn);
-		// sn(sb, "    }");
+		// sn(sb, " public final %s update2() {", tableUEn);
+		// sn(sb, " return %sEntity.update2(this);", tableUEn);
+		// sn(sb, " }");
 		// sn(sb, "");
 
 		sn(sb, "    public final %s insertOrUpdate() {", tableUEn);
@@ -1056,9 +961,9 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "    }");
 		sn(sb, "");
 
-		// sn(sb, "    public final int delete2() {", tableUEn);
-		// sn(sb, "        return %sEntity.delete2(%s);", tableUEn, primaryKey);
-		// sn(sb, "    }");
+		// sn(sb, " public final int delete2() {", tableUEn);
+		// sn(sb, " return %sEntity.delete2(%s);", tableUEn, primaryKey);
+		// sn(sb, " }");
 		// sn(sb, "");
 
 		sn(sb, "    public Object clone() throws CloneNotSupportedException {");
@@ -1081,9 +986,8 @@ public class BeanBuilder extends ExToolkit {
 		return sb.toString();
 	}
 
-	@SuppressWarnings({ "rawtypes"})
-	public static String primaryKey(Connection conn, String table,
-			List<Map<String, Object>> columns) throws Exception {
+	@SuppressWarnings({ "rawtypes" })
+	public static String primaryKey(Connection conn, String table, List<Map<String, Object>> columns) throws Exception {
 		String pk;
 		List<Map> idxs = SqlEx.getIndexInfo(conn, table, true);
 		Map<String, Integer> midx = newMap();
@@ -1115,8 +1019,7 @@ public class BeanBuilder extends ExToolkit {
 		// return "";
 	}
 
-	public static String javaTypes(ResultSetMetaData rsmd,
-			List<Map<String, Object>> columns) throws Exception {
+	public static String javaTypes(ResultSetMetaData rsmd, List<Map<String, Object>> columns) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = columns.size();
 		int p = 0;
@@ -1133,11 +1036,9 @@ public class BeanBuilder extends ExToolkit {
 		return sb.toString();
 	}
 
-	public static String dbIndexs(Connection conn, String table)
-			throws Exception {
+	public static String dbIndexs(Connection conn, String table) throws Exception {
 		StringBuffer sb = new StringBuffer();
-		Map<String, List<Map<String, Object>>> idxs = SqlEx.getIndexs(conn,
-				table);
+		Map<String, List<Map<String, Object>>> idxs = SqlEx.getIndexs(conn, table);
 		Iterator<String> it = idxs.keySet().iterator();
 		int count = idxs.size();
 		int p = 0;
@@ -1146,7 +1047,7 @@ public class BeanBuilder extends ExToolkit {
 			String key = it.next();
 			List<Map<String, Object>> l = idxs.get(key);
 			// if(p > 1){
-			// s(sb, "                                         ");
+			// s(sb, " ");
 			// }
 			// s(sb, "{");
 			int i = 0;
@@ -1155,8 +1056,7 @@ public class BeanBuilder extends ExToolkit {
 				String COLUMN_NAME = (String) map.get("COLUMN_NAME");
 				String NON_UNIQUE = String.valueOf(map.get("NON_UNIQUE"));
 
-				s(sb, "{\"" + COLUMN_NAME + "\", \"%s\"}",
-						NON_UNIQUE.equals("true") ? "NON_UNIQUE" : "UNIQUE");
+				s(sb, "{\"" + COLUMN_NAME + "\", \"%s\"}", NON_UNIQUE.equals("true") ? "NON_UNIQUE" : "UNIQUE");
 				if (i < l.size()) {
 					s(sb, ", ");
 				}
@@ -1168,8 +1068,7 @@ public class BeanBuilder extends ExToolkit {
 		return sb.toString();
 	}
 
-	public static String dataTypes(ResultSetMetaData rsmd,
-			List<Map<String, Object>> columns) throws Exception {
+	public static String dataTypes(ResultSetMetaData rsmd, List<Map<String, Object>> columns) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = columns.size();
 		int p = 0;
@@ -1199,8 +1098,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// "id","城市id","名字"
-	public static String columns1(ResultSetMetaData rsmd,
-			List<Map<String, Object>> columns) throws Exception {
+	public static String columns1(ResultSetMetaData rsmd, List<Map<String, Object>> columns) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = columns.size();
 		int p = 0;
@@ -1220,8 +1118,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// Integer id, Integer csid,
-	public static String columns2(ResultSetMetaData rsmd,
-			List<Map<String, Object>> columns) throws Exception {
+	public static String columns2(ResultSetMetaData rsmd, List<Map<String, Object>> columns) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = columns.size();
 		int p = 0;
@@ -1241,8 +1138,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// id, csid,
-	public static String columns3(ResultSetMetaData rsmd,
-			List<Map<String, Object>> columns) throws Exception {
+	public static String columns3(ResultSetMetaData rsmd, List<Map<String, Object>> columns) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = columns.size();
 		int p = 0;
@@ -1262,8 +1158,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// csid, ....
-	public static String columns4(ResultSetMetaData rsmd,
-			List<Map<String, Object>> columns) throws Exception {
+	public static String columns4(ResultSetMetaData rsmd, List<Map<String, Object>> columns) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = columns.size();
 		int p = 0;
@@ -1285,8 +1180,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// :csid, ....
-	public static String columns5(ResultSetMetaData rsmd,
-			List<Map<String, Object>> columns) throws Exception {
+	public static String columns5(ResultSetMetaData rsmd, List<Map<String, Object>> columns) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = columns.size();
 		int p = 0;
@@ -1307,8 +1201,7 @@ public class BeanBuilder extends ExToolkit {
 		return sb.toString();
 	}
 
-	public static String columnsForInsert(ResultSetMetaData rsmd,
-			List<Map<String, Object>> columns) throws Exception {
+	public static String columnsForInsert(ResultSetMetaData rsmd, List<Map<String, Object>> columns) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = columns.size();
 		int p = 0;
@@ -1335,8 +1228,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// :id, :csid, ....
-	public static String columns6(ResultSetMetaData rsmd,
-			List<Map<String, Object>> columns) throws Exception {
+	public static String columns6(ResultSetMetaData rsmd, List<Map<String, Object>> columns) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = columns.size();
 		int p = 0;
@@ -1358,8 +1250,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// ?, ....
-	public static String columns7(ResultSetMetaData rsmd,
-			List<Map<String, Object>> columns) throws Exception {
+	public static String columns7(ResultSetMetaData rsmd, List<Map<String, Object>> columns) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = columns.size();
 		int p = 0;
@@ -1381,8 +1272,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// csid = :csid, ....
-	public static String columns8(ResultSetMetaData rsmd,
-			List<Map<String, Object>> columns) throws Exception {
+	public static String columns8(ResultSetMetaData rsmd, List<Map<String, Object>> columns) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = columns.size();
 		int p = 0;
@@ -1404,8 +1294,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// csid = ?, ....
-	public static String columns9(ResultSetMetaData rsmd,
-			List<Map<String, Object>> columns) throws Exception {
+	public static String columns9(ResultSetMetaData rsmd, List<Map<String, Object>> columns) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = columns.size();
 		int p = 0;
@@ -1427,8 +1316,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// id, csid,
-	public static String columns10(ResultSetMetaData rsmd,
-			List<Map<String, Object>> columns) throws Exception {
+	public static String columns10(ResultSetMetaData rsmd, List<Map<String, Object>> columns) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = columns.size();
 		int p = 0;
@@ -1447,8 +1335,7 @@ public class BeanBuilder extends ExToolkit {
 		return sb.toString();
 	}
 
-	public static String indexCoulmns(List<Map<String, Object>> columns,
-			Map<String, List<Map<String, Object>>> indexs) throws Exception {
+	public static String indexCoulmns(List<Map<String, Object>> columns, Map<String, List<Map<String, Object>>> indexs) throws Exception {
 		StringBuffer result = new StringBuffer();
 		Map<String, String> m = newMap();
 
@@ -1482,8 +1369,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// XYCsid..
-	public static String index1(ResultSetMetaData rsmd,
-			List<Map<String, Object>> index) throws Exception {
+	public static String index1(ResultSetMetaData rsmd, List<Map<String, Object>> index) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		// int size = index.size();
 		int p = 0;
@@ -1504,8 +1390,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// Integer x, Integer y, ...
-	public static String index2(ResultSetMetaData rsmd,
-			List<Map<String, Object>> index) throws Exception {
+	public static String index2(ResultSetMetaData rsmd, List<Map<String, Object>> index) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = index.size();
 		int p = 0;
@@ -1526,8 +1411,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// x, y, ...
-	public static String index3(ResultSetMetaData rsmd,
-			List<Map<String, Object>> index) throws Exception {
+	public static String index3(ResultSetMetaData rsmd, List<Map<String, Object>> index) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = index.size();
 		int p = 0;
@@ -1548,8 +1432,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// x=:x AND y=:y, ...
-	public static String index4(ResultSetMetaData rsmd,
-			List<Map<String, Object>> index) throws Exception {
+	public static String index4(ResultSetMetaData rsmd, List<Map<String, Object>> index) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = index.size();
 		int p = 0;
@@ -1569,8 +1452,7 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	// x-y-...
-	public static String index5(ResultSetMetaData rsmd,
-			List<Map<String, Object>> index) throws Exception {
+	public static String index5(ResultSetMetaData rsmd, List<Map<String, Object>> index) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		int size = index.size();
 		int p = 0;
@@ -1589,8 +1471,7 @@ public class BeanBuilder extends ExToolkit {
 		return sb.toString();
 	}
 
-	public static boolean isNonUnique(
-			Map<String, List<Map<String, Object>>> indexs, String columnName) {
+	public static boolean isNonUnique(Map<String, List<Map<String, Object>>> indexs, String columnName) {
 		Iterator<String> it = indexs.keySet().iterator();
 		while (it.hasNext()) {
 			String key = it.next();
@@ -1635,7 +1516,6 @@ public class BeanBuilder extends ExToolkit {
 	}
 
 	public static String Ss(String s) {
-		return s.substring(0, 1).toUpperCase()
-				+ s.substring(1, s.length()).toLowerCase();
+		return s.substring(0, 1).toUpperCase() + s.substring(1, s.length()).toLowerCase();
 	}
 }

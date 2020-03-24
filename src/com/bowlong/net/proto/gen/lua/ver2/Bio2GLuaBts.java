@@ -131,8 +131,7 @@ public class Bio2GLuaBts {
 	}
 
 	// 普通类
-	public static void g2bean(Class<?> c, String namespace, StrBuilder sb,
-			String fathName) {
+	public static void g2bean(Class<?> c, String namespace, StrBuilder sb, String fathName) {
 		Field[] fs = c.getDeclaredFields();
 		String cname = c.getSimpleName();
 		int hcname = cname.hashCode();
@@ -158,8 +157,7 @@ public class Bio2GLuaBts {
 					sb.pn("        local r = ArrayList();");
 					sb.pn("        for i=0,len-1 do");
 					sb.pn("          local _e = maps:get_Item(i);");
-					sb.pn("          local e = ${1}.${2}.parse(_e);", fathName,
-							gtype);
+					sb.pn("          local e = ${1}.${2}.parse(_e);", fathName, gtype);
 					sb.pn("          if(e ~= nil) then");
 					sb.pn("            r:Add(e);");
 					sb.pn("          end");
@@ -175,7 +173,7 @@ public class Bio2GLuaBts {
 		sb.pn("        if(dataMap == nil) then return nil; end;");
 		sb.pn("");
 		// C#的Hashtable
-		// sb.pn("        local r = Hashtable();");
+		// sb.pn(" local r = Hashtable();");
 		// lua的lua_table
 		sb.pn("        local r = {};");
 		for (Field field : fs) {
@@ -198,19 +196,23 @@ public class Bio2GLuaBts {
 				String gtype = B2G.getListType(field);
 				boolean isBtype = B2G.isBType(gtype);
 				if (gtype != null && !gtype.isEmpty() && !isBtype) {
-					// sb.pn("        r:set_Item(\"${1}\",${2}.${3}.maps_${1}(getByIntKey(dataMap,${4})));--${4}",s, fathName, cname, hs, t);
-					sb.pn("        r.${1} = ${2}.${3}.maps_${1}(getByIntKey(dataMap,${4}));--${4}",s, fathName, cname, hs, t);
+					// sb.pn("
+					// r:set_Item(\"${1}\",${2}.${3}.maps_${1}(getByIntKey(dataMap,${4})));--${4}",s,
+					// fathName, cname, hs, t);
+					sb.pn("        r.${1} = ${2}.${3}.maps_${1}(getByIntKey(dataMap,${4}));--${4}", s, fathName, cname, hs, t);
 				} else {
-					// sb.pn("        r:set_Item(\"${1}\",getByIntKey(dataMap,${2}));${3}",s, hs, remark);
-					sb.pn("        r.${1} = getByIntKey(dataMap,${2});${3}",s, hs, remark);
+					// sb.pn(" r:set_Item(\"${1}\",getByIntKey(dataMap,${2}));${3}",s, hs, remark);
+					sb.pn("        r.${1} = getByIntKey(dataMap,${2});${3}", s, hs, remark);
 				}
 			} else {
 				if (gm.equals("getObject")) {
-					// sb.pn("        r:set_Item(\"${1}\",${2}.${3}.parse(getByIntKey(dataMap,${4})));${5}",s, fathName, t, hs, remark);
-					sb.pn("        r.${1} = ${2}.${3}.parse(getByIntKey(dataMap,${4}));${5}",s, fathName, t, hs, remark);
+					// sb.pn("
+					// r:set_Item(\"${1}\",${2}.${3}.parse(getByIntKey(dataMap,${4})));${5}",s,
+					// fathName, t, hs, remark);
+					sb.pn("        r.${1} = ${2}.${3}.parse(getByIntKey(dataMap,${4}));${5}", s, fathName, t, hs, remark);
 				} else {
-					// sb.pn("        r:set_Item(\"${1}\",getByIntKey(dataMap,${2}));${3}",s, hs, remark);
-					sb.pn("        r.${1} = getByIntKey(dataMap,${2});${3}",s, hs, remark);
+					// sb.pn(" r:set_Item(\"${1}\",getByIntKey(dataMap,${2}));${3}",s, hs, remark);
+					sb.pn("        r.${1} = getByIntKey(dataMap,${2});${3}", s, hs, remark);
 				}
 			}
 		}
@@ -222,8 +224,7 @@ public class Bio2GLuaBts {
 	}
 
 	// 常量类
-	public static void g2beanConstant(Class<?> c, String namespace,
-			StrBuilder sb) {
+	public static void g2beanConstant(Class<?> c, String namespace, StrBuilder sb) {
 		Field[] fs = c.getDeclaredFields();
 		String cname = c.getSimpleName();
 		sb.pn("    ${1} = {", cname);
@@ -259,8 +260,7 @@ public class Bio2GLuaBts {
 	}
 
 	// 生成客户端接口--请求
-	public static void lua_request(Class<?> c, String namespace, StrBuilder sb,
-			String fathName) {
+	public static void lua_request(Class<?> c, String namespace, StrBuilder sb, String fathName) {
 		String sname = c.getSimpleName();
 		Method[] methods = c.getMethods();
 		String cname = c.getSimpleName();
@@ -291,10 +291,8 @@ public class Bio2GLuaBts {
 			sb.pn("      -- ${1}", remark);
 			sb.pn("      ${1} = function(${2})", mname, sb1);
 			sb.pn("        local _map = Hashtable();");
-			sb.pn("        _map:set_Item(B2Int(-100), ${1}.callNet.__sessionid);-- __sessionid",
-					fathName);
-			sb.pn("        _map:set_Item(B2Int(${1}), B2Int(${2}));-- cmd:${3}",
-					B2G.METHOD, h_mname, mname);
+			sb.pn("        _map:set_Item(B2Int(-100), ${1}.callNet.__sessionid);-- __sessionid", fathName);
+			sb.pn("        _map:set_Item(B2Int(${1}), B2Int(${2}));-- cmd:${3}", B2G.METHOD, h_mname, mname);
 			for (NewMap<String, String> m1 : params) {
 				String key = (String) m1.getKey();
 				String val = (String) m1.getValue();
@@ -310,19 +308,14 @@ public class Bio2GLuaBts {
 						if (mType.equals("getObject")) {
 
 						} else {
-							sb.pn("        _map:set_Item(B2Int(${1}), ${2});",
-									h_val, val);
+							sb.pn("        _map:set_Item(B2Int(${1}), ${2});", h_val, val);
 						}
 					} else if (p.equals("getObject")) {
-						sb.pn("        _map:set_Item(B2Int(${1}), ${2}.toMap());",
-								h_val, val);
-					} else if ("getInt".equals(p) || "getByte".equals(p)
-							|| "getShort".equals(p)) {
-						sb.pn("        _map:set_Item(B2Int(${1}), B2Int(${2}));",
-								h_val, val);
+						sb.pn("        _map:set_Item(B2Int(${1}), ${2}.toMap());", h_val, val);
+					} else if ("getInt".equals(p) || "getByte".equals(p) || "getShort".equals(p)) {
+						sb.pn("        _map:set_Item(B2Int(${1}), B2Int(${2}));", h_val, val);
 					} else {
-						sb.pn("        _map:set_Item(B2Int(${1}), ${2});",
-								h_val, val);
+						sb.pn("        _map:set_Item(B2Int(${1}), ${2});", h_val, val);
 					}
 				}
 			}
@@ -334,8 +327,7 @@ public class Bio2GLuaBts {
 	}
 
 	// 生成客户端接口--回调
-	public static void lua_call(Class<?> c, String namespace, StrBuilder sb,
-			String fathName) {
+	public static void lua_call(Class<?> c, String namespace, StrBuilder sb, String fathName) {
 		String sname = c.getSimpleName();
 		Method[] methods = c.getMethods();
 		String cname = c.getSimpleName();
@@ -387,10 +379,8 @@ public class Bio2GLuaBts {
 				sb.pn("      -- ${1}", remark);
 				sb.pn("      __onCallback_${1} = function(cmd,map)", mname);
 				String mx = B2G.getCsMapType(srtype);
-				sb.pn("        local retVal = getByIntKey(map,${1});",
-						B2G.RETURN_STAT);
-				sb.pn("        local rst = ${1}.ReturnStatus.parse(retVal);",
-						fathName);
+				sb.pn("        local retVal = getByIntKey(map,${1});", B2G.RETURN_STAT);
+				sb.pn("        local rst = ${1}.ReturnStatus.parse(retVal);", fathName);
 				StrBuilder msb = new StrBuilder();
 				for (NewMap<String, String> m1 : params) {
 					String key = (String) m1.getKey();
@@ -400,8 +390,7 @@ public class Bio2GLuaBts {
 					boolean isOut = B2G.isOut(m, val);
 					if (isOut) {
 						if (p.equals("getObject")) {
-							sb.pn("        local ${2} = ${4}.${1}.parse(getByIntKey(map,${3}));",
-									key, val, hval, fathName);
+							sb.pn("        local ${2} = ${4}.${1}.parse(getByIntKey(map,${3}));", key, val, hval, fathName);
 							msb.ap("${1}, ", val);
 						}
 					}
@@ -416,8 +405,7 @@ public class Bio2GLuaBts {
 	}
 
 	// 生成客户端接口--回调
-	public static void lua_call_swich(Class<?> c, String namespace,
-			StrBuilder sb, String fathName) {
+	public static void lua_call_swich(Class<?> c, String namespace, StrBuilder sb, String fathName) {
 		String sname = c.getSimpleName();
 		Method[] methods = c.getMethods();
 		String cname = c.getSimpleName();
@@ -440,17 +428,18 @@ public class Bio2GLuaBts {
 			String mname = B2G.getNethodName(m);
 			int hmname = mname.hashCode();
 			if (!srtype.equals("void")) {
-				sb.pn("    [${1}] = {[\"name\"] = \"${2}\"; fun = ${4}.__onCallback_${2}}; --${3}",
-						hmname, mname, remark, callName);
+				sb.pn("    [${1}] = {[\"name\"] = \"${2}\"; fun = ${4}.__onCallback_${2}}; --${3}", hmname, mname, remark, callName);
 			}
 
 			// if (B2G.isServer(m)) {
 			// if (!srtype.equals("void")) {
-			// sb.pn("    [\"${1}\"] = {[\"name\"] = \"${2}\"; fun = ${4}.__onCallback_${2}}; --${3}",
+			// sb.pn(" [\"${1}\"] = {[\"name\"] = \"${2}\"; fun = ${4}.__onCallback_${2}};
+			// --${3}",
 			// hmname, mname, remark, callName);
 			// }
 			// } else {
-			// sb.pn("    [\"${1}\"] = {[\"name\"] = \"${2}\"; fun = ${4}.__onCall_${2}}; --${3}",
+			// sb.pn(" [\"${1}\"] = {[\"name\"] = \"${2}\"; fun = ${4}.__onCall_${2}};
+			// --${3}",
 			// hmname, mname, remark, callName);
 			// }
 		}
@@ -466,9 +455,7 @@ public class Bio2GLuaBts {
 	}
 
 	public static void writeFile(String f, String str) {
-		try (FileOutputStream out = new FileOutputStream(new File(f));
-				OutputStreamWriter osw = new OutputStreamWriter(out,
-						Encoding.UTF8);) {
+		try (FileOutputStream out = new FileOutputStream(new File(f)); OutputStreamWriter osw = new OutputStreamWriter(out, Encoding.UTF8);) {
 			osw.write(str, 0, str.length());
 			osw.close();
 			out.close();

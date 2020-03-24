@@ -25,18 +25,16 @@ public class DataSet extends JdbcTemplate {
 	}
 
 	/*
-	 * 从 begin 条 开始, num 条记录 SELECT * FROM ( SELECT ROWNUM r, a.* FROM 表名 a
-	 * WHERE 条件 ORDER BY id ) b WHERE b.r >= begin AND b.r < begin + num ;
+	 * 从 begin 条 开始, num 条记录 SELECT * FROM ( SELECT ROWNUM r, a.* FROM 表名 a WHERE 条件
+	 * ORDER BY id ) b WHERE b.r >= begin AND b.r < begin + num ;
 	 */
 	public List<Map<String, Object>> queryForMap4C(String c, String idKey, int begin, int num) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			if (c != null && !c.isEmpty()) {
-				sb.append("SELECT * FROM (SELECT ROWNUM r, a.* FROM ").append(TABLENAME).append(" a WHERE ").append(c)
-						.append(" ORDER BY ").append(idKey).append(") b WHERE b.r >= m AND b.r < m + n ");
+				sb.append("SELECT * FROM (SELECT ROWNUM r, a.* FROM ").append(TABLENAME).append(" a WHERE ").append(c).append(" ORDER BY ").append(idKey).append(") b WHERE b.r >= m AND b.r < m + n ");
 			} else {
-				sb.append("SELECT * FROM (SELECT ROWNUM r, a.* FROM ").append(TABLENAME).append(" a ")
-						.append(" ORDER BY ").append(idKey).append(") b WHERE b.r >= m AND b.r < m + n  ");
+				sb.append("SELECT * FROM (SELECT ROWNUM r, a.* FROM ").append(TABLENAME).append(" a ").append(" ORDER BY ").append(idKey).append(") b WHERE b.r >= m AND b.r < m + n  ");
 			}
 			sb.append(" ORDER BY ").append(idKey);
 			String sql = sb.toString();
@@ -50,11 +48,9 @@ public class DataSet extends JdbcTemplate {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			if (c != null && !c.isEmpty()) {
-				sb.append("SELECT * FROM (SELECT ROWNUM r, a.* FROM ").append(TABLENAME).append(" a WHERE ").append(c)
-						.append(" ORDER BY ").append(idKey).append(") b WHERE b.r >= m AND b.r < m + n ");
+				sb.append("SELECT * FROM (SELECT ROWNUM r, a.* FROM ").append(TABLENAME).append(" a WHERE ").append(c).append(" ORDER BY ").append(idKey).append(") b WHERE b.r >= m AND b.r < m + n ");
 			} else {
-				sb.append("SELECT * FROM (SELECT ROWNUM r, a.* FROM ").append(TABLENAME).append(" a ")
-						.append(" ORDER BY ").append(idKey).append(") b WHERE b.r >= m AND b.r < m + n  ");
+				sb.append("SELECT * FROM (SELECT ROWNUM r, a.* FROM ").append(TABLENAME).append(" a ").append(" ORDER BY ").append(idKey).append(") b WHERE b.r >= m AND b.r < m + n  ");
 			}
 			sb.append(" ORDER BY ").append(idKey);
 			String sql = sb.toString();

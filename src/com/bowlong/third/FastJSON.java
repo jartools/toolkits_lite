@@ -42,8 +42,7 @@ public class FastJSON extends JSON {
 		return JSON.toJSONString(object, prettyFormat);
 	}
 
-	public static final EnDeJsonI parseForMapNoExcept(String str,
-			Class<? extends EnDeJsonI> clazz) {
+	public static final EnDeJsonI parseForMapNoExcept(String str, Class<? extends EnDeJsonI> clazz) {
 		try {
 			return parseForMap(str, clazz);
 		} catch (InstantiationException | IllegalAccessException | IOException e) {
@@ -52,16 +51,13 @@ public class FastJSON extends JSON {
 		}
 	}
 
-	public static final EnDeJsonI parseForMap(String str,
-			Class<? extends EnDeJsonI> clazz) throws IOException,
-			InstantiationException, IllegalAccessException {
+	public static final EnDeJsonI parseForMap(String str, Class<? extends EnDeJsonI> clazz) throws IOException, InstantiationException, IllegalAccessException {
 		Map map = parseMap(str);
 		EnDeJsonI result = (EnDeJsonI) clazz.newInstance();
 		return result.parse(map);
 	}
 
-	public static final List<EnDeJsonI> parseListNoExcept(String str,
-			Class<? extends EnDeJsonI> clazz) {
+	public static final List<EnDeJsonI> parseListNoExcept(String str, Class<? extends EnDeJsonI> clazz) {
 		try {
 			return parseList(str, clazz);
 		} catch (InstantiationException | IllegalAccessException | IOException e) {
@@ -70,9 +66,7 @@ public class FastJSON extends JSON {
 		}
 	}
 
-	public static final List<EnDeJsonI> parseList(String str,
-			Class<? extends EnDeJsonI> clazz) throws IOException,
-			InstantiationException, IllegalAccessException {
+	public static final List<EnDeJsonI> parseList(String str, Class<? extends EnDeJsonI> clazz) throws IOException, InstantiationException, IllegalAccessException {
 		List<EnDeJsonI> r2 = new ArrayList<>();
 		List<Map> list = parseList(str);
 		for (Map m : list) {
@@ -96,8 +90,7 @@ public class FastJSON extends JSON {
 		return toJSONString(obj.toMap());
 	}
 
-	public static final String toJSONStringNoExcept(
-			List<? extends EnDeJsonI> objs) {
+	public static final String toJSONStringNoExcept(List<? extends EnDeJsonI> objs) {
 		try {
 			return toJSONString(objs);
 		} catch (IOException e) {
@@ -106,8 +99,7 @@ public class FastJSON extends JSON {
 		}
 	}
 
-	public static final String toJSONString(List<? extends EnDeJsonI> objs)
-			throws IOException {
+	public static final String toJSONString(List<? extends EnDeJsonI> objs) throws IOException {
 		List<Map> maps = new ArrayList<>();
 		for (EnDeJsonI fm : objs) {
 			maps.add(fm.toMap());

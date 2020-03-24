@@ -296,7 +296,7 @@ public class NewDate extends Date {
 	public NewDate create() {
 		return new NewDate(this);
 	}
-	
+
 	public NewDate zero() {
 		return setHourMinuteSec(0, 0, 0);
 	}

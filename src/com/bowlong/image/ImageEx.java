@@ -72,32 +72,26 @@ public class ImageEx {
 		return ImageIO.read(is);
 	}
 
-	public static final boolean save(BufferedImage img, String format, File f)
-			throws IOException {
+	public static final boolean save(BufferedImage img, String format, File f) throws IOException {
 		return ImageIO.write(img, format, f);
 	}
 
-	public static final boolean save(BufferedImage img, String format, String s)
-			throws IOException {
+	public static final boolean save(BufferedImage img, String format, String s) throws IOException {
 		File f = new File(s);
 		return save(img, format, f);
 	}
 
-	public static final boolean save(BufferedImage img, String format,
-			OutputStream os) throws IOException {
+	public static final boolean save(BufferedImage img, String format, OutputStream os) throws IOException {
 		return ImageIO.write(img, format, os);
 	}
 
-	public static final BufferedImage translucentImage(BufferedImage loaded,
-			float transperancy) {
+	public static final BufferedImage translucentImage(BufferedImage loaded, float transperancy) {
 		// Create the image using the
-		BufferedImage aimg = new BufferedImage(loaded.getWidth(),
-				loaded.getHeight(), Transparency.TRANSLUCENT);
+		BufferedImage aimg = new BufferedImage(loaded.getWidth(), loaded.getHeight(), Transparency.TRANSLUCENT);
 		// Get the images graphics
 		Graphics2D g = aimg.createGraphics();
 		// Set the Graphics composite to Alpha
-		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-				transperancy));
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transperancy));
 		// Draw the LOADED img into the prepared reciver image
 		g.drawImage(loaded, null, 0, 0);
 		// let go of all system resources in this Graphics
@@ -106,10 +100,8 @@ public class ImageEx {
 		return aimg;
 	}
 
-	public static final BufferedImage makeColorToColor(BufferedImage image,
-			Color color, Color newColor) {
-		BufferedImage dimg = new BufferedImage(image.getWidth(),
-				image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+	public static final BufferedImage makeColorToColor(BufferedImage image, Color color, Color newColor) {
+		BufferedImage dimg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = dimg.createGraphics();
 		g.setComposite(AlphaComposite.Src);
 		g.drawImage(image, null, 0, 0);
@@ -124,10 +116,8 @@ public class ImageEx {
 		return dimg;
 	}
 
-	public static final BufferedImage makeColorTransparent(BufferedImage image,
-			Color color) {
-		BufferedImage dimg = new BufferedImage(image.getWidth(),
-				image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+	public static final BufferedImage makeColorTransparent(BufferedImage image, Color color) {
+		BufferedImage dimg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = dimg.createGraphics();
 		g.setComposite(AlphaComposite.Src);
 		g.drawImage(image, null, 0, 0);
@@ -155,8 +145,7 @@ public class ImageEx {
 	public static final BufferedImage verticalflip(BufferedImage img) {
 		int w = img.getWidth();
 		int h = img.getHeight();
-		BufferedImage dimg = new BufferedImage(w, h, img.getColorModel()
-				.getTransparency());
+		BufferedImage dimg = new BufferedImage(w, h, img.getColorModel().getTransparency());
 		Graphics2D g = dimg.createGraphics();
 		g.drawImage(img, 0, 0, w, h, 0, h, w, 0, null);
 		g.dispose();
@@ -173,28 +162,23 @@ public class ImageEx {
 		return dimg;
 	}
 
-	public static final BufferedImage resize2default(BufferedImage img,
-			int newW, int newH) {
+	public static final BufferedImage resize2default(BufferedImage img, int newW, int newH) {
 		BufferedImage dimg = new BufferedImage(newW, newH, img.getType());
 		Graphics2D g = dimg.createGraphics();
-		g.drawImage(img.getScaledInstance(newW, newH, Image.SCALE_DEFAULT), 0,
-				0, newW, newH, null);
+		g.drawImage(img.getScaledInstance(newW, newH, Image.SCALE_DEFAULT), 0, 0, newW, newH, null);
 		g.dispose();
 		return dimg;
 	}
 
-	public static final BufferedImage resize2smooth(BufferedImage img,
-			int newW, int newH) {
+	public static final BufferedImage resize2smooth(BufferedImage img, int newW, int newH) {
 		BufferedImage dimg = new BufferedImage(newW, newH, img.getType());
 		Graphics2D g = dimg.createGraphics();
-		g.drawImage(img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH), 0,
-				0, newW, newH, null);
+		g.drawImage(img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH), 0, 0, newW, newH, null);
 		g.dispose();
 		return dimg;
 	}
 
-	public static final Image resize(BufferedImage img, int width, int height,
-			int hints) {
+	public static final Image resize(BufferedImage img, int width, int height, int hints) {
 		return img.getScaledInstance(width, height, hints);
 	}
 
@@ -211,8 +195,7 @@ public class ImageEx {
 	}
 
 	public static final BufferedImage clip(Image img, int x, int y, int w, int h) {
-		BufferedImage dimg = new BufferedImage(w, h,
-				BufferedImage.TYPE_4BYTE_ABGR);
+		BufferedImage dimg = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
 		Graphics2D g = dimg.createGraphics();
 		int dx1 = 0;
 		int dy1 = 0;
@@ -227,8 +210,7 @@ public class ImageEx {
 		return dimg;
 	}
 
-	public static final BufferedImage[] splitImage(BufferedImage img, int cols,
-			int rows) {
+	public static final BufferedImage[] splitImage(BufferedImage img, int cols, int rows) {
 		int w = img.getWidth() / cols;
 		int h = img.getHeight() / rows;
 		int num = 0;
@@ -238,8 +220,7 @@ public class ImageEx {
 				imgs[num] = new BufferedImage(w, h, img.getType());
 				// Tell the graphics to draw only one block of the image
 				Graphics2D g = imgs[num].createGraphics();
-				g.drawImage(img, 0, 0, w, h, w * x, h * y, w * x + w,
-						h * y + h, null);
+				g.drawImage(img, 0, 0, w, h, w * x, h * y, w * x + w, h * y + h, null);
 				g.dispose();
 				num++;
 			}
@@ -247,23 +228,19 @@ public class ImageEx {
 		return imgs;
 	}
 
-	public static final BufferedImage byteArrayToImage(byte[] img)
-			throws IOException {
+	public static final BufferedImage byteArrayToImage(byte[] img) throws IOException {
 		try (ByteInStream bais = ByteInPool.borrowObject(img);) {
 			BufferedImage src = ImageIO.read(bais);
 
-			BufferedImage dest = new BufferedImage(src.getWidth(),
-					src.getHeight(), BufferedImage.TYPE_INT_RGB);
-			dest.getGraphics().drawImage(src, 0, 0, src.getWidth(),
-					src.getHeight(), null);
+			BufferedImage dest = new BufferedImage(src.getWidth(), src.getHeight(), BufferedImage.TYPE_INT_RGB);
+			dest.getGraphics().drawImage(src, 0, 0, src.getWidth(), src.getHeight(), null);
 
 			src = null;
 			return dest;
 		}
 	}
 
-	public static final byte[] bufferedImageToByteArray(BufferedImage img,
-			String format) throws IOException {
+	public static final byte[] bufferedImageToByteArray(BufferedImage img, String format) throws IOException {
 		try (ByteOutStream baos = ByteOutPool.borrowObject();) {
 			ImageIO.write(img, format, baos);
 			baos.flush();
@@ -273,8 +250,7 @@ public class ImageEx {
 		}
 	}
 
-	public static final byte[] imageToByteArray(byte[] b, String format)
-			throws IOException {
+	public static final byte[] imageToByteArray(byte[] b, String format) throws IOException {
 
 		BufferedImage img = byteArrayToImage(b);
 
@@ -286,22 +262,19 @@ public class ImageEx {
 		}
 	}
 
-	public static final BufferedImage ImageToType(BufferedImage img,
-			String format) throws IOException {
+	public static final BufferedImage ImageToType(BufferedImage img, String format) throws IOException {
 		try (ByteOutStream baos = ByteOutPool.borrowObject();) {
 			ImageIO.write(img, format, baos);
 			baos.flush();
 			baos.close();
 
-			try (ByteInStream bais = ByteInPool
-					.borrowObject(baos.toByteArray());) {
+			try (ByteInStream bais = ByteInPool.borrowObject(baos.toByteArray());) {
 				return ImageIO.read(bais);
 			}
 		}
 	}
 
-	public static final byte[] imageToType(byte[] img, String format)
-			throws IOException {
+	public static final byte[] imageToType(byte[] img, String format) throws IOException {
 		BufferedImage bi = byteArrayToImage(img);
 		try (ByteOutStream baos = ByteOutPool.borrowObject();) {
 			ImageIO.write(bi, format, baos);
@@ -311,17 +284,14 @@ public class ImageEx {
 		}
 	}
 
-	public static final BufferedImage byteArrayToImageType(byte[] img,
-			String format) throws IOException {
+	public static final BufferedImage byteArrayToImageType(byte[] img, String format) throws IOException {
 		byte[] b = imageToType(img, format);
 		return byteArrayToImage(b);
 	}
 
-	public static final BufferedImage drawImage(BufferedImage src,
-			BufferedImage added, int x, int y, String ref) throws IOException {
+	public static final BufferedImage drawImage(BufferedImage src, BufferedImage added, int x, int y, String ref) throws IOException {
 
-		BufferedImage dimg = new BufferedImage(src.getWidth(), src.getHeight(),
-				src.getType());
+		BufferedImage dimg = new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
 		Graphics2D g = dimg.createGraphics();
 		g.drawImage(src, 0, 0, src.getWidth(), src.getHeight(), null);
 		g.drawImage(added, x, y, added.getWidth(), added.getHeight(), null);
@@ -330,25 +300,20 @@ public class ImageEx {
 		return dimg;
 	}
 
-	public static final BufferedImage drawTransparencyImage(BufferedImage bg,
-			BufferedImage img, int x, int y, float transperancy) {
-		BufferedImage dimg = new BufferedImage(bg.getWidth(), bg.getHeight(),
-				bg.getType());
+	public static final BufferedImage drawTransparencyImage(BufferedImage bg, BufferedImage img, int x, int y, float transperancy) {
+		BufferedImage dimg = new BufferedImage(bg.getWidth(), bg.getHeight(), bg.getType());
 		Graphics2D g = dimg.createGraphics();
 		g.drawImage(bg, 0, 0, bg.getWidth(), bg.getHeight(), null);
-		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-				transperancy));
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transperancy));
 		g.drawImage(img, null, x, y);
 		g.dispose();
 		// Return the image
 		return dimg;
 	}
 
-	public static final BufferedImage drawString(BufferedImage src, String str,
-			int x, int y, Color rgb) throws IOException {
+	public static final BufferedImage drawString(BufferedImage src, String str, int x, int y, Color rgb) throws IOException {
 
-		BufferedImage dimg = new BufferedImage(src.getWidth(), src.getHeight(),
-				src.getType());
+		BufferedImage dimg = new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
 		Graphics2D g = dimg.createGraphics();
 		g.drawImage(src, 0, 0, src.getWidth(), src.getHeight(), null);
 
@@ -361,8 +326,7 @@ public class ImageEx {
 		return src;
 	}
 
-	public static final BufferedImage drawString(BufferedImage src, String str,
-			int x, int y, Color rgb, Font font) {
+	public static final BufferedImage drawString(BufferedImage src, String str, int x, int y, Color rgb, Font font) {
 		Graphics2D g = src.createGraphics();
 
 		Color oColor = g.getColor();
@@ -377,8 +341,7 @@ public class ImageEx {
 		return src;
 	}
 
-	public static final BufferedImage drawLine(BufferedImage src, int x1,
-			int y1, int x2, int y2, Color rgb) throws IOException {
+	public static final BufferedImage drawLine(BufferedImage src, int x1, int y1, int x2, int y2, Color rgb) throws IOException {
 
 		Graphics2D g = src.createGraphics();
 		Color old = g.getColor();
@@ -390,18 +353,14 @@ public class ImageEx {
 		return src;
 	}
 
-	public static final BufferedImage drawTransparencyString(BufferedImage src,
-			String str, int x, int y, Color rgb, float transperancy)
-			throws IOException {
+	public static final BufferedImage drawTransparencyString(BufferedImage src, String str, int x, int y, Color rgb, float transperancy) throws IOException {
 
-		BufferedImage dimg = new BufferedImage(src.getWidth(), src.getHeight(),
-				src.getType());
+		BufferedImage dimg = new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
 		Graphics2D g = dimg.createGraphics();
 		g.drawImage(src, 0, 0, src.getWidth(), src.getHeight(), null);
 
 		Color old = g.getColor();
-		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-				transperancy));
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transperancy));
 		g.drawString(str, x, y);
 		g.setColor(old);
 		g.dispose();
@@ -409,29 +368,25 @@ public class ImageEx {
 		return src;
 	}
 
-	public static final void drawImageToGraphics2D(Graphics2D g,
-			BufferedImage img, int x, int y) {
+	public static final void drawImageToGraphics2D(Graphics2D g, BufferedImage img, int x, int y) {
 		g.drawImage(img, x, y, img.getWidth(), img.getHeight(), null);
 		g.dispose();
 	}
 
-	public static final void drawStringToGraphics2D(Graphics2D g, String str,
-			int x, int y, Color rgb) {
+	public static final void drawStringToGraphics2D(Graphics2D g, String str, int x, int y, Color rgb) {
 		Color old = g.getColor();
 		g.drawString(str, x, y);
 		g.setColor(old);
 		g.dispose();
 	}
 
-	public static final byte[] scaleByWidth(byte[] img, int w, String format)
-			throws Exception {
+	public static final byte[] scaleByWidth(byte[] img, int w, String format) throws Exception {
 		BufferedImage i = byteArrayToImage(img);
 		BufferedImage i2 = scaleByWidth(i, w);
 		return bufferedImageToByteArray(i2, format);
 	}
 
-	public static final BufferedImage scaleByWidth(BufferedImage img, int w)
-			throws IOException {
+	public static final BufferedImage scaleByWidth(BufferedImage img, int w) throws IOException {
 		double width = img.getWidth();
 		double height = img.getHeight();
 
@@ -442,8 +397,7 @@ public class ImageEx {
 		return resize2smooth(img, w, h);
 	}
 
-	public static final BufferedImage scaleByHeight(BufferedImage img, int h)
-			throws IOException {
+	public static final BufferedImage scaleByHeight(BufferedImage img, int h) throws IOException {
 		double width = img.getWidth();
 		double height = img.getHeight();
 
@@ -477,8 +431,7 @@ public class ImageEx {
 	}
 
 	// 获得字符串的高宽
-	public static final Rectangle getStringRect(Graphics g, Font font,
-			String str) {
+	public static final Rectangle getStringRect(Graphics g, Font font, String str) {
 		Rectangle ret = new Rectangle();
 		double width;
 		double height;
@@ -495,8 +448,7 @@ public class ImageEx {
 		return getStringRect(g, g.getFont(), str);
 	}
 
-	public void bufferedImageTobytes(BufferedImage img, String fmt,
-			float quality, OutputStream out) throws IOException {
+	public void bufferedImageTobytes(BufferedImage img, String fmt, float quality, OutputStream out) throws IOException {
 		Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName(fmt);
 		ImageWriter writer = (ImageWriter) iter.next();
 		ImageWriteParam iwp = writer.getDefaultWriteParam();
@@ -506,8 +458,7 @@ public class ImageEx {
 		iwp.setProgressiveMode(ImageWriteParam.MODE_DISABLED);
 		ColorModel colorModel = ColorModel.getRGBdefault();
 		// 指定压缩时使用的色彩模式
-		iwp.setDestinationType(new javax.imageio.ImageTypeSpecifier(colorModel,
-				colorModel.createCompatibleSampleModel(16, 16)));
+		iwp.setDestinationType(new javax.imageio.ImageTypeSpecifier(colorModel, colorModel.createCompatibleSampleModel(16, 16)));
 
 		IIOImage iIamge = new IIOImage(img, null, null);
 		writer.setOutput(ImageIO.createImageOutputStream(out));

@@ -38,22 +38,12 @@ import com.dbmaker.freemarker.sk.jdbc.SK_Query;
  * @Description ：数据库表对象
  */
 public class SK_Table extends SK_ITable {
-	public SK_Table(String tableName, String d_tableName, String x_tableName,
-			String packageName, String all_basicType_x_columnName,
-			String all_columnName, String all_columnNameSign,
-			String all_objAndGetD_columnName, String all_columnName_Sign,
-			String primary_columnName, String primaryD_columnName,
-			String primaryX_columnName, String primaryClassType,
-			String primaryBasicType, List<String> all_objAndGetD_columnNames,
-			List<SK_Column> columns, List<SK_BindKey> bindKeys,
-			List<SK_Index> indexKeys, SK_Database db, String config,
+	public SK_Table(String tableName, String d_tableName, String x_tableName, String packageName, String all_basicType_x_columnName, String all_columnName, String all_columnNameSign,
+			String all_objAndGetD_columnName, String all_columnName_Sign, String primary_columnName, String primaryD_columnName, String primaryX_columnName, String primaryClassType,
+			String primaryBasicType, List<String> all_objAndGetD_columnNames, List<SK_Column> columns, List<SK_BindKey> bindKeys, List<SK_Index> indexKeys, SK_Database db, String config,
 			int columnSize, boolean isCfg) {
-		super(tableName, d_tableName, x_tableName, packageName,
-				all_basicType_x_columnName, all_columnName, all_columnNameSign,
-				all_objAndGetD_columnName, all_columnName_Sign,
-				primary_columnName, primaryD_columnName, primaryX_columnName,
-				primaryClassType, primaryBasicType, all_objAndGetD_columnNames,
-				columns, bindKeys, indexKeys, db, config, columnSize, isCfg);
+		super(tableName, d_tableName, x_tableName, packageName, all_basicType_x_columnName, all_columnName, all_columnNameSign, all_objAndGetD_columnName, all_columnName_Sign, primary_columnName,
+				primaryD_columnName, primaryX_columnName, primaryClassType, primaryBasicType, all_objAndGetD_columnNames, columns, bindKeys, indexKeys, db, config, columnSize, isCfg);
 	}
 
 	@Override
@@ -65,14 +55,12 @@ public class SK_Table extends SK_ITable {
 			List<SK_BindKey> bindKeys = getBindKeys();
 			for (SK_BindKey sk_BindKey : bindKeys) {
 				if (sk_BindKey.isPk()) {
-					String packageName = SK_Generate.packageMap.get("cache")
-							.replace("src/", "").replace("/", ".");
+					String packageName = SK_Generate.packageMap.get("cache").replace("src/", "").replace("/", ".");
 					packageName += ("." + sk_BindKey.getD_pkTableName() + "Cache");
 					beanImports.add(packageName);
 
 				} else {
-					String packageName = SK_Generate.packageMap.get("cache")
-							.replace("src/", "").replace("/", ".");
+					String packageName = SK_Generate.packageMap.get("cache").replace("src/", "").replace("/", ".");
 					packageName += ("." + sk_BindKey.getD_fkTableName() + "Cache");
 					beanImports.add(packageName);
 					if (!sk_BindKey.isUnique()) {
@@ -80,8 +68,7 @@ public class SK_Table extends SK_ITable {
 					}
 				}
 			}
-			String packageName = SK_Generate.packageMap.get("cache")
-					.replace("src/", "").replace("/", ".");
+			String packageName = SK_Generate.packageMap.get("cache").replace("src/", "").replace("/", ".");
 			packageName += ("." + getD_tableName() + "Cache");
 			beanImports.add(packageName);
 			// list ,ArrayList, map,Hashmap,Date 均为java.util.*
@@ -100,12 +87,9 @@ public class SK_Table extends SK_ITable {
 			beanImports.add(MapEx.class.getName());
 			beanImports.add(JSON.class.getName());
 			// 用于加锁ReentrantReadWriteLock
-			beanImports
-					.add("java.util.concurrent.locks.ReentrantReadWriteLock");
-			beanImports
-					.add("java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock");
-			beanImports
-					.add("java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock");
+			beanImports.add("java.util.concurrent.locks.ReentrantReadWriteLock");
+			beanImports.add("java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock");
+			beanImports.add("java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock");
 		}
 		return beanImports;
 	}
@@ -115,23 +99,19 @@ public class SK_Table extends SK_ITable {
 			if (cacheImports == null)
 				cacheImports = new HashSet<String>();
 
-			String packageName = SK_Generate.packageMap.get("bean")
-					.replace("src/", "").replace("/", ".");
+			String packageName = SK_Generate.packageMap.get("bean").replace("src/", "").replace("/", ".");
 			packageName += ("." + getD_tableName());
 			cacheImports.add(packageName);
 
-			packageName = SK_Generate.packageMap.get("jedis")
-					.replace("src/", "").replace("/", ".");
+			packageName = SK_Generate.packageMap.get("jedis").replace("src/", "").replace("/", ".");
 			packageName += ("." + getD_tableName() + "Jedis");
 			cacheImports.add(packageName);
 
-			packageName = SK_Generate.packageMap.get("dao").replace("src/", "")
-					.replace("/", ".");
+			packageName = SK_Generate.packageMap.get("dao").replace("src/", "").replace("/", ".");
 			packageName += ("." + getD_tableName() + "Dao");
 			cacheImports.add(packageName);
 
-			packageName = SK_Generate.packageMap.get("path")
-					.replace("src/", "").replace("/", ".");
+			packageName = SK_Generate.packageMap.get("path").replace("src/", "").replace("/", ".");
 			packageName += ".CfgDbCache";
 			cacheImports.add(packageName);
 
@@ -173,8 +153,7 @@ public class SK_Table extends SK_ITable {
 			if (jedisImports == null)
 				jedisImports = new HashSet<String>();
 
-			String packageName = SK_Generate.packageMap.get("bean")
-					.replace("src/", "").replace("/", ".");
+			String packageName = SK_Generate.packageMap.get("bean").replace("src/", "").replace("/", ".");
 			packageName += ("." + getD_tableName());
 			jedisImports.add(packageName);
 
@@ -211,8 +190,7 @@ public class SK_Table extends SK_ITable {
 			if (daoImports == null)
 				daoImports = new HashSet<String>();
 
-			String packageName = SK_Generate.packageMap.get("bean")
-					.replace("src/", "").replace("/", ".");
+			String packageName = SK_Generate.packageMap.get("bean").replace("src/", "").replace("/", ".");
 			packageName += ("." + getD_tableName());
 			daoImports.add(packageName);
 			// 添加List包名称
@@ -225,9 +203,7 @@ public class SK_Table extends SK_ITable {
 			List<SK_Column> columns = getColumns();
 			boolean autoincrement = false;
 			for (SK_Column sk_Column : columns) {
-				if (sk_Column.getX_columnName()
-						.equals(getPrimaryX_columnName())
-						&& sk_Column.isAutoincrement()) {
+				if (sk_Column.getX_columnName().equals(getPrimaryX_columnName()) && sk_Column.isAutoincrement()) {
 					autoincrement = true;
 				}
 			}
@@ -257,8 +233,7 @@ public class SK_Table extends SK_ITable {
 			if (impImports == null)
 				impImports = new HashSet<String>();
 
-			String packageName = SK_Generate.packageMap.get("cache")
-					.replace("src/", "").replace("/", ".");
+			String packageName = SK_Generate.packageMap.get("cache").replace("src/", "").replace("/", ".");
 			packageName += ("." + getD_tableName() + "Cache");
 			this.impImports.add(packageName);
 		}

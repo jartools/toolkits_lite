@@ -26,7 +26,7 @@ public class BIO2OutputStream {
 
 	private void _writeBytes(byte[] v) throws IOException {
 		this.output.write(v);
-		writePtr+=v.length;
+		writePtr += v.length;
 	}
 
 	public final void writeNull() throws IOException {

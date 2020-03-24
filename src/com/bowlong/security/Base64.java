@@ -23,16 +23,16 @@ public class Base64 {
 	// **********************************************************************************
 
 	/**
-	 * Encodes a raw byte array into a BASE64 <code>char[]</code> representation
-	 * i accordance with RFC 2045.
+	 * Encodes a raw byte array into a BASE64 <code>char[]</code> representation i
+	 * accordance with RFC 2045.
 	 * 
 	 * @param sArr
-	 *            The bytes to convert. If <code>null</code> or length 0 an
-	 *            empty array will be returned.
+	 *            The bytes to convert. If <code>null</code> or length 0 an empty
+	 *            array will be returned.
 	 * @param lineSep
 	 *            Optional "\r\n" after 76 characters, unless end of file.<br>
-	 *            No line separator will be in breach of RFC 2045 which
-	 *            specifies max 76 per line but will be a little faster.
+	 *            No line separator will be in breach of RFC 2045 which specifies
+	 *            max 76 per line but will be a little faster.
 	 * @return A BASE64 encoded array. Never <code>null</code>.
 	 */
 	public final static char[] encodeToChar(byte[] sArr, boolean lineSep) {
@@ -85,8 +85,8 @@ public class Base64 {
 
 	/** */
 	/**
-	 * Decodes a BASE64 encoded char array. All illegal characters will be
-	 * ignored and can handle both arrays with and without line separators.
+	 * Decodes a BASE64 encoded char array. All illegal characters will be ignored
+	 * and can handle both arrays with and without line separators.
 	 * 
 	 * @param sArr
 	 *            The source array. <code>null</code> or length 0 will return an
@@ -151,14 +151,14 @@ public class Base64 {
 	/** */
 	/**
 	 * Decodes a BASE64 encoded char array that is known to be resonably well
-	 * formatted. The method is about twice as fast as {@link #decode(char[])}.
-	 * The preconditions are:<br>
-	 * + The array must have a line length of 76 chars OR no line separators at
-	 * all (one line).<br>
-	 * + Line separator must be "\r\n", as specified in RFC 2045 + The array
-	 * must not contain illegal characters within the encoded string<br>
-	 * + The array CAN have illegal characters at the beginning and end, those
-	 * will be dealt with appropriately.<br>
+	 * formatted. The method is about twice as fast as {@link #decode(char[])}. The
+	 * preconditions are:<br>
+	 * + The array must have a line length of 76 chars OR no line separators at all
+	 * (one line).<br>
+	 * + Line separator must be "\r\n", as specified in RFC 2045 + The array must
+	 * not contain illegal characters within the encoded string<br>
+	 * + The array CAN have illegal characters at the beginning and end, those will
+	 * be dealt with appropriately.<br>
 	 * 
 	 * @param sArr
 	 *            The source array. Length 0 will return an empty array.
@@ -231,16 +231,16 @@ public class Base64 {
 
 	/** */
 	/**
-	 * Encodes a raw byte array into a BASE64 <code>byte[]</code> representation
-	 * i accordance with RFC 2045.
+	 * Encodes a raw byte array into a BASE64 <code>byte[]</code> representation i
+	 * accordance with RFC 2045.
 	 * 
 	 * @param sArr
-	 *            The bytes to convert. If <code>null</code> or length 0 an
-	 *            empty array will be returned.
+	 *            The bytes to convert. If <code>null</code> or length 0 an empty
+	 *            array will be returned.
 	 * @param lineSep
 	 *            Optional "\r\n" after 76 characters, unless end of file.<br>
-	 *            No line separator will be in breach of RFC 2045 which
-	 *            specifies max 76 per line but will be a little faster.
+	 *            No line separator will be in breach of RFC 2045 which specifies
+	 *            max 76 per line but will be a little faster.
 	 * @return A BASE64 encoded array. Never <code>null</code>.
 	 */
 	public final static byte[] encodeToByte(byte[] sArr, boolean lineSep) {
@@ -293,8 +293,8 @@ public class Base64 {
 
 	/** */
 	/**
-	 * Decodes a BASE64 encoded byte array. All illegal characters will be
-	 * ignored and can handle both arrays with and without line separators.
+	 * Decodes a BASE64 encoded byte array. All illegal characters will be ignored
+	 * and can handle both arrays with and without line separators.
 	 * 
 	 * @param sArr
 	 *            The source array. Length 0 will return an empty array.
@@ -359,14 +359,14 @@ public class Base64 {
 	/** */
 	/**
 	 * Decodes a BASE64 encoded byte array that is known to be resonably well
-	 * formatted. The method is about twice as fast as {@link #decode(byte[])}.
-	 * The preconditions are:<br>
-	 * + The array must have a line length of 76 chars OR no line separators at
-	 * all (one line).<br>
-	 * + Line separator must be "\r\n", as specified in RFC 2045 + The array
-	 * must not contain illegal characters within the encoded string<br>
-	 * + The array CAN have illegal characters at the beginning and end, those
-	 * will be dealt with appropriately.<br>
+	 * formatted. The method is about twice as fast as {@link #decode(byte[])}. The
+	 * preconditions are:<br>
+	 * + The array must have a line length of 76 chars OR no line separators at all
+	 * (one line).<br>
+	 * + Line separator must be "\r\n", as specified in RFC 2045 + The array must
+	 * not contain illegal characters within the encoded string<br>
+	 * + The array CAN have illegal characters at the beginning and end, those will
+	 * be dealt with appropriately.<br>
 	 * 
 	 * @param sArr
 	 *            The source array. Length 0 will return an empty array.
@@ -438,16 +438,16 @@ public class Base64 {
 
 	/** */
 	/**
-	 * Encodes a raw byte array into a BASE64 <code>String</code> representation
-	 * i accordance with RFC 2045.
+	 * Encodes a raw byte array into a BASE64 <code>String</code> representation i
+	 * accordance with RFC 2045.
 	 * 
 	 * @param sArr
-	 *            The bytes to convert. If <code>null</code> or length 0 an
-	 *            empty array will be returned.
+	 *            The bytes to convert. If <code>null</code> or length 0 an empty
+	 *            array will be returned.
 	 * @param lineSep
 	 *            Optional "\r\n" after 76 characters, unless end of file.<br>
-	 *            No line separator will be in breach of RFC 2045 which
-	 *            specifies max 76 per line but will be a little faster.
+	 *            No line separator will be in breach of RFC 2045 which specifies
+	 *            max 76 per line but will be a little faster.
 	 * @return A BASE64 encoded array. Never <code>null</code>.
 	 */
 	public final static String encode(byte[] sArr, boolean lineSep) {
@@ -471,17 +471,16 @@ public class Base64 {
 
 	/** */
 	/**
-	 * Decodes a BASE64 encoded <code>String</code>. All illegal characters will
-	 * be ignored and can handle both strings with and without line
-	 * separators.<br>
+	 * Decodes a BASE64 encoded <code>String</code>. All illegal characters will be
+	 * ignored and can handle both strings with and without line separators.<br>
 	 * <b>Note!</b> It can be up to about 2x the speed to call
-	 * <code>decode(str.toCharArray())</code> instead. That will create a
-	 * temporary array though. This version will use <code>str.charAt(i)</code>
-	 * to iterate the string.
+	 * <code>decode(str.toCharArray())</code> instead. That will create a temporary
+	 * array though. This version will use <code>str.charAt(i)</code> to iterate the
+	 * string.
 	 * 
 	 * @param str
-	 *            The source string. <code>null</code> or length 0 will return
-	 *            an empty array.
+	 *            The source string. <code>null</code> or length 0 will return an
+	 *            empty array.
 	 * @return The decoded array of bytes. May be of length 0. Will be
 	 *         <code>null</code> if the legal characters (including '=') isn't
 	 *         divideable by 4. (I.e. definitely corrupted).
@@ -541,15 +540,15 @@ public class Base64 {
 	}
 
 	/**
-	 * Decodes a BASE64 encoded string that is known to be resonably well
-	 * formatted. The method is about twice as fast as
-	 * {@link #decode2Bytes(String)}. The preconditions are:<br>
-	 * + The array must have a line length of 76 chars OR no line separators at
-	 * all (one line).<br>
-	 * + Line separator must be "\r\n", as specified in RFC 2045 + The array
-	 * must not contain illegal characters within the encoded string<br>
-	 * + The array CAN have illegal characters at the beginning and end, those
-	 * will be dealt with appropriately.<br>
+	 * Decodes a BASE64 encoded string that is known to be resonably well formatted.
+	 * The method is about twice as fast as {@link #decode2Bytes(String)}. The
+	 * preconditions are:<br>
+	 * + The array must have a line length of 76 chars OR no line separators at all
+	 * (one line).<br>
+	 * + Line separator must be "\r\n", as specified in RFC 2045 + The array must
+	 * not contain illegal characters within the encoded string<br>
+	 * + The array CAN have illegal characters at the beginning and end, those will
+	 * be dealt with appropriately.<br>
 	 * 
 	 * @param s
 	 *            The source string. Length 0 will return an empty array.
@@ -589,8 +588,7 @@ public class Base64 {
 		int d = 0;
 		for (int cc = 0, eLen = (len / 3) * 3; d < eLen;) {
 			// Assemble three bytes into an int from four "valid" characters.
-			int i = IA[s.charAt(sIx++)] << 18 | IA[s.charAt(sIx++)] << 12 | IA[s.charAt(sIx++)] << 6
-					| IA[s.charAt(sIx++)];
+			int i = IA[s.charAt(sIx++)] << 18 | IA[s.charAt(sIx++)] << 12 | IA[s.charAt(sIx++)] << 6 | IA[s.charAt(sIx++)];
 
 			// Add the bytes
 			dArr[d++] = (byte) (i >> 16);

@@ -55,13 +55,11 @@ public class SK_MetaData {
 	 * @param conn
 	 * @return
 	 */
-	public static List<Map<String, Object>> getTables(Connection conn,
-			String tableName) {
+	public static List<Map<String, Object>> getTables(Connection conn, String tableName) {
 		List<Map<String, Object>> tables = new ArrayList<Map<String, Object>>();
 		try {
 			DatabaseMetaData md = conn.getMetaData();
-			ResultSet rs = md.getTables(tableName, "", "",
-					new String[] { "TABLE" });
+			ResultSet rs = md.getTables(tableName, "", "", new String[] { "TABLE" });
 			while (rs.next()) {
 				tables.add(rsToMap(rs));
 			}
@@ -78,8 +76,7 @@ public class SK_MetaData {
 	 * @param tableName
 	 * @return
 	 */
-	public static List<Map<String, Object>> getColumns(Connection conn,
-			String tableName) {
+	public static List<Map<String, Object>> getColumns(Connection conn, String tableName) {
 		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
 		try {
 			DatabaseMetaData md = conn.getMetaData();
@@ -101,8 +98,7 @@ public class SK_MetaData {
 	 * @param tableName
 	 * @return
 	 */
-	public static List<Map<String, Object>> getExportedKeys(Connection conn,
-			String tableName) {
+	public static List<Map<String, Object>> getExportedKeys(Connection conn, String tableName) {
 		List<Map<String, Object>> exportedKeys = new ArrayList<Map<String, Object>>();
 		try {
 			DatabaseMetaData md = conn.getMetaData();
@@ -124,8 +120,7 @@ public class SK_MetaData {
 	 * @param tableName
 	 * @return
 	 */
-	public static List<Map<String, Object>> getImportedKeys(Connection conn,
-			String tableName) {
+	public static List<Map<String, Object>> getImportedKeys(Connection conn, String tableName) {
 		List<Map<String, Object>> exportedKeys = new ArrayList<Map<String, Object>>();
 		try {
 			DatabaseMetaData md = conn.getMetaData();
@@ -149,14 +144,12 @@ public class SK_MetaData {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static List<Map<String, Object>> getIndexs(Connection conn,
-			String tableName) {
+	public static List<Map<String, Object>> getIndexs(Connection conn, String tableName) {
 		List<Map<String, Object>> indexs = new ArrayList<Map<String, Object>>();
 		try {
 			DatabaseMetaData dmd = conn.getMetaData();
 			String databaseName = getDatabaseName(conn);
-			ResultSet rs = dmd.getIndexInfo(databaseName, "", tableName, false,
-					true);
+			ResultSet rs = dmd.getIndexInfo(databaseName, "", tableName, false, true);
 			while (rs.next()) {
 				indexs.add(rsToMap(rs));
 			}

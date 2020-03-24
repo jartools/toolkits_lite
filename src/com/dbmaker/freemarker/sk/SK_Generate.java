@@ -73,8 +73,7 @@ public class SK_Generate {
 	 *            是否配置文件数据[true是，false不是]
 	 * @throws Exception
 	 */
-	public static void run(DataSource ds, Class config, String path,
-			String cfgPath, boolean isConfig) throws Exception {
+	public static void run(DataSource ds, Class config, String path, String cfgPath, boolean isConfig) throws Exception {
 		run(ds, config, path, cfgPath, new SK_JdbcType(), isConfig);
 	}
 
@@ -93,26 +92,21 @@ public class SK_Generate {
 	 *            是否配置文件数据[true是，false不是]
 	 * @throws Exception
 	 */
-	public static void runByMySql(DataSource ds, Class config, String path,
-			String cfgPath, boolean isConfig) throws Exception {
+	public static void runByMySql(DataSource ds, Class config, String path, String cfgPath, boolean isConfig) throws Exception {
 		run(ds, config, path, cfgPath, new SK_MysqlType(), isConfig);
 	}
 
-	public static void run(DataSource ds, Class config, String path,
-			String cfgPath, SK_SqlTypeDecode sqlDecode, boolean isConfig)
-			throws Exception {
+	public static void run(DataSource ds, Class config, String path, String cfgPath, SK_SqlTypeDecode sqlDecode, boolean isConfig) throws Exception {
 		if (ds == null)
 			return;
 		run(ds.getConnection(), config, path, cfgPath, sqlDecode, isConfig);
 	}
 
-	public static void run(Connection conn, Class config, String path,
-			String cfgPath, boolean isConfig) {
+	public static void run(Connection conn, Class config, String path, String cfgPath, boolean isConfig) {
 		run(conn, config, path, cfgPath, new SK_JdbcType(), isConfig);
 	}
 
-	public static void run(Connection conn, Class config, String path,
-			String cfgPath, SK_SqlTypeDecode sqlDecode, boolean isConfig) {
+	public static void run(Connection conn, Class config, String path, String cfgPath, SK_SqlTypeDecode sqlDecode, boolean isConfig) {
 
 		if (cfgPath == null || "".equals(cfgPath.trim()))
 			cfg = getConfiguration();
@@ -125,29 +119,21 @@ public class SK_Generate {
 	}
 
 	// ================ 加载部分表的数据
-	public static void run(DataSource ds, Class config, String path,
-			String cfgPath, boolean isConfig, String... tableName)
-			throws Exception {
+	public static void run(DataSource ds, Class config, String path, String cfgPath, boolean isConfig, String... tableName) throws Exception {
 		run(ds, config, path, cfgPath, new SK_JdbcType(), isConfig, tableName);
 	}
 
-	public static void run(DataSource ds, Class config, String path,
-			String cfgPath, SK_SqlTypeDecode sqlDecode, boolean isConfig,
-			String... tableName) throws Exception {
+	public static void run(DataSource ds, Class config, String path, String cfgPath, SK_SqlTypeDecode sqlDecode, boolean isConfig, String... tableName) throws Exception {
 		if (ds == null)
 			return;
-		run(ds.getConnection(), config, path, cfgPath, sqlDecode, isConfig,
-				tableName);
+		run(ds.getConnection(), config, path, cfgPath, sqlDecode, isConfig, tableName);
 	}
 
-	public static void run(Connection conn, Class config, String path,
-			String cfgPath, boolean isConfig, String... tableName) {
+	public static void run(Connection conn, Class config, String path, String cfgPath, boolean isConfig, String... tableName) {
 		run(conn, config, path, cfgPath, new SK_JdbcType(), isConfig, tableName);
 	}
 
-	public static void run(Connection conn, Class config, String path,
-			String cfgPath, SK_SqlTypeDecode sqlDecode, boolean isConfig,
-			String... tableName) {
+	public static void run(Connection conn, Class config, String path, String cfgPath, SK_SqlTypeDecode sqlDecode, boolean isConfig, String... tableName) {
 
 		if (cfgPath == null || "".equals(cfgPath.trim()))
 			cfg = getConfiguration();
@@ -194,8 +180,7 @@ public class SK_Generate {
 	 * 
 	 * @param tableName
 	 */
-	private static void loadDtaabase(boolean isConfig, String path,
-			List<SK_ITable> tables) {
+	private static void loadDtaabase(boolean isConfig, String path, List<SK_ITable> tables) {
 		if (ListEx.isEmpty(tables))
 			return;
 
@@ -237,8 +222,7 @@ public class SK_Generate {
 	 * 
 	 * @param tableName
 	 */
-	private static void loadDtaabase(boolean isConfig, String path,
-			String... tableName) {
+	private static void loadDtaabase(boolean isConfig, String path, String... tableName) {
 		if (db == null)
 			return;
 		List<SK_ITable> tables = db.getTables(isConfig);
@@ -261,11 +245,9 @@ public class SK_Generate {
 		loadDtaabase(isConfig, path, tabs);
 	}
 
-	private static void writerBean(String fileName, Configuration cfg,
-			SK_ITable table) {
+	private static void writerBean(String fileName, Configuration cfg, SK_ITable table) {
 		String filePath = packageMap.get("bean") + "/" + fileName + ".java";
-		String packageName = packageMap.get("bean").replace("src/", "")
-				.replace("/", ".");
+		String packageName = packageMap.get("bean").replace("src/", "").replace("/", ".");
 		table.setPackageName(packageName);
 		try {
 			File file = FileRw.getFile(filePath);
@@ -276,11 +258,9 @@ public class SK_Generate {
 		}
 	}
 
-	private static void writerDao(String fileName, Configuration cfg,
-			SK_ITable table) {
+	private static void writerDao(String fileName, Configuration cfg, SK_ITable table) {
 		String filePath = packageMap.get("dao") + "/" + fileName + "Dao.java";
-		String packageName = packageMap.get("dao").replace("src/", "")
-				.replace("/", ".");
+		String packageName = packageMap.get("dao").replace("src/", "").replace("/", ".");
 		table.setPackageName(packageName);
 		try {
 			File file = FileRw.getFile(filePath);
@@ -291,12 +271,9 @@ public class SK_Generate {
 		}
 	}
 
-	private static void writerJedis(String fileName, Configuration cfg,
-			SK_ITable table) {
-		String filePath = packageMap.get("jedis") + "/" + fileName
-				+ "Jedis.java";
-		String packageName = packageMap.get("jedis").replace("src/", "")
-				.replace("/", ".");
+	private static void writerJedis(String fileName, Configuration cfg, SK_ITable table) {
+		String filePath = packageMap.get("jedis") + "/" + fileName + "Jedis.java";
+		String packageName = packageMap.get("jedis").replace("src/", "").replace("/", ".");
 		table.setPackageName(packageName);
 		try {
 			File file = FileRw.getFile(filePath);
@@ -307,12 +284,9 @@ public class SK_Generate {
 		}
 	}
 
-	private static void writerCache(String fileName, Configuration cfg,
-			SK_ITable table) {
-		String filePath = packageMap.get("cache") + "/" + fileName
-				+ "Cache.java";
-		String packageName = packageMap.get("cache").replace("src/", "")
-				.replace("/", ".");
+	private static void writerCache(String fileName, Configuration cfg, SK_ITable table) {
+		String filePath = packageMap.get("cache") + "/" + fileName + "Cache.java";
+		String packageName = packageMap.get("cache").replace("src/", "").replace("/", ".");
 		table.setPackageName(packageName);
 		try {
 			File file = FileRw.getFile(filePath);
@@ -323,11 +297,9 @@ public class SK_Generate {
 		}
 	}
 
-	private static void writerImp(String fileName, Configuration cfg,
-			SK_ITable table) {
+	private static void writerImp(String fileName, Configuration cfg, SK_ITable table) {
 		String filePath = packageMap.get("imp") + "/" + fileName + "Imp.java";
-		String packageName = packageMap.get("imp").replace("src/", "")
-				.replace("/", ".");
+		String packageName = packageMap.get("imp").replace("src/", "").replace("/", ".");
 		table.setPackageName(packageName);
 		// 此处特殊，不用重写Imp类
 		File file = new File(filePath);
@@ -345,11 +317,9 @@ public class SK_Generate {
 		}
 	}
 
-	private static void writerCfg(String fileName, Configuration cfg,
-			SK_ITable table) {
+	private static void writerCfg(String fileName, Configuration cfg, SK_ITable table) {
 		String filePath = packageMap.get("cfg") + "/" + fileName + "Cfg.java";
-		String packageName = packageMap.get("cfg").replace("src/", "")
-				.replace("/", ".");
+		String packageName = packageMap.get("cfg").replace("src/", "").replace("/", ".");
 		table.setPackageName(packageName);
 		try {
 			File file = FileRw.getFile(filePath);
@@ -360,8 +330,7 @@ public class SK_Generate {
 		}
 	}
 
-	private static void writerCfgLoad(String path, Configuration cfg,
-			List<SK_ITable> tables) {
+	private static void writerCfgLoad(String path, Configuration cfg, List<SK_ITable> tables) {
 		String filePath = path + "/ConfigLoad.java";
 		String packageName = path.replace("src/", "").replace("/", ".");
 		SK_Cfg skCfg = new SK_Cfg("ConfigLoad", packageName, tables);
@@ -374,8 +343,7 @@ public class SK_Generate {
 		}
 	}
 
-	private static void writerDbSave(String path, Configuration cfg,
-			List<SK_ITable> tables) {
+	private static void writerDbSave(String path, Configuration cfg, List<SK_ITable> tables) {
 		String filePath = path + "/DbSave.java";
 		String packageName = path.replace("src/", "").replace("/", ".");
 		SK_Cfg skCfg = new SK_Cfg("DbSave", packageName, tables);
@@ -388,8 +356,7 @@ public class SK_Generate {
 		}
 	}
 
-	private static void writerCfgDBCache(String path, Configuration cfg,
-			List<SK_ITable> tables) {
+	private static void writerCfgDBCache(String path, Configuration cfg, List<SK_ITable> tables) {
 		String filePath = path + "/CfgDbCache.java";
 		String packageName = path.replace("src/", "").replace("/", ".");
 		SK_Cfg skCfg = new SK_Cfg("CfgDbCache", packageName, tables);
@@ -426,30 +393,22 @@ public class SK_Generate {
 	}
 
 	// ========================== 新增添加 redis 缓存的清除
-	public static void runJedisCacheClear(DataSource ds, Class config,
-			String path, String cfgPath, String... tableName) throws Exception {
-		runJedisCacheClear(ds, config, path, cfgPath, new SK_JdbcType(),
-				tableName);
+	public static void runJedisCacheClear(DataSource ds, Class config, String path, String cfgPath, String... tableName) throws Exception {
+		runJedisCacheClear(ds, config, path, cfgPath, new SK_JdbcType(), tableName);
 	}
 
-	public static void runJedisCacheClear(DataSource ds, Class config,
-			String path, String cfgPath, SK_SqlTypeDecode sqlDecode,
-			String... tableName) throws Exception {
+	public static void runJedisCacheClear(DataSource ds, Class config, String path, String cfgPath, SK_SqlTypeDecode sqlDecode, String... tableName) throws Exception {
 		if (ds == null)
 			return;
 		Connection conn = ds.getConnection();
 		runJedisCacheClear(conn, config, path, cfgPath, sqlDecode, tableName);
 	}
 
-	public static void runJedisCacheClear(Connection conn, Class config,
-			String path, String cfgPath, String... tableName) {
-		runJedisCacheClear(conn, config, path, cfgPath, new SK_JdbcType(),
-				tableName);
+	public static void runJedisCacheClear(Connection conn, Class config, String path, String cfgPath, String... tableName) {
+		runJedisCacheClear(conn, config, path, cfgPath, new SK_JdbcType(), tableName);
 	}
 
-	public static void runJedisCacheClear(Connection conn, Class config,
-			String path, String cfgPath, SK_SqlTypeDecode sqlDecode,
-			String... tableName) {
+	public static void runJedisCacheClear(Connection conn, Class config, String path, String cfgPath, SK_SqlTypeDecode sqlDecode, String... tableName) {
 
 		if (cfgPath == null || "".equals(cfgPath.trim()))
 			cfg = getConfiguration();
@@ -463,8 +422,7 @@ public class SK_Generate {
 		jedisCacheClear(isConfig, path, tableName);
 	}
 
-	static private void jedisCacheClear(boolean isConfig, String path,
-			String... tableName) {
+	static private void jedisCacheClear(boolean isConfig, String path, String... tableName) {
 		if (db == null)
 			return;
 		List<SK_ITable> tables = db.getTables(isConfig);
@@ -498,12 +456,9 @@ public class SK_Generate {
 		completeInfo();
 	}
 
-	private static void writerCacheClear(String fileName, Configuration cfg,
-			SK_ITable table) {
-		String filePath = packageMap.get("cache") + "/" + fileName
-				+ "Cache.java";
-		String packageName = packageMap.get("cache").replace("src/", "")
-				.replace("/", ".");
+	private static void writerCacheClear(String fileName, Configuration cfg, SK_ITable table) {
+		String filePath = packageMap.get("cache") + "/" + fileName + "Cache.java";
+		String packageName = packageMap.get("cache").replace("src/", "").replace("/", ".");
 		table.setPackageName(packageName);
 		try {
 			File file = FileRw.getFile(filePath);

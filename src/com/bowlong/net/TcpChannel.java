@@ -10,7 +10,7 @@ public interface TcpChannel {
 	// public T attachment();
 	//
 	// public void setAttachment(T attach);
-	
+
 	public void close();
 
 	public void send(Map map) throws Exception;

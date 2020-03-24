@@ -12,10 +12,10 @@ public @interface B2Class {
 	String remark() default "";
 
 	boolean isXls() default true; // [true:表示excel的后缀名为xls,false:表示excel的后缀名为xlsx]
-	
+
 	String sheetName() default "";
-	
-	String sheetCName() default ""; //根据sheet创建Class
+
+	String sheetCName() default ""; // 根据sheet创建Class
 
 	String sheetType() default B2G.SHEET_NONE; // "", Sheet, SheetRow
 

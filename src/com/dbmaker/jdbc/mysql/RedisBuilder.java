@@ -13,9 +13,8 @@ import com.bowlong.sql.SqlEx;
 import com.bowlong.util.StrBuilder;
 
 public class RedisBuilder extends ExToolkit {
-	public static String build(Connection conn, ResultSet rs, String pkg,
-			String appContext, boolean batch, boolean sorted) throws Exception {
-//		StringBuffer sb = new StringBuffer();
+	public static String build(Connection conn, ResultSet rs, String pkg, String appContext, boolean batch, boolean sorted) throws Exception {
+		// StringBuffer sb = new StringBuffer();
 		StrBuilder sb = new StrBuilder();
 
 		ResultSetMetaData rsmd = rs.getMetaData();
@@ -24,8 +23,8 @@ public class RedisBuilder extends ExToolkit {
 		String tb = (String) columns.get(0).get("tableName");
 		String tbEn = PinYin.getShortPinYin(tb);
 		String tbUEn = StrEx.upperN1(tbEn);
-//		Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(conn,
-//				table);
+		// Map<String, List<Map<String, Object>>> indexs = SqlEx.getIndexs(conn,
+		// table);
 		String priKey = BeanBuilder.primaryKey(rsmd, columns);
 		String priUKey = StrEx.upperN1(priKey);
 		String priKeyType = JTypeMysql.getType(rsmd, priKey);
@@ -52,9 +51,9 @@ public class RedisBuilder extends ExToolkit {
 		sb.pn("import com.bowlong.third.redis.*;");
 		sb.pn("import ${1}.bean.*;", pkg);
 		sb.pn("import ${1}.dao.*;", pkg);
-//		sb.pn("import ${1}.entity.*;", pkg);
+		// sb.pn("import ${1}.entity.*;", pkg);
 		sb.pn("import ${1};", appContext);
-		
+
 		sb.pn("import static ${1}.bean.${2}._key;", pkg, tbUEn);
 
 		sb.pn("");
@@ -91,7 +90,7 @@ public class RedisBuilder extends ExToolkit {
 		sb.pn("    }");
 		sb.pn("");
 		sb.pn("    ////////////////////////////////");
-		sb.pn("    public static ${1} insert(final ${1} ${2}) throws Exception {",tbUEn, tbEn);
+		sb.pn("    public static ${1} insert(final ${1} ${2}) throws Exception {", tbUEn, tbEn);
 		sb.pn("        // insert to db");
 		sb.pn("        final int ${1} = DAO().insert(${2});", priKey, tbEn);
 		sb.pn("        if (${1} <= 0)", priKey);
@@ -102,7 +101,7 @@ public class RedisBuilder extends ExToolkit {
 		sb.pn("        return ${1};", tbEn);
 		sb.pn("    }");
 		sb.pn("");
-		sb.pn("    public static FutureTask<${1}> insert2(final ${1} ${2}) throws Exception {",tbUEn, tbEn);
+		sb.pn("    public static FutureTask<${1}> insert2(final ${1} ${2}) throws Exception {", tbUEn, tbEn);
 		sb.pn("        FutureTask f = async(ES(), new CallableForObject() {");
 		sb.pn("            public Object exec() throws Exception {");
 		sb.pn("                return insert(${1});", tbEn);
@@ -121,7 +120,7 @@ public class RedisBuilder extends ExToolkit {
 		sb.pn("        return ${1};", tbEn);
 		sb.pn("    }");
 		sb.pn("");
-		
+
 		sb.pn("    public static FutureTask<${1}> get2(final ${2} ${3}) {", tbUEn, pkBType, priKey);
 		sb.pn("        FutureTask f = async(new CallableForObject() {");
 		sb.pn("            public Object exec() throws Exception {");
@@ -322,25 +321,26 @@ public class RedisBuilder extends ExToolkit {
 		sb.pn("        String key = _key(id);");
 		sb.pn("        CACHE().expire(key, seconds);");
 		sb.pn("    }");
-//		sb.pn("    public static final void expire2(final int id, final int seconds) {");
-//		sb.pn("        async(new CallableExcept() {");
-//		sb.pn("            public void exec() throws Exception {");
-//		sb.pn("                expire(id, seconds);");
-//		sb.pn("            }");
-//		sb.pn("        });");
-//		sb.pn("    }");
+		// sb.pn(" public static final void expire2(final int id, final int seconds)
+		// {");
+		// sb.pn(" async(new CallableExcept() {");
+		// sb.pn(" public void exec() throws Exception {");
+		// sb.pn(" expire(id, seconds);");
+		// sb.pn(" }");
+		// sb.pn(" });");
+		// sb.pn(" }");
 		sb.pn("    public static final void expire(int id, Date dat2) {");
 		sb.pn("        NewDate dat = new NewDate();");
 		sb.pn("        int seconds = (int) (dat.difference(dat2) / 1000);");
 		sb.pn("        expire(id, seconds);");
 		sb.pn("    }");
-//		sb.pn("    public static final void expire2(final int id, final Date dat2) {");
-//		sb.pn("        async(new CallableExcept() {");
-//		sb.pn("            public void exec() throws Exception {");
-//		sb.pn("                expire(id, dat2);");
-//		sb.pn("            }");
-//		sb.pn("        });");
-//		sb.pn("    }");
+		// sb.pn(" public static final void expire2(final int id, final Date dat2) {");
+		// sb.pn(" async(new CallableExcept() {");
+		// sb.pn(" public void exec() throws Exception {");
+		// sb.pn(" expire(id, dat2);");
+		// sb.pn(" }");
+		// sb.pn(" });");
+		// sb.pn(" }");
 		sb.pn("    public static boolean exists(final ${1} id) {", pkBType);
 		sb.pn("        if(id <= 0) return false;", tbUEn);
 		sb.pn("        String key = _key(id);");

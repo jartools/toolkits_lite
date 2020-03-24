@@ -14,6 +14,7 @@ import com.bowlong.objpool.ByteOutPool;
 
 public class Encrypt {
 	private static final int KEY_LENGTH = 4;
+
 	/**
 	 * XOR
 	 * 
@@ -110,8 +111,7 @@ public class Encrypt {
 		os.write(v);
 	}
 
-	private static void writeValue(OutputStream os, byte[] v)
-			throws IOException {
+	private static void writeValue(OutputStream os, byte[] v) throws IOException {
 		NumEx.writeShort(os, (short) v.length);
 		os.write(v);
 	}

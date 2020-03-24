@@ -32,8 +32,7 @@ public class Excel2ProtoGen {
 		System.exit(1);
 	}
 
-	public static void proto(String xlsx, String packageName, String namespace,
-			String clazzName, String path) throws Exception {
+	public static void proto(String xlsx, String packageName, String namespace, String clazzName, String path) throws Exception {
 		File fp = new File(xlsx);
 		if (!fp.exists()) {
 			System.out.println("fp not exists");
@@ -81,13 +80,11 @@ public class Excel2ProtoGen {
 		doSheet(sheet, sb, scnam, 0, null);
 	}
 
-	public static void doSheet(XSSFSheet sheet, StrBuilder sb, String scname,
-			int row, List<String> attrList) {
+	public static void doSheet(XSSFSheet sheet, StrBuilder sb, String scname, int row, List<String> attrList) {
 		String sname = sheet.getSheetName();
 		scname = StrN(scname);
 		sb.pn("");
-		sb.pn("    @B2Class(type = DATA, sheetType = SHEET_ROW, remark = $[1],isXls = false)",
-				sname);
+		sb.pn("    @B2Class(type = DATA, sheetType = SHEET_ROW, remark = $[1],isXls = false)", sname);
 		sb.pn("    class ${1} {", scname);
 
 		if (row <= 0)
@@ -126,19 +123,17 @@ public class Excel2ProtoGen {
 			}
 
 			if (isReadSome)
-				sb.pn("        @B2Field(remark = \"${1}\",column=\"${2}\")",
-						comment, col);
+				sb.pn("        @B2Field(remark = \"${1}\",column=\"${2}\")", comment, col);
 			else
 				sb.pn("        @B2Field(remark = \"${1}\")", comment);
 			sb.pn("        public ${1} ${2};", ctype, cname);
-			// sb.pn("        public ${1} ${2}; // $[3]", ctype, cname,
+			// sb.pn(" public ${1} ${2}; // $[3]", ctype, cname,
 			// comment);
 		}
 
 		sb.pn("    }");
 		sb.pn("");
-		sb.pn("    @B2Class(type = DATA, sheetName=$[1],sheetCName=$[3], sheetType = SHEET, remark = $[2],isXls = false)",
-				sname, scname + "s", scname);
+		sb.pn("    @B2Class(type = DATA, sheetName=$[1],sheetCName=$[3], sheetType = SHEET, remark = $[2],isXls = false)", sname, scname + "s", scname);
 		sb.pn("    class ${1}s {", scname);
 		sb.pn("        public List<${1}> datas;", scname);
 		sb.pn("    }");
@@ -167,9 +162,7 @@ public class Excel2ProtoGen {
 	}
 
 	public static void writeFile(String f, String str) {
-		try (FileOutputStream out = new FileOutputStream(new File(f));
-				OutputStreamWriter osw = new OutputStreamWriter(out,
-						Charset.forName("UTF8"));) {
+		try (FileOutputStream out = new FileOutputStream(new File(f)); OutputStreamWriter osw = new OutputStreamWriter(out, Charset.forName("UTF8"));) {
 			osw.write(str, 0, str.length());
 			osw.flush();
 			out.close();

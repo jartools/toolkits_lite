@@ -30,8 +30,7 @@ public class Excel2Pb {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void proto(String xls, List<String> fileNames)
-			throws Exception {
+	public static void proto(String xls, List<String> fileNames) throws Exception {
 		FileInputStream stream = new FileInputStream(xls);
 		HSSFWorkbook wb = new HSSFWorkbook(stream);
 
@@ -68,7 +67,7 @@ public class Excel2Pb {
 	static Map<String, String> getMD5Map(HSSFWorkbook wb) throws Exception {
 		Map<String, String> md5Map = new HashMap<String, String>();
 		// === 读取文件
-		//md5Map.put(DBCFCfgs.sheetName, DBCFCfgs(wb));
+		// md5Map.put(DBCFCfgs.sheetName, DBCFCfgs(wb));
 		return md5Map;
 	}
 
@@ -81,7 +80,7 @@ public class Excel2Pb {
 	// System.out.println(fp + " \t " + ret.datas.size());
 	// return MD5.MD5Encode(ret.toString());
 	// }
-	
+
 	public static void writeFile(File f, byte[] buff) {
 		try (FileOutputStream fos = new FileOutputStream(f);) {
 			fos.write(buff);

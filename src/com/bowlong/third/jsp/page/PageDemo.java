@@ -15,15 +15,13 @@ public class PageDemo extends APage<String> {
 	}
 
 	@Override
-	public List<String> getList(Map<String, Object> params, int page,
-			int pageSize) {
+	public List<String> getList(Map<String, Object> params, int page, int pageSize) {
 		// 取得列表
 		return new ArrayList<String>();
 	}
 
 	@Override
-	public PageEnt<String> getPage(Map<String, Object> params, int page,
-			int pageSize) {
+	public PageEnt<String> getPage(Map<String, Object> params, int page, int pageSize) {
 		int totalRecords = countAll(params);
 		List<String> pagelist = getList(params, page, pageSize);
 		pagelist = null;

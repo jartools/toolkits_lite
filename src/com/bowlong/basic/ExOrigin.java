@@ -266,7 +266,7 @@ public class ExOrigin extends EOZip {
 			return newListT();
 		return v.subList(begin, end);
 	}
-	
+
 	static public final <T> List<T> getPage(List<T> v, int page, int pageSize) {
 		return getPage(v, (long) page, (long) pageSize);
 	}

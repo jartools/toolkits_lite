@@ -45,8 +45,7 @@ public class ExportXls {
 	 * @param pattern
 	 *            如果有时间数据，设定输出格式。默认为"yyy-MM-dd"
 	 */
-	static public <T> void exportExcel(String title, String[] headers,
-			Collection<T> dataset, OutputStream out, String pattern) {
+	static public <T> void exportExcel(String title, String[] headers, Collection<T> dataset, OutputStream out, String pattern) {
 		// 声明一个工作薄
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		// 生成一个表格
@@ -89,8 +88,7 @@ public class ExportXls {
 		// 声明一个画图的顶级管理器
 		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 		// 定义注释的大小和位置,详见文档
-		HSSFComment comment = patriarch.createComment(new HSSFClientAnchor(0,
-				0, 0, 0, (short) 4, 2, (short) 6, 5));
+		HSSFComment comment = patriarch.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short) 4, 2, (short) 6, 5));
 		// 设置注释内容
 		comment.setString(new HSSFRichTextString("可以在POI中添加注释！"));
 		// 设置注释作者，当鼠标移动到单元格上是可以在状态栏中看到该内容.
@@ -119,13 +117,10 @@ public class ExportXls {
 				cell.setCellStyle(style2);
 				Field field = fields[i];
 				String fieldName = field.getName();
-				String getMethodName = "get"
-						+ fieldName.substring(0, 1).toUpperCase()
-						+ fieldName.substring(1);
+				String getMethodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 				try {
 					Class tCls = t.getClass();
-					Method getMethod = tCls.getMethod(getMethodName,
-							new Class[] {});
+					Method getMethod = tCls.getMethod(getMethodName, new Class[] {});
 					Object value = getMethod.invoke(t, new Object[] {});
 					// 判断值的类型后进行强制类型转换
 					String textValue = null;
@@ -160,11 +155,9 @@ public class ExportXls {
 						sheet.setColumnWidth(i, (short) (35.7 * 80));
 						// sheet.autoSizeColumn(i);
 						byte[] bsValue = (byte[]) value;
-						HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0,
-								1023, 255, (short) 6, index, (short) 6, index);
+						HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 1023, 255, (short) 6, index, (short) 6, index);
 						anchor.setAnchorType(2);
-						patriarch.createPicture(anchor, workbook.addPicture(
-								bsValue, HSSFWorkbook.PICTURE_TYPE_JPEG));
+						patriarch.createPicture(anchor, workbook.addPicture(bsValue, HSSFWorkbook.PICTURE_TYPE_JPEG));
 					} else {
 						// 其它数据类型都当作字符串简单处理
 						textValue = value.toString();
@@ -177,8 +170,7 @@ public class ExportXls {
 							// 是数字当作double处理
 							cell.setCellValue(Double.parseDouble(textValue));
 						} else {
-							HSSFRichTextString richString = new HSSFRichTextString(
-									textValue);
+							HSSFRichTextString richString = new HSSFRichTextString(textValue);
 							HSSFFont font3 = workbook.createFont();
 							font3.setColor(HSSFColor.BLUE.index);
 							richString.applyFont(font3);
@@ -268,8 +260,7 @@ public class ExportXls {
 				int index = (i - staticNum);
 				HSSFCell cell = row.createCell(index);
 				cell.setCellStyle(style);
-				HSSFRichTextString text = new HSSFRichTextString(
-						field.getName());
+				HSSFRichTextString text = new HSSFRichTextString(field.getName());
 				cell.setCellValue(text);
 			}
 		}
@@ -325,9 +316,7 @@ public class ExportXls {
 	}
 
 	/*** 导出excel 有头部，所属字段,字段类型，值 **/
-	static public <T> void exportExcel4HeadFieldType(String title,
-			String[] headers, Collection<T> dataset, OutputStream out,
-			String pattern) {
+	static public <T> void exportExcel4HeadFieldType(String title, String[] headers, Collection<T> dataset, OutputStream out, String pattern) {
 		// 声明一个工作薄
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		// 生成一个表格
@@ -361,8 +350,7 @@ public class ExportXls {
 			// 声明一个画图的顶级管理器
 			HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 			// 定义注释的大小和位置,详见文档
-			HSSFComment comment = patriarch.createComment(new HSSFClientAnchor(
-					0, 0, 0, 0, (short) 4, 2, (short) 6, 5));
+			HSSFComment comment = patriarch.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short) 4, 2, (short) 6, 5));
 			// 设置注释内容
 			comment.setString(new HSSFRichTextString("可以在POI中添加注释！"));
 			// 设置注释作者，当鼠标移动到单元格上是可以在状态栏中看到该内容.
@@ -394,14 +382,11 @@ public class ExportXls {
 					cell.setCellStyle(style2);
 
 					String fieldName = field.getName();
-					String getMethodName = "get"
-							+ fieldName.substring(0, 1).toUpperCase()
-							+ fieldName.substring(1);
+					String getMethodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 
 					try {
 						Class tCls = t.getClass();
-						Method getMethod = tCls.getMethod(getMethodName,
-								new Class[] {});
+						Method getMethod = tCls.getMethod(getMethodName, new Class[] {});
 						Object value = getMethod.invoke(t, new Object[] {});
 						// 判断值的类型后进行强制类型转换
 						String textValue = null;
@@ -420,13 +405,9 @@ public class ExportXls {
 							sheet.setColumnWidth(i, (short) (35.7 * 80));
 							// sheet.autoSizeColumn(i);
 							byte[] bsValue = (byte[]) value;
-							HSSFClientAnchor anchor = new HSSFClientAnchor(0,
-									0, 1023, 255, (short) 6, index, (short) 6,
-									index);
+							HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 1023, 255, (short) 6, index, (short) 6, index);
 							anchor.setAnchorType(2);
-							patriarch.createPicture(anchor, workbook
-									.addPicture(bsValue,
-											HSSFWorkbook.PICTURE_TYPE_JPEG));
+							patriarch.createPicture(anchor, workbook.addPicture(bsValue, HSSFWorkbook.PICTURE_TYPE_JPEG));
 						} else {
 							// 其它数据类型都当作字符串简单处理
 							textValue = value.toString();
@@ -439,8 +420,7 @@ public class ExportXls {
 								// 是数字当作double处理
 								cell.setCellValue(Double.parseDouble(textValue));
 							} else {
-								HSSFRichTextString richString = new HSSFRichTextString(
-										textValue);
+								HSSFRichTextString richString = new HSSFRichTextString(textValue);
 								HSSFFont font3 = workbook.createFont();
 								font3.setColor(HSSFColor.BLUE.index);
 								richString.applyFont(font3);

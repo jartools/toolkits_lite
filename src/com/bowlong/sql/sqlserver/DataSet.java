@@ -114,11 +114,14 @@ public class DataSet extends JdbcTemplet {
 	// sb.append("SELECT TOP ").append(num).append(" * FROM ").append(TABLENAME);
 	// if (c != null && !c.isEmpty()) {
 	// sb.append(" WHERE (").append(c).append(") AND ( ")
-	// .append(idKey).append(" NOT IN (SELECT TOP ").append(begin).append(" ").append(idKey).append(" FROM ")
-	// .append(TABLENAME).append(" WHERE (").append(c).append(") ORDER BY ").append(idKey).append("))");
+	// .append(idKey).append(" NOT IN (SELECT TOP ").append(begin).append("
+	// ").append(idKey).append(" FROM ")
+	// .append(TABLENAME).append(" WHERE (").append(c).append(") ORDER BY
+	// ").append(idKey).append("))");
 	// } else {
 	// sb.append(" WHERE ( ")
-	// .append(idKey).append(" NOT IN (SELECT TOP ").append(begin).append(" ").append(idKey).append(" FROM ")
+	// .append(idKey).append(" NOT IN (SELECT TOP ").append(begin).append("
+	// ").append(idKey).append(" FROM ")
 	// .append(TABLENAME).append(" ORDER BY ").append(idKey).append("))");
 	// }
 	// sb.append(" ORDER BY ").append(idKey);
@@ -126,24 +129,15 @@ public class DataSet extends JdbcTemplet {
 	// return super.queryForList(sql);
 	// }
 
-	public List<Map<String, Object>> queryForList4C(String c, String idKey, int begin, int num)
-			throws SQLException {
+	public List<Map<String, Object>> queryForList4C(String c, String idKey, int begin, int num) throws SQLException {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
-			sb.append("SELECT TOP ").append(num).append(" * FROM ")
-					.append(TABLENAME);
+			sb.append("SELECT TOP ").append(num).append(" * FROM ").append(TABLENAME);
 			if (c != null && !c.isEmpty()) {
-				sb.append(" WHERE (").append(c).append(") AND (").append(idKey)
-						.append(" > SELECT MAX(").append(idKey)
-						.append(") FROM (SELECT TOP ").append(begin)
-						.append(" ").append(idKey).append(" FROM ")
-						.append(TABLENAME).append(" WHERE (").append(c)
-						.append(") ORDER BY ").append(idKey).append(") AS T)");
+				sb.append(" WHERE (").append(c).append(") AND (").append(idKey).append(" > SELECT MAX(").append(idKey).append(") FROM (SELECT TOP ").append(begin).append(" ").append(idKey)
+						.append(" FROM ").append(TABLENAME).append(" WHERE (").append(c).append(") ORDER BY ").append(idKey).append(") AS T)");
 			} else {
-				sb.append(" WHERE (").append(idKey).append(" > SELECT MAX(")
-						.append(idKey).append(") FROM (SELECT TOP ")
-						.append(begin).append(" ").append(idKey)
-						.append(" FROM ").append(TABLENAME)
+				sb.append(" WHERE (").append(idKey).append(" > SELECT MAX(").append(idKey).append(") FROM (SELECT TOP ").append(begin).append(" ").append(idKey).append(" FROM ").append(TABLENAME)
 						.append(" ORDER BY ").append(idKey).append(") AS T)");
 			}
 			sb.append(" ORDER BY ").append(idKey);
@@ -160,11 +154,14 @@ public class DataSet extends JdbcTemplet {
 	// sb.append("SELECT TOP ").append(num).append(" * FROM ").append(TABLENAME);
 	// if (c != null && !c.isEmpty()) {
 	// sb.append(" WHERE (").append(c).append(") AND ( ")
-	// .append(idKey).append(" NOT IN (SELECT TOP ").append(begin).append(" ").append(idKey).append(" FROM ")
-	// .append(TABLENAME).append(" WHERE (").append(c).append(") ORDER BY ").append(idKey).append("))");
+	// .append(idKey).append(" NOT IN (SELECT TOP ").append(begin).append("
+	// ").append(idKey).append(" FROM ")
+	// .append(TABLENAME).append(" WHERE (").append(c).append(") ORDER BY
+	// ").append(idKey).append("))");
 	// } else {
 	// sb.append(" WHERE ( ")
-	// .append(idKey).append(" NOT IN (SELECT TOP ").append(begin).append(" ").append(idKey).append(" FROM ")
+	// .append(idKey).append(" NOT IN (SELECT TOP ").append(begin).append("
+	// ").append(idKey).append(" FROM ")
 	// .append(TABLENAME).append(" ORDER BY ").append(idKey).append("))");
 	// }
 	// sb.append(" ORDER BY ").append(idKey);
@@ -172,24 +169,15 @@ public class DataSet extends JdbcTemplet {
 	// return super.queryForList(sql, c2);
 	// }
 
-	public <T> List<T> queryForList4C(String c, String idKey, Class c2,
-			int begin, int num) throws Exception {
+	public <T> List<T> queryForList4C(String c, String idKey, Class c2, int begin, int num) throws Exception {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
-			sb.append("SELECT TOP ").append(num).append(" * FROM ")
-					.append(TABLENAME);
+			sb.append("SELECT TOP ").append(num).append(" * FROM ").append(TABLENAME);
 			if (c != null && !c.isEmpty()) {
-				sb.append(" WHERE (").append(c).append(") AND ( ")
-						.append(idKey).append(" > SELECT MAX(").append(idKey)
-						.append(") FROM (SELECT TOP ").append(begin)
-						.append(" ").append(idKey).append(" FROM ")
-						.append(TABLENAME).append(" WHERE (").append(c)
-						.append(") ORDER BY ").append(idKey).append(") AS T)");
+				sb.append(" WHERE (").append(c).append(") AND ( ").append(idKey).append(" > SELECT MAX(").append(idKey).append(") FROM (SELECT TOP ").append(begin).append(" ").append(idKey)
+						.append(" FROM ").append(TABLENAME).append(" WHERE (").append(c).append(") ORDER BY ").append(idKey).append(") AS T)");
 			} else {
-				sb.append(" WHERE (").append(idKey).append(" > SELECT MAX(")
-						.append(idKey).append(") FROM (SELECT TOP ")
-						.append(begin).append(" ").append(idKey)
-						.append(" FROM ").append(TABLENAME)
+				sb.append(" WHERE (").append(idKey).append(" > SELECT MAX(").append(idKey).append(") FROM (SELECT TOP ").append(begin).append(" ").append(idKey).append(" FROM ").append(TABLENAME)
 						.append(" ORDER BY ").append(idKey).append(") AS T)");
 			}
 			sb.append(" ORDER BY ").append(idKey);
@@ -200,13 +188,11 @@ public class DataSet extends JdbcTemplet {
 		}
 	}
 
-	public List<Map> queryForList4C(String idKey, int begin, int num)
-			throws SQLException {
+	public List<Map> queryForList4C(String idKey, int begin, int num) throws SQLException {
 		return queryForList4C("", begin, num);
 	}
 
-	public <T> List<T> queryForList4C(String idKey, Class c2, int begin, int num)
-			throws Exception {
+	public <T> List<T> queryForList4C(String idKey, Class c2, int begin, int num) throws Exception {
 		return queryForList4C("", idKey, c2, begin, num);
 	}
 

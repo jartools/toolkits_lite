@@ -194,8 +194,7 @@ public class NameRndEx extends ExOrigin {
 			return r;
 		}
 
-		static public void init(boolean isEn, String pathBeg, String pathEnd, List<String> first, List<String> second,
-				List<String> three) {
+		static public void init(boolean isEn, String pathBeg, String pathEnd, List<String> first, List<String> second, List<String> three) {
 			// ============ 第一个名字
 			String fisrtName = FileRw.readStr(pathBeg);
 			String[] fnes = fisrtName.split("\r");

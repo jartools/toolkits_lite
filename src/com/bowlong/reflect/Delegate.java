@@ -32,8 +32,7 @@ public class Delegate {
 		initEntity();
 	}
 
-	public Delegate(Class<?> c, String method, Class<?>[] paramsType,
-			Object[] params) {
+	public Delegate(Class<?> c, String method, Class<?>[] paramsType, Object[] params) {
 		this.c = c;
 		initEntity();
 		resetInvoke(method, paramsType, params);
@@ -46,8 +45,7 @@ public class Delegate {
 	}
 
 	/*** 重新初始化 ***/
-	public void resetInvoke(Class<?> c, String method, Class<?>[] paramsType,
-			Object[] params) {
+	public void resetInvoke(Class<?> c, String method, Class<?>[] paramsType, Object[] params) {
 		if (c == null)
 			return;
 
@@ -71,8 +69,7 @@ public class Delegate {
 		}
 	}
 
-	public void resetInvoke(String method, Class<?>[] paramsType,
-			Object[] params) {
+	public void resetInvoke(String method, Class<?>[] paramsType, Object[] params) {
 		this.resetInvoke(c, method, paramsType, params);
 	}
 
@@ -127,8 +124,7 @@ public class Delegate {
 		}
 	}
 
-	public Object invokeExce(Class<?> c, String method, boolean isStatic,
-			Class<?>[] paramsType, Object[] params) {
+	public Object invokeExce(Class<?> c, String method, boolean isStatic, Class<?>[] paramsType, Object[] params) {
 		try {
 			this.resetInvoke(c, method, paramsType, params);
 			return this.invoke(isStatic);
@@ -137,16 +133,14 @@ public class Delegate {
 		}
 	}
 
-	public Object invokeExce(String method, boolean isStatic,
-			Class<?>[] paramsType, Object[] params) {
+	public Object invokeExce(String method, boolean isStatic, Class<?>[] paramsType, Object[] params) {
 		return invokeExce(this.c, method, isStatic, paramsType, params);
 	}
 
 	static public final Delegate delegate = new Delegate(Delegate.class);
 
 	/*** 静态方法 **/
-	static public final Object invoken(Class<?> c, String method,
-			boolean isStatic, Class<?>[] paramsType, Object[] params) {
+	static public final Object invoken(Class<?> c, String method, boolean isStatic, Class<?>[] paramsType, Object[] params) {
 		try {
 			return delegate.invokeExce(c, method, isStatic, paramsType, params);
 		} catch (Exception e) {
@@ -200,8 +194,7 @@ class DelTest {
 	public static void main(String[] args) throws Exception {
 		Delegate del = new Delegate(DelTest.class);
 		del.invokeExce("say", false, null, null);
-		del.invokeExce("say", false, new Class<?>[] { String.class },
-				new Object[] { "12" });
+		del.invokeExce("say", false, new Class<?>[] { String.class }, new Object[] { "12" });
 
 		// 这个私有方法不能被执行,会抛出异常
 		del.invokeExce("sayPrivate", false, null, null);
@@ -212,8 +205,7 @@ class DelTest {
 		int sp1 = (int) del.invokeExce("retVal", true, null, null);
 		System.out.println(sp1);
 
-		sp1 = (int) del.invokeExce("retVal", true,
-				new Class<?>[] { int.class }, new Object[] { 19 });
+		sp1 = (int) del.invokeExce("retVal", true, new Class<?>[] { int.class }, new Object[] { 19 });
 		System.out.println(sp1);
 
 		sp1 = (int) del.invokeExce("retValDef", true, null, null);

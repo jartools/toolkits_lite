@@ -14,8 +14,7 @@ import com.bowlong.util.NewMap;
 public class PinYin {
 	static private final PinYin py = new PinYin();
 	private static NewMap<String, String> p = null;
-	private static LRUCache<String, Object> cache = new LRUCache<String, Object>(
-			128);
+	private static LRUCache<String, Object> cache = new LRUCache<String, Object>(128);
 
 	private PinYin() {
 		reloadPy();
@@ -99,8 +98,7 @@ public class PinYin {
 			List<String> r = getPy(s);
 			for (String v : r) {
 				if (v != null && v.length() > 1) {
-					sb.append(v.substring(0, 1).toUpperCase()
-							+ v.substring(1, v.length()));
+					sb.append(v.substring(0, 1).toUpperCase() + v.substring(1, v.length()));
 				}
 			}
 
@@ -163,8 +161,7 @@ public class PinYin {
 
 		String ret = getShortPinYin(s);
 		if (ret != null && ret.length() > 1) {
-			ret = ret.substring(0, 1).toUpperCase()
-					+ ret.substring(1, ret.length());
+			ret = ret.substring(0, 1).toUpperCase() + ret.substring(1, ret.length());
 		}
 
 		cache.put(_key, ret);
@@ -236,8 +233,7 @@ public class PinYin {
 		if (rail.equals("00")) { // 如果小数部分为0
 			suffix = "整";
 		} else {
-			suffix = digit[rail.charAt(0) - '0'] + "角"
-					+ digit[rail.charAt(1) - '0'] + "分"; // 否则把角分转化出来
+			suffix = digit[rail.charAt(0) - '0'] + "角" + digit[rail.charAt(1) - '0'] + "分"; // 否则把角分转化出来
 		}
 		// 处理小数点前面的数
 		char[] chDig = head.toCharArray(); // 把整数部分转化成字符数组

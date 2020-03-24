@@ -30,7 +30,7 @@ public abstract class SK_ITable {
 	private String packageName;
 	// 所有字段 类型 + 变量 名字符串
 	private String all_basicType_x_columnName;
-	// 所有字段  变量 名字符串
+	// 所有字段 变量 名字符串
 	private String all_x_columnName;
 	// 元字段
 	private String all_columnName;
@@ -69,15 +69,9 @@ public abstract class SK_ITable {
 	protected Set<String> impImports;
 	protected Set<String> cfgImports;
 
-	public SK_ITable(String tableName, String d_tableName, String x_tableName,
-			String packageName, String all_basicType_x_columnName,
-			String all_columnName, String all_columnNameSign,
-			String all_objAndGetD_columnName, String all_columnName_Sign,
-			String primary_columnName, String primaryD_columnName,
-			String primaryX_columnName, String primaryClassType,
-			String primaryBasicType, List<String> all_objAndGetD_columnNames,
-			List<SK_Column> columns, List<SK_BindKey> bindKeys,
-			List<SK_Index> indexKeys, SK_Database db, String config,
+	public SK_ITable(String tableName, String d_tableName, String x_tableName, String packageName, String all_basicType_x_columnName, String all_columnName, String all_columnNameSign,
+			String all_objAndGetD_columnName, String all_columnName_Sign, String primary_columnName, String primaryD_columnName, String primaryX_columnName, String primaryClassType,
+			String primaryBasicType, List<String> all_objAndGetD_columnNames, List<SK_Column> columns, List<SK_BindKey> bindKeys, List<SK_Index> indexKeys, SK_Database db, String config,
 			int columnSize, boolean isCfg) {
 		super();
 		this.tableName = tableName;
@@ -258,15 +252,14 @@ public abstract class SK_ITable {
 		this.columnSize = columnSize;
 	}
 
-	public void setAll_objAndGetD_columnNames(
-			List<String> all_objAndGetD_columnNames) {
+	public void setAll_objAndGetD_columnNames(List<String> all_objAndGetD_columnNames) {
 		this.all_objAndGetD_columnNames = all_objAndGetD_columnNames;
 	}
 
 	public void setPrimaryX_columnName(String primaryX_columnName) {
 		this.primaryX_columnName = primaryX_columnName;
 	}
-	
+
 	public void setAll_x_columnName(String all_x_columnName) {
 		this.all_x_columnName = all_x_columnName;
 	}
@@ -279,20 +272,17 @@ public abstract class SK_ITable {
 	 */
 	public List<SK_Column> getColumns() {
 		if (columns.isEmpty()) {
-			List<Map<String, Object>> names = SK_MetaData.getColumns(
-					db.getConn(), tableName);
+			List<Map<String, Object>> names = SK_MetaData.getColumns(db.getConn(), tableName);
 			SK_Column column = null;
 			for (Map<String, Object> map : names) {
 				String columnName = map.get("COLUMN_NAME").toString();
 				String remarks = map.get("REMARKS").toString();
-				boolean autoincrement = "YES".equals(MapEx.getString(map,
-						"IS_AUTOINCREMENT")) ? true : false;
+				boolean autoincrement = "YES".equals(MapEx.getString(map, "IS_AUTOINCREMENT")) ? true : false;
 				String columnName_ = PinyinHelper.getShortPinyin(columnName);
 				String d_columnName = StrEx.upperN1(columnName_);
 				String x_columnName = StrEx.lowerFirst(columnName_);
 				String typeName = map.get("TYPE_NAME").toString();
-				int dataType = Integer
-						.parseInt(map.get("DATA_TYPE").toString());
+				int dataType = Integer.parseInt(map.get("DATA_TYPE").toString());
 				int columnSize = 0;
 				Object column_size = map.get("COLUMN_SIZE");
 				if (column_size != null) {
@@ -302,14 +292,11 @@ public abstract class SK_ITable {
 				if (db.getSqlDecode() instanceof SK_JdbcType) {
 					classType = db.getSqlDecode().getTypeByDataType(dataType);
 				} else {
-					classType = db.getSqlDecode().getTypeByTypeName(typeName,
-							columnSize);
+					classType = db.getSqlDecode().getTypeByTypeName(typeName, columnSize);
 				}
 				String basicType = SK_SqlTypeDecode.getBasicType(classType);
 
-				column = new SK_Column(autoincrement, columnName, d_columnName,
-						x_columnName, typeName, columnSize, dataType,
-						classType, basicType, remarks);
+				column = new SK_Column(autoincrement, columnName, d_columnName, x_columnName, typeName, columnSize, dataType, classType, basicType, remarks);
 				columns.add(column);
 			}
 		}
@@ -323,8 +310,7 @@ public abstract class SK_ITable {
 	 */
 	public List<SK_BindKey> getBindKeys() {
 		if (bindKeys.isEmpty()) {
-			List<Map<String, Object>> keyList = SK_MetaData.getExportedKeys(
-					db.getConn(), tableName);
+			List<Map<String, Object>> keyList = SK_MetaData.getExportedKeys(db.getConn(), tableName);
 			SK_BindKey sk_key = null;
 			boolean pk = false;
 			for (Map<String, Object> map : keyList) {
@@ -339,18 +325,15 @@ public abstract class SK_ITable {
 					int size = sk_Index.getColumnNames().size();
 					if (size == 1) {
 						// 索引字段=外键字段 & 是唯一索引
-						if (fkColumnName.equals(sk_Index.getColumnNames()
-								.get(0)) && sk_Index.isUnique()) {
+						if (fkColumnName.equals(sk_Index.getColumnNames().get(0)) && sk_Index.isUnique()) {
 							unique = true;
 						}
 					}
 				}
 				String pkTableName_ = PinyinHelper.getShortPinyin(pkTableName);
-				String pkColumnName_ = PinyinHelper
-						.getShortPinyin(pkColumnName);
+				String pkColumnName_ = PinyinHelper.getShortPinyin(pkColumnName);
 				String fkTableName_ = PinyinHelper.getShortPinyin(fkTableName);
-				String fkColumnName_ = PinyinHelper
-						.getShortPinyin(fkColumnName);
+				String fkColumnName_ = PinyinHelper.getShortPinyin(fkColumnName);
 
 				String d_pkTableName = StrEx.upperN1(pkTableName_);
 				String d_pkColumnName = StrEx.upperN1(pkColumnName_);
@@ -361,11 +344,8 @@ public abstract class SK_ITable {
 				String x_pkColumnName = StrEx.lowerFirst(pkColumnName_);
 				String x_fkTableName = StrEx.lowerFirst(fkTableName_);
 				String x_fkColumnName = StrEx.lowerFirst(fkColumnName_);
-				sk_key = new SK_BindKey(pkTableName, pkColumnName, fkTableName,
-						fkColumnName, d_pkTableName, d_pkColumnName,
-						d_fkTableName, d_fkColumnName, x_pkTableName,
-						x_pkColumnName, x_fkTableName, x_fkColumnName, pk,
-						unique);
+				sk_key = new SK_BindKey(pkTableName, pkColumnName, fkTableName, fkColumnName, d_pkTableName, d_pkColumnName, d_fkTableName, d_fkColumnName, x_pkTableName, x_pkColumnName,
+						x_fkTableName, x_fkColumnName, pk, unique);
 				bindKeys.add(sk_key);
 			}
 			pk = true;
@@ -377,11 +357,9 @@ public abstract class SK_ITable {
 				String fkColumnName = map.get("FKCOLUMN_NAME").toString();
 
 				String pkTableName_ = PinyinHelper.getShortPinyin(pkTableName);
-				String pkColumnName_ = PinyinHelper
-						.getShortPinyin(pkColumnName);
+				String pkColumnName_ = PinyinHelper.getShortPinyin(pkColumnName);
 				String fkTableName_ = PinyinHelper.getShortPinyin(fkTableName);
-				String fkColumnName_ = PinyinHelper
-						.getShortPinyin(fkColumnName);
+				String fkColumnName_ = PinyinHelper.getShortPinyin(fkColumnName);
 
 				String d_pkTableName = StrEx.upperN1(pkTableName_);
 				String d_pkColumnName = StrEx.upperN1(pkColumnName_);
@@ -392,10 +370,8 @@ public abstract class SK_ITable {
 				String x_pkColumnName = StrEx.lowerFirst(pkColumnName_);
 				String x_fkTableName = StrEx.lowerFirst(fkTableName_);
 				String x_fkColumnName = StrEx.lowerFirst(fkColumnName_);
-				sk_key = new SK_BindKey(pkTableName, pkColumnName, fkTableName,
-						fkColumnName, d_pkTableName, d_pkColumnName,
-						d_fkTableName, d_fkColumnName, x_pkTableName,
-						x_pkColumnName, x_fkTableName, x_fkColumnName, pk, true);
+				sk_key = new SK_BindKey(pkTableName, pkColumnName, fkTableName, fkColumnName, d_pkTableName, d_pkColumnName, d_fkTableName, d_fkColumnName, x_pkTableName, x_pkColumnName,
+						x_fkTableName, x_fkColumnName, pk, true);
 				bindKeys.add(sk_key);
 			}
 		}
@@ -423,7 +399,7 @@ public abstract class SK_ITable {
 		}
 		return all_basicType_x_columnName;
 	}
-	
+
 	/**
 	 * 取得All_basicType_x_columnName
 	 * 
@@ -458,8 +434,7 @@ public abstract class SK_ITable {
 
 	public List<SK_Index> getIndexKeys(String tableName) {
 		List<SK_Index> indexs = new ArrayList<SK_Index>();
-		List<Map<String, Object>> indexList = SK_MetaData.getIndexs(
-				db.getConn(), tableName);
+		List<Map<String, Object>> indexList = SK_MetaData.getIndexs(db.getConn(), tableName);
 		SK_Index index = null;
 		// 判断是否已经添加
 		Map<String, SK_Index> sk_indexs = new HashMap<String, SK_Index>();
@@ -487,8 +462,7 @@ public abstract class SK_ITable {
 			List<String> basicTypes = null;
 			List<String> classTypes = null;
 			if (index == null) {
-				boolean unique = MapEx.getBoolean(map, "NON_UNIQUE") ? false
-						: true;
+				boolean unique = MapEx.getBoolean(map, "NON_UNIQUE") ? false : true;
 				columnNames = new ArrayList<String>();
 				d_columnNames = new ArrayList<String>();
 				x_columnNames = new ArrayList<String>();
@@ -499,9 +473,7 @@ public abstract class SK_ITable {
 				x_columnNames.add(x_columnName);
 				basicTypes.add(basicType);
 				classTypes.add(classType);
-				index = new SK_Index(indexName, columnNames, d_columnNames,
-						x_columnNames, basicTypes, classTypes, "", "", "", "",
-						"", "", "", unique, this);
+				index = new SK_Index(indexName, columnNames, d_columnNames, x_columnNames, basicTypes, classTypes, "", "", "", "", "", "", "", unique, this);
 				indexs.add(index);
 			} else {
 				columnNames = index.getColumnNames();

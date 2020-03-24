@@ -114,8 +114,7 @@ public class Bio2GCSharp {
 
 				} else if (t.contains("int")) {
 					sb.pn("    private ${1} _${2}; ${3}", t, s, remark);
-					sb.pn("    public ${1} ${2} { set { _${2} = EnDe.en (value); } get { return EnDe.de (_${2}); } }",
-							t, s);
+					sb.pn("    public ${1} ${2} { set { _${2} = EnDe.en (value); } get { return EnDe.de (_${2}); } }", t, s);
 
 				} else {
 					sb.pn("    public ${1} ${2}; ${3}", t, s, remark);
@@ -148,8 +147,7 @@ public class Bio2GCSharp {
 					sb.pn("    }");
 					sb.pn("");
 
-					sb.pn("    public static ArrayList maps_${1}(ArrayList maps) {",
-							s);
+					sb.pn("    public static ArrayList maps_${1}(ArrayList maps) {", s);
 					sb.pn("        ArrayList r = new ArrayList();");
 					sb.pn("        foreach(Hashtable _e in maps) {", gtype, s);
 					sb.pn("            ${1} e = ${1}.parse(_e);", gtype);
@@ -222,15 +220,13 @@ public class Bio2GCSharp {
 				String gtype = B2G.getListType(field);
 				boolean isBtype = B2G.isBType(gtype);
 				if (gtype != null && !gtype.isEmpty() && !isBtype) {
-					sb.pn("        r.${1} = maps_${1}( map2.getList(${3}) );",
-							s, gm, hs, gtype);
+					sb.pn("        r.${1} = maps_${1}( map2.getList(${3}) );", s, gm, hs, gtype);
 				} else {
 					sb.pn("        r.${1} = map2.${2}(${3});", s, gm, hs);
 				}
 			} else {
 				if (gm.equals("getObject")) {
-					sb.pn("        r.${1} = ${2}.parse(map2.getNewMap(${3}));",
-							s, t, hs);
+					sb.pn("        r.${1} = ${2}.parse(map2.getNewMap(${3}));", s, t, hs);
 				} else {
 					sb.pn("        r.${1} = map2.${2}(${3});", s, gm, hs);
 				}
@@ -243,8 +239,7 @@ public class Bio2GCSharp {
 		sb.pn("}");
 	}
 
-	public static void g2beanConstant(Class<?> c, String namespace,
-			StrBuilder sb) {
+	public static void g2beanConstant(Class<?> c, String namespace, StrBuilder sb) {
 		Field[] fs = c.getDeclaredFields();
 		String cname = c.getSimpleName();
 		sb.pn("public class ${1} {", cname);
@@ -264,12 +259,10 @@ public class Bio2GCSharp {
 				}
 			} else {
 				if (t.contains("string")) {
-					sb.pn("    public const ${1} ${2} = \"${4}\"; ${3}", t, s,
-							remark, def);
+					sb.pn("    public const ${1} ${2} = \"${4}\"; ${3}", t, s, remark, def);
 
 				} else {
-					sb.pn("    public const ${1} ${2} = ${4}; ${3}", t, s,
-							remark, def);
+					sb.pn("    public const ${1} ${2} = ${4}; ${3}", t, s, remark, def);
 				}
 			}
 		}
@@ -301,8 +294,7 @@ public class Bio2GCSharp {
 			NewList<NewMap<String, String>> params = B2G.getParameters(m);
 			StrBuilder sb1 = new StrBuilder();
 			for (NewMap<String, String> m1 : params) {
-				String mykey = (String) (m1.getKey().equals("boolean") ? "bool"
-						: m1.getKey());
+				String mykey = (String) (m1.getKey().equals("boolean") ? "bool" : m1.getKey());
 				mykey = (String) (mykey.equals("List") ? "ArrayList" : mykey);
 				mykey = (String) (mykey.equals("Map") ? "Hashtable" : mykey);
 				String myvar = (String) m1.getValue();
@@ -322,8 +314,7 @@ public class Bio2GCSharp {
 			sb.pn("    public void ${1}(${2}) {", mname, sb1);
 			sb.pn("        Hashtable _map = new Hashtable();");
 			sb.pn("        _map.Add(-100, __uid);  // __uid");
-			sb.pn("        _map.Add(${1}, ${2});  // cmd:${3}", B2G.METHOD,
-					hmname, mname);
+			sb.pn("        _map.Add(${1}, ${2});  // cmd:${3}", B2G.METHOD, hmname, mname);
 			for (NewMap<String, String> m1 : params) {
 				String key = (String) m1.getKey();
 				String val = (String) m1.getValue();
@@ -338,14 +329,10 @@ public class Bio2GCSharp {
 						String mType = B2G.getMapType(oType);
 						if (mType.equals("getObject")) {
 							sb.pn("        { // Lsit对象(${1})", val);
-							sb.pn("            NewList ${1}_list = new NewList();",
-									val);
-							sb.pn("            _map.Add(${1}, ${2}_list);",
-									hval, val);
-							sb.pn("            foreach(${1} obj in ${2}) {",
-									oType, val);
-							sb.pn("                ${1}_list.add(obj.toMap());",
-									val, oType);
+							sb.pn("            NewList ${1}_list = new NewList();", val);
+							sb.pn("            _map.Add(${1}, ${2}_list);", hval, val);
+							sb.pn("            foreach(${1} obj in ${2}) {", oType, val);
+							sb.pn("                ${1}_list.add(obj.toMap());", val, oType);
 							sb.pn("            }");
 							sb.pn("        }");
 							val += "_list";
@@ -353,8 +340,7 @@ public class Bio2GCSharp {
 							sb.pn("        _map.Add(${1}, ${2});", hval, val);
 						}
 					} else if (B2G.getMapType(key).equals("getObject")) {
-						sb.pn("        _map.Add(${1}, ${2}.toMap());", hval,
-								val);
+						sb.pn("        _map.Add(${1}, ${2}.toMap());", hval, val);
 					} else {
 						sb.pn("        _map.Add(${1}, ${2});", hval, val);
 					}
@@ -437,12 +423,10 @@ public class Bio2GCSharp {
 			if (B2G.isServer(m)) {
 				if (!srtype.equals("void")) {
 					sb.pn("    // ${1}", remark);
-					sb.pn("    private void __onCallback_${1}(int cmd, Hashtable map) {",
-							mname);
+					sb.pn("    private void __onCallback_${1}(int cmd, Hashtable map) {", mname);
 					String mx = B2G.getCsMapType(srtype);
 					sb.pn("        NewMap map2 = NewMap.create(map);");
-					sb.pn("        Hashtable retVal = map2.getMap(${1});",
-							B2G.RETURN_STAT);
+					sb.pn("        Hashtable retVal = map2.getMap(${1});", B2G.RETURN_STAT);
 					sb.pn("        ReturnStatus rst = ReturnStatus.parse(retVal);");
 					StrBuilder msb = new StrBuilder();
 					for (NewMap<String, String> m1 : params) {
@@ -453,8 +437,7 @@ public class Bio2GCSharp {
 						boolean isOut = B2G.isOut(m, val);
 						if (isOut) {
 							if (p.equals("getObject")) {
-								sb.pn("        ${1} ${2} = ${1}.parse(map2.getNewMap(${3}));",
-										key, val, hval);
+								sb.pn("        ${1} ${2} = ${1}.parse(map2.getNewMap(${3}));", key, val, hval);
 								msb.ap("${1}, ", val);
 							}
 						}
@@ -465,8 +448,7 @@ public class Bio2GCSharp {
 				}
 			} else {
 				sb.pn("    // ${1}", remark);
-				sb.pn("    private void __onCall_${1}(int cmd, Hashtable map) {",
-						mname);
+				sb.pn("    private void __onCall_${1}(int cmd, Hashtable map) {", mname);
 				sb.pn("        NewMap map2 = NewMap.create(map);");
 				sb.pn("");
 				StrBuilder sb1 = new StrBuilder();
@@ -476,17 +458,14 @@ public class Bio2GCSharp {
 					String hval = val.hashCode() + "";
 					String p = B2G.getCsMapType(key);
 					if (p.equals("getObject")) {
-						sb.pn("        ${1} ${2} = ${1}.parse(map2.getNewMap(${3}));",
-								key, val, hval);
+						sb.pn("        ${1} ${2} = ${1}.parse(map2.getNewMap(${3}));", key, val, hval);
 					} else {
 						if (B2G.getMapType(key).equals("getList")) {
 							key = "ArrayList";
 						}
-						key = key.toLowerCase().equals("boolean") ? "bool"
-								: key;
+						key = key.toLowerCase().equals("boolean") ? "bool" : key;
 						key = key.equals("String") ? "string" : key;
-						sb.pn("        ${1} ${2} = map2.${3}(${4});", key, val,
-								p, hval);
+						sb.pn("        ${1} ${2} = map2.${3}(${4});", key, val, p, hval);
 						if (B2G.getMapType(key).equals("getList")) {
 							String oType = B2G.getOType(m, val);
 							String mType = B2G.getCsMapType(oType);
@@ -496,8 +475,7 @@ public class Bio2GCSharp {
 							sb.pn("			// Lsit对象(${1})", val);
 							sb.pn("			foreach (object obj in ${1}) {", val);
 							if (mType.equals("getObject")) {
-								sb.pn("				${1}_list.Add(${2}.parse((Hashtable)obj));",
-										val, oType);
+								sb.pn("				${1}_list.Add(${2}.parse((Hashtable)obj));", val, oType);
 							} else {
 								sb.pn("				${1}_list.Add(obj);", val);
 							}
@@ -514,12 +492,10 @@ public class Bio2GCSharp {
 				if (srtype.equals("void")) {
 					sb.pn("        on${1}(${2});", upper1(mname), sb1);
 				} else {
-					sb.pn("        ReturnStatus rst = on${1}(${2});",
-							upper1(mname), sb1, srtype);
+					sb.pn("        ReturnStatus rst = on${1}(${2});", upper1(mname), sb1, srtype);
 					sb.pn("        Hashtable result = new NewMap();");
 					sb.pn("        result.Add(${1}, ${2});", B2G.METHOD, hmname);
-					sb.pn("        result.Add(${1}, rst.toMap());",
-							B2G.RETURN_STAT);
+					sb.pn("        result.Add(${1}, rst.toMap());", B2G.RETURN_STAT);
 					sb.pn("        chn.send(result);");
 				}
 				sb.pn("    }");
@@ -560,8 +536,7 @@ public class Bio2GCSharp {
 						}
 					}
 
-					sb.pn("    public abstract void on${1}(int cmd, ${2}${3} val);",
-							upper1(mname), msb, srtype);
+					sb.pn("    public abstract void on${1}(int cmd, ${2}${3} val);", upper1(mname), msb, srtype);
 				}
 			} else {
 
@@ -570,8 +545,7 @@ public class Bio2GCSharp {
 					String key = (String) m1.getKey();
 					String val = (String) m1.getValue();
 					if (B2G.getMapType(key).equals("getList")) {
-						key = PStr.str("${1}", "ArrayList",
-								B2G.getOType(m, m1.getValue().toString()));
+						key = PStr.str("${1}", "ArrayList", B2G.getOType(m, m1.getValue().toString()));
 					}
 					key = key.toLowerCase().equals("boolean") ? "bool" : key;
 					key = key.equals("String") ? "string" : key;
@@ -583,8 +557,7 @@ public class Bio2GCSharp {
 				}
 
 				// 需要实现的逻辑函数
-				sb.pn("    public abstract ${1} on${2}(int cmd, ${3}) ;",
-						srtype, upper1(mname), sb1);
+				sb.pn("    public abstract ${1} on${2}(int cmd, ${3}) ;", srtype, upper1(mname), sb1);
 
 			}
 			sb.pn("");
@@ -601,9 +574,7 @@ public class Bio2GCSharp {
 	}
 
 	public static void writeFile(String f, String str) {
-		try (FileOutputStream out = new FileOutputStream(new File(f));
-				OutputStreamWriter osw = new OutputStreamWriter(out,
-						Encoding.UTF8);) {
+		try (FileOutputStream out = new FileOutputStream(new File(f)); OutputStreamWriter osw = new OutputStreamWriter(out, Encoding.UTF8);) {
 			osw.write(str, 0, str.length());
 			osw.close();
 			out.close();

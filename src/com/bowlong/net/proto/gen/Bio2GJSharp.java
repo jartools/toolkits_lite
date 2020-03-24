@@ -87,8 +87,7 @@ public class Bio2GJSharp {
 		return "";
 	}
 
-	public static void g2beanConstant(Class<?> c, String namespace,
-			StrBuilder sb) {
+	public static void g2beanConstant(Class<?> c, String namespace, StrBuilder sb) {
 		Field[] fs = c.getDeclaredFields();
 		String cname = c.getSimpleName();
 		sb.pn("${1}.${2} = {", namespace, cname);
@@ -138,8 +137,7 @@ public class Bio2GJSharp {
 	}
 
 	// 生成客户端接口
-	public static void g2s_call(Class<?> c, String namespace, StrBuilder sb,
-			String pojoName, String imp) {
+	public static void g2s_call(Class<?> c, String namespace, StrBuilder sb, String pojoName, String imp) {
 		String sname = c.getSimpleName();
 		Method[] methods = c.getMethods();
 		String cname = c.getSimpleName();
@@ -169,17 +167,15 @@ public class Bio2GJSharp {
 
 			// 需要实现的逻辑函数
 			sb.pn("    // ${1}", remark);
-			sb.pn("    ${1}.Call${2}.${3} = function(${4}) {", namespace,
-					cname, mname, sb1);
+			sb.pn("    ${1}.Call${2}.${3} = function(${4}) {", namespace, cname, mname, sb1);
 			sb.pn("        var _params = {};");
-			sb.pn("        _params.${1} = '${2}';  // cmd:${3}", "cmd", mname,
-					mname);
+			sb.pn("        _params.${1} = '${2}';  // cmd:${3}", "cmd", mname, mname);
 			for (NewMap<String, String> m1 : params) {
 				String key = (String) m1.getKey();
 				String val = (String) m1.getValue();
 				sb.pn("        _params.${1} = ${2};", val, val);
 			}
-			sb.pn("        $.post(\"test.php\",_params,${1}.Call${2}.disp,\"json\");",namespace, cname);
+			sb.pn("        $.post(\"test.php\",_params,${1}.Call${2}.disp,\"json\");", namespace, cname);
 			sb.pn("    };");
 			sb.pn("");
 		}
@@ -206,16 +202,13 @@ public class Bio2GJSharp {
 			if (B2G.isServer(m)) {
 				if (!srtype.equals("void")) {
 					sb.pn("            case '${1}': { //  ${2}", mname, remark);
-					sb.pn("                ${1}.Call${2}.__onCallback_${3}(obj);",
-							namespace, cname, mname);
+					sb.pn("                ${1}.Call${2}.__onCallback_${3}(obj);", namespace, cname, mname);
 					sb.pn("                return;");
 					sb.pn("            }");
 				}
 			} else {
-				sb.pn("            case ${1}: { //  ${2}", mname.hashCode(),
-						remark);
-				sb.pn("               ${1}.Call${2}.__onCall_${3}(obj);",
-						namespace, cname, mname);
+				sb.pn("            case ${1}: { //  ${2}", mname.hashCode(), remark);
+				sb.pn("               ${1}.Call${2}.__onCall_${3}(obj);", namespace, cname, mname);
 				sb.pn("                return;");
 				sb.pn("            }");
 			}
@@ -238,20 +231,16 @@ public class Bio2GJSharp {
 			if (B2G.isServer(m)) {
 				if (!srtype.equals("void")) {
 					sb.pn("    // ${1}", remark);
-					sb.pn("    ${1}.Call${2}.__onCallback_${3} = function(obj) {",
-							namespace, cname, mname);
+					sb.pn("    ${1}.Call${2}.__onCallback_${3} = function(obj) {", namespace, cname, mname);
 					String mx = B2G.getCsMapType(srtype);
-					sb.pn("        var rst = ${1}.ReturnStatus.parse(obj.get(${2}));",
-							pojoName, B2G.RETURN_STAT);
-					sb.pn("        Call${1}${2}.on${3}(rst);", cname, imp,
-							upper1(mname));
+					sb.pn("        var rst = ${1}.ReturnStatus.parse(obj.get(${2}));", pojoName, B2G.RETURN_STAT);
+					sb.pn("        Call${1}${2}.on${3}(rst);", cname, imp, upper1(mname));
 					sb.pn("    };");
 				}
 			} else {
 				sb.pn("    // ${1}", remark);
-				sb.pn("    ${1}.Call${2}.__onCall_${3} = function(obj) {",
-						namespace, cname, mname);
-				// sb.pn("        var rst = ${1}.ReturnStatus.parse(obj);",
+				sb.pn("    ${1}.Call${2}.__onCall_${3} = function(obj) {", namespace, cname, mname);
+				// sb.pn(" var rst = ${1}.ReturnStatus.parse(obj);",
 				// pojoName);
 				sb.pn("");
 				StrBuilder sb1 = new StrBuilder();
@@ -260,23 +249,18 @@ public class Bio2GJSharp {
 					String val = (String) m1.getValue();
 					String p = B2G.getCsMapType(key);
 					if (p.equals("getObject")) {
-						sb.pn("        var ${1} = ${2}.${3}.parse(obj.get(${4}));",
-								val, pojoName, key, val.hashCode());
+						sb.pn("        var ${1} = ${2}.${3}.parse(obj.get(${4}));", val, pojoName, key, val.hashCode());
 					} else {
 						// if (B2G.getMapType(key).equals("getList")) {
 						// key = "var";
 						// }
-						sb.pn("        var ${1} = obj.get(${2});", val,
-								val.hashCode());
+						sb.pn("        var ${1} = obj.get(${2});", val, val.hashCode());
 						if (B2G.getMapType(key).equals("getList")) {
 							sb.pn("		var ${1}_list = new Array();", val);
 							sb.pn("		{");
 							sb.pn("			// Lsit对象(${1})", val);
-							sb.pn("			for (var i = 0 ; i > ${1}.length ; i++) {",
-									val);
-							sb.pn("				${1}_list[i] = ${2}.${3}.parse(${1}[i])",
-									val, pojoName,
-									B2G.getOType(m, m1.getValue().toString()));
+							sb.pn("			for (var i = 0 ; i > ${1}.length ; i++) {", val);
+							sb.pn("				${1}_list[i] = ${2}.${3}.parse(${1}[i])", val, pojoName, B2G.getOType(m, m1.getValue().toString()));
 							sb.pn("			}");
 							sb.pn("		}");
 							val += "_list";
@@ -288,14 +272,11 @@ public class Bio2GJSharp {
 					sb1.removeRight(2);
 				sb.pn("");
 				if (srtype.equals("void")) {
-					sb.pn("        Call${1}${2}.on${3}(${4});", cname, imp,
-							upper1(mname), sb1);
+					sb.pn("        Call${1}${2}.on${3}(${4});", cname, imp, upper1(mname), sb1);
 				} else {
-					sb.pn("        var rst = Call${1}${2}.on${3}(${4});",
-							cname, imp, upper1(mname), sb1);
+					sb.pn("        var rst = Call${1}${2}.on${3}(${4});", cname, imp, upper1(mname), sb1);
 					sb.pn("        var result = {};");
-					sb.pn("        result[${1}] = ${2};", B2G.METHOD,
-							mname.hashCode());
+					sb.pn("        result[${1}] = ${2};", B2G.METHOD, mname.hashCode());
 					sb.pn("        result[${1}] = rst;", B2G.RETURN_STAT);
 					sb.pn("        websocketSend(result);");
 				}
@@ -305,8 +286,7 @@ public class Bio2GJSharp {
 		}
 	}
 
-	public static void g2s_imp(Class<?> c, String namespace, StrBuilder sb,
-			String imp, String fileName) {
+	public static void g2s_imp(Class<?> c, String namespace, StrBuilder sb, String imp, String fileName) {
 		Method[] methods = c.getMethods();
 		String cname = c.getSimpleName();
 		sb.pn("/// <reference path=\"${1}\"/> ", fileName);
@@ -338,8 +318,7 @@ public class Bio2GJSharp {
 					String key = (String) m1.getKey();
 					StrBuilder sb0 = new StrBuilder();
 					if (B2G.getMapType(key).equals("getList")) {
-						sb0.ap("${1}", "ArrayList",
-								B2G.getOType(m, m1.getValue().toString()));
+						sb0.ap("${1}", "ArrayList", B2G.getOType(m, m1.getValue().toString()));
 						key = sb0.toString();
 					}
 					sb1.ap("${1}, ", m1.getValue());
@@ -349,8 +328,7 @@ public class Bio2GJSharp {
 				}
 
 				// 需要实现的逻辑函数
-				sb.pn("    ${1}.on${2} = function(${3}){", s, upper1(mname),
-						sb1);
+				sb.pn("    ${1}.on${2} = function(${3}){", s, upper1(mname), sb1);
 				sb.pn("");
 				sb.pn("    }");
 			}
@@ -359,9 +337,7 @@ public class Bio2GJSharp {
 	}
 
 	public static void writeFile(String f, String str) {
-		try (FileOutputStream out = new FileOutputStream(new File(f));
-				OutputStreamWriter osw = new OutputStreamWriter(out,
-						Charset.forName("UTF8"));) {
+		try (FileOutputStream out = new FileOutputStream(new File(f)); OutputStreamWriter osw = new OutputStreamWriter(out, Charset.forName("UTF8"));) {
 			osw.write(str, 0, str.length());
 			osw.close();
 			out.close();

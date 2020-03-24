@@ -68,8 +68,7 @@ public class JedisBase extends JedisOrigin {
 	}
 
 	// ///////////////////// 清空某个DB中的所有数据 /////////////////////
-	static public final String flushDB(final JedisPool pool, final int dbIndex)
-			throws Exception {
+	static public final String flushDB(final JedisPool pool, final int dbIndex) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return flushDB(jedis, dbIndex);
@@ -91,8 +90,7 @@ public class JedisBase extends JedisOrigin {
 	}
 
 	// ///////////////////// DECRBY key decrement 原子减指定的整数 /////////////////////
-	static public final Long decrBy(final JedisPool pool, final String key,
-			final int val) throws Exception {
+	static public final Long decrBy(final JedisPool pool, final String key, final int val) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return decrBy(jedis, key, val);
@@ -103,20 +101,17 @@ public class JedisBase extends JedisOrigin {
 		}
 	}
 
-	static public final Long decrBy(final Jedis jedis, final String key,
-			final int val) {
+	static public final Long decrBy(final Jedis jedis, final String key, final int val) {
 		return jedis.decrBy(key, val);
 	}
 
-	static public final Long decrBy(final String key, final int val)
-			throws Exception {
+	static public final Long decrBy(final String key, final int val) throws Exception {
 		final JedisPool pool = getJedisPool();
 		return decrBy(pool, key, val);
 	}
 
 	// ///////////////////// incrBy key decrement 原子加指定的整数 /////////////////////
-	static public final Long incrBy(final JedisPool pool, final String key,
-			final int val) throws Exception {
+	static public final Long incrBy(final JedisPool pool, final String key, final int val) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return incrBy(jedis, key, val);
@@ -127,14 +122,12 @@ public class JedisBase extends JedisOrigin {
 		}
 	}
 
-	static public final Long incrBy(final Jedis jedis, final String key,
-			final int val) {
+	static public final Long incrBy(final Jedis jedis, final String key, final int val) {
 		// hincrBy
 		return jedis.incrBy(key, val);
 	}
 
-	static public final Long incrBy(final String key, final int val)
-			throws Exception {
+	static public final Long incrBy(final String key, final int val) throws Exception {
 		final JedisPool pool = getJedisPool();
 		return incrBy(pool, key, val);
 	}
@@ -165,8 +158,7 @@ public class JedisBase extends JedisOrigin {
 	}
 
 	// ///////////////////// 是否存在 /////////////////////
-	static public final boolean exists(final JedisPool pool, final String key)
-			throws Exception {
+	static public final boolean exists(final JedisPool pool, final String key) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return exists(jedis, key);
@@ -191,8 +183,7 @@ public class JedisBase extends JedisOrigin {
 	}
 
 	// ///////////////////// 删除数据 /////////////////////
-	static public final Long remove(final JedisPool pool, final String... keys)
-			throws Exception {
+	static public final Long remove(final JedisPool pool, final String... keys) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return remove(jedis, keys);
@@ -216,8 +207,7 @@ public class JedisBase extends JedisOrigin {
 		return remove(pool, keys);
 	}
 
-	static public final Long remove(final JedisPool pool,
-			final List<String> list) throws Exception {
+	static public final Long remove(final JedisPool pool, final List<String> list) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return remove(jedis, list);
@@ -237,8 +227,7 @@ public class JedisBase extends JedisOrigin {
 	}
 
 	// ///////////////////// 取得有效时间 /////////////////////
-	static public final Long ttl(final JedisPool pool, final String key)
-			throws Exception {
+	static public final Long ttl(final JedisPool pool, final String key) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return ttl(jedis, key);
@@ -263,8 +252,7 @@ public class JedisBase extends JedisOrigin {
 	}
 
 	// ///////////////////// 设置有效时间 /////////////////////
-	static public final Long expire(final JedisPool pool, final String key,
-			final int seconds) throws Exception {
+	static public final Long expire(final JedisPool pool, final String key, final int seconds) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return expire(jedis, key, seconds);
@@ -275,30 +263,26 @@ public class JedisBase extends JedisOrigin {
 		}
 	}
 
-	static public final Long expire(final Jedis jedis, final String key,
-			final int seconds) {
+	static public final Long expire(final Jedis jedis, final String key, final int seconds) {
 		if (seconds <= 0) {
 			return -1L;
 		}
 		return jedis.expire(key, seconds);
 	}
 
-	static public final Long expire(final Jedis jedis, final byte[] key,
-			final int seconds) {
+	static public final Long expire(final Jedis jedis, final byte[] key, final int seconds) {
 		if (seconds <= 0) {
 			return -1L;
 		}
 		return jedis.expire(key, seconds);
 	}
 
-	static public final Long expire(final String key, final int seconds)
-			throws Exception {
+	static public final Long expire(final String key, final int seconds) throws Exception {
 		final JedisPool pool = getJedisPool();
 		return expire(pool, key, seconds);
 	}
 
-	static public final Long expire(final String key, final Date date)
-			throws Exception {
+	static public final Long expire(final String key, final Date date) throws Exception {
 		long delay = date.getTime() - System.currentTimeMillis();
 		int seconds = (int) (delay <= 0 ? 1 : delay / 1000);
 
@@ -307,8 +291,7 @@ public class JedisBase extends JedisOrigin {
 	}
 
 	// ///////////////////// 取消有效时间 /////////////////////
-	static public final Long persist(final JedisPool pool, final String key)
-			throws Exception {
+	static public final Long persist(final JedisPool pool, final String key) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return persist(jedis, key);
@@ -333,8 +316,7 @@ public class JedisBase extends JedisOrigin {
 	}
 
 	// ///////////////////// 查看当前db的所有keys数量 /////////////////////
-	static public final Long dbSize(final JedisPool pool, int dbIndex)
-			throws Exception {
+	static public final Long dbSize(final JedisPool pool, int dbIndex) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return dbSize(jedis, dbIndex);
@@ -356,8 +338,7 @@ public class JedisBase extends JedisOrigin {
 	}
 
 	// ///////////////////// 重命名 /////////////////////
-	static public final Long renamenx(final JedisPool pool, String oldKey,
-			String nwKey) throws Exception {
+	static public final Long renamenx(final JedisPool pool, String oldKey, String nwKey) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return renamenx(jedis, oldKey, nwKey);
@@ -368,25 +349,21 @@ public class JedisBase extends JedisOrigin {
 		}
 	}
 
-	static public final Long renamenx(final Jedis jedis, String oldKey,
-			String nwKey) {
+	static public final Long renamenx(final Jedis jedis, String oldKey, String nwKey) {
 		return jedis.renamenx(oldKey, nwKey);
 	}
 
-	static public final Long renamenx(final Jedis jedis, byte[] oldKey,
-			byte[] nwKey) {
+	static public final Long renamenx(final Jedis jedis, byte[] oldKey, byte[] nwKey) {
 		return jedis.renamenx(oldKey, nwKey);
 	}
 
-	static public final Long renamenx(String oldKey, String nwKey)
-			throws Exception {
+	static public final Long renamenx(String oldKey, String nwKey) throws Exception {
 		final JedisPool pool = getJedisPool();
 		return renamenx(pool, oldKey, nwKey);
 	}
 
 	// ///////////////////// 取得正则表达式的keys /////////////////////
-	static public final List<String> getList4KeyPattern(final JedisPool pool,
-			String pattern) throws Exception {
+	static public final List<String> getList4KeyPattern(final JedisPool pool, String pattern) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return getList4KeyPattern(jedis, pattern);
@@ -397,27 +374,23 @@ public class JedisBase extends JedisOrigin {
 		}
 	}
 
-	static public final List<String> getList4KeyPattern(final Jedis jedis,
-			String pattern) {
+	static public final List<String> getList4KeyPattern(final Jedis jedis, String pattern) {
 		Set<String> vSet = jedis.keys(pattern);
 		return ListEx.toList(vSet);
 	}
 
-	static public final List<byte[]> getList4KeyPattern(final Jedis jedis,
-			byte[] pattern) {
+	static public final List<byte[]> getList4KeyPattern(final Jedis jedis, byte[] pattern) {
 		Set<byte[]> vSet = jedis.keys(pattern);
 		return ListEx.toList(vSet);
 	}
 
-	static public final List<String> getList4KeyPattern(String pattern)
-			throws Exception {
+	static public final List<String> getList4KeyPattern(String pattern) throws Exception {
 		final JedisPool pool = getJedisPool();
 		return getList4KeyPattern(pool, pattern);
 	}
 
 	// ///////////////////// 设值 /////////////////////
-	static public final String set(final JedisPool pool, final String key,
-			String val) throws Exception {
+	static public final String set(final JedisPool pool, final String key, String val) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return set(jedis, key, val);
@@ -428,25 +401,21 @@ public class JedisBase extends JedisOrigin {
 		}
 	}
 
-	static public final String set(final Jedis jedis, final String key,
-			String val) {
+	static public final String set(final Jedis jedis, final String key, String val) {
 		return jedis.set(key, val);
 	}
 
-	static public final String set(final Jedis jedis, final byte[] key,
-			byte[] val) {
+	static public final String set(final Jedis jedis, final byte[] key, byte[] val) {
 		return jedis.set(key, val);
 	}
 
-	static public final String set(final String key, String val)
-			throws Exception {
+	static public final String set(final String key, String val) throws Exception {
 		final JedisPool pool = getJedisPool();
 		return set(pool, key, val);
 	}
 
 	// ///////////////////// 取值 /////////////////////
-	static public final String get(final JedisPool pool, final String key)
-			throws Exception {
+	static public final String get(final JedisPool pool, final String key) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return get(jedis, key);
@@ -471,8 +440,7 @@ public class JedisBase extends JedisOrigin {
 	}
 
 	// ///////////////////// 设值 Object /////////////////////
-	static public final String putObject(final JedisPool pool,
-			final String key, Object obj) throws Exception {
+	static public final String putObject(final JedisPool pool, final String key, Object obj) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return putObject(jedis, key, obj);
@@ -483,21 +451,18 @@ public class JedisBase extends JedisOrigin {
 		}
 	}
 
-	static public final String putObject(final Jedis jedis, final String key,
-			Object obj) throws Exception {
+	static public final String putObject(final Jedis jedis, final String key, Object obj) throws Exception {
 		final byte[] val = ExToolkit.serialization(obj);
 		return jedis.set(key2(key), val);
 	}
 
-	static public final String putObject(final String key, Object obj)
-			throws Exception {
+	static public final String putObject(final String key, Object obj) throws Exception {
 		final JedisPool pool = getJedisPool();
 		return putObject(pool, key, obj);
 	}
 
 	// ///////////////////// 设值 B2Helper - Map /////////////////////
-	static public final String putMap(final JedisPool pool, final String key,
-			Map<?, ?> map) throws Exception {
+	static public final String putMap(final JedisPool pool, final String key, Map<?, ?> map) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return putMap(jedis, key, map);
@@ -508,21 +473,18 @@ public class JedisBase extends JedisOrigin {
 		}
 	}
 
-	static public final String putMap(final Jedis jedis, final String key,
-			Map<?, ?> map) throws Exception {
+	static public final String putMap(final Jedis jedis, final String key, Map<?, ?> map) throws Exception {
 		final byte[] val = B2Helper.toBytes(map);
 		return jedis.set(key2(key), val);
 	}
 
-	static public final String putMap(final String key, Map<?, ?> map)
-			throws Exception {
+	static public final String putMap(final String key, Map<?, ?> map) throws Exception {
 		final JedisPool pool = getJedisPool();
 		return putMap(pool, key, map);
 	}
 
 	// ///////////////////// 设值 B2Helper - List /////////////////////
-	static public final String putList(final JedisPool pool, final String key,
-			List<?> list) throws Exception {
+	static public final String putList(final JedisPool pool, final String key, List<?> list) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return putList(jedis, key, list);
@@ -533,21 +495,18 @@ public class JedisBase extends JedisOrigin {
 		}
 	}
 
-	static public final String putList(final Jedis jedis, final String key,
-			List<?> list) throws Exception {
+	static public final String putList(final Jedis jedis, final String key, List<?> list) throws Exception {
 		final byte[] val = B2Helper.toBytes(list);
 		return jedis.set(key2(key), val);
 	}
 
-	static public final String putList(final String key, List<?> list)
-			throws Exception {
+	static public final String putList(final String key, List<?> list) throws Exception {
 		final JedisPool pool = getJedisPool();
 		return putList(pool, key, list);
 	}
 
 	// ///////////////////// 取值 Object /////////////////////
-	static public final Object getObject(final JedisPool pool, final String key)
-			throws Exception {
+	static public final Object getObject(final JedisPool pool, final String key) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return getObject(jedis, key);
@@ -558,8 +517,7 @@ public class JedisBase extends JedisOrigin {
 		}
 	}
 
-	static public final Object getObject(final Jedis jedis, final String key)
-			throws Exception {
+	static public final Object getObject(final Jedis jedis, final String key) throws Exception {
 		byte[] b = jedis.get(key2(key));
 		return ExToolkit.deserialization(b);
 	}
@@ -570,8 +528,7 @@ public class JedisBase extends JedisOrigin {
 	}
 
 	// ///////////////////// 取值 B2Helper - Map /////////////////////
-	static public final NewMap getMap(final JedisPool pool, final String key)
-			throws Exception {
+	static public final NewMap getMap(final JedisPool pool, final String key) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return getMap(jedis, key);
@@ -582,8 +539,7 @@ public class JedisBase extends JedisOrigin {
 		}
 	}
 
-	static public final NewMap getMap(final Jedis jedis, final String key)
-			throws Exception {
+	static public final NewMap getMap(final Jedis jedis, final String key) throws Exception {
 		byte[] b = jedis.get(key2(key));
 		return B2Helper.toMap(b);
 	}
@@ -594,8 +550,7 @@ public class JedisBase extends JedisOrigin {
 	}
 
 	// ///////////////////// 取值 B2Helper - List /////////////////////
-	static public final NewList getList(final JedisPool pool, final String key)
-			throws Exception {
+	static public final NewList getList(final JedisPool pool, final String key) throws Exception {
 		final Jedis jedis = getJedis(pool);
 		try {
 			return getList(jedis, key);
@@ -606,8 +561,7 @@ public class JedisBase extends JedisOrigin {
 		}
 	}
 
-	static public final NewList getList(final Jedis jedis, final String key)
-			throws Exception {
+	static public final NewList getList(final Jedis jedis, final String key) throws Exception {
 		byte[] b = jedis.get(key2(key));
 		return B2Helper.toList(b);
 	}

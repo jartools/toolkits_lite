@@ -24,90 +24,91 @@ package com.bowlong.util;
  */
 public final class HexBin {
 
-    static private final int    BASELENGTH         = 128;
-    static private final int    LOOKUPLENGTH       = 16;
-    static final private byte[] hexNumberTable     = new byte[BASELENGTH];
-    static final private char[] upperChars  = new char[LOOKUPLENGTH];
-    static final private char[] lowerChars = new char[LOOKUPLENGTH];
+	static private final int BASELENGTH = 128;
+	static private final int LOOKUPLENGTH = 16;
+	static final private byte[] hexNumberTable = new byte[BASELENGTH];
+	static final private char[] upperChars = new char[LOOKUPLENGTH];
+	static final private char[] lowerChars = new char[LOOKUPLENGTH];
 
-    static {
-        for (int i = 0; i < BASELENGTH; i++) {
-            hexNumberTable[i] = -1;
-        }
-        for (int i = '9'; i >= '0'; i--) {
-            hexNumberTable[i] = (byte) (i - '0');
-        }
-        for (int i = 'F'; i >= 'A'; i--) {
-            hexNumberTable[i] = (byte) (i - 'A' + 10);
-        }
-        for (int i = 'f'; i >= 'a'; i--) {
-            hexNumberTable[i] = (byte) (i - 'a' + 10);
-        }
+	static {
+		for (int i = 0; i < BASELENGTH; i++) {
+			hexNumberTable[i] = -1;
+		}
+		for (int i = '9'; i >= '0'; i--) {
+			hexNumberTable[i] = (byte) (i - '0');
+		}
+		for (int i = 'F'; i >= 'A'; i--) {
+			hexNumberTable[i] = (byte) (i - 'A' + 10);
+		}
+		for (int i = 'f'; i >= 'a'; i--) {
+			hexNumberTable[i] = (byte) (i - 'a' + 10);
+		}
 
-        for (int i = 0; i < 10; i++) {
-            upperChars[i] = (char) ('0' + i);
-            lowerChars[i] = (char) ('0' + i);
-        }
-        for (int i = 10; i <= 15; i++) {
-            upperChars[i] = (char) ('A' + i - 10);
-            lowerChars[i] = (char) ('a' + i - 10);
-        }
-    }
-    
-    public static String encode(byte[] bytes) {
-        return encode(bytes, true);
-    }
+		for (int i = 0; i < 10; i++) {
+			upperChars[i] = (char) ('0' + i);
+			lowerChars[i] = (char) ('0' + i);
+		}
+		for (int i = 10; i <= 15; i++) {
+			upperChars[i] = (char) ('A' + i - 10);
+			lowerChars[i] = (char) ('a' + i - 10);
+		}
+	}
 
-    public static String encode(byte[] bytes, boolean upperCase) {
-        if (bytes == null) {
-            return null;
-        }
+	public static String encode(byte[] bytes) {
+		return encode(bytes, true);
+	}
 
-        final char[] chars = upperCase ? upperChars : lowerChars;
+	public static String encode(byte[] bytes, boolean upperCase) {
+		if (bytes == null) {
+			return null;
+		}
 
-        char[] hex = new char[bytes.length * 2];
-        for (int i = 0; i < bytes.length; i++) {
-            int b = bytes[i] & 0xFF;
-            hex[i * 2] = chars[b >> 4];
-            hex[i * 2 + 1] = chars[b & 0xf];
-        }
-        return new String(hex);
-    }
+		final char[] chars = upperCase ? upperChars : lowerChars;
 
-    /**
-     * Decode hex string to a byte array
-     * 
-     * @param encoded encoded string
-     * @return return array of byte to encode
-     */
-    static public byte[] decode(String encoded) {
-        if (encoded == null) {
-            return null;
-        }
+		char[] hex = new char[bytes.length * 2];
+		for (int i = 0; i < bytes.length; i++) {
+			int b = bytes[i] & 0xFF;
+			hex[i * 2] = chars[b >> 4];
+			hex[i * 2 + 1] = chars[b & 0xf];
+		}
+		return new String(hex);
+	}
 
-        int lengthData = encoded.length();
-        if (lengthData % 2 != 0) {
-            return null;
-        }
+	/**
+	 * Decode hex string to a byte array
+	 * 
+	 * @param encoded
+	 *            encoded string
+	 * @return return array of byte to encode
+	 */
+	static public byte[] decode(String encoded) {
+		if (encoded == null) {
+			return null;
+		}
 
-        char[] binaryData = encoded.toCharArray();
-        int lengthDecode = lengthData / 2;
-        byte[] decodedData = new byte[lengthDecode];
-        byte temp1, temp2;
-        char tempChar;
-        for (int i = 0; i < lengthDecode; i++) {
-            tempChar = binaryData[i * 2];
-            temp1 = (tempChar < BASELENGTH) ? hexNumberTable[tempChar] : -1;
-            if (temp1 == -1) {
-                return null;
-            }
-            tempChar = binaryData[i * 2 + 1];
-            temp2 = (tempChar < BASELENGTH) ? hexNumberTable[tempChar] : -1;
-            if (temp2 == -1) {
-                return null;
-            }
-            decodedData[i] = (byte) ((temp1 << 4) | temp2);
-        }
-        return decodedData;
-    }
+		int lengthData = encoded.length();
+		if (lengthData % 2 != 0) {
+			return null;
+		}
+
+		char[] binaryData = encoded.toCharArray();
+		int lengthDecode = lengthData / 2;
+		byte[] decodedData = new byte[lengthDecode];
+		byte temp1, temp2;
+		char tempChar;
+		for (int i = 0; i < lengthDecode; i++) {
+			tempChar = binaryData[i * 2];
+			temp1 = (tempChar < BASELENGTH) ? hexNumberTable[tempChar] : -1;
+			if (temp1 == -1) {
+				return null;
+			}
+			tempChar = binaryData[i * 2 + 1];
+			temp2 = (tempChar < BASELENGTH) ? hexNumberTable[tempChar] : -1;
+			if (temp2 == -1) {
+				return null;
+			}
+			decodedData[i] = (byte) ((temp1 << 4) | temp2);
+		}
+		return decodedData;
+	}
 }

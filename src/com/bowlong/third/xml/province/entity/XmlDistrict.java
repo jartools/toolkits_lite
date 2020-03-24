@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlValue;
 
 /**
  * 区县
+ * 
  * @author Canyon
  * @version createtime：2015年4月29日 上午00:10:41
  */
@@ -60,8 +61,7 @@ public class XmlDistrict implements Serializable {
 
 	@Override
 	public String toString() {
-		return "XmlDistrict [id=" + id + ", districtName=" + districtName
-				+ ", cid=" + cid + ", district=" + district + "]";
+		return "XmlDistrict [id=" + id + ", districtName=" + districtName + ", cid=" + cid + ", district=" + district + "]";
 	}
 
 }

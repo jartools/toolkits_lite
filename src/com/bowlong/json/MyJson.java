@@ -33,12 +33,9 @@ import com.bowlong.util.MapEx;
 public class MyJson {
 	private static MyJson my = new MyJson();
 
-	public static final void toJSONString(Object v, File toF)
-			throws IOException {
+	public static final void toJSONString(Object v, File toF) throws IOException {
 		String str = toJSONString(v);
-		try (FileOutputStream fos = new FileOutputStream(toF);
-				OutputStreamWriter osw = new OutputStreamWriter(fos,
-						Charset.forName("UTF-8"));) {
+		try (FileOutputStream fos = new FileOutputStream(toF); OutputStreamWriter osw = new OutputStreamWriter(fos, Charset.forName("UTF-8"));) {
 			osw.write(str);
 			osw.flush();
 		}
@@ -65,8 +62,7 @@ public class MyJson {
 		}
 	}
 
-	public static final void toJSONString(Object v, StringBuffer rst)
-			throws IOException {
+	public static final void toJSONString(Object v, StringBuffer rst) throws IOException {
 		if (v == null || rst == null)
 			return;
 		write(rst, v);
@@ -114,8 +110,7 @@ public class MyJson {
 		sb.append("]");
 	}
 
-	private static final void write(StringBuffer sb, Object obj)
-			throws IOException {
+	private static final void write(StringBuffer sb, Object obj) throws IOException {
 		if (obj == null) {
 			sb.append("null");
 		} else if (obj instanceof Boolean) {
@@ -149,17 +144,14 @@ public class MyJson {
 			sb.append(((Double) obj).doubleValue());
 		} else if (obj instanceof Date) {
 			Date d = (Date) obj;
-			sb.append("\"")
-					.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-							.format(d)).append("\"");
+			sb.append("\"").append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(d)).append("\"");
 		} else if (obj instanceof byte[]) {
 			byte[] buf = (byte[]) obj;
 			String s = Base64.toAltBase64(buf);
 			// String s = Base64.encode(buf);
 			sb.append("\"").append(s).append("\"");
 		} else {
-			throw new IOException("No Support Type :"
-					+ obj.getClass().getName() + "  " + obj);
+			throw new IOException("No Support Type :" + obj.getClass().getName() + "  " + obj);
 		}
 	}
 
@@ -302,15 +294,13 @@ public class MyJson {
 		return (T) o;
 	}
 
-	public static final EnDeJsonI parseForMap(String str, Class<? extends EnDeJsonI> clazz)
-			throws IOException, InstantiationException, IllegalAccessException {
+	public static final EnDeJsonI parseForMap(String str, Class<? extends EnDeJsonI> clazz) throws IOException, InstantiationException, IllegalAccessException {
 		Map map = parseMap(str);
 		EnDeJsonI result = (EnDeJsonI) clazz.newInstance();
 		return result.parse(map);
 	}
 
-	public static final List<EnDeJsonI> parseList(String str, Class<? extends EnDeJsonI> clazz)
-			throws IOException, InstantiationException, IllegalAccessException {
+	public static final List<EnDeJsonI> parseList(String str, Class<? extends EnDeJsonI> clazz) throws IOException, InstantiationException, IllegalAccessException {
 		List<EnDeJsonI> r2 = new ArrayList<>();
 		List<Map> list = parseList(str);
 		for (Map m : list) {
@@ -325,8 +315,7 @@ public class MyJson {
 		return toJSONString(obj.toMap());
 	}
 
-	public static final String toJSONString(List<? extends EnDeJsonI> objs)
-			throws IOException {
+	public static final String toJSONString(List<? extends EnDeJsonI> objs) throws IOException {
 		List<Map> maps = new ArrayList<>();
 		for (EnDeJsonI fm : objs) {
 			maps.add(fm.toMap());

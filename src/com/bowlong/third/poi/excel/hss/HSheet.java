@@ -61,9 +61,9 @@ public class HSheet {
 	}
 
 	public final boolean getBool(int row, int col) {
-		if (!wb.iScached) 
+		if (!wb.iScached)
 			return HSS.getBool(this.sheet, row, col);
-		
+
 		String key = key("bool", row, col);
 		Object val = (Object) cache.get(key);
 		if (val == null || !(val instanceof Boolean)) {
@@ -74,7 +74,7 @@ public class HSheet {
 	}
 
 	public final int getInt(int row, int col) {
-		if (!wb.iScached) 
+		if (!wb.iScached)
 			return HSS.getInt(this.sheet, row, col);
 
 		String key = key("int", row, col);
@@ -87,7 +87,7 @@ public class HSheet {
 	}
 
 	public final long getLong(int row, int col) {
-		if (!wb.iScached) 
+		if (!wb.iScached)
 			return HSS.getLong(this.sheet, row, col);
 
 		String key = key("long", row, col);
@@ -100,7 +100,7 @@ public class HSheet {
 	}
 
 	public final double getDouble(int row, int col) {
-		if (!wb.iScached) 
+		if (!wb.iScached)
 			return HSS.getDouble(this.sheet, row, col);
 
 		String key = key("double", row, col);
@@ -113,7 +113,7 @@ public class HSheet {
 	}
 
 	public final String getString(int row, int col) {
-		if (!wb.iScached) 
+		if (!wb.iScached)
 			return HSS.getString(this.sheet, row, col);
 
 		String key = key("string", row, col);
@@ -126,7 +126,7 @@ public class HSheet {
 	}
 
 	public final Object getJSON(int row, int col) {
-		if (!wb.iScached) 
+		if (!wb.iScached)
 			return HSS.getJSON(this.sheet, row, col);
 
 		String key = key("json", row, col);

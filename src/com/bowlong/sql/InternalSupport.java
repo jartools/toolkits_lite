@@ -43,6 +43,7 @@ public class InternalSupport extends ExToolkit {
 	// ///////////////////////////////////////////////////
 	// 线程并发线程池
 	private static ExecutorService _tpool = null;
+
 	protected static ExecutorService _getES() {
 		if (_tpool == null)
 			_tpool = Executors.newCachedThreadPool();

@@ -72,12 +72,12 @@ public class N4BootstrapSocketClient extends N4Socket {
 				if (isSync) {
 					ChannelFuture f = chnFu.sync();
 					f.channel().closeFuture().sync();
-				}else {
+				} else {
 					map.put("chnFuture", chnFu);
 				}
 			} catch (Exception e) {
 				log.error(e2s(e));
-			}finally {
+			} finally {
 				if (isSync) {
 					EventLoopGroup group = (EventLoopGroup) map.remove("group");
 					group.shutdownGracefully();

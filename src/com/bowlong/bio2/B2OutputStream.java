@@ -16,16 +16,14 @@ public class B2OutputStream {
 		os.write(B2Type.NULL);
 	}
 
-	public static final void writeBoolean(OutputStream os, boolean v)
-			throws IOException {
+	public static final void writeBoolean(OutputStream os, boolean v) throws IOException {
 		if (v)
 			os.write(B2Type.BOOLEAN_TRUE);
 		else
 			os.write(B2Type.BOOLEAN_FALSE);
 	}
 
-	public static final void writeByte(OutputStream os, int v)
-			throws IOException {
+	public static final void writeByte(OutputStream os, int v) throws IOException {
 		if (v == 0)
 			os.write(B2Type.BYTE_0);
 		else {
@@ -34,8 +32,7 @@ public class B2OutputStream {
 		}
 	}
 
-	public static final void writeShort(OutputStream os, int v)
-			throws IOException {
+	public static final void writeShort(OutputStream os, int v) throws IOException {
 		if (v == 0)
 			os.write(B2Type.SHORT_0);
 		else if (v >= NumEx.BYTE_MIN_VALUE && v <= NumEx.BYTE_MAX_VALUE) {
@@ -47,16 +44,13 @@ public class B2OutputStream {
 			os.write((byte) ((v >> 0) & 0xff));
 		}
 	}
-	
-	
-	public static final void writeB2Int(OutputStream os, B2Int v) throws IOException
-	{
+
+	public static final void writeB2Int(OutputStream os, B2Int v) throws IOException {
 		os.write(B2Type.Type_INT_B2);
 		writeInt(os, v.value);
 	}
 
-	public static final void writeInt(OutputStream os, int v)
-			throws IOException {
+	public static final void writeInt(OutputStream os, int v) throws IOException {
 		switch (v) {
 		case -1:
 			os.write(B2Type.INT_N1);
@@ -179,8 +173,7 @@ public class B2OutputStream {
 		}
 	}
 
-	public static final void writeIntArray(OutputStream os, int[] v)
-			throws IOException {
+	public static final void writeIntArray(OutputStream os, int[] v) throws IOException {
 		int len = v.length;
 		switch (len) {
 		case 0:
@@ -244,8 +237,7 @@ public class B2OutputStream {
 		}
 	}
 
-	public static final void writeInt2DArray(OutputStream os, int[][] v)
-			throws IOException {
+	public static final void writeInt2DArray(OutputStream os, int[][] v) throws IOException {
 		int len = v.length;
 		if (len <= 0) {
 			os.write(B2Type.INT_2D_ARRAY_0);
@@ -258,8 +250,7 @@ public class B2OutputStream {
 		}
 	}
 
-	public static final void writeLong(OutputStream os, long v)
-			throws IOException {
+	public static final void writeLong(OutputStream os, long v) throws IOException {
 		if (v == 0) {
 			os.write(B2Type.LONG_0);
 		} else if (v >= NumEx.BYTE_MIN_VALUE && v <= NumEx.BYTE_MAX_VALUE) {
@@ -288,8 +279,7 @@ public class B2OutputStream {
 		}
 	}
 
-	public static final void writeDouble(OutputStream os, double var)
-			throws IOException {
+	public static final void writeDouble(OutputStream os, double var) throws IOException {
 		long v = Double.doubleToLongBits(var);
 		if (v == 0) {
 			os.write(B2Type.DOUBLE_0);
@@ -322,8 +312,7 @@ public class B2OutputStream {
 		}
 	}
 
-	public static final void writeString(OutputStream os, String v)
-			throws IOException {
+	public static final void writeString(OutputStream os, String v) throws IOException {
 		if (v == null) {
 			writeNull(os);
 		} else {
@@ -446,8 +435,7 @@ public class B2OutputStream {
 		}
 	}
 
-	public static final void writeDate(OutputStream os, java.util.Date dat)
-			throws IOException {
+	public static final void writeDate(OutputStream os, java.util.Date dat) throws IOException {
 		long v = dat.getTime();
 		os.write(B2Type.JAVA_DATE);
 		os.write((byte) ((v >> 56) & 0xff));
@@ -460,8 +448,7 @@ public class B2OutputStream {
 		os.write((byte) ((v >> 0) & 0xff));
 	}
 
-	public static final void writeBytes(OutputStream os, byte[] v)
-			throws IOException {
+	public static final void writeBytes(OutputStream os, byte[] v) throws IOException {
 		if (v == null) {
 			writeNull(os);
 		} else {
@@ -476,8 +463,7 @@ public class B2OutputStream {
 		}
 	}
 
-	public static final void writeVectorTag(OutputStream os, int len)
-			throws Exception {
+	public static final void writeVectorTag(OutputStream os, int len) throws Exception {
 		switch (len) {
 		case 0:
 			os.write(B2Type.VECTOR_0);
@@ -561,13 +547,11 @@ public class B2OutputStream {
 		}
 	}
 
-	public static final void writeVectorEntry(OutputStream os, Object object)
-			throws Exception {
+	public static final void writeVectorEntry(OutputStream os, Object object) throws Exception {
 		writeObject(os, object);
 	}
 
-	public static final void writeVector(OutputStream os, List v)
-			throws Exception {
+	public static final void writeVector(OutputStream os, List v) throws Exception {
 		if (v == null) {
 			writeNull(os);
 		} else {
@@ -662,8 +646,7 @@ public class B2OutputStream {
 		}
 	}
 
-	public static final void writeMapTag(OutputStream os, int len)
-			throws Exception {
+	public static final void writeMapTag(OutputStream os, int len) throws Exception {
 		switch (len) {
 		case 0:
 			os.write(B2Type.HASHTABLE_0);
@@ -735,8 +718,7 @@ public class B2OutputStream {
 		}
 	}
 
-	public static final void writeMapEntry(OutputStream os, Object key,
-			Object var) throws Exception {
+	public static final void writeMapEntry(OutputStream os, Object key, Object var) throws Exception {
 		writeObject(os, key);
 		writeObject(os, var);
 	}
@@ -835,8 +817,7 @@ public class B2OutputStream {
 		}
 	}
 
-	public static final void writeObject(OutputStream os, Object object)
-			throws Exception {
+	public static final void writeObject(OutputStream os, Object object) throws Exception {
 		if (object == null) {
 			writeNull(os);
 		} else if (object instanceof Map) {
@@ -887,8 +868,8 @@ public class B2OutputStream {
 		} else if (object instanceof int[][]) {
 			int[][] v = (int[][]) object;
 			writeInt2DArray(os, v);
-		} else if(object instanceof B2Int) {
-			B2Int v = (B2Int)object;
+		} else if (object instanceof B2Int) {
+			B2Int v = (B2Int) object;
 			writeB2Int(os, v);
 		} else {
 			throw new IOException("unsupported object:" + object);
@@ -896,13 +877,11 @@ public class B2OutputStream {
 	}
 
 	// ////////////////////////////////
-	protected static final void printString(OutputStream os, byte[] v)
-			throws IOException {
+	protected static final void printString(OutputStream os, byte[] v) throws IOException {
 		os.write(v);
 	}
 
-	protected static final void printString2(OutputStream os, byte[] v)
-			throws IOException {
+	protected static final void printString2(OutputStream os, byte[] v) throws IOException {
 		for (int i = 0; i < v.length; i++) {
 			v[i] = (byte) (v[i] ^ B2Type.STR);
 		}

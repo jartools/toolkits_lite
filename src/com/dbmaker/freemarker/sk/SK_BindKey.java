@@ -37,11 +37,8 @@ public class SK_BindKey {
 	/** 是否是唯一 */
 	private boolean unique;
 
-	public SK_BindKey(String pkTableName, String pkColumnName,
-			String fkTableName, String fkColumnName, String d_pkTableName,
-			String d_pkColumnName, String d_fkTableName, String d_fkColumnName,
-			String x_pkTableName, String x_pkColumnName, String x_fkTableName,
-			String x_fkColumnName, boolean pk, boolean unique) {
+	public SK_BindKey(String pkTableName, String pkColumnName, String fkTableName, String fkColumnName, String d_pkTableName, String d_pkColumnName, String d_fkTableName, String d_fkColumnName,
+			String x_pkTableName, String x_pkColumnName, String x_fkTableName, String x_fkColumnName, boolean pk, boolean unique) {
 		super();
 		this.pkTableName = pkTableName;
 		this.pkColumnName = pkColumnName;

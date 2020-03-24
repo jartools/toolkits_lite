@@ -45,8 +45,7 @@ public class FilterMackWord {
 		File f = new File(path);
 		if (f.exists()) {
 			// 加载严格模式分隔符
-			try (LineNumberReader lr = new LineNumberReader(
-					new InputStreamReader(new FileInputStream(f), Encoding.UTF8));) {
+			try (LineNumberReader lr = new LineNumberReader(new InputStreamReader(new FileInputStream(f), Encoding.UTF8));) {
 				String line = null;
 				while ((line = lr.readLine()) != null) {
 					line = line.toUpperCase();

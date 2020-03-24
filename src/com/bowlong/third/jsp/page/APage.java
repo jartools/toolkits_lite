@@ -6,7 +6,7 @@ import java.util.Map;
 public abstract class APage<T> implements IPage<T> {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	/** 分页实体对象 */
 	protected PageEnt<T> pageBean;
 

@@ -2,8 +2,8 @@ package com.bowlong.objpool;
 
 /***
  * 所有Class对象的Pool
- * @author Canyon/龚阳辉
- * 2019-09-09 10:19
+ * 
+ * @author Canyon/龚阳辉 2019-09-09 10:19
  */
 @SuppressWarnings({ "unchecked" })
 public class ObjPool {

@@ -59,8 +59,7 @@ public class DemoXml implements Serializable {
 
 	@Override
 	public String toString() {
-		return "DemoXml [MsgType=" + getMsgType() + ", Version=" + getVersion()
-				+ ", hRet=" + gethRet() + "]";
+		return "DemoXml [MsgType=" + getMsgType() + ", Version=" + getVersion() + ", hRet=" + gethRet() + "]";
 	}
 
 	public static void main(String[] args) throws Exception {

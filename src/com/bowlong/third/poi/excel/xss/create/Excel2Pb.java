@@ -30,8 +30,7 @@ public class Excel2Pb {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void proto(String xls, List<String> fileNames)
-			throws Exception {
+	public static void proto(String xls, List<String> fileNames) throws Exception {
 		FileInputStream stream = new FileInputStream(xls);
 		XSSFWorkbook wb = new XSSFWorkbook(stream);
 

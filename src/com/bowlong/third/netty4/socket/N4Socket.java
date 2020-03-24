@@ -41,7 +41,7 @@ public class N4Socket extends ExToolkit {
 			return;
 		}
 		ChannelFuture chnFu = (ChannelFuture) map.get("chnFuture");
-		if(chnFu != null){
+		if (chnFu != null) {
 			chnFu.channel().close();
 			chnFu.cancel(true);
 		}

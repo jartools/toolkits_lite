@@ -27,8 +27,7 @@ public class Bio2GJava4LuaBts {
 		b2g(c, src, true);
 	}
 
-	public static void b2g(Class<?> c, boolean src, boolean isCall)
-			throws Exception {
+	public static void b2g(Class<?> c, boolean src, boolean isCall) throws Exception {
 		B2Class B2C = c.getAnnotation(B2Class.class);
 		String namespace = "";
 		if (B2C != null) {
@@ -59,8 +58,7 @@ public class Bio2GJava4LuaBts {
 					if (isCall) {
 						StrBuilder sb2 = new StrBuilder();
 						g2s_call(class1, namespace, sb2);
-						writeFile(p + "/" + "Call" + sname + ".java",
-								sb2.toString());
+						writeFile(p + "/" + "Call" + sname + ".java", sb2.toString());
 						System.out.println(sb2);
 					}
 				}
@@ -87,8 +85,7 @@ public class Bio2GJava4LuaBts {
 		Field[] fs = c.getDeclaredFields();
 		String cname = c.getSimpleName();
 		int hcname = cname.hashCode();
-		sb.pn("package gen_b2g${1}.bean;", StrEx.isEmpty(namespace) ? "" : "."
-				+ namespace);
+		sb.pn("package gen_b2g${1}.bean;", StrEx.isEmpty(namespace) ? "" : "." + namespace);
 		sb.pn("");
 		sb.pn("import java.io.*;");
 		sb.pn("import java.util.*;");
@@ -129,10 +126,10 @@ public class Bio2GJava4LuaBts {
 		}
 
 		sb.pn("");
-		// sb.pn("@SuppressWarnings({ \"rawtypes\", \"unchecked\", \"serial\", \"unused\" })");
+		// sb.pn("@SuppressWarnings({ \"rawtypes\", \"unchecked\", \"serial\",
+		// \"unused\" })");
 		sb.pn("@SuppressWarnings(\"all\")");
-		sb.pn("public class ${1} extends com.bowlong.net.proto.NSupport {",
-				cname);
+		sb.pn("public class ${1} extends com.bowlong.net.proto.NSupport {", cname);
 		sb.pn("    public static final int _CID = ${1};", hcname);
 		sb.pn("");
 
@@ -154,29 +151,25 @@ public class Bio2GJava4LuaBts {
 			if (field.getType().equals(List.class)) {
 				String gtype = B2G.getListType(field);
 				if (gtype != null && !gtype.isEmpty()) {
-					sb.pn("    public ${1}<${4}> ${2} = new NewList();${3}", t,
-							s, remark, gtype);
+					sb.pn("    public ${1}<${4}> ${2} = new NewList();${3}", t, s, remark, gtype);
 				}
 			} else if (field.getType().equals(Map.class)) {
 				String[] types = Bio2GLuaBts.getMapType(field);
 				String gtype0 = types[0];
 				String gtype = types[1];
 				if (gtype != null && !gtype.isEmpty()) {
-					sb.pn("    public Map<${5},${4}> ${2} = new HashMap<${5},${4}>();${3}",
-							t, s, remark, gtype, gtype0);
+					sb.pn("    public Map<${5},${4}> ${2} = new HashMap<${5},${4}>();${3}", t, s, remark, gtype, gtype0);
 				}
 			} else {
 				if (t.contains("String")) {
 					sb.pn("    public ${1} ${2} = \"\";${3}", t, s, remark);
 				} else if (t.contains("Map")) {
-					sb.pn("    public ${1} ${2} = new NewMap();${3}", t, s,
-							remark);
+					sb.pn("    public ${1} ${2} = new NewMap();${3}", t, s, remark);
 				} else {
 					if (B2G.isBType(t)) {
 						sb.pn("    public ${1} ${2};${3}", t, s, remark);
 					} else {
-						sb.pn("    public ${1} ${2} = new ${1}();${3}", t, s,
-								remark);
+						sb.pn("    public ${1} ${2} = new ${1}();${3}", t, s, remark);
 
 					}
 				}
@@ -196,8 +189,7 @@ public class Bio2GJava4LuaBts {
 		}
 		sb.pn("    }");
 
-		sb.pn("    public static ${1} new${2}(${3}){", cname, cname,
-				sb0.toString());
+		sb.pn("    public static ${1} new${2}(${3}){", cname, cname, sb0.toString());
 		sb.pn("        ${1} r = new ${1}();", cname);
 		for (Field field : fs) {
 			String t = B2G.getType(field);
@@ -232,8 +224,7 @@ public class Bio2GJava4LuaBts {
 					sb.pn("    }");
 					sb.pn("");
 
-					sb.pn("    public static List<${2}> list_${1}(List<NewMap> maps) {",
-							s, gtype);
+					sb.pn("    public static List<${2}> list_${1}(List<NewMap> maps) {", s, gtype);
 					sb.pn("        List r = new NewList();");
 					sb.pn("        for(NewMap _e : maps) {", gtype, s);
 					sb.pn("            ${1} e = ${1}.parse(_e);", gtype);
@@ -251,8 +242,7 @@ public class Bio2GJava4LuaBts {
 				boolean isBtype = B2G.isBType(gtype);
 				if (gtype != null && !gtype.isEmpty() && !isBtype) {
 					sb.pn("    public Map<${1}, Map> ${2}_maps() {", gtype0, s);
-					sb.pn("        Map<${1}, Map> r = new HashMap<${2}, Map>();",
-							gtype0, gtype0);
+					sb.pn("        Map<${1}, Map> r = new HashMap<${2}, Map>();", gtype0, gtype0);
 					sb.pn("        if(${1} == null) return r;", s);
 					sb.pn("        for(${1} key : ${2}.keySet()) {", gtype0, s);
 					sb.pn("            Map e = ${1}.get(key).toMap();", s);
@@ -263,13 +253,10 @@ public class Bio2GJava4LuaBts {
 					sb.pn("    }");
 					sb.pn("");
 
-					sb.pn("    public static Map<${3}, ${2}> map_${1}(Map<${3}, NewMap> maps) {",
-							s, gtype, gtype0);
-					sb.pn("        Map<${1}, ${3}> r = new HashMap<${1}, ${3}>();",
-							gtype0, s, gtype);
+					sb.pn("    public static Map<${3}, ${2}> map_${1}(Map<${3}, NewMap> maps) {", s, gtype, gtype0);
+					sb.pn("        Map<${1}, ${3}> r = new HashMap<${1}, ${3}>();", gtype0, s, gtype);
 					sb.pn("        for(${1} key : maps.keySet()) {", gtype0, s);
-					sb.pn("            ${1} e = ${1}.parse(maps.get(key));",
-							gtype, s);
+					sb.pn("            ${1} e = ${1}.parse(maps.get(key));", gtype, s);
 					sb.pn("            if(e == null) continue;");
 					sb.pn("            r.put(key, e);");
 					sb.pn("        }");
@@ -283,7 +270,7 @@ public class Bio2GJava4LuaBts {
 		sb.pn("");
 		sb.pn("    public Map toMap() {");
 		sb.pn("        Map r = new HashMap();");
-		// sb.pn("        r.put(\"${1}\", _CID);", B2G.BEAN);
+		// sb.pn(" r.put(\"${1}\", _CID);", B2G.BEAN);
 		for (Field field : fs) {
 			String t = B2G.getType(field);
 			String gm = B2G.getMapType(t);
@@ -312,12 +299,10 @@ public class Bio2GJava4LuaBts {
 				}
 			} else {
 				if (gm.equals("getObject")) {
-					sb.pn("        r.put(${1}, ${2}==null?null:${2}.toMap());",
-							hs, s);
+					sb.pn("        r.put(${1}, ${2}==null?null:${2}.toMap());", hs, s);
 				} else {
 					if (gm.equals("getInt") || gm.equals("getLong")) {
-						sb.pn("        r.put(${1}, LuaEncode.encode(${2}));",
-								hs, s);
+						sb.pn("        r.put(${1}, LuaEncode.encode(${2}));", hs, s);
 					} else {
 						sb.pn("        r.put(${1}, ${2});", hs, s);
 					}
@@ -348,8 +333,7 @@ public class Bio2GJava4LuaBts {
 				String gtype = B2G.getListType(field);
 				boolean isBType = B2G.isBType(gtype);
 				if (gtype != null && !gtype.isEmpty() && !isBType) {
-					sb.pn("        r.${1} = list_${1}( map2.getList(\"${3}\") );",
-							s, gm, hs, gtype);
+					sb.pn("        r.${1} = list_${1}( map2.getList(\"${3}\") );", s, gm, hs, gtype);
 				} else {
 					sb.pn("        r.${1} = map2.${2}(\"${3}\");", s, gm, hs);
 				}
@@ -357,27 +341,22 @@ public class Bio2GJava4LuaBts {
 				String gtype = B2G.getListType(field);
 				boolean isBType = B2G.isBType(gtype);
 				if (gtype != null && !gtype.isEmpty() && !isBType) {
-					sb.pn("        r.${1} = map_${1}( map2.getMap(\"${3}\") );",
-							s, gm, hs, gtype);
+					sb.pn("        r.${1} = map_${1}( map2.getMap(\"${3}\") );", s, gm, hs, gtype);
 				} else {
 					sb.pn("        r.${1} = map2.${2}(\"${3}\");", s, gm, hs);
 				}
 			} else {
 				if (gm.equals("getObject")) {
-					sb.pn("        r.${1} = ${2}.parse(map2.getNewMap(\"${3}\"));",
-							s, t, hs);
+					sb.pn("        r.${1} = ${2}.parse(map2.getNewMap(\"${3}\"));", s, t, hs);
 				} else {
 					if (gm.equals("getInt")) {
 						gm = "get";
-						sb.pn("        r.${1} = LuaEncode.decode(map2.${2}(\"${3}\"),Integer.class);",
-								s, gm, hs);
+						sb.pn("        r.${1} = LuaEncode.decode(map2.${2}(\"${3}\"),Integer.class);", s, gm, hs);
 					} else if (gm.equals("getLong")) {
 						gm = "get";
-						sb.pn("        r.${1} = LuaEncode.decode(map2.${2}(\"${3}\"),Long.class);",
-								s, gm, hs);
+						sb.pn("        r.${1} = LuaEncode.decode(map2.${2}(\"${3}\"),Long.class);", s, gm, hs);
 					} else {
-						sb.pn("        r.${1} = map2.${2}(\"${3}\");", s, gm,
-								hs);
+						sb.pn("        r.${1} = map2.${2}(\"${3}\");", s, gm, hs);
 					}
 				}
 			}
@@ -407,15 +386,13 @@ public class Bio2GJava4LuaBts {
 		sb.pn("    }");
 		sb.pn("");
 
-		sb.pn("    public static ${1} parse(byte[] buf) throws Exception {",
-				cname);
+		sb.pn("    public static ${1} parse(byte[] buf) throws Exception {", cname);
 		sb.pn("        NewMap map2 = com.bowlong.bio2.B2Helper.toMap(buf);");
 		sb.pn("        return parse(map2);");
 		sb.pn("    }");
 		sb.pn("");
 
-		sb.pn("    public static ${1} parse(InputStream in) throws Exception {",
-				cname);
+		sb.pn("    public static ${1} parse(InputStream in) throws Exception {", cname);
 		sb.pn("        NewMap map2 = com.bowlong.bio2.B2InputStream.readMap(in);");
 		sb.pn("        return parse(map2);");
 		sb.pn("    }");
@@ -436,8 +413,7 @@ public class Bio2GJava4LuaBts {
 		Bio2GJava.g2bean_Sheet(c, sb);
 	}
 
-	public static void g2beanConstant(Class<?> c, String namespace,
-			StrBuilder sb) {
+	public static void g2beanConstant(Class<?> c, String namespace, StrBuilder sb) {
 		Bio2GJava.g2beanConstant(c, namespace, sb);
 	}
 
@@ -456,8 +432,7 @@ public class Bio2GJava4LuaBts {
 		String s = sb2.toString();
 
 		sb.pn("");
-		sb.pn("    public static final Set<Integer> CMD = NewSet.create(${1});",
-				s);
+		sb.pn("    public static final Set<Integer> CMD = NewSet.create(${1});", s);
 
 		sb.pn("");
 	}
@@ -466,8 +441,7 @@ public class Bio2GJava4LuaBts {
 	public static void g2s_service(Class<?> c, String namespace, StrBuilder sb) {
 		Method[] methods = c.getMethods();
 		String cname = c.getSimpleName();
-		sb.pn("package gen_b2g${1};", StrEx.isEmpty(namespace) ? "" : "."
-				+ namespace);
+		sb.pn("package gen_b2g${1};", StrEx.isEmpty(namespace) ? "" : "." + namespace);
 		// sb.pn("package gen_b2g;");
 		sb.pn("");
 		sb.pn("import java.io.*;");
@@ -481,16 +455,15 @@ public class Bio2GJava4LuaBts {
 		// sb.pn("import org.apache.commons.logging.*;");
 		sb.pn("import com.bowlong.net.proto.gen.lua.LuaEncode;");
 		sb.pn("");
-		sb.pn("import gen_b2g${1}.bean.*;", StrEx.isEmpty(namespace) ? "" : "."
-				+ namespace);
+		sb.pn("import gen_b2g${1}.bean.*;", StrEx.isEmpty(namespace) ? "" : "." + namespace);
 		sb.pn("");
 		// sb.pn("@SuppressWarnings({ \"rawtypes\", \"unchecked\", \"unused\" })");
 		sb.pn("@SuppressWarnings(\"all\")");
-		sb.pn("public abstract class ${1} extends com.bowlong.net.proto.NSupport {",
-				cname);
+		sb.pn("public abstract class ${1} extends com.bowlong.net.proto.NSupport {", cname);
 		sb.pn("");
-		// sb.pn("    static Log log = LogFactory.getLog(${1}.class);", cname);
-		// sb.pn("    public abstract GameServerTcpChannel chn(int XID) throws Exception;");
+		// sb.pn(" static Log log = LogFactory.getLog(${1}.class);", cname);
+		// sb.pn(" public abstract GameServerTcpChannel chn(int XID) throws
+		// Exception;");
 		// sb.pn("");
 
 		g2s_service_to_client(methods, sb);
@@ -552,12 +525,10 @@ public class Bio2GJava4LuaBts {
 				if (!srtype.equals("void")) {
 					String mx = B2G.getMapType(srtype);
 
-					sb.pn("    private void __onCallback_${1}(GameServerTcpChannel chn, NewMap map2) throws Exception {",
-							mname);
+					sb.pn("    private void __onCallback_${1}(GameServerTcpChannel chn, NewMap map2) throws Exception {", mname);
 					sb.pn("        if(chn == null) return;");
-					// sb.pn("        NewMap map2 = NewMap.create(map);");
-					sb.pn("        NewMap retVal = map2.getNewMap(1);", srtype,
-							mx);
+					// sb.pn(" NewMap map2 = NewMap.create(map);");
+					sb.pn("        NewMap retVal = map2.getNewMap(1);", srtype, mx);
 					sb.pn("");
 					sb.pn("        ReturnStatus rst = ReturnStatus.parse(retVal);");
 					sb.pn("");
@@ -565,8 +536,7 @@ public class Bio2GJava4LuaBts {
 					sb.pn("    }");
 				}
 			} else {
-				sb.pn("    private void __${1}(GameServerTcpChannel chn, NewMap map2) throws Exception {",
-						mname);
+				sb.pn("    private void __${1}(GameServerTcpChannel chn, NewMap map2) throws Exception {", mname);
 				sb.pn("        if(chn == null) return;");
 
 				StringBuffer sbThrow = new StringBuffer("Object[] othrows = {");
@@ -583,49 +553,37 @@ public class Bio2GJava4LuaBts {
 						nOutNum++;
 					} else {
 						if (p.equals("getObject")) {
-							sb.pn("        ${1} ${2} = ${1}.parse(map2.getNewMap(\"${3}\"));",
-									key, val, hval);
+							sb.pn("        ${1} ${2} = ${1}.parse(map2.getNewMap(\"${3}\"));", key, val, hval);
 						} else {
 
 							if (p.equals("getList")) {
 								String oType = B2G.getOType(m, val);
 								String mType = B2G.getMapType(oType);
 								if (mType.equals("getObject")) {
-									sb.pn("        ${1}<${2}> ${3} = new NewList<${2}>();",
-											key, oType, val);
+									sb.pn("        ${1}<${2}> ${3} = new NewList<${2}>();", key, oType, val);
 									sb.pn("        {");
-									sb.pn("            List<NewMap> maps = map2.${1}(\"${2}\");",
-											p, hval);
+									sb.pn("            List<NewMap> maps = map2.${1}(\"${2}\");", p, hval);
 									sb.pn("            for(NewMap m1 : maps) {");
-									sb.pn("                ${1}.add(${2}.parse(m1));",
-											val, oType);
+									sb.pn("                ${1}.add(${2}.parse(m1));", val, oType);
 									sb.pn("            }");
 									sb.pn("        }");
 									key = PStr.str("${1}<${2}>", key, oType);
 								} else {
-									sb.pn("        ${1} ${2} = map2.${3}(\"${4}\");",
-											key, val, p, hval);
+									sb.pn("        ${1} ${2} = map2.${3}(\"${4}\");", key, val, p, hval);
 
 								}
 							} else {
-								if ("getInt".equals(p) || "getLong".equals(p)
-										|| "getByte".equals(p)
-										|| "getShort".equals(p)
-										|| "getFloat".equals(p)
-										|| "getDouble".equals(p)) {
-									sb.pn("        ${1} ${2} = (${1}) map2.getDouble(${3});",
-											key, val, hval);
+								if ("getInt".equals(p) || "getLong".equals(p) || "getByte".equals(p) || "getShort".equals(p) || "getFloat".equals(p) || "getDouble".equals(p)) {
+									sb.pn("        ${1} ${2} = (${1}) map2.getDouble(${3});", key, val, hval);
 								} else {
-									sb.pn("        ${1} ${2} = map2.${3}(${4});",
-											key, val, p, hval);
+									sb.pn("        ${1} ${2} = map2.${3}(${4});", key, val, p, hval);
 								}
 							}
 						}
 					}
 					sb1.ap(", ${1}", val);
 
-					sbThrow.append("\"\\\"").append(val).append(":\\\"\", ")
-							.append(val).append(", ");
+					sbThrow.append("\"\\\"").append(val).append(":\\\"\", ").append(val).append(", ");
 				}
 
 				sbThrow.append("};");
@@ -637,32 +595,27 @@ public class Bio2GJava4LuaBts {
 					sb.pn("        } catch ( Exception e ) {");
 
 					// 此处添加了一个打印错误信息
-					// sb.pn("            e.printStackTrace();");
+					// sb.pn(" e.printStackTrace();");
 
 					sb.pn("            ${1}", sbThrow);
-					sb.pn("            onExcept(chn, $[1], rethrow(e, $[1], othrows), null);",
-							mname);
+					sb.pn("            onExcept(chn, $[1], rethrow(e, $[1], othrows), null);", mname);
 					sb.pn("        }");
 				} else {
 					sb.pn("        ${1} rst = new ${1}();", srtype);
 					sb.pn("        try {");
-					sb.pn("            on${1}(chn${2}, rst);", upper1(mname),
-							sb1);
+					sb.pn("            on${1}(chn${2}, rst);", upper1(mname), sb1);
 					sb.pn("        } catch ( Exception e ) {");
 
 					// 此处添加了一个打印错误信息
-					// sb.pn("            e.printStackTrace();");
+					// sb.pn(" e.printStackTrace();");
 
 					sb.pn("            ${1}", sbThrow);
-					sb.pn("            onExcept(chn, $[1], rethrow(e, $[1], othrows), rst);",
-							mname);
+					sb.pn("            onExcept(chn, $[1], rethrow(e, $[1], othrows), rst);", mname);
 					sb.pn("        }");
 					sb.pn("        try ( ByteOutStream result = getStream();) {");
 					sb.pn("            writeMapTag(result, ${1});", nOutNum + 2);
-					sb.pn("            writeMapEntry(result, ${1}, ${2});",
-							B2G.METHOD, h_mname);
-					sb.pn("            writeMapEntry(result, ${1}, rst.toMap());",
-							B2G.RETURN_STAT);
+					sb.pn("            writeMapEntry(result, ${1}, ${2});", B2G.METHOD, h_mname);
+					sb.pn("            writeMapEntry(result, ${1}, rst.toMap());", B2G.RETURN_STAT);
 					for (NewMap<String, String> m1 : params) {
 						String key = (String) m1.getKey();
 						String val = (String) m1.getValue();
@@ -670,8 +623,7 @@ public class Bio2GJava4LuaBts {
 						String p = B2G.getMapType(key);
 						boolean isOut = B2G.isOut(m, val);
 						if (isOut) {
-							sb.pn("            writeMapEntry(result, ${1}, ${2}.toMap());",
-									hval, val);
+							sb.pn("            writeMapEntry(result, ${1}, ${2}.toMap());", hval, val);
 						}
 					}
 					sb.pn("            chn.send(result.toByteArray());");
@@ -704,7 +656,7 @@ public class Bio2GJava4LuaBts {
 
 		sb.pn("");
 		sb.pn("    public static Exception rethrow(Exception cause, String method, Object... params) {");
-		// sb.pn("        String causeMessage = cause.getMessage();");
+		// sb.pn(" String causeMessage = cause.getMessage();");
 		sb.pn("        String causeMessage = ExceptionEx.e2s(cause);");
 		sb.pn("        if (causeMessage == null) {");
 		sb.pn("            causeMessage = \"\";");
@@ -752,17 +704,14 @@ public class Bio2GJava4LuaBts {
 			if (B2G.isServer(m)) {
 				sb.pn("    // ${1}", remark);
 				if (!srtype.equals("void")) {
-					sb.pn("    public abstract void on${2}(GameServerTcpChannel chn ${3}, ${1} ret) throws Exception;",
-							srtype, upper1(mname), sb1);
+					sb.pn("    public abstract void on${2}(GameServerTcpChannel chn ${3}, ${1} ret) throws Exception;", srtype, upper1(mname), sb1);
 				} else {
-					sb.pn("    public abstract void on${2}(GameServerTcpChannel chn ${3}) throws Exception;",
-							srtype, upper1(mname), sb1);
+					sb.pn("    public abstract void on${2}(GameServerTcpChannel chn ${3}) throws Exception;", srtype, upper1(mname), sb1);
 				}
 			} else {
 				if (!srtype.equals("void")) {
 					sb.pn("    // ${1}", remark);
-					sb.pn("    public void on${1}(GameServerTcpChannel chn, ${2} val) throws Exception { };",
-							upper1(mname), srtype);
+					sb.pn("    public void on${1}(GameServerTcpChannel chn, ${2} val) throws Exception { };", upper1(mname), srtype);
 				}
 			}
 		}
@@ -805,16 +754,14 @@ public class Bio2GJava4LuaBts {
 			sb.pn("    // //////////////////////////////////////////////");
 			sb.pn("");
 			sb.pn("    // ${1}", remark);
-			sb.pn("    public void ${1}(GameServerTcpChannel chn ${2},ReturnStatus rst) throws Exception {",
-					mname, sb1);
-			// sb.pn("        ${1}(chn, null ${2});", mname, sb2);
+			sb.pn("    public void ${1}(GameServerTcpChannel chn ${2},ReturnStatus rst) throws Exception {", mname, sb1);
+			// sb.pn(" ${1}(chn, null ${2});", mname, sb2);
 			sb.pn("        if(chn == null) return;");
 			sb.pn("        if(rst == null)");
 			sb.pn("           rst = new ReturnStatus();");
 
 			sb.pn("        Map _params = new HashMap();");
-			sb.pn("        _params.put(${1},${2}); // cmd:${3}", B2G.METHOD,
-					h_mname, mname);
+			sb.pn("        _params.put(${1},${2}); // cmd:${3}", B2G.METHOD, h_mname, mname);
 			sb.pn("        _params.put(${1},rst.toMap());", B2G.RETURN_STAT);
 			int i = 0;
 			for (NewMap<String, String> m1 : params) {
@@ -894,8 +841,7 @@ public class Bio2GJava4LuaBts {
 
 			// 解析参数函数
 			sb.pn("    // ${1}", remark);
-			sb.pn("    private String pv_${1}_params(NewMap map2) throws Exception {",
-					mname);
+			sb.pn("    private String pv_${1}_params(NewMap map2) throws Exception {", mname);
 			StrBuilder sbT = new StrBuilder();
 			sbT.an("        StringBuffer sb = com.bowlong.objpool.StringBufPool.borrowObject();");
 			sbT.an("        try {");
@@ -908,42 +854,35 @@ public class Bio2GJava4LuaBts {
 				String p = B2G.getMapType(key);
 				boolean isOut = B2G.isOut(m, val);
 				if (isOut) {
-					// sb.pn("        ${1} ${2} = new ${1}();", key, val);
+					// sb.pn(" ${1} ${2} = new ${1}();", key, val);
 					nOutNum++;
 				} else {
 					if (p.equals("getObject")) {
-						sb.pn("        ${1} ${2} = ${1}.parse(map2.getNewMap(${3}));",
-								key, val, hval);
+						sb.pn("        ${1} ${2} = ${1}.parse(map2.getNewMap(${3}));", key, val, hval);
 					} else {
 
 						if (p.equals("getList")) {
 							String oType = B2G.getOType(m, val);
 							String mType = B2G.getMapType(oType);
 							if (mType.equals("getObject")) {
-								sb.pn("        ${1}<${2}> ${3} = new NewList<${2}>();",
-										key, oType, val);
+								sb.pn("        ${1}<${2}> ${3} = new NewList<${2}>();", key, oType, val);
 								sb.pn("        {");
-								sb.pn("            List<NewMap> maps = map2.${1}(${2});",
-										p, hval);
+								sb.pn("            List<NewMap> maps = map2.${1}(${2});", p, hval);
 								sb.pn("            for(NewMap m1 : maps) {");
-								sb.pn("                ${1}.add(${2}.parse(m1));",
-										val, oType);
+								sb.pn("                ${1}.add(${2}.parse(m1));", val, oType);
 								sb.pn("            }");
 								sb.pn("        }");
 								key = PStr.str("${1}<${2}>", key, oType);
 							} else {
-								sb.pn("        ${1} ${2} = map2.${3}(${4});",
-										key, val, p, hval);
+								sb.pn("        ${1} ${2} = map2.${3}(${4});", key, val, p, hval);
 
 							}
 						} else {
-							sb.pn("        ${1} ${2} = map2.${3}(${4});", key,
-									val, p, hval);
+							sb.pn("        ${1} ${2} = map2.${3}(${4});", key, val, p, hval);
 						}
 					}
 					sb1.ap(", ${1}", val);
-					sbT.pn("            sb.append(\"\\\"${1}\\\":\").append(${1}).append(\",\");",
-							val);
+					sbT.pn("            sb.append(\"\\\"${1}\\\":\").append(${1}).append(\",\");", val);
 				}
 			}
 			sbT.pn("            sb.append(\")\");");
@@ -962,8 +901,7 @@ public class Bio2GJava4LuaBts {
 		String sname = c.getSimpleName();
 		Method[] methods = c.getMethods();
 		String cname = c.getSimpleName();
-		sb.pn("package gen_b2g${1};", StrEx.isEmpty(namespace) ? "" : "."
-				+ namespace);
+		sb.pn("package gen_b2g${1};", StrEx.isEmpty(namespace) ? "" : "." + namespace);
 		// sb.pn("package gen_b2g;");
 		sb.pn("");
 		// sb.pn("import java.io.*;");
@@ -973,8 +911,7 @@ public class Bio2GJava4LuaBts {
 		sb.pn("import com.bowlong.util.*;");
 		sb.pn("import com.bowlong.net.*;");
 		sb.pn("");
-		sb.pn("import gen_b2g${1}.bean.*;", StrEx.isEmpty(namespace) ? "" : "."
-				+ namespace);
+		sb.pn("import gen_b2g${1}.bean.*;", StrEx.isEmpty(namespace) ? "" : "." + namespace);
 		sb.pn("");
 		// sb.pn("@SuppressWarnings({ \"rawtypes\", \"unchecked\" })");
 		sb.pn("@SuppressWarnings(\"all\")");
@@ -1007,10 +944,8 @@ public class Bio2GJava4LuaBts {
 				if (isOut) {
 
 				} else {
-					if (mykey.equals("List")
-							&& !"".equals(B2G.getOType(m, myvar))) {
-						mykey = PStr.str("${1}<${2}>", mykey,
-								B2G.getOType(m, myvar));
+					if (mykey.equals("List") && !"".equals(B2G.getOType(m, myvar))) {
+						mykey = PStr.str("${1}<${2}>", mykey, B2G.getOType(m, myvar));
 					}
 					sb1.ap("${1} ${2}, ", mykey, myvar);
 				}
@@ -1024,8 +959,7 @@ public class Bio2GJava4LuaBts {
 			sb.pn("    public void ${1}(${2}) throws Exception {", mname, sb1);
 			sb.pn("        Map _map = new HashMap();");
 			sb.pn("        _map.put(\"-100\", __pid);  // _pid");
-			sb.pn("        _map.put(\"${1}\", ${2});  // cmd:${3}", B2G.METHOD,
-					hhmname, mname);
+			sb.pn("        _map.put(\"${1}\", ${2});  // cmd:${3}", B2G.METHOD, hhmname, mname);
 			for (NewMap<String, String> m1 : params) {
 				String key = (String) m1.getKey();
 				String val = (String) m1.getValue();
@@ -1041,12 +975,9 @@ public class Bio2GJava4LuaBts {
 						if (mType.equals("getObject")) {
 							sb.pn("		{");
 							sb.pn("			// Lsit对象(${1})", val);
-							sb.pn("		    List<Map> ${1}_list = new NewList<Map>();",
-									val);
-							sb.pn("        _map.put(\"${1}\", ${2});", hval,
-									val);
-							sb.pn("        _map.put(\"${1}\", ${2}_list);",
-									hval, val);
+							sb.pn("		    List<Map> ${1}_list = new NewList<Map>();", val);
+							sb.pn("        _map.put(\"${1}\", ${2});", hval, val);
+							sb.pn("        _map.put(\"${1}\", ${2}_list);", hval, val);
 							sb.pn("			for(${1} obj : ${2}) {", oType, val);
 							sb.pn("				${1}_list.add(obj.toMap());", val, oType);
 							sb.pn("			}");
@@ -1055,8 +986,7 @@ public class Bio2GJava4LuaBts {
 						} else {
 						}
 					} else if (B2G.getMapType(key).equals("getObject")) {
-						sb.pn("        _map.put(\"${1}\", ${2}.toMap());",
-								hval, val);
+						sb.pn("        _map.put(\"${1}\", ${2}.toMap());", hval, val);
 					} else {
 						sb.pn("        _map.put(\"${1}\", ${2});", hval, val);
 					}
@@ -1080,8 +1010,7 @@ public class Bio2GJava4LuaBts {
 		String s = sb2.toString();
 
 		sb.pn("");
-		sb.pn("    public static final Set<Integer> CMD = NewSet.create(${1});",
-				s);
+		sb.pn("    public static final Set<Integer> CMD = NewSet.create(${1});", s);
 		sb.pn("");
 		sb.pn("    public static boolean in(NewMap map) throws Exception {");
 		sb.pn("        int cmd = map.getInt(\"${1}\");", B2G.METHOD);
@@ -1139,12 +1068,10 @@ public class Bio2GJava4LuaBts {
 			if (B2G.isServer(m)) {
 				if (!srtype.equals("void")) {
 					sb.pn("    // ${1}", remark);
-					sb.pn("    private void __onCallback_${1}(NewMap map2) throws Exception {",
-							mname);
+					sb.pn("    private void __onCallback_${1}(NewMap map2) throws Exception {", mname);
 					String mx = B2G.getMapType(srtype);
-					// sb.pn("        NewMap map2 = NewMap.create(map);");
-					sb.pn("        NewMap retVal = map2.getNewMap(\"${1}\");",
-							B2G.RETURN_STAT);
+					// sb.pn(" NewMap map2 = NewMap.create(map);");
+					sb.pn("        NewMap retVal = map2.getNewMap(\"${1}\");", B2G.RETURN_STAT);
 					sb.pn("        ReturnStatus rst = ReturnStatus.parse(retVal);");
 
 					StrBuilder msb = new StrBuilder();
@@ -1156,8 +1083,7 @@ public class Bio2GJava4LuaBts {
 						boolean isOut = B2G.isOut(m, val);
 						if (isOut) {
 							if (p.equals("getObject")) {
-								sb.pn("        ${1} ${2} = ${1}.parse(map2.getNewMap(\"${3}\"));",
-										key, val, hval);
+								sb.pn("        ${1} ${2} = ${1}.parse(map2.getNewMap(\"${3}\"));", key, val, hval);
 								msb.ap("${1}, ", val);
 							}
 						}
@@ -1169,9 +1095,8 @@ public class Bio2GJava4LuaBts {
 				}
 			} else {
 				sb.pn("    // ${1}", remark);
-				sb.pn("    private void __onCall_${1}(NewMap map2) throws Exception {",
-						mname);
-				// sb.pn("        NewMap map2 = NewMap.create(map);");
+				sb.pn("    private void __onCall_${1}(NewMap map2) throws Exception {", mname);
+				// sb.pn(" NewMap map2 = NewMap.create(map);");
 				sb.pn("");
 				StrBuilder sb1 = new StrBuilder();
 				for (NewMap<String, String> m1 : params) {
@@ -1182,25 +1107,20 @@ public class Bio2GJava4LuaBts {
 					boolean isOut = B2G.isOut(m, val);
 
 					if (p.equals("getObject")) {
-						sb.pn("        ${1} ${2} = ${1}.parse(map2.getNewMap(\"${3}\"));",
-								key, val, hval);
+						sb.pn("        ${1} ${2} = ${1}.parse(map2.getNewMap(\"${3}\"));", key, val, hval);
 					} else {
-						sb.pn("        ${1} ${2} = map2.${3}(\"${4}\");", key,
-								val, p, hval);
+						sb.pn("        ${1} ${2} = map2.${3}(\"${4}\");", key, val, p, hval);
 						if (p.equals("getList")) {
 							String oType = B2G.getOType(m, val);
 							String mType = B2G.getMapType(oType);
-							sb.pn("		List<${1}> ${2}_list = new NewList<${3}>();",
-									oType, val, oType);
+							sb.pn("		List<${1}> ${2}_list = new NewList<${3}>();", oType, val, oType);
 							sb.pn("		{");
 							sb.pn("			// Lsit对象(${1})", val);
 							sb.pn("			for(Object obj : ${1}) {", val);
 							if (mType.equals("getObject"))
-								sb.pn("				${1}_list.add(${2}.parse((NewMap)obj));",
-										val, oType);
+								sb.pn("				${1}_list.add(${2}.parse((NewMap)obj));", val, oType);
 							else
-								sb.pn("				${1}_list.add((${2})obj);", val,
-										oType);
+								sb.pn("				${1}_list.add((${2})obj);", val, oType);
 
 							sb.pn("			}");
 							sb.pn("		}");
@@ -1217,14 +1137,11 @@ public class Bio2GJava4LuaBts {
 					sb.pn("        on${1}(${2});", upper1(mname), sb1);
 				} else {
 
-					sb.pn("        ReturnStatus rst = on${1}(${2});",
-							upper1(mname), sb1, srtype);
+					sb.pn("        ReturnStatus rst = on${1}(${2});", upper1(mname), sb1, srtype);
 
 					sb.pn("        Map result = new HashMap();");
-					sb.pn("        result.put(\"${1}\", ${2});", B2G.METHOD,
-							hmname);
-					sb.pn("        result.put(\"${1}\", rst.toMap());",
-							B2G.RETURN_STAT);
+					sb.pn("        result.put(\"${1}\", ${2});", B2G.METHOD, hmname);
+					sb.pn("        result.put(\"${1}\", rst.toMap());", B2G.RETURN_STAT);
 					sb.pn("        chn.send(result);");
 				}
 				sb.pn("    }");
@@ -1263,8 +1180,7 @@ public class Bio2GJava4LuaBts {
 						}
 					}
 
-					sb.pn("    public void on${1}(${2}${3} val) throws Exception {};",
-							upper1(mname), msb, srtype);
+					sb.pn("    public void on${1}(${2}${3} val) throws Exception {};", upper1(mname), msb, srtype);
 				}
 			} else {
 
@@ -1282,8 +1198,7 @@ public class Bio2GJava4LuaBts {
 				}
 
 				// 需要实现的逻辑函数
-				sb.pn("    public abstract ${1} on${2}(${3}) throws Exception;",
-						srtype, upper1(mname), sb1);
+				sb.pn("    public abstract ${1} on${2}(${3}) throws Exception;", srtype, upper1(mname), sb1);
 
 			}
 			sb.pn("");
@@ -1292,9 +1207,7 @@ public class Bio2GJava4LuaBts {
 	}
 
 	public static void writeFile(String f, String str) {
-		try (FileOutputStream out = new FileOutputStream(new File(f));
-				OutputStreamWriter osw = new OutputStreamWriter(out,
-						Charset.forName("UTF8"));) {
+		try (FileOutputStream out = new FileOutputStream(new File(f)); OutputStreamWriter osw = new OutputStreamWriter(out, Charset.forName("UTF8"));) {
 			osw.write(str, 0, str.length());
 			osw.close();
 			out.close();

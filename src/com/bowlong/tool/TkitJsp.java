@@ -252,7 +252,9 @@ public class TkitJsp extends TkitOrigin {
 
 	/**
 	 * 取得ip4对应的城市code-Long值
-	 * @param visIP 255.255.255.0
+	 * 
+	 * @param visIP
+	 *            255.255.255.0
 	 * @return
 	 */
 	static final public String getCountryCode(String visIP) {
@@ -266,7 +268,7 @@ public class TkitJsp extends TkitOrigin {
 		}
 		return toStr(val);
 	}
-	
+
 	static final public String getCountryCode(HttpServletRequest request) {
 		return getCountryCode(getVisitorIP(request));
 	}

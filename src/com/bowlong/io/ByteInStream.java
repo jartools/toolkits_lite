@@ -28,8 +28,7 @@ public class ByteInStream extends ByteArrayInputStream {
 		super.count = buf.length;
 	}
 
-	public synchronized final byte[] readFully(final byte result[],
-			final int off, final int len) throws IOException {
+	public synchronized final byte[] readFully(final byte result[], final int off, final int len) throws IOException {
 		if (len < 0)
 			throw new IndexOutOfBoundsException();
 		int n = 0;
@@ -42,15 +41,13 @@ public class ByteInStream extends ByteArrayInputStream {
 		return result;
 	}
 
-	public synchronized final byte[] readFully(final int len)
-			throws IOException {
+	public synchronized final byte[] readFully(final int len) throws IOException {
 		final int off = 0;
 		final byte result[] = new byte[len];
 		return readFully(result, off, len);
 	}
 
-	public synchronized final byte[] readFully(final byte result[])
-			throws IOException {
+	public synchronized final byte[] readFully(final byte result[]) throws IOException {
 		final int off = 0;
 		final int len = result.length;
 		return readFully(result, off, len);

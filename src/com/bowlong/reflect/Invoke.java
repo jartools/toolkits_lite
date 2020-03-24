@@ -5,8 +5,7 @@ import java.util.Vector;
 
 @SuppressWarnings({ "rawtypes" })
 public class Invoke {
-	public static Object invoke(Object clazz, String method, Vector args)
-			throws Exception {
+	public static Object invoke(Object clazz, String method, Vector args) throws Exception {
 		if (clazz == null)
 			return new Exception("clazz is null");
 
@@ -26,16 +25,14 @@ public class Invoke {
 		Method _method = BeanUtils.getMethod(clazz, method, types);
 		// Method _method = clazz.getClass().getMethod(method, types);
 		if (_method == null) {
-			String s = String.format("class:%s, method:%s types:%s", clazz,
-					method, types);
+			String s = String.format("class:%s, method:%s types:%s", clazz, method, types);
 			System.out.println(s);
 			return new Exception("method is null");
 		}
 		return _method.invoke(clazz, params);
 	}
 
-	public static Object invoke2(Object object, String method, Vector args)
-			throws Exception {
+	public static Object invoke2(Object object, String method, Vector args) throws Exception {
 		if (object == null)
 			return new Exception("clazz is null");
 
@@ -53,8 +50,7 @@ public class Invoke {
 		Method _method = BeanUtils.getMethod(object, method);
 		// Method _method = clazz.getClass().getMethod(method, types);
 		if (_method == null) {
-			String s = String.format("class:%s, method:%s", object,
-					method);
+			String s = String.format("class:%s, method:%s", object, method);
 			System.out.println(s);
 			return new Exception("method is null");
 		}

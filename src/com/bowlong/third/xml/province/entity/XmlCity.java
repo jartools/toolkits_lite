@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlValue;
 
 /**
  * 城市
+ * 
  * @author Canyon
  * @version createtime：2015年4月29日 上午00:10:41
  */
@@ -70,7 +71,6 @@ public class XmlCity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "XmlCity [id=" + id + ", cityName=" + cityName + ", pid=" + pid
-				+ ", zipCode=" + zipCode + ", city=" + city + "]";
+		return "XmlCity [id=" + id + ", cityName=" + cityName + ", pid=" + pid + ", zipCode=" + zipCode + ", city=" + city + "]";
 	}
 }

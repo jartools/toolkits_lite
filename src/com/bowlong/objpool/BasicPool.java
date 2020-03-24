@@ -28,7 +28,7 @@ public class BasicPool<T> extends AbstractQueueObjPool<T> {
 		}
 		return null;
 	}
-	
+
 	@Override
 	protected T resetObj(T obj) {
 		return obj;

@@ -4,8 +4,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 public class BatchOP {
-	public static String setOP(ResultSetMetaData rsmd, String columnName)
-			throws SQLException {
+	public static String setOP(ResultSetMetaData rsmd, String columnName) throws SQLException {
 		int count = rsmd.getColumnCount();
 		for (int i = 1; i <= count; i++) {
 			String key = rsmd.getColumnName(i);
@@ -17,8 +16,7 @@ public class BatchOP {
 		return "";
 	}
 
-	public static String setOP(ResultSetMetaData rsmd, int i)
-			throws SQLException {
+	public static String setOP(ResultSetMetaData rsmd, int i) throws SQLException {
 		int count = rsmd.getColumnCount();
 		if (i > count)
 			return "";
@@ -100,8 +98,7 @@ public class BatchOP {
 		return "";
 	}
 
-	public static String getOP(ResultSetMetaData rsmd, String columnName)
-			throws SQLException {
+	public static String getOP(ResultSetMetaData rsmd, String columnName) throws SQLException {
 		int count = rsmd.getColumnCount();
 		for (int i = 1; i <= count; i++) {
 			String key = rsmd.getColumnName(i);
@@ -113,8 +110,7 @@ public class BatchOP {
 		return "";
 	}
 
-	public static String getOP(ResultSetMetaData rsmd, int i)
-			throws SQLException {
+	public static String getOP(ResultSetMetaData rsmd, int i) throws SQLException {
 		int count = rsmd.getColumnCount();
 		if (i > count)
 			return "";

@@ -9,8 +9,7 @@ import com.bowlong.util.StrBuilder;
 
 public class BeanCreate {
 
-	public static final String createJavaFromListSingleMap(String objectName,
-			ListSingleMap maps) {
+	public static final String createJavaFromListSingleMap(String objectName, ListSingleMap maps) {
 
 		StrBuilder sb = StrBuilder.builder();
 
@@ -26,8 +25,7 @@ public class BeanCreate {
 			String text = entry.getText();
 			String type = TypeEx.getBasicType(obj.getClass().getName());
 			String val = TypeEx.getDefaultValue(type, obj);
-			sb.pn("    public ${1} ${2} = ${3}; ${4}", type, name, val,
-					StrEx.comment(text));
+			sb.pn("    public ${1} ${2} = ${3}; ${4}", type, name, val, StrEx.comment(text));
 		}
 
 		for (SingleMap<Object, Object> entry : maps) {
@@ -38,10 +36,8 @@ public class BeanCreate {
 			String type = TypeEx.getBasicType(obj.getClass().getName());
 			sb.pn("");
 			sb.pn("    // ${1}", name);
-			sb.pn("    public ${1} get${2}() { return ${3}; }", type, nameU1,
-					name);
-			sb.pn("    public ${1} set${3}(${2} ${4}) { this.${4} = ${4}; return this;}",
-					objectName, type, nameU1, name);
+			sb.pn("    public ${1} get${2}() { return ${3}; }", type, nameU1, name);
+			sb.pn("    public ${1} set${3}(${2} ${4}) { this.${4} = ${4}; return this;}", objectName, type, nameU1, name);
 		}
 
 		sb.pn("");
@@ -69,8 +65,7 @@ public class BeanCreate {
 			String value = TypeCSharpEx.typeValue(type);
 			sb.pn("        { // ${1}", name);
 			sb.pn("            Object obj = map.get($[1]);", name);
-			sb.pn("            this.${1} = obj == null ? ${2} : (${3}) obj;",
-					name, value, type);
+			sb.pn("            this.${1} = obj == null ? ${2} : (${3}) obj;", name, value, type);
 			sb.pn("        }");
 		}
 		sb.pn("        return this;");
@@ -83,7 +78,7 @@ public class BeanCreate {
 		sb.pn("        r2.fromMap(map);");
 		sb.pn("        return r2;");
 		sb.pn("    }");
-		
+
 		sb.pn("");
 		sb.pn("    public Map toHashCodeMap() {");
 		sb.pn("        Map result = new HashMap();");
@@ -106,13 +101,12 @@ public class BeanCreate {
 			int nameCode = name.hashCode();
 			sb.pn("        { // ${1}", name);
 			sb.pn("            Object obj = map.get(${1});", nameCode);
-			sb.pn("            this.${1} = obj == null ? ${2} : (${3}) obj;",
-					name, value, type);
+			sb.pn("            this.${1} = obj == null ? ${2} : (${3}) obj;", name, value, type);
 			sb.pn("        }");
 		}
 		sb.pn("        return this;");
 		sb.pn("    }");
-		
+
 		sb.pn("");
 		sb.pn("    public static ${1} parseHashCodeMap(Map map) {", objectName);
 		sb.pn("        if(map == null) return null;");
@@ -125,8 +119,7 @@ public class BeanCreate {
 		return sb.toString();
 	}
 
-	public static final String createCSharpFromListSingleMap(String objectName,
-			ListSingleMap maps) {
+	public static final String createCSharpFromListSingleMap(String objectName, ListSingleMap maps) {
 
 		StrBuilder sb = StrBuilder.builder();
 
@@ -142,8 +135,7 @@ public class BeanCreate {
 			String text = entry.getText();
 			String type = TypeCSharpEx.getBasicType(obj.getClass().getName());
 			String val = TypeCSharpEx.getDefaultValue(type, obj);
-			sb.pn("    protected ${1} _${2} = ${3}; ${4}", type, name, val,
-					StrEx.comment(text));
+			sb.pn("    protected ${1} _${2} = ${3}; ${4}", type, name, val, StrEx.comment(text));
 		}
 
 		for (SingleMap<Object, Object> entry : maps) {
@@ -180,7 +172,7 @@ public class BeanCreate {
 		}
 		sb.pn("        return result;");
 		sb.pn("    }");
-		
+
 		sb.pn("");
 		sb.pn("    public ${1} fromMap(Hashtable map) {", objectName);
 		sb.pn("        if(map == null) return this;");
@@ -194,8 +186,7 @@ public class BeanCreate {
 			String nameU1 = StrEx.upperN1(name);
 			sb.pn("        { // ${1}", name);
 			sb.pn("            Object obj = map[$[1]];", name);
-			sb.pn("            this.${1} = obj == null ? ${2} : (${3}) obj;",
-					nameU1, value, cs_type);
+			sb.pn("            this.${1} = obj == null ? ${2} : (${3}) obj;", nameU1, value, cs_type);
 			sb.pn("        }");
 		}
 		sb.pn("        return this;");
@@ -208,7 +199,7 @@ public class BeanCreate {
 		sb.pn("        r2.fromMap(map);");
 		sb.pn("        return r2;");
 		sb.pn("    }");
-		
+
 		sb.pn("");
 		sb.pn("    public Hashtable toHashCodeMap() {");
 		sb.pn("        Hashtable result = new Hashtable();");
@@ -220,7 +211,7 @@ public class BeanCreate {
 		}
 		sb.pn("        return result;");
 		sb.pn("    }");
-		
+
 		sb.pn("");
 		sb.pn("    public ${1} fromHashCodeMap(Hashtable map) {", objectName);
 		sb.pn("        if(map == null) return this;");
@@ -234,8 +225,7 @@ public class BeanCreate {
 			String nameU1 = StrEx.upperN1(name);
 			sb.pn("        { // ${1}", name);
 			sb.pn("            Object obj = map[${1}];", nameCode);
-			sb.pn("            this.${1} = obj == null ? ${2} : (${3}) obj;",
-					nameU1, value, cs_type);
+			sb.pn("            this.${1} = obj == null ? ${2} : (${3}) obj;", nameU1, value, cs_type);
 			sb.pn("        }");
 		}
 		sb.pn("        return this;");
@@ -248,7 +238,7 @@ public class BeanCreate {
 		sb.pn("        r2.fromHashCodeMap(map);");
 		sb.pn("        return r2;");
 		sb.pn("    }");
-		
+
 		sb.pn("}");
 		return sb.toString();
 	}

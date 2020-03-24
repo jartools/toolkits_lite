@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import com.bowlong.net.http.urlcon.HttpUrlConEx;
+
 /**
  * @author Canyon
  * @version createtime：2015年8月17日 下午10:31:15
@@ -20,8 +21,7 @@ public class HttpEx extends HttpUrlConEx {
 		}
 	}
 
-	public static final byte[] readUrl(String url, byte[] post)
-			throws Exception {
+	public static final byte[] readUrl(String url, byte[] post) throws Exception {
 		HttpURLConnection huc = openUrl(url, post);
 		InputStream is = huc.getInputStream();
 		try {
@@ -45,8 +45,7 @@ public class HttpEx extends HttpUrlConEx {
 		return openUrl(new URL(url));
 	}
 
-	public static HttpURLConnection openUrl(String url, byte[] post)
-			throws Exception {
+	public static HttpURLConnection openUrl(String url, byte[] post) throws Exception {
 		URL u = new URL(url);
 		HttpURLConnection huc = (HttpURLConnection) u.openConnection();
 		huc.setDoOutput(true);

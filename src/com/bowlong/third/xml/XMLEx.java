@@ -43,13 +43,11 @@ public class XMLEx {
 		return a;
 	}
 
-	public static final Document parse(final String xml)
-			throws DocumentException {
+	public static final Document parse(final String xml) throws DocumentException {
 		return parse(new StringReader(xml));
 	}
 
-	public static final Document parse(final Reader reader)
-			throws DocumentException {
+	public static final Document parse(final Reader reader) throws DocumentException {
 		SAXReader sr = new SAXReader();
 		Document doc = sr.read(reader);
 		return doc;
@@ -61,20 +59,17 @@ public class XMLEx {
 		return doc;
 	}
 
-	public static final Document parse(final InputStream in)
-			throws DocumentException {
+	public static final Document parse(final InputStream in) throws DocumentException {
 		SAXReader sr = new SAXReader();
 		Document doc = sr.read(in);
 		return doc;
 	}
-	
-	public static final Document parse4Path(final String path)
-			throws DocumentException {
+
+	public static final Document parse4Path(final String path) throws DocumentException {
 		return parse(new File(path));
 	}
 
-	public static final Element getRoot(final String xml)
-			throws DocumentException {
+	public static final Element getRoot(final String xml) throws DocumentException {
 		Document doc = parse(xml);
 		return getRoot(doc);
 	}
@@ -84,8 +79,7 @@ public class XMLEx {
 		return getRoot(doc);
 	}
 
-	public static final Element getRoot(final Reader reader)
-			throws DocumentException {
+	public static final Element getRoot(final Reader reader) throws DocumentException {
 		Document doc = parse(reader);
 		return getRoot(doc);
 	}
@@ -93,9 +87,8 @@ public class XMLEx {
 	public static final Element getRoot(final Document doc) {
 		return doc.getRootElement();
 	}
-	
-	public static final Element getRoot4Path(final String path)
-			throws DocumentException {
+
+	public static final Element getRoot4Path(final String path) throws DocumentException {
 		Document doc = parse4Path(path);
 		return getRoot(doc);
 	}
@@ -114,8 +107,7 @@ public class XMLEx {
 		return e1;
 	}
 
-	public static final List<Element> elements(final Element e,
-			final String name) {
+	public static final List<Element> elements(final Element e, final String name) {
 		List<Element> e1 = ((List<Element>) e.elements(name));
 		return e1;
 	}
@@ -192,49 +184,40 @@ public class XMLEx {
 		return a;
 	}
 
-	public static final Attribute setDouble(final Attribute a,
-			final double value) {
+	public static final Attribute setDouble(final Attribute a, final double value) {
 		a.setValue(String.valueOf(value));
 		return a;
 	}
 
-	public static final Element addAttribute(final Element e,
-			final String name, final String value) {
+	public static final Element addAttribute(final Element e, final String name, final String value) {
 		return e.addAttribute(name, value);
 	}
 
-	public static final Element addAttribute(final Element e,
-			final String name, final boolean value) {
+	public static final Element addAttribute(final Element e, final String name, final boolean value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
-	public static final Element addAttribute(final Element e,
-			final String name, final byte value) {
+	public static final Element addAttribute(final Element e, final String name, final byte value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
-	public static Element addAttribute(final Element e, final String name,
-			final short value) {
+	public static Element addAttribute(final Element e, final String name, final short value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
-	public static final Element addAttribute(final Element e,
-			final String name, final int value) {
+	public static final Element addAttribute(final Element e, final String name, final int value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
-	public static final Element addAttribute(final Element e,
-			final String name, final long value) {
+	public static final Element addAttribute(final Element e, final String name, final long value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
-	public static final Element addAttribute(final Element e,
-			final String name, final float value) {
+	public static final Element addAttribute(final Element e, final String name, final float value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
-	public static final Element addAttribute(final Element e,
-			final String name, final double value) {
+	public static final Element addAttribute(final Element e, final String name, final double value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
@@ -322,13 +305,11 @@ public class XMLEx {
 		return NumEx.stringToDouble(getTextTrim(e));
 	}
 
-	public static final void writeTo(Document doc, OutputStream out)
-			throws IOException {
+	public static final void writeTo(Document doc, OutputStream out) throws IOException {
 		writePrettyTo(doc, out);
 	}
 
-	public static final void writePrettyTo(Document doc, OutputStream out)
-			throws IOException {
+	public static final void writePrettyTo(Document doc, OutputStream out) throws IOException {
 		// 美化格式
 		OutputFormat format = OutputFormat.createPrettyPrint();
 		format.setEncoding("UTF-8");
@@ -336,8 +317,7 @@ public class XMLEx {
 		wr.write(doc);
 	}
 
-	public static final void writeCompactTo(Document doc, OutputStream out)
-			throws IOException {
+	public static final void writeCompactTo(Document doc, OutputStream out) throws IOException {
 		// 缩减格式
 		OutputFormat format = OutputFormat.createCompactFormat();
 		format.setEncoding("UTF-8");
@@ -347,8 +327,7 @@ public class XMLEx {
 
 	public static final String XML_TAG = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
-	public static void main(String[] args) throws DocumentException,
-			IOException {
+	public static void main(String[] args) throws DocumentException, IOException {
 		String str = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><request><hRet>0</hRet><status>1800</status><transIDO>12345678901234567</transIDO><versionId>100</versionId><userId>12345678</userId><cpServiceId>120123002000</cpServiceId><consumeCode>120123002001</consumeCode><cpParam>0000000000000000</cpParam></request>";
 		Document doc = parse(str);
 		writePrettyTo(doc, System.out);

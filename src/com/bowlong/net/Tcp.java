@@ -20,8 +20,7 @@ public class Tcp {
 	static final int TIME_OUT = 5 * 60 * 1000;
 
 	// //////////////////////////////////
-	public synchronized static final InetAddress addr(final String host)
-			throws UnknownHostException {
+	public synchronized static final InetAddress addr(final String host) throws UnknownHostException {
 		InetAddress addr = _HOSTS.get(host);
 		if (addr == null) {
 			addr = InetAddress.getByName(host);
@@ -30,8 +29,7 @@ public class Tcp {
 		return addr;
 	}
 
-	public static final Map<String, Boolean> pingNoExcept(final String from,
-			final String to, final int tryNum) {
+	public static final Map<String, Boolean> pingNoExcept(final String from, final String to, final int tryNum) {
 		final Map<String, Boolean> r2 = new Hashtable<>();
 		if (!StrEx.isIpv4(from))
 			return r2;
@@ -72,14 +70,12 @@ public class Tcp {
 		return false;
 	}
 
-	public static final boolean ping(final String host)
-			throws UnknownHostException, IOException {
+	public static final boolean ping(final String host) throws UnknownHostException, IOException {
 		final int timeout = 3000;
 		return ping(host, timeout);
 	}
 
-	public static final boolean ping(final String host, final int timeout)
-			throws UnknownHostException, IOException {
+	public static final boolean ping(final String host, final int timeout) throws UnknownHostException, IOException {
 		// String host = "192.168.1.181"
 		// int timeOut = 3000;
 		boolean status = InetAddress.getByName(host).isReachable(timeout);
@@ -87,15 +83,13 @@ public class Tcp {
 	}
 
 	// //////////////////////////////////
-	public static final Socket createSocket(final String host, final int port)
-			throws IOException {
+	public static final Socket createSocket(final String host, final int port) throws IOException {
 		final InetAddress addr = addr(host);
 		return new Socket(addr, port);
 	}
 
 	// 可复用的Socket对象
-	public static final ReUsableSocket getReUsableSocket(final String host,
-			final int port) throws IOException {
+	public static final ReUsableSocket getReUsableSocket(final String host, final int port) throws IOException {
 		final String key = String.format("%s:%d", host, port);
 		ReUsableSocket tcp = _SOCKETS.get(key);
 		if (!tcp.isAlive()) {
@@ -105,36 +99,30 @@ public class Tcp {
 		return tcp;
 	}
 
-	public static final Socket createLocalSocket(final int port)
-			throws IOException {
+	public static final Socket createLocalSocket(final int port) throws IOException {
 		return createSocket(localHost, port);
 	}
 
 	// //////////////////////////////////
-	public static final ServerSocket createServer(final int port)
-			throws IOException {
+	public static final ServerSocket createServer(final int port) throws IOException {
 		return createServer(port, backlog);
 	}
 
-	public static final ServerSocket createServer(final int port,
-			final int backlog) throws IOException {
+	public static final ServerSocket createServer(final int port, final int backlog) throws IOException {
 		return new ServerSocket(port, backlog);
 	}
 
-	public static final ServerSocket createServer(final int port,
-			final int backlog, final String host) throws IOException {
+	public static final ServerSocket createServer(final int port, final int backlog, final String host) throws IOException {
 		final InetAddress bindAddr = addr(host);
 		return new ServerSocket(port, backlog, bindAddr);
 	}
 
 	// //////////////////////////////////
-	public static final ServerSocket createLocalServer(final int port)
-			throws IOException {
+	public static final ServerSocket createLocalServer(final int port) throws IOException {
 		return createServer(port, backlog, localHost);
 	}
 
-	public static final ServerSocket createLocalServer(final int port,
-			final int backlog) throws IOException {
+	public static final ServerSocket createLocalServer(final int port, final int backlog) throws IOException {
 		return createServer(port, backlog, localHost);
 	}
 
@@ -187,11 +175,11 @@ public class Tcp {
 	// return readBytes(host, port, b);
 	// }
 
-//	public static final byte[] readBytes(final String host, final int port,
-//			final byte[] b) throws IOException {
-//		final int timeout = 300;
-//		return readBytes(host, port, timeout, b);
-//	}
+	// public static final byte[] readBytes(final String host, final int port,
+	// final byte[] b) throws IOException {
+	// final int timeout = 300;
+	// return readBytes(host, port, timeout, b);
+	// }
 
 	// public static byte[] readBytes(final String host, final int port,
 	// final int tm_sec, final byte[] b) throws IOException {
@@ -218,8 +206,7 @@ public class Tcp {
 	// }
 
 	// //////////////////////////////////
-	public static int readFully(final InputStream input, final byte r2[])
-			throws IOException {
+	public static int readFully(final InputStream input, final byte r2[]) throws IOException {
 		final int off = 0;
 		final int len = r2.length;
 		int n = 0;
@@ -239,8 +226,7 @@ public class Tcp {
 
 	// //////////////////////////////////
 
-	public static final void close(final Socket socket,
-			final InputStream input, final OutputStream output) {
+	public static final void close(final Socket socket, final InputStream input, final OutputStream output) {
 		close(socket);
 		close(input);
 		close(output);
@@ -284,8 +270,7 @@ public class Tcp {
 		return InetAddress.getLoopbackAddress().toString();
 	}
 
-	public static final String getLocalHostAddress()
-			throws UnknownHostException {
+	public static final String getLocalHostAddress() throws UnknownHostException {
 		return InetAddress.getLocalHost().getHostAddress().toString();
 	}
 
@@ -293,14 +278,12 @@ public class Tcp {
 		return InetAddress.getLocalHost().getHostName().toString();
 	}
 
-	public static void main(String[] args) throws UnknownHostException,
-			IOException {
+	public static void main(String[] args) throws UnknownHostException, IOException {
 
 		boolean b = pingNoExcept("192.168.2.3", 3);
 		System.out.println(b);
 
-		Map<String, Boolean> m1 = pingNoExcept("192.168.2.1", "192.168.2.255",
-				1);
+		Map<String, Boolean> m1 = pingNoExcept("192.168.2.1", "192.168.2.255", 1);
 		System.out.println(m1);
 		// System.out.println(getLoopbackAddress());
 		// System.out.println(getLocalHostAddress());

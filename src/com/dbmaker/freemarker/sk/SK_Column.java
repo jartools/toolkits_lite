@@ -20,9 +20,7 @@ public class SK_Column {
 	private String remarks;
 	private boolean isNumber;
 
-	public SK_Column(boolean autoincrement, String columnName,
-			String d_columnName, String x_columnName, String columnType,
-			int columnSize, int dataType, String classType, String basicType,
+	public SK_Column(boolean autoincrement, String columnName, String d_columnName, String x_columnName, String columnType, int columnSize, int dataType, String classType, String basicType,
 			String remarks) {
 		super();
 		this.autoincrement = autoincrement;
@@ -124,21 +122,15 @@ public class SK_Column {
 	public boolean isNumber() {
 		isNumber = StrEx.isEmpty(basicType);
 		if (!isNumber) {
-			isNumber = "short".equals(basicType) || "int".equals(basicType)
-					|| "long".equals(basicType) || "float".equals(basicType)
-					|| "double".equals(basicType);
+			isNumber = "short".equals(basicType) || "int".equals(basicType) || "long".equals(basicType) || "float".equals(basicType) || "double".equals(basicType);
 		}
 		return isNumber;
 	}
 
 	@Override
 	public String toString() {
-		return "SK_Column [autoincrement=" + autoincrement + ", columnName="
-				+ columnName + ", d_columnName=" + d_columnName
-				+ ", x_columnName=" + x_columnName + ", columnType="
-				+ columnType + ", columnSize=" + columnSize + ", dataType="
-				+ dataType + ", classType=" + classType + ", basicType="
-				+ basicType + ", remarks=" + remarks + "]";
+		return "SK_Column [autoincrement=" + autoincrement + ", columnName=" + columnName + ", d_columnName=" + d_columnName + ", x_columnName=" + x_columnName + ", columnType=" + columnType
+				+ ", columnSize=" + columnSize + ", dataType=" + dataType + ", classType=" + classType + ", basicType=" + basicType + ", remarks=" + remarks + "]";
 	}
 
 }

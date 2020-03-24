@@ -10,14 +10,11 @@ import com.bowlong.bio2.B2Type;
 
 public class LengthByteArrayDecoder extends LengthFieldBasedFrameDecoder {
 
-	public LengthByteArrayDecoder(int maxFrameLength, int lengthFieldOffset,
-			int lengthFieldLength, int lengthAdjustment, int initialBytesToStrip) {
-		super(maxFrameLength, lengthFieldOffset, lengthFieldLength,
-				lengthAdjustment, initialBytesToStrip, true);
+	public LengthByteArrayDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength, int lengthAdjustment, int initialBytesToStrip) {
+		super(maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment, initialBytesToStrip, true);
 	}
 
-	protected Object decode(ChannelHandlerContext ctx, ByteBuf buffer)
-			throws Exception {
+	protected Object decode(ChannelHandlerContext ctx, ByteBuf buffer) throws Exception {
 		if (!buffer.isReadable())
 			return null;
 
@@ -125,8 +122,7 @@ public class LengthByteArrayDecoder extends LengthFieldBasedFrameDecoder {
 			int value3 = is.readByte();
 			int value4 = is.readByte();
 
-			int v = ((value1 & 0xff) << 24) + ((value2 & 0xff) << 16)
-					+ ((value3 & 0xff) << 8) + ((value4 & 0xff) << 0);
+			int v = ((value1 & 0xff) << 24) + ((value2 & 0xff) << 16) + ((value3 & 0xff) << 8) + ((value4 & 0xff) << 0);
 			return v;
 		}
 		default:

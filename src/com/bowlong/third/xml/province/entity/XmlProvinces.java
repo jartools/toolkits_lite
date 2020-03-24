@@ -34,8 +34,7 @@ public class XmlProvinces implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuffer buff = new StringBuffer("XmlProvinces [list=")
-				.append("\n");
+		StringBuffer buff = new StringBuffer("XmlProvinces [list=").append("\n");
 		if (list != null) {
 			for (XmlProvince item : list) {
 				buff.append(item.toString()).append(",").append("\n");
@@ -48,8 +47,7 @@ public class XmlProvinces implements Serializable {
 	/*** 工程模式下面编译取得路径 **/
 	public String getPath4Xml() {
 		String pkg = this.getClass().getPackage().getName();
-		String path = this.getClass().getClassLoader().getResource("")
-				.getPath();
+		String path = this.getClass().getClassLoader().getResource("").getPath();
 		pkg = StrEx.package2Path(pkg);
 		pkg = pkg.replace("entity", "xmls");
 		return path + pkg + "/Provinces.xml";
@@ -87,8 +85,7 @@ public class XmlProvinces implements Serializable {
 
 	/*** jar包下面编译取得文件流 **/
 	static public InputStream getIns4StaticJar() throws Exception {
-		return XmlProvinces.class.getClassLoader()
-				.getResourceAsStream(filePath);
+		return XmlProvinces.class.getClassLoader().getResourceAsStream(filePath);
 	}
 
 	/*** jar包下面读取文件 **/

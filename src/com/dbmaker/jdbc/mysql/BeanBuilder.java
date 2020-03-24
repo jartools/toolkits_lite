@@ -231,8 +231,7 @@ public class BeanBuilder extends ExToolkit {
 			sn(sb, "");
 
 			if (!col.equals(priKey)) {
-				if (bType.contains("short") || bType.contains("int") || bType.contains("long")
-						|| bType.contains("float") || bType.contains("double")) {
+				if (bType.contains("short") || bType.contains("int") || bType.contains("long") || bType.contains("float") || bType.contains("double")) {
 					sn(sb, "    public %s change%s(%s %s){", tbUEn, colUEn, bType, colEn);
 					sn(sb, "        return set%s(this.%s + %s);", colUEn, col, colEn);
 					sn(sb, "    }");
@@ -250,8 +249,7 @@ public class BeanBuilder extends ExToolkit {
 					sn(sb, "    }");
 					sn(sb, "");
 
-					sn(sb, "    public %s change%sWithMinMax(%s %s, %s _min, %s _max){", tbUEn, colUEn, bType, colEn,
-							bType, bType);
+					sn(sb, "    public %s change%sWithMinMax(%s %s, %s _min, %s _max){", tbUEn, colUEn, bType, colEn, bType, bType);
 					sn(sb, "        %s _v2 = this.%s + %s;", bType, col, colEn);
 					sn(sb, "        _v2 = _v2 > _max  ? _max : _v2;");
 					sn(sb, "        return set%s(_v2 < _min  ? _min : _v2);", colUEn);
@@ -342,28 +340,24 @@ public class BeanBuilder extends ExToolkit {
 		sn(sb, "");
 
 		/*
-		 * sn(sb,
-		 * "    public void writeObject(OutputStream _out) throws Exception {");
-		 * sn(sb, "        B2OutputStream.writeObject(_out, _CID);"); for
-		 * (Map<String, Object> m : columns) { String column = MapEx.get(m,
-		 * "columnName"); // String columnU = StrEx.upperN(column, 0); String
-		 * columnEn = PinYin.getShortPinYin(column); // String columnUEn =
-		 * StrEx.upperN(columnEn, 0); // String javaType =
-		 * JavaType.getType(rsmd, column); sn(sb,
-		 * "        B2OutputStream.writeObject(_out, %s);", column); } sn(sb,
-		 * "    }"); sn(sb, "");
+		 * sn(sb, "    public void writeObject(OutputStream _out) throws Exception {");
+		 * sn(sb, "        B2OutputStream.writeObject(_out, _CID);"); for (Map<String,
+		 * Object> m : columns) { String column = MapEx.get(m, "columnName"); // String
+		 * columnU = StrEx.upperN(column, 0); String columnEn =
+		 * PinYin.getShortPinYin(column); // String columnUEn = StrEx.upperN(columnEn,
+		 * 0); // String javaType = JavaType.getType(rsmd, column); sn(sb,
+		 * "        B2OutputStream.writeObject(_out, %s);", column); } sn(sb, "    }");
+		 * sn(sb, "");
 		 * 
 		 * sn(sb,
-		 * "    public static final %s readObject(InputStream _in) throws Exception {"
-		 * , tableUEn); sn(sb, "        %s result = new %s();", tableUEn,
-		 * tableUEn); for (Map<String, Object> m : columns) { String column =
-		 * MapEx.get(m, "columnName"); // String columnU = StrEx.upperN(column,
-		 * 0); String columnEn = PinYin.getShortPinYin(column); String columnUEn
-		 * = StrEx.upperN(columnEn, 0); String javaType = JavaType.getType(rsmd,
-		 * column); sn(sb,
-		 * "        result.%s = (%s) B2InputStream.readObject(_in);", column,
-		 * javaType); } sn(sb, "        return result;"); sn(sb, "    }");
-		 * sn(sb, "");
+		 * "    public static final %s readObject(InputStream _in) throws Exception {" ,
+		 * tableUEn); sn(sb, "        %s result = new %s();", tableUEn, tableUEn); for
+		 * (Map<String, Object> m : columns) { String column = MapEx.get(m,
+		 * "columnName"); // String columnU = StrEx.upperN(column, 0); String columnEn =
+		 * PinYin.getShortPinYin(column); String columnUEn = StrEx.upperN(columnEn, 0);
+		 * String javaType = JavaType.getType(rsmd, column); sn(sb,
+		 * "        result.%s = (%s) B2InputStream.readObject(_in);", column, javaType);
+		 * } sn(sb, "        return result;"); sn(sb, "    }"); sn(sb, "");
 		 */
 		sn(sb, "    /*");
 		sn(sb, "    @SuppressWarnings(\"unused\")");
@@ -382,11 +376,9 @@ public class BeanBuilder extends ExToolkit {
 				sn(sb, "            %s %s = \"\"; \t// %s", bType, colEn, col);
 			else if (bType.contains("boolean") || bType.contains("Boolean"))
 				sn(sb, "            %s %s = true; \t// %s", bType, colEn, col);
-			else if (bType.contains("short") || bType.contains("Short") || bType.contains("int")
-					|| bType.contains("int") || bType.contains("long") || bType.contains("long"))
+			else if (bType.contains("short") || bType.contains("Short") || bType.contains("int") || bType.contains("int") || bType.contains("long") || bType.contains("long"))
 				sn(sb, "            %s %s = 0; \t// %s", bType, colEn, col);
-			else if (bType.contains("float") || bType.contains("Float") || bType.contains("double")
-					|| bType.contains("Double"))
+			else if (bType.contains("float") || bType.contains("Float") || bType.contains("double") || bType.contains("Double"))
 				sn(sb, "            %s %s = 0.0; \t// %s", bType, colEn, col);
 			else if (bType.contains("byte[]"))
 				sn(sb, "            %s %s = new byte[0]; \t// %s", bType, colEn, col);
@@ -417,22 +409,20 @@ public class BeanBuilder extends ExToolkit {
 		 * sn(sb, "    public List toList(){"); sn(sb,
 		 * "        List result = new Vector();"); sn(sb,
 		 * "        result.add(TABLENAME);"); sn(sb,
-		 * "        result.add(\"%s.bean.\");", pkg, tableUEn); for (Map<String,
-		 * Object> m : columns) { String column = MapEx.get(m, "columnName"); //
-		 * String columnU = StrEx.upperN(column, 0); // String columnEn =
-		 * PinYin.getShortPinYin(column); // String columnUEn =
-		 * StrEx.upperN(columnEn, 0); // String javaType =
-		 * JavaType.getType(rsmd, column); sn(sb, "        result.add(%s);",
-		 * column); } sn(sb, "        return result;"); sn(sb, "    }"); sn(sb,
-		 * "");
+		 * "        result.add(\"%s.bean.\");", pkg, tableUEn); for (Map<String, Object>
+		 * m : columns) { String column = MapEx.get(m, "columnName"); // String columnU
+		 * = StrEx.upperN(column, 0); // String columnEn =
+		 * PinYin.getShortPinYin(column); // String columnUEn = StrEx.upperN(columnEn,
+		 * 0); // String javaType = JavaType.getType(rsmd, column); sn(sb,
+		 * "        result.add(%s);", column); } sn(sb, "        return result;");
+		 * sn(sb, "    }"); sn(sb, "");
 		 * 
 		 * sn(sb, "    public static %s listTo(List list){", tableUEn); sn(sb,
-		 * "        %s result = new %s();", tableUEn, tableUEn, tableEn); int x
-		 * = 0; for (Map<String, Object> m : columns) { String column =
-		 * MapEx.get(m, "columnName"); String javaType = JavaType.getType(rsmd,
-		 * column); sn(sb, "        result.%s = (%s)list.get(%d);", column,
-		 * javaType, x++); } x = 0; sn(sb, "        return result;"); sn(sb,
-		 * "    }"); sn(sb, "");
+		 * "        %s result = new %s();", tableUEn, tableUEn, tableEn); int x = 0; for
+		 * (Map<String, Object> m : columns) { String column = MapEx.get(m,
+		 * "columnName"); String javaType = JavaType.getType(rsmd, column); sn(sb,
+		 * "        result.%s = (%s)list.get(%d);", column, javaType, x++); } x = 0;
+		 * sn(sb, "        return result;"); sn(sb, "    }"); sn(sb, "");
 		 */
 		sn(sb, "    public int valueZhInt(String fieldZh){");
 		sn(sb, "        String fieldEn = PinYin.getShortPinYin(fieldZh);");
@@ -1380,8 +1370,7 @@ public class BeanBuilder extends ExToolkit {
 		return sb.toString();
 	}
 
-	public static String indexCoulmns(List<Map<String, Object>> columns, Map<String, List<Map<String, Object>>> indexs)
-			throws Exception {
+	public static String indexCoulmns(List<Map<String, Object>> columns, Map<String, List<Map<String, Object>>> indexs) throws Exception {
 		StringBuffer result = new StringBuffer();
 		Map<String, String> m = newMap();
 

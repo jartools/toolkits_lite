@@ -180,8 +180,8 @@ public class JedisOrigin implements Serializable {
 	 * 
 	 * PING Ping 服务器
 	 * 
-	 * PSETEX key milliseconds value Set the value and expiration in
-	 * milliseconds of a key
+	 * PSETEX key milliseconds value Set the value and expiration in milliseconds of
+	 * a key
 	 * 
 	 * PSUBSCRIBE pattern [pattern ...] 听出版匹配给定模式的渠道的消息
 	 * 
@@ -199,8 +199,8 @@ public class JedisOrigin implements Serializable {
 	 * 
 	 * RENAMENX key newkey 重命名一个key,新的key必须是不存在的key
 	 * 
-	 * RESTORE key ttl serialized-value Create a key using the provided
-	 * serialized value, previously obtained using DUMP.
+	 * RESTORE key ttl serialized-value Create a key using the provided serialized
+	 * value, previously obtained using DUMP.
 	 * 
 	 * RPOP key 从队列的右边出队一个元素
 	 * 
@@ -216,8 +216,8 @@ public class JedisOrigin implements Serializable {
 	 * 
 	 * SCARD key 获取集合里面的元素数量
 	 * 
-	 * SCRIPT EXISTS script [script ...] Check existence of scripts in the
-	 * script cache.
+	 * SCRIPT EXISTS script [script ...] Check existence of scripts in the script
+	 * cache.
 	 * 
 	 * SCRIPT FLUSH 删除服务器缓存中所有Lua脚本。
 	 * 
@@ -233,15 +233,15 @@ public class JedisOrigin implements Serializable {
 	 * 
 	 * SET key value 设置一个key的value值
 	 * 
-	 * SETBIT key offset value Sets or clears the bit at offset in the string
-	 * value stored at key
+	 * SETBIT key offset value Sets or clears the bit at offset in the string value
+	 * stored at key
 	 * 
 	 * SETEX key seconds value 设置key-value并设置过期时间（单位：秒）
 	 * 
 	 * SETNX key value 设置的一个关键的价值，只有当该键不存在
 	 * 
-	 * SETRANGE key offset value Overwrite part of a string at key starting at
-	 * the specified offset
+	 * SETRANGE key offset value Overwrite part of a string at key starting at the
+	 * specified offset
 	 * 
 	 * SHUTDOWN [NOSAVE] [SAVE] 关闭服务
 	 * 
@@ -389,13 +389,8 @@ public class JedisOrigin implements Serializable {
 	// ///////////////////// 配置与池对象 /////////////////////
 	static public JedisPoolConfig config = null;
 
-	static public final JedisPoolConfig newConfig(final int maxActive,
-			final int maxIdle, final int minIdle, final int maxWait,
-			final boolean testOnBorrow, final boolean testOnReturn,
-			final boolean testWhileIdle,
-			final int timeBetweenEvictionRunsMillis,
-			final int numTestsPerEvictionRun,
-			final int minEvictableIdleTimeMillis) {
+	static public final JedisPoolConfig newConfig(final int maxActive, final int maxIdle, final int minIdle, final int maxWait, final boolean testOnBorrow, final boolean testOnReturn,
+			final boolean testWhileIdle, final int timeBetweenEvictionRunsMillis, final int numTestsPerEvictionRun, final int minEvictableIdleTimeMillis) {
 		config = new JedisPoolConfig();
 
 		// 控制一个pool可分配多少个jedis实例，通过pool.getResource()来获取；如果赋值为-1，则表示不限制
@@ -433,14 +428,11 @@ public class JedisOrigin implements Serializable {
 		return config;
 	}
 
-	static public final JedisPoolConfig newConfig(final int maxActive,
-			final int maxIdle, final int minIdle, final int maxWait) {
-		return newConfig(maxActive, maxIdle, minIdle, maxWait, true, true,
-				true, 60 * 1000, 3000, 30 * 1000);
+	static public final JedisPoolConfig newConfig(final int maxActive, final int maxIdle, final int minIdle, final int maxWait) {
+		return newConfig(maxActive, maxIdle, minIdle, maxWait, true, true, true, 60 * 1000, 3000, 30 * 1000);
 	}
 
-	static public final JedisPoolConfig newPoolConfig(final int maxActive,
-			final int maxIdle, final int minIdle, final int maxWait) {
+	static public final JedisPoolConfig newPoolConfig(final int maxActive, final int maxIdle, final int minIdle, final int maxWait) {
 		config = new JedisPoolConfig();
 		config.setMaxIdle(maxIdle);
 		config.setMinIdle(minIdle);
@@ -459,8 +451,7 @@ public class JedisOrigin implements Serializable {
 	// ///////////////////// 连接池 /////////////////////
 	static public JedisPool jedsPool = null;
 
-	static public final JedisPool getJedisPool(JedisPoolConfig config,
-			String host, int port, int timeOut, String password, int dbIndex) {
+	static public final JedisPool getJedisPool(JedisPoolConfig config, String host, int port, int timeOut, String password, int dbIndex) {
 
 		boolean isPwd = true;
 		if (StrEx.isEmpty(password)) {
@@ -485,16 +476,15 @@ public class JedisOrigin implements Serializable {
 		return new JedisPool(config, host, port);
 	}
 
-	static public final JedisPool getJedisPool(JedisPoolConfig config,
-			String host, int port) {
+	static public final JedisPool getJedisPool(JedisPoolConfig config, String host, int port) {
 		return getJedisPool(config, host, port, 0, null, 0);
 	}
 
-	static public final JedisPool getJedisPool(String host, int port,String pwd,int dbIndex) {
+	static public final JedisPool getJedisPool(String host, int port, String pwd, int dbIndex) {
 		final JedisPoolConfig config = getJedisPoolConfig();
 		return getJedisPool(config, host, port, 10000, pwd, dbIndex);
 	}
-	
+
 	static public final JedisPool getJedisPool(String host, int port) {
 		final JedisPoolConfig config = getJedisPoolConfig();
 		return getJedisPool(config, host, port);
@@ -530,16 +520,11 @@ public class JedisOrigin implements Serializable {
 		boolean testOnBorrow = MapEx.getBoolean(redisConfig, "testOnBorrow");
 		boolean testOnReturn = MapEx.getBoolean(redisConfig, "testOnReturn");
 		boolean testWhileIdle = MapEx.getBoolean(redisConfig, "testWhileIdle");
-		int timeBetweenEvictionRunsMillis = MapEx.getInt(redisConfig,
-				"timeBetweenEvictionRunsMillis");
-		int numTestsPerEvictionRun = MapEx.getInt(redisConfig,
-				"numTestsPerEvictionRun");
-		int minEvictableIdleTimeMillis = MapEx.getInt(redisConfig,
-				"minEvictableIdleTimeMillis");
+		int timeBetweenEvictionRunsMillis = MapEx.getInt(redisConfig, "timeBetweenEvictionRunsMillis");
+		int numTestsPerEvictionRun = MapEx.getInt(redisConfig, "numTestsPerEvictionRun");
+		int minEvictableIdleTimeMillis = MapEx.getInt(redisConfig, "minEvictableIdleTimeMillis");
 
-		config = newConfig(maxActive, maxIdle, minIdle, maxWait, testOnBorrow,
-				testOnReturn, testWhileIdle, timeBetweenEvictionRunsMillis,
-				numTestsPerEvictionRun, minEvictableIdleTimeMillis);
+		config = newConfig(maxActive, maxIdle, minIdle, maxWait, testOnBorrow, testOnReturn, testWhileIdle, timeBetweenEvictionRunsMillis, numTestsPerEvictionRun, minEvictableIdleTimeMillis);
 
 		// jedis pool 参数
 		String host = MapEx.getString(redisConfig, "host");
@@ -560,8 +545,7 @@ public class JedisOrigin implements Serializable {
 
 	// ///////////////////// jedis 对象 /////////////////////
 
-	static public final Jedis newJedis(final String host, final int port,
-			final int timeOut) {
+	static public final Jedis newJedis(final String host, final int port, final int timeOut) {
 		if (timeOut > 0)
 			return new Jedis(host, port, timeOut);
 		return new Jedis(host, port);

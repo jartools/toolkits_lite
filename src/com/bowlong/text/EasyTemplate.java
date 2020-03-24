@@ -27,15 +27,13 @@ public class EasyTemplate {
 		return new Cache();
 	}
 
-	public static final String make(File file, Map<String, String> params,
-			String encode) throws Exception {
+	public static final String make(File file, Map<String, String> params, String encode) throws Exception {
 		byte[] b = readFully(file);
 		String s = new String(b, encode);
 		return make(s, params);
 	}
 
-	public static final String make2(File file, Map<String, String> params,
-			String encode) throws Exception {
+	public static final String make2(File file, Map<String, String> params, String encode) throws Exception {
 		String fname = file.getPath();
 
 		byte[] b;
@@ -110,8 +108,7 @@ public class EasyTemplate {
 		}
 		int len = (int) f.length();
 		byte[] b = new byte[len];
-		try (FileInputStream fis = new FileInputStream(f);
-				DataInputStream dis = new DataInputStream(fis);) {
+		try (FileInputStream fis = new FileInputStream(f); DataInputStream dis = new DataInputStream(fis);) {
 			dis.readFully(b);
 			dis.close();
 			fis.close();
@@ -124,10 +121,10 @@ public class EasyTemplate {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("abc.name", "xxxxxxxxx");map.put("a", "__%[x够x]__");
-		String str = EasyTemplate.make(
-				"aaaabbbbccc1 ${abc.name} [你好] 1cccc $[a]",map);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("abc.name", "xxxxxxxxx");
+		map.put("a", "__%[x够x]__");
+		String str = EasyTemplate.make("aaaabbbbccc1 ${abc.name} [你好] 1cccc $[a]", map);
 		System.out.println(str);
 	}
 }

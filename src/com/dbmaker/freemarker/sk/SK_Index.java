@@ -31,12 +31,8 @@ public class SK_Index {
 	private boolean unique;
 	private SK_ITable table;
 
-	public SK_Index(String indexName, List<String> columnNames,
-			List<String> d_columnNames, List<String> x_columnNames,
-			List<String> basicTypes, List<String> classTypes,
-			String all_basicType_x_columnName, String all_x_columnName,
-			String all_x_columnName_help, String all_d_columnName_get,
-			String all_d_columnName_cfg_get, String all_d_columnName_plus,
+	public SK_Index(String indexName, List<String> columnNames, List<String> d_columnNames, List<String> x_columnNames, List<String> basicTypes, List<String> classTypes,
+			String all_basicType_x_columnName, String all_x_columnName, String all_x_columnName_help, String all_d_columnName_get, String all_d_columnName_cfg_get, String all_d_columnName_plus,
 			String all_x_columnName_get, boolean unique, SK_ITable table) {
 		super();
 		this.indexName = indexName;

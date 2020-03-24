@@ -7,7 +7,7 @@ import com.bowlong.reflect.JsonHelper;
 import com.bowlong.security.RSAEncrypt;
 
 /**
- *  googleplay 支付 rsa 验证
+ * googleplay 支付 rsa 验证
  * 
  * @author Canyon / 龚阳辉 2018-09-19 19:37
  */
@@ -34,15 +34,17 @@ public class GGPlayRSA {
 	/**
 	 * 验证 成功后,获得字符串json 对应的json对象
 	 * 
-	 * @param pubKey     = 公钥
-	 * @param strJsonSrc = {json="",signature=""}
+	 * @param pubKey
+	 *            = 公钥
+	 * @param strJsonSrc
+	 *            = {json="",signature=""}
 	 * @return null = false
 	 */
 	static final public JSONObject validRSA2Json(String pubKey, String strJsonSrc) {
 		try {
 			JSONObject src = JsonHelper.toJSON(strJsonSrc);
 			JSONObject objSrc = src;
-			if(src.has("Payload")) {
+			if (src.has("Payload")) {
 				objSrc = JsonHelper.toJSON(src.getString("Payload"));
 			}
 			String jStr = objSrc.getString("json");
@@ -59,14 +61,17 @@ public class GGPlayRSA {
 	/**
 	 * RSA 验证 充值状态
 	 * 
-	 * @param pubKey         = 公钥
-	 * @param strJsonSrc     = {json="",signature=""}
-	 * @param transaction_id = ggplay 的订单号
-	 * @param product_id     = 商品唯一标识
+	 * @param pubKey
+	 *            = 公钥
+	 * @param strJsonSrc
+	 *            = {json="",signature=""}
+	 * @param transaction_id
+	 *            = ggplay 的订单号
+	 * @param product_id
+	 *            = 商品唯一标识
 	 * @return 0 = success
 	 */
-	static final public int validRSA2State(String pubKey, String strJsonSrc, String transaction_id,
-			String product_id) {
+	static final public int validRSA2State(String pubKey, String strJsonSrc, String transaction_id, String product_id) {
 		try {
 			JSONObject objJson = validRSA2Json(pubKey, strJsonSrc);
 			if (objJson != null) {

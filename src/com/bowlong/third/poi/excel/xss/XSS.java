@@ -29,21 +29,18 @@ import com.bowlong.util.MapEx;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class XSS extends PoiEx {
 
-	public static final XSSFWorkbook openWorkbook(final String fn)
-			throws Exception {
+	public static final XSSFWorkbook openWorkbook(final String fn) throws Exception {
 		final InputStream inStream = FileEx.openFileInps(fn);
 		return openWorkbook(inStream);
 	}
 
-	public static final XSSFWorkbook openWorkbook(final InputStream inStream)
-			throws Exception {
+	public static final XSSFWorkbook openWorkbook(final InputStream inStream) throws Exception {
 		OPCPackage pkg = openPackage(inStream);
 		XSSFWorkbook wb = new XSSFWorkbook(pkg);
 		return wb;
 	}
 
-	public static final XSSFWorkbook openWorkbook(final OPCPackage pkg)
-			throws IOException, InvalidFormatException {
+	public static final XSSFWorkbook openWorkbook(final OPCPackage pkg) throws IOException, InvalidFormatException {
 		XSSFWorkbook wb = new XSSFWorkbook(pkg);
 		return wb;
 	}
@@ -52,14 +49,12 @@ public class XSS extends PoiEx {
 		return wb.getNumberOfSheets();
 	}
 
-	public static final XSSFSheet getSheet(final XSSFWorkbook wb,
-			final String name) {
+	public static final XSSFSheet getSheet(final XSSFWorkbook wb, final String name) {
 		XSSFSheet sheet = wb.getSheet(name);
 		return sheet;
 	}
 
-	public static final Map<String, XSSFSheet> getSheetMaps(
-			final XSSFWorkbook wb) {
+	public static final Map<String, XSSFSheet> getSheetMaps(final XSSFWorkbook wb) {
 		Map<String, XSSFSheet> ret = new HashMap<String, XSSFSheet>();
 		XSSFSheet[] sheets = sheets(wb);
 		for (XSSFSheet sheet : sheets) {
@@ -107,8 +102,7 @@ public class XSS extends PoiEx {
 		return r2;
 	}
 
-	public static final List<Map<String, String>> readHeaders(
-			final XSSFSheet sheet) {
+	public static final List<Map<String, String>> readHeaders(final XSSFSheet sheet) {
 		List<Map<String, String>> r2 = new ArrayList<Map<String, String>>();
 		for (int i = 0; i < 1024; i++) {
 			String sName = getString(sheet, LINE_NAME, i);
@@ -195,8 +189,7 @@ public class XSS extends PoiEx {
 		return r2;
 	}
 
-	public static final String[][] readAll2D(final XSSFSheet sheet)
-			throws Exception {
+	public static final String[][] readAll2D(final XSSFSheet sheet) throws Exception {
 		List<String[]> datas = new ArrayList<String[]>();
 		int col = 0;
 		int row = 1;
@@ -217,8 +210,7 @@ public class XSS extends PoiEx {
 		return r2;
 	}
 
-	public static final String[] readRow(final XSSFSheet sheet, final int row)
-			throws Exception {
+	public static final String[] readRow(final XSSFSheet sheet, final int row) throws Exception {
 		List<String> list = new Vector<String>();
 		for (int i = 0; i < 1024; i++) {
 			String str = getString(sheet, row, i);
@@ -239,26 +231,21 @@ public class XSS extends PoiEx {
 		return r2;
 	}
 
-	public static final List<List<Map<String, Object>>> readData(
-			final XSSFSheet sheet, final List<Map<String, String>> headers)
-			throws Exception {
+	public static final List<List<Map<String, Object>>> readData(final XSSFSheet sheet, final List<Map<String, String>> headers) throws Exception {
 		List<List<Map<String, Object>>> r2 = new ArrayList<List<Map<String, Object>>>();
 		for (int row = LINE_DATA_MIN; row < LINE_DATA_MAX; row++) {
 			String dockId = getString(sheet, row, 0);
 			if (StrEx.isEmpty(dockId))
 				break;
 
-			final List<Map<String, Object>> rowData = readRow(sheet, headers,
-					row);
+			final List<Map<String, Object>> rowData = readRow(sheet, headers, row);
 			r2.add(rowData);
 		}
 
 		return r2;
 	}
 
-	public static final List<Map<String, Object>> readRow(
-			final XSSFSheet sheet, final List<Map<String, String>> headers,
-			final int row) throws Exception {
+	public static final List<Map<String, Object>> readRow(final XSSFSheet sheet, final List<Map<String, String>> headers, final int row) throws Exception {
 		int column = 0;
 
 		List<Map<String, Object>> row2 = new ArrayList<Map<String, Object>>();
@@ -288,8 +275,7 @@ public class XSS extends PoiEx {
 		}
 	}
 
-	public static final Object getObject(final XSSFSheet sheet,
-			final String type, final int row, final int column) {
+	public static final Object getObject(final XSSFSheet sheet, final String type, final int row, final int column) {
 		String type2 = type.toLowerCase();
 		if (type2.equals(TYPE_BOOLEAN)) {
 			return getBool(sheet, row, column);
@@ -307,8 +293,7 @@ public class XSS extends PoiEx {
 		return getString(sheet, row, column);
 	}
 
-	public static final String getString(final XSSFSheet sheet, final int row,
-			final int column) {
+	public static final String getString(final XSSFSheet sheet, final int row, final int column) {
 		try {
 			XSSFRow c = sheet.getRow(row);
 			if (c == null)
@@ -341,8 +326,7 @@ public class XSS extends PoiEx {
 		return "";
 	}
 
-	public static final String getComment(final XSSFSheet sheet, final int row,
-			final int column) {
+	public static final String getComment(final XSSFSheet sheet, final int row, final int column) {
 		try {
 			XSSFRow c = sheet.getRow(row);
 			if (c == null)
@@ -363,8 +347,7 @@ public class XSS extends PoiEx {
 		return "";
 	}
 
-	public static int getInt(final XSSFSheet sheet, final int row,
-			final int column) {
+	public static int getInt(final XSSFSheet sheet, final int row, final int column) {
 		try {
 			double v = getDouble(sheet, row, column);
 			return (int) v;
@@ -374,8 +357,7 @@ public class XSS extends PoiEx {
 		return 0;
 	}
 
-	public static long getLong(final XSSFSheet sheet, final int row,
-			final int column) {
+	public static long getLong(final XSSFSheet sheet, final int row, final int column) {
 		try {
 			double v = getDouble(sheet, row, column);
 			return (long) v;
@@ -385,8 +367,7 @@ public class XSS extends PoiEx {
 		return 0;
 	}
 
-	public static double getDouble(final XSSFSheet sheet, final int row,
-			final int column) {
+	public static double getDouble(final XSSFSheet sheet, final int row, final int column) {
 		try {
 			String v = getString(sheet, row, column);
 			return NumEx.stringToDouble(v, 0);
@@ -396,13 +377,11 @@ public class XSS extends PoiEx {
 		return 0;
 	}
 
-	public static boolean getBoolean(final XSSFSheet sheet, final int row,
-			final int column) {
+	public static boolean getBoolean(final XSSFSheet sheet, final int row, final int column) {
 		return getBool(sheet, row, column);
 	}
 
-	public static boolean getBool(final XSSFSheet sheet, final int row,
-			final int column) {
+	public static boolean getBool(final XSSFSheet sheet, final int row, final int column) {
 		try {
 			String v = getString(sheet, row, column);
 			return v.toLowerCase().equals("true");
@@ -412,8 +391,7 @@ public class XSS extends PoiEx {
 		return false;
 	}
 
-	public static final Object getJSON(final XSSFSheet sheet, final int row,
-			final int column) {
+	public static final Object getJSON(final XSSFSheet sheet, final int row, final int column) {
 		try {
 			String str = getString(sheet, row, column);
 			return MyJson.parse(str);
@@ -426,16 +404,14 @@ public class XSS extends PoiEx {
 	public static final <T> T getKey(Map map) {
 		if (map == null || map.isEmpty())
 			return null;
-		Entry<Object, Object> E = ((Map<Object, Object>) map).entrySet()
-				.iterator().next();
+		Entry<Object, Object> E = ((Map<Object, Object>) map).entrySet().iterator().next();
 		return (T) E.getKey();
 	}
 
 	public static final <T> T getValue(Map map) {
 		if (map == null || map.isEmpty())
 			return null;
-		Entry<Object, Object> E = ((Map<Object, Object>) map).entrySet()
-				.iterator().next();
+		Entry<Object, Object> E = ((Map<Object, Object>) map).entrySet().iterator().next();
 		return (T) E.getValue();
 	}
 

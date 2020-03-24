@@ -37,8 +37,7 @@ public class XmlDistricts implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuffer buff = new StringBuffer("XmlDistricts [list=")
-				.append("\n");
+		StringBuffer buff = new StringBuffer("XmlDistricts [list=").append("\n");
 		if (list != null) {
 			for (XmlDistrict item : list) {
 				buff.append(item.toString()).append(",").append("\n");
@@ -51,8 +50,7 @@ public class XmlDistricts implements Serializable {
 	/*** 工程模式下面编译取得路径 **/
 	public String getPath4Xml() {
 		String pkg = this.getClass().getPackage().getName();
-		String path = this.getClass().getClassLoader().getResource("")
-				.getPath();
+		String path = this.getClass().getClassLoader().getResource("").getPath();
 		pkg = StrEx.package2Path(pkg);
 		pkg = pkg.replace("entity", "xmls");
 		return path + pkg + "/Districts.xml";
@@ -91,8 +89,7 @@ public class XmlDistricts implements Serializable {
 
 	/*** jar包下面编译取得文件流 **/
 	static public InputStream getIns4StaticJar() throws Exception {
-		return XmlDistricts.class.getClassLoader()
-				.getResourceAsStream(filePath);
+		return XmlDistricts.class.getClassLoader().getResourceAsStream(filePath);
 	}
 
 	/*** jar包下面读取文件 **/

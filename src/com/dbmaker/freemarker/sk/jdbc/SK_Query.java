@@ -18,13 +18,11 @@ public class SK_Query extends QueryRunner {
 		return this.insert(conn, false, sql, (Object[]) null);
 	}
 
-	public long insert(Connection conn, String sql, Object param)
-			throws SQLException {
+	public long insert(Connection conn, String sql, Object param) throws SQLException {
 		return this.insert(conn, false, sql, new Object[] { param });
 	}
 
-	public long insert(Connection conn, String sql, Object... params)
-			throws SQLException {
+	public long insert(Connection conn, String sql, Object... params) throws SQLException {
 		return insert(conn, false, sql, params);
 	}
 
@@ -43,11 +41,10 @@ public class SK_Query extends QueryRunner {
 	public long insert(String sql, Object... params) throws SQLException {
 		Connection conn = this.prepareConnection();
 
-        return this.insert(conn, true, sql, params);
+		return this.insert(conn, true, sql, params);
 	}
 
-	private long insert(Connection conn, boolean closeConn, String sql,
-			Object... params) throws SQLException {
+	private long insert(Connection conn, boolean closeConn, String sql, Object... params) throws SQLException {
 		if (conn == null) {
 			throw new SQLException("Null connection");
 		}
@@ -63,8 +60,7 @@ public class SK_Query extends QueryRunner {
 		ResultSet rs = null;
 		long key = -1;
 		try {
-			stmt = conn.prepareStatement(sql,
-					PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			this.fillStatement(stmt, params);
 			stmt.executeUpdate();
 			rs = stmt.getGeneratedKeys();

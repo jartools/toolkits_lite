@@ -16,13 +16,11 @@ import org.jsoup.nodes.Document;
  * @version createtime：2015年8月19日 下午9:42:26
  */
 public class JsoupEx {
-	static public final Document parse(File fn, String charset)
-			throws IOException {
+	static public final Document parse(File fn, String charset) throws IOException {
 		return Jsoup.parse(fn, charset);
 	}
 
-	static public final Document parse(URL url, int timeoutMillis)
-			throws IOException {
+	static public final Document parse(URL url, int timeoutMillis) throws IOException {
 		return Jsoup.parse(url, timeoutMillis);
 	}
 
@@ -31,8 +29,7 @@ public class JsoupEx {
 	}
 
 	/*** 取得Cookies **/
-	static public final Map<String, String> getCookies(String url,
-			Map<String, String> data) throws Exception {
+	static public final Map<String, String> getCookies(String url, Map<String, String> data) throws Exception {
 		Response v = Jsoup.connect(url).timeout(30000).data(data).execute();
 		return v.cookies();
 	}

@@ -6,8 +6,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;
+
 /**
  * 省份
+ * 
  * @author Canyon
  * @version createtime：2015年4月29日 上午00:10:41
  */
@@ -49,7 +51,6 @@ public class XmlProvince implements Serializable {
 
 	@Override
 	public String toString() {
-		return "XmlProvince [id=" + id + ", provinceName=" + provinceName
-				+ ", province=" + province + "]";
+		return "XmlProvince [id=" + id + ", provinceName=" + provinceName + ", province=" + province + "]";
 	}
 }

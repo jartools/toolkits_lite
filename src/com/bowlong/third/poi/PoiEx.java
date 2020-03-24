@@ -32,19 +32,16 @@ public class PoiEx {
 	static public int COLUMN_MAX = 255;// 最大列数
 
 	// ==== 2003 excel
-	static public final POIFSFileSystem openFS(final InputStream inStream)
-			throws Exception {
+	static public final POIFSFileSystem openFS(final InputStream inStream) throws Exception {
 		return new POIFSFileSystem(inStream);
 	}
 
 	// ==== 2007 excel
-	static public final OPCPackage openPackage(final File file)
-			throws Exception {
+	static public final OPCPackage openPackage(final File file) throws Exception {
 		return OPCPackage.open(file);
 	}
 
-	static public final OPCPackage openPackage(final InputStream inStream)
-			throws Exception {
+	static public final OPCPackage openPackage(final InputStream inStream) throws Exception {
 		return OPCPackage.open(inStream);
 	}
 

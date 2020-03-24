@@ -99,8 +99,7 @@ public class B2InDecoder {
 			int value3 = read(is);
 			int value4 = read(is);
 
-			int v = ((value1 & 0xff) << 24) + ((value2 & 0xff) << 16)
-					+ ((value3 & 0xff) << 8) + ((value4 & 0xff) << 0);
+			int v = ((value1 & 0xff) << 24) + ((value2 & 0xff) << 16) + ((value3 & 0xff) << 8) + ((value4 & 0xff) << 0);
 			return v;
 		}
 		default:
@@ -108,8 +107,7 @@ public class B2InDecoder {
 		}
 	}
 
-	private static final int[] readIntArray(ByteBuffer is, int len)
-			throws Exception {
+	private static final int[] readIntArray(ByteBuffer is, int len) throws Exception {
 		int[] ret = new int[len];
 		for (int i = 0; i < len; i++) {
 			int v = readInt(is);
@@ -118,8 +116,7 @@ public class B2InDecoder {
 		return ret;
 	}
 
-	private static final int[][] readInt2DArray(ByteBuffer is, int len)
-			throws Exception {
+	private static final int[][] readInt2DArray(ByteBuffer is, int len) throws Exception {
 		int[][] ret = new int[len][];
 		for (int i = 0; i < len; i++) {
 			Object o = readObject(is);
@@ -129,8 +126,7 @@ public class B2InDecoder {
 		return ret;
 	}
 
-	private static final NewList readList(ByteBuffer is, int len)
-			throws Exception {
+	private static final NewList readList(ByteBuffer is, int len) throws Exception {
 		NewList ret = new NewList();
 		for (int i = 0; i < len; i++) {
 			Object o = readObject(is);
@@ -140,8 +136,7 @@ public class B2InDecoder {
 		return ret;
 	}
 
-	private static final NewMap readMap(ByteBuffer is, int len)
-			throws Exception {
+	private static final NewMap readMap(ByteBuffer is, int len) throws Exception {
 		NewMap ret = new NewMap();
 		for (int i = 0; i < len; i++) {
 			Object key = readObject(is);
@@ -327,8 +322,7 @@ public class B2InDecoder {
 			int v2 = read(is);
 			int v3 = read(is);
 			int v4 = read(is);
-			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16)
-					+ ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
+			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16) + ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
 			return new Integer(v);
 		}
 		case B2Type.STR_0: {
@@ -547,8 +541,7 @@ public class B2InDecoder {
 			int v2 = read(is);
 			int v3 = read(is);
 			int v4 = read(is);
-			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16)
-					+ ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
+			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16) + ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
 			return new Long(v);
 		}
 		case B2Type.LONG_64B: {
@@ -556,10 +549,8 @@ public class B2InDecoder {
 			for (int i = 0; i < 8; i++) {
 				b[i] = (byte) read(is);
 			}
-			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16)
-					+ ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
-			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16)
-					+ ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
+			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16) + ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
+			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16) + ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
 			long v = (high << 32) + (0xffffffffL & low);
 			return new Long(v);
 		}
@@ -591,10 +582,8 @@ public class B2InDecoder {
 			for (int i = 0; i < 8; i++) {
 				b[i] = (byte) read(is);
 			}
-			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16)
-					+ ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
-			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16)
-					+ ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
+			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16) + ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
+			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16) + ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
 			long v = (high << 32) + (0xffffffffL & low);
 			double ret = Double.longBitsToDouble(v);
 			return new Double(ret);
@@ -667,8 +656,7 @@ public class B2InDecoder {
 	}
 
 	// //////////////////////////////////
-	private static final String readStringImpl(ByteBuffer is, int length)
-			throws IOException {
+	private static final String readStringImpl(ByteBuffer is, int length) throws IOException {
 		if (length <= 0)
 			return "";
 

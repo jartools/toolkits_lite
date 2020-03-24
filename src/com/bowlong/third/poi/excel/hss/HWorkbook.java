@@ -22,8 +22,7 @@ public class HWorkbook extends HSS {
 		this(fn, false);
 	}
 
-	public HWorkbook(final String fn, boolean iScached)
-			throws Exception {
+	public HWorkbook(final String fn, boolean iScached) throws Exception {
 		this.pkg = FileEx.openFileInps(fn);
 		this.wb = openWorkbook(pkg);
 		this.iScached = iScached;

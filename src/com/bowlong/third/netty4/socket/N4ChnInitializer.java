@@ -125,23 +125,23 @@ public class N4ChnInitializer extends ChannelInitializer<SocketChannel> {
 		// HttpObjectAggregator会把多个消息转换为一个单一的FullHttpRequest或是FullHttpResponse。
 		int maxContenLength = 30 * 1024 * 1024;
 		p.addLast("aggregator", new HttpObjectAggregator(maxContenLength));
-		
-		//为了处理大文件传输的情形
+
+		// 为了处理大文件传输的情形
 		p.addLast("http-chunked", new ChunkedWriteHandler());
-		
+
 		// hander接受到的是:HttpRequest
 		p.addLast("handler", this.hander);
 	}
-	
+
 	void initType_5http(SocketChannel chn) throws Exception {
 		ChannelPipeline p = chn.pipeline();
 		// 解码 和 编码
 		p.addLast(new HttpServerCodec()); // HttpServerCodec 继承 <HttpRequestDecoder,HttpResponseEncoder>
 		int maxContenLength = 30 * 1024 * 1024; // 65536
 		p.addLast(new HttpObjectAggregator(maxContenLength));
-		//为了处理大文件传输的情形
+		// 为了处理大文件传输的情形
 		p.addLast(new ChunkedWriteHandler());
-		
+
 		// hander接受到的是:HttpRequest
 		p.addLast(this.hander);
 	}

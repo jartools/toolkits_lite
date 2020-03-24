@@ -24,7 +24,7 @@ public class TimeZoneEx {
 		}
 		return System.setProperty("user.timezone", Id);
 	}
-	
+
 	static public final TimeZone getTimeZone(String tzid) {
 		return TimeZone.getTimeZone(tzid);
 	}
@@ -36,22 +36,22 @@ public class TimeZoneEx {
 	static public final TimeZone getDefaultTimeZone() {
 		return TimeZone.getDefault();
 	}
-	
+
 	/** 设置默认时区 */
-	static public final void setDefaultTimeZone(String tzid){
+	static public final void setDefaultTimeZone(String tzid) {
 		TimeZone.setDefault(getTimeZone(tzid));
 	}
-	
+
 	/** 设置默认时区 - G8区 */
-	static public final void setDTZGMT8(){
+	static public final void setDTZGMT8() {
 		setDefaultTimeZone("ETC/GMT-8");
 	}
-	
+
 	/** 设置默认时区 - G8区 上海 */
-	static public final void setDTZGMT8Shai(){
+	static public final void setDTZGMT8Shai() {
 		setDefaultTimeZone("Asia/Shanghai");
 	}
-	
+
 	/** 服务器时区值-小时 */
 	static public final int getTZHour() {
 		Calendar cal = Calendar.getInstance();

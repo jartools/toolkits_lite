@@ -8,11 +8,11 @@ import java.util.List;
  * 普通Java分页支持Bean
  * 
  */
-public class PageEnt<T> implements Serializable{
-	
+public class PageEnt<T> implements Serializable {
+
 	/** 序列化 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/** 每页记录数 */
 	private int pageSize = 10;
 	/** 当前页码 */
@@ -108,14 +108,12 @@ public class PageEnt<T> implements Serializable{
 	}
 
 	// 重新设置值
-	public void reset(int page, int pageSize, int totalRecords,
-			List<T> listPages) {
+	public void reset(int page, int pageSize, int totalRecords, List<T> listPages) {
 		reset(page, pageSize, totalRecords, listPages, "");
 	}
 
 	// 重新设置值
-	public void reset(int page, int pageSize, int totalRecords,
-			List<T> listPages, String targetUrl) {
+	public void reset(int page, int pageSize, int totalRecords, List<T> listPages, String targetUrl) {
 		setPage(page);
 		setPageSize(pageSize);
 		setTotalRecords(totalRecords);
@@ -125,11 +123,8 @@ public class PageEnt<T> implements Serializable{
 
 	@Override
 	public String toString() {
-		return "PageEnt [pageSize=" + pageSize + ", page=" + page
-				+ ", totalRecords=" + totalRecords + ", totalPages="
-				+ totalPages + ", havePrePage=" + havePrePage
-				+ ", haveNextPage=" + haveNextPage + ", targetUrl=" + targetUrl
-				+ ", listPages.size = " + listPages.size() + "]";
+		return "PageEnt [pageSize=" + pageSize + ", page=" + page + ", totalRecords=" + totalRecords + ", totalPages=" + totalPages + ", havePrePage=" + havePrePage + ", haveNextPage=" + haveNextPage
+				+ ", targetUrl=" + targetUrl + ", listPages.size = " + listPages.size() + "]";
 	}
 
 }

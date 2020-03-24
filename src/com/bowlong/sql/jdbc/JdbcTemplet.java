@@ -59,8 +59,7 @@ public class JdbcTemplet extends JdbcBasic {
 		return query(sql, x, getRsh(c));
 	}
 
-	public final <T> T queryForObject(String sql, BeanSupport x, RsHandler rsh)
-			throws SQLException {
+	public final <T> T queryForObject(String sql, BeanSupport x, RsHandler rsh) throws SQLException {
 		return query(sql, x.toBasicMap(), rsh);
 	}
 
@@ -76,8 +75,7 @@ public class JdbcTemplet extends JdbcBasic {
 		return queryForList(sql, x, getRsh(c));
 	}
 
-	public <T> List<T> queryForList(String sql, BeanSupport x, RsHandler rsh)
-			throws SQLException {
+	public <T> List<T> queryForList(String sql, BeanSupport x, RsHandler rsh) throws SQLException {
 		return queryForList(sql, x.toBasicMap(), rsh);
 	}
 

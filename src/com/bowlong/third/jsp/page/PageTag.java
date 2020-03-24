@@ -34,8 +34,7 @@ public class PageTag extends TagSupport {
 		if (!StrEx.isEmpty(pageTxt))
 			return;
 		String pkg = this.getClass().getPackage().getName();
-		String path = this.getClass().getClassLoader().getResource("")
-				.getPath();
+		String path = this.getClass().getClassLoader().getResource("").getPath();
 		pkg = StrEx.package2Path(pkg);
 		path = path + pkg + "/page_cur.txt";
 		pageTxt = FileRw.readStr(path);
@@ -88,7 +87,7 @@ public class PageTag extends TagSupport {
 		String pg = "";
 		int allPage = pe.getTotalPages();
 		int curPage = pe.getPage();
-		
+
 		if (allPage > 1) {
 			StringBuffer buff = StringBufPool.borrowObject();
 			try {
@@ -124,8 +123,7 @@ public class PageTag extends TagSupport {
 						buff.append(" style=\"margin:0px 2px;padding:1px 12px;\"");
 					}
 
-					buff.append(" onclick=\"click2sendPaging(").append(begPage)
-							.append(")\">").append(begPage).append("</a>");
+					buff.append(" onclick=\"click2sendPaging(").append(begPage).append(")\">").append(begPage).append("</a>");
 				}
 
 				pg = buff.toString();
@@ -150,8 +148,7 @@ public class PageTag extends TagSupport {
 		try {
 			String ret = "";
 			if (!StrEx.isEmpty(pg))
-				ret = StrEx.fmt(pageTxt, pg, action, curPage, allPage, pgName,
-						wrapid);
+				ret = StrEx.fmt(pageTxt, pg, action, curPage, allPage, pgName, wrapid);
 			JspWriter writer = this.pageContext.getOut();
 			writer.print(ret);
 			writer.flush();

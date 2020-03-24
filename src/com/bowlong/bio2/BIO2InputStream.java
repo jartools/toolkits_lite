@@ -116,8 +116,7 @@ public class BIO2InputStream {
 			int value3 = _readByte();
 			int value4 = _readByte();
 
-			int v = ((value1 & 0xff) << 24) + ((value2 & 0xff) << 16)
-					+ ((value3 & 0xff) << 8) + ((value4 & 0xff) << 0);
+			int v = ((value1 & 0xff) << 24) + ((value2 & 0xff) << 16) + ((value3 & 0xff) << 8) + ((value4 & 0xff) << 0);
 			return v;
 		}
 		default:
@@ -342,8 +341,7 @@ public class BIO2InputStream {
 			int v2 = _readByte();
 			int v3 = _readByte();
 			int v4 = _readByte();
-			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16)
-					+ ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
+			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16) + ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
 			return new Integer(v);
 		}
 		case B2Type.STR_0: {
@@ -562,8 +560,7 @@ public class BIO2InputStream {
 			int v2 = _readByte();
 			int v3 = _readByte();
 			int v4 = _readByte();
-			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16)
-					+ ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
+			int v = ((v1 & 0xff) << 24) + ((v2 & 0xff) << 16) + ((v3 & 0xff) << 8) + ((v4 & 0xff) << 0);
 			return new Long(v);
 		}
 		case B2Type.LONG_64B: {
@@ -571,10 +568,8 @@ public class BIO2InputStream {
 			for (int i = 0; i < 8; i++) {
 				b[i] = (byte) _readByte();
 			}
-			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16)
-					+ ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
-			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16)
-					+ ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
+			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16) + ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
+			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16) + ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
 			long v = (high << 32) + (0xffffffffL & low);
 			return new Long(v);
 		}
@@ -583,10 +578,8 @@ public class BIO2InputStream {
 			for (int i = 0; i < 8; i++) {
 				b[i] = (byte) _readByte();
 			}
-			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16)
-					+ ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
-			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16)
-					+ ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
+			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16) + ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
+			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16) + ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
 			long v = (high << 32) + (0xffffffffL & low);
 			return new java.util.Date(v);
 		}
@@ -619,10 +612,8 @@ public class BIO2InputStream {
 			for (int i = 0; i < 8; i++) {
 				b[i] = (byte) _readByte();
 			}
-			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16)
-					+ ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
-			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16)
-					+ ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
+			long high = ((b[0] & 0xff) << 24) + ((b[1] & 0xff) << 16) + ((b[2] & 0xff) << 8) + ((b[3] & 0xff) << 0);
+			long low = ((b[4] & 0xff) << 24) + ((b[5] & 0xff) << 16) + ((b[6] & 0xff) << 8) + ((b[7] & 0xff) << 0);
 			long v = (high << 32) + (0xffffffffL & low);
 			double ret = Double.longBitsToDouble(v);
 			return new Double(ret);

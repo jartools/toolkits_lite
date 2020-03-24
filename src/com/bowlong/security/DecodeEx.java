@@ -11,17 +11,17 @@ import java.util.regex.Pattern;
  */
 public class DecodeEx {
 
-	static private String unescapeUnicode(String str){
+	static private String unescapeUnicode(String str) {
 		StringBuffer _builder = new StringBuffer();
 		Matcher m = Pattern.compile("\\\\u([0-9a-fA-F]{4})").matcher(str);
 		while (m.find())
 			_builder.append((char) Integer.parseInt(m.group(1), 16));
 		return _builder.toString();
 	}
-	
+
 	static public String unUnicode(String str) {
 		String ret = unescapeUnicode(str);
-		if("".equals(ret)){
+		if ("".equals(ret)) {
 			try {
 				ret = new String(str.getBytes(), "utf-8");
 			} catch (Exception e) {

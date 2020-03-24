@@ -25,10 +25,9 @@ import com.bowlong.third.poi.PoiEx;
 import com.bowlong.util.MapEx;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class HSS  extends PoiEx{
-	
-	public static final HSSFWorkbook openWorkbook(final FileInputStream stream)
-			throws Exception {
+public class HSS extends PoiEx {
+
+	public static final HSSFWorkbook openWorkbook(final FileInputStream stream) throws Exception {
 		POIFSFileSystem fs = openFS(stream);
 		HSSFWorkbook wb = new HSSFWorkbook(fs);
 		return wb;
@@ -38,14 +37,12 @@ public class HSS  extends PoiEx{
 		return wb.getNumberOfSheets();
 	}
 
-	public static final HSSFSheet getSheet(final HSSFWorkbook wb,
-			final String name) {
+	public static final HSSFSheet getSheet(final HSSFWorkbook wb, final String name) {
 		HSSFSheet sheet = wb.getSheet(name);
 		return sheet;
 	}
 
-	public static final Map<String, HSSFSheet> getSheetMaps(
-			final HSSFWorkbook wb) {
+	public static final Map<String, HSSFSheet> getSheetMaps(final HSSFWorkbook wb) {
 		Map<String, HSSFSheet> ret = new HashMap<String, HSSFSheet>();
 		HSSFSheet[] sheets = sheets(wb);
 		for (HSSFSheet sheet : sheets) {
@@ -93,8 +90,7 @@ public class HSS  extends PoiEx{
 		return r2;
 	}
 
-	public static final List<Map<String, String>> readHeaders(
-			final HSSFSheet sheet) {
+	public static final List<Map<String, String>> readHeaders(final HSSFSheet sheet) {
 		List<Map<String, String>> r2 = new ArrayList<Map<String, String>>();
 		for (int i = 0; i < 1024; i++) {
 			String sName = getString(sheet, LINE_NAME, i);
@@ -181,8 +177,7 @@ public class HSS  extends PoiEx{
 		return r2;
 	}
 
-	public static final String[][] readAll2D(final HSSFSheet sheet)
-			throws Exception {
+	public static final String[][] readAll2D(final HSSFSheet sheet) throws Exception {
 		List<String[]> datas = new ArrayList<String[]>();
 		int col = 0;
 		int row = 1;
@@ -203,8 +198,7 @@ public class HSS  extends PoiEx{
 		return r2;
 	}
 
-	public static final String[] readRow(final HSSFSheet sheet, final int row)
-			throws Exception {
+	public static final String[] readRow(final HSSFSheet sheet, final int row) throws Exception {
 		List<String> list = new Vector<String>();
 		for (int i = 0; i < 1024; i++) {
 			String str = getString(sheet, row, i);
@@ -225,26 +219,21 @@ public class HSS  extends PoiEx{
 		return r2;
 	}
 
-	public static final List<List<Map<String, Object>>> readData(
-			final HSSFSheet sheet, final List<Map<String, String>> headers)
-			throws Exception {
+	public static final List<List<Map<String, Object>>> readData(final HSSFSheet sheet, final List<Map<String, String>> headers) throws Exception {
 		List<List<Map<String, Object>>> r2 = new ArrayList<List<Map<String, Object>>>();
 		for (int row = LINE_DATA_MIN; row < LINE_DATA_MAX; row++) {
 			String dockId = getString(sheet, row, 0);
 			if (StrEx.isEmpty(dockId))
 				break;
 
-			final List<Map<String, Object>> rowData = readRow(sheet, headers,
-					row);
+			final List<Map<String, Object>> rowData = readRow(sheet, headers, row);
 			r2.add(rowData);
 		}
 
 		return r2;
 	}
 
-	public static final List<Map<String, Object>> readRow(
-			final HSSFSheet sheet, final List<Map<String, String>> headers,
-			final int row) throws Exception {
+	public static final List<Map<String, Object>> readRow(final HSSFSheet sheet, final List<Map<String, String>> headers, final int row) throws Exception {
 		int column = 0;
 
 		List<Map<String, Object>> row2 = new ArrayList<Map<String, Object>>();
@@ -274,8 +263,7 @@ public class HSS  extends PoiEx{
 		}
 	}
 
-	public static final Object getObject(final HSSFSheet sheet,
-			final String type, final int row, final int column) {
+	public static final Object getObject(final HSSFSheet sheet, final String type, final int row, final int column) {
 		String type2 = type.toLowerCase();
 		if (type2.equals(TYPE_BOOLEAN)) {
 			return getBool(sheet, row, column);
@@ -293,8 +281,7 @@ public class HSS  extends PoiEx{
 		return getString(sheet, row, column);
 	}
 
-	public static final String getString(final HSSFSheet sheet, final int row,
-			final int column) {
+	public static final String getString(final HSSFSheet sheet, final int row, final int column) {
 		try {
 			HSSFRow c = sheet.getRow(row);
 			if (c == null)
@@ -327,8 +314,7 @@ public class HSS  extends PoiEx{
 		return "";
 	}
 
-	public static final String getComment(final HSSFSheet sheet, final int row,
-			final int column) {
+	public static final String getComment(final HSSFSheet sheet, final int row, final int column) {
 		try {
 			HSSFRow c = sheet.getRow(row);
 			if (c == null)
@@ -349,8 +335,7 @@ public class HSS  extends PoiEx{
 		return "";
 	}
 
-	public static int getInt(final HSSFSheet sheet, final int row,
-			final int column) {
+	public static int getInt(final HSSFSheet sheet, final int row, final int column) {
 		try {
 			double v = getDouble(sheet, row, column);
 			return (int) v;
@@ -360,8 +345,7 @@ public class HSS  extends PoiEx{
 		return 0;
 	}
 
-	public static long getLong(final HSSFSheet sheet, final int row,
-			final int column) {
+	public static long getLong(final HSSFSheet sheet, final int row, final int column) {
 		try {
 			double v = getDouble(sheet, row, column);
 			return (long) v;
@@ -371,8 +355,7 @@ public class HSS  extends PoiEx{
 		return 0;
 	}
 
-	public static double getDouble(final HSSFSheet sheet, final int row,
-			final int column) {
+	public static double getDouble(final HSSFSheet sheet, final int row, final int column) {
 		try {
 			String v = getString(sheet, row, column);
 			return NumEx.stringToDouble(v, 0);
@@ -382,13 +365,11 @@ public class HSS  extends PoiEx{
 		return 0;
 	}
 
-	public static boolean getBoolean(final HSSFSheet sheet, final int row,
-			final int column) {
+	public static boolean getBoolean(final HSSFSheet sheet, final int row, final int column) {
 		return getBool(sheet, row, column);
 	}
 
-	public static boolean getBool(final HSSFSheet sheet, final int row,
-			final int column) {
+	public static boolean getBool(final HSSFSheet sheet, final int row, final int column) {
 		try {
 			String v = getString(sheet, row, column);
 			return v.toLowerCase().equals("true");
@@ -398,8 +379,7 @@ public class HSS  extends PoiEx{
 		return false;
 	}
 
-	public static final Object getJSON(final HSSFSheet sheet, final int row,
-			final int column) {
+	public static final Object getJSON(final HSSFSheet sheet, final int row, final int column) {
 		try {
 			String str = getString(sheet, row, column);
 			return MyJson.parse(str);
@@ -412,16 +392,14 @@ public class HSS  extends PoiEx{
 	public static final <T> T getKey(Map map) {
 		if (map == null || map.isEmpty())
 			return null;
-		Entry<Object, Object> E = ((Map<Object, Object>) map).entrySet()
-				.iterator().next();
+		Entry<Object, Object> E = ((Map<Object, Object>) map).entrySet().iterator().next();
 		return (T) E.getKey();
 	}
 
 	public static final <T> T getValue(Map map) {
 		if (map == null || map.isEmpty())
 			return null;
-		Entry<Object, Object> E = ((Map<Object, Object>) map).entrySet()
-				.iterator().next();
+		Entry<Object, Object> E = ((Map<Object, Object>) map).entrySet().iterator().next();
 		return (T) E.getValue();
 	}
 

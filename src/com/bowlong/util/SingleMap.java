@@ -11,7 +11,7 @@ public class SingleMap<K, V> implements Map<K, V> {
 
 	protected K key;
 	protected V val;
-	
+
 	protected String text;
 
 	public SingleMap() {
@@ -156,6 +156,5 @@ public class SingleMap<K, V> implements Map<K, V> {
 			return val;
 		}
 	}
-
 
 }

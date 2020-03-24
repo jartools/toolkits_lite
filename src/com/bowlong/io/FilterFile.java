@@ -8,6 +8,7 @@ import com.bowlong.basic.ExToolkit;
 /**
  * 文件过滤<br/>
  * 针对File.listFiles
+ * 
  * @author Canyon
  * @time 2019-03-21 09:32
  */
@@ -30,7 +31,7 @@ public class FilterFile extends ExToolkit implements FileFilter {
 	public FilterFile(String include) {
 		this(include, null);
 	}
-	
+
 	void _init(String include, String exclude) {
 		this.include = include;
 		this.exclude = exclude;
@@ -49,7 +50,7 @@ public class FilterFile extends ExToolkit implements FileFilter {
 		if (this.isNoEmtInd) {
 			if (fn.contains(include))
 				return true;
-			
+
 			return false;
 		}
 		return true;

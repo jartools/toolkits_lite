@@ -3,10 +3,10 @@ package com.bowlong.bio2;
 import java.nio.charset.Charset;
 
 public class B2Type {
-//	public static final byte SOCKET_ERR = -1;
-	//null
+	// public static final byte SOCKET_ERR = -1;
+	// null
 	public static final byte NULL = 0;
-	//bool
+	// bool
 	public static final byte BOOLEAN_TRUE = 1;
 	public static final byte BOOLEAN_FALSE = 2;
 	// byte
@@ -16,7 +16,7 @@ public class B2Type {
 	public static final byte SHORT_0 = 5;
 	public static final byte SHORT_8B = 6;
 	public static final byte SHORT_16B = 7;
-	//int b32 b24 b16 b8
+	// int b32 b24 b16 b8
 	public static final byte INT_0 = 8;
 	public static final byte INT_8B = 9;
 	public static final byte INT_16B = 10;
@@ -54,19 +54,19 @@ public class B2Type {
 	public static final byte INT_30 = 42;
 	public static final byte INT_31 = 43;
 	public static final byte INT_32 = 44;
-	//long b64 b56 b48 b40 b32 b24 b16 b8
+	// long b64 b56 b48 b40 b32 b24 b16 b8
 	public static final byte LONG_0 = 45;
 	public static final byte LONG_8B = 46;
 	public static final byte LONG_16B = 47;
 	public static final byte LONG_32B = 48;
 	public static final byte LONG_64B = 49;
-	//double b64 b56 b48 b40 b32 b24 b16 b8
+	// double b64 b56 b48 b40 b32 b24 b16 b8
 	public static final byte DOUBLE_0 = 50;
-//	public static final byte DOUBLE_8B = 51;
-//	public static final byte DOUBLE_16B = 52;
-//	public static final byte DOUBLE_32B = 53;
+	// public static final byte DOUBLE_8B = 51;
+	// public static final byte DOUBLE_16B = 52;
+	// public static final byte DOUBLE_32B = 53;
 	public static final byte DOUBLE_64B = 54;
-	//STR [bytes]
+	// STR [bytes]
 	public static final byte STR_0 = 55;
 	public static final byte STR = 56;
 	public static final byte STR_1 = 57;
@@ -95,10 +95,10 @@ public class B2Type {
 	public static final byte STR_24 = 80;
 	public static final byte STR_25 = 81;
 	public static final byte STR_26 = 82;
-	//Bytes [int len, byte[]]
+	// Bytes [int len, byte[]]
 	public static final byte BYTES_0 = 83;
 	public static final byte BYTES = 84;
-	//VECTOR [int len, v...]
+	// VECTOR [int len, v...]
 	public static final byte VECTOR_0 = 85;
 	public static final byte VECTOR = 86;
 	public static final byte VECTOR_1 = 87;
@@ -125,7 +125,7 @@ public class B2Type {
 	public static final byte VECTOR_22 = 108;
 	public static final byte VECTOR_23 = 109;
 	public static final byte VECTOR_24 = 110;
-	//HASHTABLE [int len, k,v...]
+	// HASHTABLE [int len, k,v...]
 	public static final byte HASHTABLE_0 = 111;
 	public static final byte HASHTABLE = 112;
 	public static final byte HASHTABLE_1 = 113;
@@ -166,15 +166,14 @@ public class B2Type {
 	// int[][]
 	public static final byte INT_2D_ARRAY = -29;
 	public static final byte INT_2D_ARRAY_0 = -30;
-	
+
 	// java.util.Date
 	public static final byte JAVA_DATE = -31;
-	
+
 	public static final byte JAVA_OBJECT = -32;
-	// 新增类型 - b2int 
+	// 新增类型 - b2int
 	public static final byte Type_INT_B2 = -33;
 
 	public static final Charset UTF8 = Charset.forName("UTF-8");
 
 }
-

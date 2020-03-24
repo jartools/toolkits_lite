@@ -57,8 +57,7 @@ public class EncDecoder {
 			result = bignumbersubduct(nu2, nu1.substring(1));
 			// 'nu1为负、nu2为负
 		} else if (fn1 == 0 && fn2 == 0) {
-			result = Flag_Redues
-					+ bignumberadditive(nu1.substring(1), nu2.substring(1));
+			result = Flag_Redues + bignumberadditive(nu1.substring(1), nu2.substring(1));
 			// 'nu1为正、nu2为正
 		} else if (fn1 != 0 && fn2 != 0) {
 			result = bignumberadditive(nu1, nu2);
@@ -147,9 +146,7 @@ public class EncDecoder {
 
 		for (i = 0; i < sizea; i++) {
 			if (i < sizeb) {
-				tmpresult[i] = ""
-						+ (NumEx.stringToInt(lista[i]) + NumEx
-								.stringToInt(listb[i]));
+				tmpresult[i] = "" + (NumEx.stringToInt(lista[i]) + NumEx.stringToInt(listb[i]));
 			} else {
 				tmpresult[i] = lista[i];
 			}
@@ -235,11 +232,9 @@ public class EncDecoder {
 		for (i = 0; i < sizea; i++) {
 			if (i < sizeb) {
 				if (i != sizea - 1) {
-					tmpresult[i] = (NumEx.stringToInt("1" + lista[i]) - NumEx
-							.stringToInt(listb[i])) + "";
+					tmpresult[i] = (NumEx.stringToInt("1" + lista[i]) - NumEx.stringToInt(listb[i])) + "";
 				} else {
-					tmpresult[i] = (NumEx.stringToInt(lista[i]) - NumEx
-							.stringToInt(listb[i])) + "";
+					tmpresult[i] = (NumEx.stringToInt(lista[i]) - NumEx.stringToInt(listb[i])) + "";
 				}
 			} else {
 				if (i != sizea - 1) {
@@ -289,8 +284,7 @@ public class EncDecoder {
 		for (i = 0; i < len_; i++) {
 			int index_ = poslist[i];
 			tmpstr = unicodestr.substring(index_ - 1, index_);
-			unicodestr = tmpstr + StrEx.left(unicodestr, index_ - 1)
-					+ unicodestr.substring(index_);
+			unicodestr = tmpstr + StrEx.left(unicodestr, index_ - 1) + unicodestr.substring(index_);
 			posstr = posstr + nStrForLen(poslist[i], 4); // 每4位表示一个位置
 		}
 		for (i = 0; i < scrtkey.length(); i++) {
@@ -328,8 +322,7 @@ public class EncDecoder {
 
 	/*** 解密 **/
 	static public String decoder(String encodestr, String scrtkey) {
-		if (encodestr == null || "".equals(encodestr) || scrtkey == null
-				|| "".equals(scrtkey))
+		if (encodestr == null || "".equals(encodestr) || scrtkey == null || "".equals(scrtkey))
 			return "";
 		String result = "";
 		String unicodestr = "";
@@ -396,17 +389,14 @@ public class EncDecoder {
 		for (i = 0; i < sizepos; i++) {
 			int tmpInt = poslist[i];
 			String strLt = StrEx.left(unicodestr, tmpInt);
-			unicodestr = strLt + unicodestr.substring(0, 1)
-					+ unicodestr.substring(tmpInt);
+			unicodestr = strLt + unicodestr.substring(0, 1) + unicodestr.substring(tmpInt);
 			unicodestr = unicodestr.substring(1);
 		}
 		for (i = 0; i < sizepos; i++) {
 			if (i != sizepos - 1) {
-				result = (char) (NumEx.stringToInt(unicodestr.substring(
-						poslist[i + 1], poslist[i]))) + result;
+				result = (char) (NumEx.stringToInt(unicodestr.substring(poslist[i + 1], poslist[i]))) + result;
 			} else {
-				result = (char) (NumEx.stringToInt(unicodestr.substring(0,
-						poslist[i]))) + result;
+				result = (char) (NumEx.stringToInt(unicodestr.substring(0, poslist[i]))) + result;
 			}
 		}
 		return result;

@@ -104,8 +104,7 @@ public class IdcardInfoExtractor {
 
 				// 获取出生日期
 				String birthday = idcard.substring(6, 14);
-				Date birthdate = new SimpleDateFormat("yyyyMMdd")
-						.parse(birthday);
+				Date birthdate = new SimpleDateFormat("yyyyMMdd").parse(birthday);
 				this.birthday = birthdate;
 				GregorianCalendar currentDay = new GregorianCalendar();
 				currentDay.setTime(birthdate);
@@ -176,8 +175,7 @@ public class IdcardInfoExtractor {
 
 	@Override
 	public String toString() {
-		return "省份：" + this.province + ",性别：" + this.gender + ",出生日期："
-				+ this.birthday;
+		return "省份：" + this.province + ",性别：" + this.gender + ",出生日期：" + this.birthday;
 	}
 
 	public static void main(String[] args) {

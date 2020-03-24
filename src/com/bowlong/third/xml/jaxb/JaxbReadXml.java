@@ -50,8 +50,7 @@ public class JaxbReadXml {
 		}
 	}
 
-	static public final <T> T readConfig(Class<T> clazz, String config, Object... arguments)
-			throws IOException, JAXBException {
+	static public final <T> T readConfig(Class<T> clazz, String config, Object... arguments) throws IOException, JAXBException {
 		InputStream is = null;
 		try {
 			if (arguments.length > 0) {

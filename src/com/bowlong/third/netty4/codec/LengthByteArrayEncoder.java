@@ -14,8 +14,7 @@ import com.bowlong.lang.NumEx;
 @Sharable
 public class LengthByteArrayEncoder extends MessageToMessageEncoder<byte[]> {
 	@Override
-	protected void encode(ChannelHandlerContext ctx, byte[] msg,
-			List<Object> out) throws Exception {
+	protected void encode(ChannelHandlerContext ctx, byte[] msg, List<Object> out) throws Exception {
 		byte[] b1 = toBytes(msg.length);
 		// out.add(Unpooled.wrappedBuffer(b1)); // length
 		// out.add(Unpooled.wrappedBuffer(msg)); // data

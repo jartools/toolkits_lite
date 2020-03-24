@@ -19,7 +19,7 @@ import com.bowlong.util.ListEx;
  *
  * @param <T>
  */
-@SuppressWarnings({ "rawtypes"})
+@SuppressWarnings({ "rawtypes" })
 public class Cache<T extends BeanBasic> extends ExToolkit {
 
 	static final protected int NLOG_NONE = 0; // 无log

@@ -34,7 +34,7 @@ public class N4B2ByteBuf {
 	static public final ByteBuf buffer(CharSequence charSequence) {
 		return Unpooled.copiedBuffer(charSequence, Encoding.UTF8);
 	}
-	
+
 	static public final ByteBuf bufferWrapped(byte[]... bufs) {
 		return Unpooled.wrappedBuffer(bufs);
 	}

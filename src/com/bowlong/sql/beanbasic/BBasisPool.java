@@ -6,8 +6,7 @@ import com.bowlong.objpool.BasicPool;
  * 添加继承了 BeanBasic的对象池
  * 
  * @author canyon/龚阳辉
- * @time 2019-09-07 13:35
- * _tClazz.isInstance(obj);
+ * @time 2019-09-07 13:35 _tClazz.isInstance(obj);
  */
 public class BBasisPool<T extends BeanBasic> extends BasicPool<T> {
 

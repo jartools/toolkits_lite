@@ -21,12 +21,10 @@ public class IndexBeanBuilder extends ExToolkit {
 		}
 	}
 
-	public static String build(Connection conn, String pkg, String db,
-			String table) throws Exception {
+	public static String build(Connection conn, String pkg, String db, String table) throws Exception {
 		StrBuilder sb = StrBuilder.builder();
 
-		Map<String, Map<String, Object>> mapConluns = SqlEx.mapColumns(conn,
-				db, table);
+		Map<String, Map<String, Object>> mapConluns = SqlEx.mapColumns(conn, db, table);
 		List<String> indexs = SqlEx.indexColumns(conn, table);
 
 		String tEn = getShortPinYin(table);
@@ -61,30 +59,28 @@ public class IndexBeanBuilder extends ExToolkit {
 		// String Uen = upperFirst(en);
 		// String jtype = SqlEx.toJavaType(getInt(c, "DATA_TYPE"));
 		// String btype = JavaType.getBasicType(jtype);
-		// sb.pn("    public void set${1}(${2} v){", cn, btype);
-		// sb.pn("        this.${1} = v;", cn);
-		// sb.pn("    }");
-		// sb.pn("    public ${1} get${2}(){", btype, cn);
-		// sb.pn("        return ${1};", cn);
-		// sb.pn("    }");
-		// sb.pn("    public void set${1}(${2} v){", Uen, btype);
-		// sb.pn("        this.${1} = v;", cn);
-		// sb.pn("    }");
-		// sb.pn("    public ${1} get${2}(){", btype, Uen);
-		// sb.pn("        return ${1};", cn);
-		// sb.pn("    }");
+		// sb.pn(" public void set${1}(${2} v){", cn, btype);
+		// sb.pn(" this.${1} = v;", cn);
+		// sb.pn(" }");
+		// sb.pn(" public ${1} get${2}(){", btype, cn);
+		// sb.pn(" return ${1};", cn);
+		// sb.pn(" }");
+		// sb.pn(" public void set${1}(${2} v){", Uen, btype);
+		// sb.pn(" this.${1} = v;", cn);
+		// sb.pn(" }");
+		// sb.pn(" public ${1} get${2}(){", btype, Uen);
+		// sb.pn(" return ${1};", cn);
+		// sb.pn(" }");
 		// sb.pn("");
 		// }
 
 		// handle
-		sb.pn("    public ${1} handle(ResultSet rs) throws SQLException {",
-				beanName);
+		sb.pn("    public ${1} handle(ResultSet rs) throws SQLException {", beanName);
 		sb.pn("        return createFor(rs);");
 		sb.pn("    }");
 
 		// createFor
-		sb.pn("    public static ${1} createFor(ResultSet rs) throws SQLException {",
-				beanName);
+		sb.pn("    public static ${1} createFor(ResultSet rs) throws SQLException {", beanName);
 		sb.pn("        Map e = SqlEx.toMap(rs);");
 		sb.pn("        return originalTo(e);");
 		sb.pn("    }");
@@ -106,20 +102,20 @@ public class IndexBeanBuilder extends ExToolkit {
 		sb.pn("");
 
 		// toMap
-		// sb.pn("    public Map toMap(){");
-		// sb.pn("        Map ret = new HashMap()");
+		// sb.pn(" public Map toMap(){");
+		// sb.pn(" Map ret = new HashMap()");
 		// for (String s : indexs) {
 		// Map<String, Object> c = getMap(mapConluns, s);
 		// String cn = getString(c, "COLUMN_NAME");
-		// sb.pn("        ret.put($[1], ${1});", cn);
+		// sb.pn(" ret.put($[1], ${1});", cn);
 		// }
-		// sb.pn("        return ret;");
-		// sb.pn("    }");
+		// sb.pn(" return ret;");
+		// sb.pn(" }");
 
 		// toString
-		// sb.pn("    public String toString(){");
-		// sb.pn("        return toMap().toString();");
-		// sb.pn("    }");
+		// sb.pn(" public String toString(){");
+		// sb.pn(" return toMap().toString();");
+		// sb.pn(" }");
 
 		sb.pn("}");
 

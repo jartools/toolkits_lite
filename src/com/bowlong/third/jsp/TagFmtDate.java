@@ -43,35 +43,35 @@ public class TagFmtDate extends TagSupport {
 				d = DateEx.parse2Date(time);
 			}
 		} else if (value instanceof Long || value instanceof Integer) {
-			
+
 			long time = 0l;
 			if (value instanceof Long)
 				time = (long) value;
 			else
 				time = (int) value;
-			
+
 			if (time > DateEx.TIME_1900) {
 				d = DateEx.parse2Date(time);
 			} else {
 				int[] arrs = DateEx.toDiffArray(time);
 				v = parttern;
 				int hh = arrs[1];
-				if(v.indexOf("dd") == -1){
+				if (v.indexOf("dd") == -1) {
 					hh = arrs[0] * 24 + hh;
-				}else{
-					v = v.replaceAll("dd", (arrs[0]) >= 10 ? ""+(arrs[0]) : "0"+(arrs[0]));
+				} else {
+					v = v.replaceAll("dd", (arrs[0]) >= 10 ? "" + (arrs[0]) : "0" + (arrs[0]));
 				}
-				
-				v = v.replaceAll("HH", (hh) >= 10 ? ""+(hh) : "0"+(hh));
-				v = v.replaceAll("mm", (arrs[2]) >= 10 ? ""+(arrs[2]) : "0"+(arrs[2]));
-				v = v.replaceAll("ss", (arrs[3]) >= 10 ? ""+(arrs[3]) : "0"+(arrs[3]));
+
+				v = v.replaceAll("HH", (hh) >= 10 ? "" + (hh) : "0" + (hh));
+				v = v.replaceAll("mm", (arrs[2]) >= 10 ? "" + (arrs[2]) : "0" + (arrs[2]));
+				v = v.replaceAll("ss", (arrs[3]) >= 10 ? "" + (arrs[3]) : "0" + (arrs[3]));
 			}
 		}
-		
+
 		if (d != null) {
 			v = DateEx.format(d, parttern);
 		}
-		
+
 		try {
 			pageContext.getOut().write(v);
 		} catch (Exception e) {

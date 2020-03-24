@@ -5,7 +5,7 @@ import java.sql.ResultSetMetaData;
 import com.bowlong.sql.JType;
 
 public class JTypeMysql extends JType {
-	
+
 	public static String getType(ResultSetMetaData rsmd, String columnName) throws Exception {
 		int count = rsmd.getColumnCount();
 		for (int i = 1; i <= count; i++) {
@@ -22,10 +22,9 @@ public class JTypeMysql extends JType {
 		int count = rsmd.getColumnCount();
 		if (i > count)
 			return "";
-		
+
 		return getType(rsmd.getColumnType(i));
 	}
-	
 
 	public static String getMapGet(ResultSetMetaData rsmd, String columnName) throws Exception {
 		int count = rsmd.getColumnCount();

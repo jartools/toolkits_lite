@@ -52,12 +52,12 @@ public class NewMap<K, V> extends ConcurrentHashMap<K, V> {
 	public V put(K key, V value) {
 		return super.put(key, value);
 	}
-	
+
 	public NewMap<K, V> putE(K key, V value) {
 		put(key, value);
 		return this;
 	}
-	
+
 	public NewMap<K, V> add(K key, V value) {
 		return putE(key, value);
 	}

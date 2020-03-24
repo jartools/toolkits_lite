@@ -8,7 +8,7 @@ import io.netty.channel.ChannelProgressiveFuture;
 import io.netty.channel.ChannelProgressiveFutureListener;
 import io.netty.util.ReferenceCountUtil;
 
-/** 文件下载流处理  */
+/** 文件下载流处理 */
 public class FilePrgListener implements ChannelProgressiveFutureListener {
 	File file = null;
 	RandomAccessFile raf = null;
@@ -23,7 +23,8 @@ public class FilePrgListener implements ChannelProgressiveFutureListener {
 
 	@Override
 	public void operationProgressed(ChannelProgressiveFuture future, long progress, long total) throws Exception {
-		// System.err.println(String.format("progress / total = [%s/%s]", progress, total));
+		// System.err.println(String.format("progress / total = [%s/%s]", progress,
+		// total));
 	}
 
 	@Override

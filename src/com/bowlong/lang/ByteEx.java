@@ -14,13 +14,10 @@ public final class ByteEx extends ExOrigin {
 
 	public static final byte[] EMPTY = new byte[0];
 
-	protected static final char[] DIGIT = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
-			'f' };
+	protected static final char[] DIGIT = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
-	protected static final char[] CHARS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
-			'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-			'V', 'W', 'X', 'Y', 'Z' };
+	protected static final char[] CHARS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+			'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
 	private static final char[] encodeHex(byte[] b) {
 		int l = b.length;
@@ -75,7 +72,7 @@ public final class ByteEx extends ExOrigin {
 		}
 		return sb.toString().toUpperCase();
 	}
-	
+
 	public static final byte[] stringToBytes(String s) {
 		byte[] b = new byte[s.length() / 2];
 		for (int i = 0; i < b.length; i++) {
@@ -213,8 +210,8 @@ public final class ByteEx extends ExOrigin {
 
 	public static final int lastIndexOf(byte[] source, byte[] target, int fromIndex) {
 		/*
-		 * Check arguments; return immediately where possible. For consistency,
-		 * don't check for null str.
+		 * Check arguments; return immediately where possible. For consistency, don't
+		 * check for null str.
 		 */
 		int sourceOffset = 0;
 		int sourceCount = source.length;
@@ -325,25 +322,21 @@ public final class ByteEx extends ExOrigin {
 	}
 
 	public static final int getInt(byte[] b, int off) {
-		return ((b[off + 3] & 0xFF) << 0) + ((b[off + 2] & 0xFF) << 8) + ((b[off + 1] & 0xFF) << 16)
-				+ ((b[off + 0]) << 24);
+		return ((b[off + 3] & 0xFF) << 0) + ((b[off + 2] & 0xFF) << 8) + ((b[off + 1] & 0xFF) << 16) + ((b[off + 0]) << 24);
 	}
 
 	public static final float getFloat(byte[] b, int off) {
-		int i = ((b[off + 3] & 0xFF) << 0) + ((b[off + 2] & 0xFF) << 8) + ((b[off + 1] & 0xFF) << 16)
-				+ ((b[off + 0]) << 24);
+		int i = ((b[off + 3] & 0xFF) << 0) + ((b[off + 2] & 0xFF) << 8) + ((b[off + 1] & 0xFF) << 16) + ((b[off + 0]) << 24);
 		return Float.intBitsToFloat(i);
 	}
 
 	public static final long getLong(byte[] b, int off) {
-		return ((b[off + 7] & 0xFFL) << 0) + ((b[off + 6] & 0xFFL) << 8) + ((b[off + 5] & 0xFFL) << 16)
-				+ ((b[off + 4] & 0xFFL) << 24) + ((b[off + 3] & 0xFFL) << 32) + ((b[off + 2] & 0xFFL) << 40)
+		return ((b[off + 7] & 0xFFL) << 0) + ((b[off + 6] & 0xFFL) << 8) + ((b[off + 5] & 0xFFL) << 16) + ((b[off + 4] & 0xFFL) << 24) + ((b[off + 3] & 0xFFL) << 32) + ((b[off + 2] & 0xFFL) << 40)
 				+ ((b[off + 1] & 0xFFL) << 48) + (((long) b[off + 0]) << 56);
 	}
 
 	public static final double getDouble(byte[] b, int off) {
-		long j = ((b[off + 7] & 0xFFL) << 0) + ((b[off + 6] & 0xFFL) << 8) + ((b[off + 5] & 0xFFL) << 16)
-				+ ((b[off + 4] & 0xFFL) << 24) + ((b[off + 3] & 0xFFL) << 32) + ((b[off + 2] & 0xFFL) << 40)
+		long j = ((b[off + 7] & 0xFFL) << 0) + ((b[off + 6] & 0xFFL) << 8) + ((b[off + 5] & 0xFFL) << 16) + ((b[off + 4] & 0xFFL) << 24) + ((b[off + 3] & 0xFFL) << 32) + ((b[off + 2] & 0xFFL) << 40)
 				+ ((b[off + 1] & 0xFFL) << 48) + (((long) b[off + 0]) << 56);
 		return Double.longBitsToDouble(j);
 	}

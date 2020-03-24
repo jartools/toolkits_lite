@@ -86,8 +86,7 @@ public class SK_Database {
 
 	public List<SK_ITable> getTables(boolean isConfig) {
 		if (tables.isEmpty()) {
-			List<Map<String, Object>> names = SK_MetaData.getTables(this.conn,
-					this.databaseName);
+			List<Map<String, Object>> names = SK_MetaData.getTables(this.conn, this.databaseName);
 			SK_ITable skTable = null;
 			for (Map<String, Object> map : names) {
 				// 原名称
@@ -103,10 +102,8 @@ public class SK_Database {
 				String x_tableName = StrEx.lowerFirst(tableName_);
 
 				List<String> all_objAndGetD_columnNames = new ArrayList<String>();
-				skTable = new SK_Table(tableName, d_tableName, x_tableName, "",
-						"", "", "", "", "", "", "", "", "", "",
-						all_objAndGetD_columnNames, columns, bindKeys,
-						indexKeys, this, config.getSimpleName(), 0, isConfig);
+				skTable = new SK_Table(tableName, d_tableName, x_tableName, "", "", "", "", "", "", "", "", "", "", "", all_objAndGetD_columnNames, columns, bindKeys, indexKeys, this,
+						config.getSimpleName(), 0, isConfig);
 				tables.add(skTable);
 			}
 		}

@@ -66,8 +66,7 @@ public class GGPlayAPIHelper extends GGPlayRSA {
 	public GGPlayAPIHelper init(String emailAddress, InputStream inStreamP12) {
 		try {
 			this.m_emailAddress = emailAddress;
-			this.m_privateKey = SecurityUtils.loadPrivateKeyFromKeyStore(SecurityUtils.getPkcs12KeyStore(), inStreamP12,
-					"notasecret", "privatekey", "notasecret");
+			this.m_privateKey = SecurityUtils.loadPrivateKeyFromKeyStore(SecurityUtils.getPkcs12KeyStore(), inStreamP12, "notasecret", "privatekey", "notasecret");
 			this.m_isInited = true;
 		} catch (Exception e) {
 			this.m_isInited = false;
@@ -77,8 +76,7 @@ public class GGPlayAPIHelper extends GGPlayRSA {
 	}
 
 	protected static String authorize() throws Exception {
-		try (InputStream inStream = GGPlayAPIHelper.class
-				.getResourceAsStream("/SlashandGirl-pulish-18a0e1718035.json")) {
+		try (InputStream inStream = GGPlayAPIHelper.class.getResourceAsStream("/SlashandGirl-pulish-18a0e1718035.json")) {
 
 			List<String> SCOPES = Arrays.asList("https://www.googleapis.com/auth/androidpublisher");
 
@@ -117,8 +115,7 @@ public class GGPlayAPIHelper extends GGPlayRSA {
 	}
 
 	private GoogleCredential.Builder getServiceAccountBuilder() {
-		return new GoogleCredential.Builder().setTransport(HTTP_TRANSPORT).setJsonFactory(JSON_FACTORY)
-				.setServiceAccountId(m_emailAddress).setServiceAccountPrivateKey(m_privateKey);
+		return new GoogleCredential.Builder().setTransport(HTTP_TRANSPORT).setJsonFactory(JSON_FACTORY).setServiceAccountId(m_emailAddress).setServiceAccountPrivateKey(m_privateKey);
 	}
 
 	protected GoogleCredential.Builder getServiceAccountBuilder(HttpRequestInitializer initializer) {
@@ -129,15 +126,13 @@ public class GGPlayAPIHelper extends GGPlayRSA {
 	}
 
 	protected Credential authorizeWithServiceAccount(HttpRequestInitializer initializer) throws Exception {
-		return getServiceAccountBuilder(initializer)
-				.setServiceAccountScopes(Collections.singleton(AndroidPublisherScopes.ANDROIDPUBLISHER))
+		return getServiceAccountBuilder(initializer).setServiceAccountScopes(Collections.singleton(AndroidPublisherScopes.ANDROIDPUBLISHER))
 				// .setServiceAccountPrivateKeyFromP12File(new File(SRC_RESOURCES_KEY_P12))
 				.build();
 	}
 
 	protected Credential authorizeWithServiceAccount4All(HttpRequestInitializer initializer) throws Exception {
-		return getServiceAccountBuilder(initializer).setServiceAccountScopes(AndroidPublisherScopes.all())
-				.build();
+		return getServiceAccountBuilder(initializer).setServiceAccountScopes(AndroidPublisherScopes.all()).build();
 	}
 
 	public int validPay(String packageName, String productId, String purchaseToken) {
@@ -147,8 +142,7 @@ public class GGPlayAPIHelper extends GGPlayRSA {
 
 		try {
 			HttpRequestInitializer initializer = authorizeWithServiceAccount(setHttpTimeout());
-			AndroidPublisher publisher = new AndroidPublisher.Builder(HTTP_TRANSPORT, JSON_FACTORY, initializer)
-					.build();
+			AndroidPublisher publisher = new AndroidPublisher.Builder(HTTP_TRANSPORT, JSON_FACTORY, initializer).build();
 			Products products = publisher.purchases().products();
 			// // 参数详细说明:
 			// https://developers.google.com/android-publisher/api-ref/purchases/products/get
@@ -187,13 +181,12 @@ public class GGPlayAPIHelper extends GGPlayRSA {
 		try {
 			HttpRequestInitializer initializer = authorizeWithServiceAccount(setHttpTimeout());
 
-			AndroidPublisher publisher = new AndroidPublisher.Builder(HTTP_TRANSPORT, JSON_FACTORY, initializer)
-					.build();
+			AndroidPublisher publisher = new AndroidPublisher.Builder(HTTP_TRANSPORT, JSON_FACTORY, initializer).build();
 
 			Subscriptions subscriptions = publisher.purchases().subscriptions();
 			Subscriptions.Get productGet = subscriptions.get(packageName, productId, purchaseToken);
 			SubscriptionPurchase purchase = productGet.execute();
-			
+
 			System.out.println(productGet.getSubscriptionId());
 			System.out.println(purchase.getAutoRenewing());
 			System.out.println(purchase.getPaymentState());
@@ -258,14 +251,13 @@ public class GGPlayAPIHelper extends GGPlayRSA {
 	}
 
 	public static void main(String[] args) throws Exception {
-//		test_api_authorize();
-//		test_api_renew();
+		// test_api_authorize();
+		// test_api_renew();
 		test_rsa();
 	}
 
 	static void test_api_renew() throws Exception {
-		try (InputStream inStream = GGPlayAPIHelper.class
-				.getResourceAsStream("/api-project-6624369-bde2de9f1522.p12")) {
+		try (InputStream inStream = GGPlayAPIHelper.class.getResourceAsStream("/api-project-6624369-bde2de9f1522.p12")) {
 			String emailAddress = "slashandgirl@api-project-6624369.iam.gserviceaccount.com";
 			String packageName = "com.slashandgirl.android";
 			String productId = "com.sungame.slashandgirl.innoadsfreecoin";

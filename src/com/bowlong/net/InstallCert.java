@@ -53,6 +53,7 @@ import javax.net.ssl.X509TrustManager;
 
 /**
  * 创建https的访问安全证书
+ * 
  * @author canyon
  * @date 2014年10月13日
  */
@@ -62,22 +63,21 @@ public class InstallCert {
 		creatCeartQH360();
 	}
 
-	static void creatCeartQH360() throws Exception{
+	static void creatCeartQH360() throws Exception {
 		String host = "openapi.360.cn";
 		int port = 443;
 		String strPass = "changeit";
 		creatCertification(host, port, strPass);
 	}
-	static void creatCertification(String uriHost, int port,
-			String strPassphrase) throws Exception {
+
+	static void creatCertification(String uriHost, int port, String strPassphrase) throws Exception {
 		if (strPassphrase == null || "".equals(strPassphrase.trim()))
 			strPassphrase = "changeit";
 		char[] passphrase = strPassphrase.toCharArray();
 		File file = new File("jssecacerts");
 		if (file.isFile() == false) {
 			char SEP = File.separatorChar;
-			File dir = new File(System.getProperty("java.home") + SEP + "lib"
-					+ SEP + "security");
+			File dir = new File(System.getProperty("java.home") + SEP + "lib" + SEP + "security");
 			file = new File(dir, "jssecacerts");
 			if (file.isFile() == false) {
 				file = new File(dir, "cacerts");
@@ -90,17 +90,14 @@ public class InstallCert {
 		in.close();
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManagerFactory tmf = TrustManagerFactory
-				.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+		TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 		tmf.init(ks);
-		X509TrustManager defaultTrustManager = (X509TrustManager) tmf
-				.getTrustManagers()[0];
+		X509TrustManager defaultTrustManager = (X509TrustManager) tmf.getTrustManagers()[0];
 		SavingTrustManager tm = new SavingTrustManager(defaultTrustManager);
 		context.init(null, new TrustManager[] { tm }, null);
 		SSLSocketFactory factory = context.getSocketFactory();
 
-		System.out
-				.println("Opening connection to " + uriHost + ":" + port + "...");
+		System.out.println("Opening connection to " + uriHost + ":" + port + "...");
 		SSLSocket socket = (SSLSocket) factory.createSocket(uriHost, port);
 		socket.setSoTimeout(10000);
 		try {
@@ -120,8 +117,7 @@ public class InstallCert {
 			return;
 		}
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				System.in));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 		System.out.println();
 		System.out.println("Server sent " + chain.length + " certificate(s):");
@@ -130,8 +126,7 @@ public class InstallCert {
 		MessageDigest md5 = MessageDigest.getInstance("MD5");
 		for (int i = 0; i < chain.length; i++) {
 			X509Certificate cert = chain[i];
-			System.out.println(" " + (i + 1) + " Subject "
-					+ cert.getSubjectDN());
+			System.out.println(" " + (i + 1) + " Subject " + cert.getSubjectDN());
 			System.out.println("   Issuer  " + cert.getIssuerDN());
 			sha1.update(cert.getEncoded());
 			System.out.println("   sha1    " + toHexString(sha1.digest()));
@@ -140,8 +135,7 @@ public class InstallCert {
 			System.out.println();
 		}
 
-		System.out
-				.println("Enter certificate to add to trusted keystore or 'q' to quit: [1]");
+		System.out.println("Enter certificate to add to trusted keystore or 'q' to quit: [1]");
 		String line = reader.readLine().trim();
 		int k;
 		try {
@@ -162,9 +156,7 @@ public class InstallCert {
 		System.out.println();
 		System.out.println(cert);
 		System.out.println();
-		System.out
-				.println("Added certificate to keystore 'jssecacerts' using alias '"
-						+ alias + "'");
+		System.out.println("Added certificate to keystore 'jssecacerts' using alias '" + alias + "'");
 	}
 
 	private static final char[] HEXDIGITS = "0123456789abcdef".toCharArray();
@@ -193,13 +185,11 @@ public class InstallCert {
 			throw new UnsupportedOperationException();
 		}
 
-		public void checkClientTrusted(X509Certificate[] chain, String authType)
-				throws CertificateException {
+		public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 			throw new UnsupportedOperationException();
 		}
 
-		public void checkServerTrusted(X509Certificate[] chain, String authType)
-				throws CertificateException {
+		public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 			this.chain = chain;
 			tm.checkServerTrusted(chain, authType);
 		}

@@ -138,8 +138,7 @@ public class ImgEx extends ImageEx {
 	}
 
 	/*** 输出图片 **/
-	static public final String outImg(OutputStream outStream)
-			throws IOException {
+	static public final String outImg(OutputStream outStream) throws IOException {
 		defParameter();
 		Map<String, Object> map = createRGB();
 		if (MapEx.isEmpty(map))
@@ -149,8 +148,7 @@ public class ImgEx extends ImageEx {
 		return (String) map.get(MapKey_Code);
 	}
 
-	static public final String outImgBy(OutputStream outStream, int w, int h,
-			int size) throws IOException {
+	static public final String outImgBy(OutputStream outStream, int w, int h, int size) throws IOException {
 		Map<String, Object> map = createRGBBy(w, h, size);
 		if (MapEx.isEmpty(map))
 			return "";
@@ -160,8 +158,7 @@ public class ImgEx extends ImageEx {
 	}
 
 	/*** 二维码图片 **/
-	static public final BufferedImage createImg4QRCode(int w, int h,
-			String content) {
+	static public final BufferedImage createImg4QRCode(int w, int h, String content) {
 		try {
 
 			int BLACK = 0xFF000000;
@@ -171,8 +168,7 @@ public class ImgEx extends ImageEx {
 			hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
 			// 设置QR二维码的纠错级别——这里选择最高H级别
 			hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-			BitMatrix bitMatrix = new MultiFormatWriter().encode(content,
-					BarcodeFormat.QR_CODE, w, h, hints);
+			BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, w, h, hints);
 
 			BufferedImage image = create(w, h);
 			for (int x = 0; x < w; x++) {
@@ -187,13 +183,11 @@ public class ImgEx extends ImageEx {
 		}
 	}
 
-	static public final void outImg4QRCode(OutputStream outStream,
-			String content) throws IOException {
+	static public final void outImg4QRCode(OutputStream outStream, String content) throws IOException {
 		outImg4QRCode(outStream, content, 300, 300);
 	}
 
-	static public final void outImg4QRCode(OutputStream outStream,
-			String content, int w, int h) throws IOException {
+	static public final void outImg4QRCode(OutputStream outStream, String content, int w, int h) throws IOException {
 		BufferedImage img = createImg4QRCode(w, h, content);
 		if (img == null)
 			return;

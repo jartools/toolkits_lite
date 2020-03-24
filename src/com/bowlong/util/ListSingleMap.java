@@ -71,8 +71,7 @@ public class ListSingleMap implements List<SingleMap<Object, Object>> {
 	}
 
 	@Override
-	public boolean addAll(int index,
-			Collection<? extends SingleMap<Object, Object>> c) {
+	public boolean addAll(int index, Collection<? extends SingleMap<Object, Object>> c) {
 		return list.addAll(index, c);
 	}
 
@@ -112,8 +111,7 @@ public class ListSingleMap implements List<SingleMap<Object, Object>> {
 	}
 
 	@Override
-	public SingleMap<Object, Object> set(int index,
-			SingleMap<Object, Object> element) {
+	public SingleMap<Object, Object> set(int index, SingleMap<Object, Object> element) {
 		return list.set(index, element);
 	}
 

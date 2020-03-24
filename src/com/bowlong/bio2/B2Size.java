@@ -16,8 +16,7 @@ public class B2Size {
 		os.writer += 1;
 	}
 
-	public static final void sizeBoolean(Offset os, boolean v)
-			throws IOException {
+	public static final void sizeBoolean(Offset os, boolean v) throws IOException {
 		os.writer += 1;
 	}
 
@@ -89,8 +88,7 @@ public class B2Size {
 		}
 	}
 
-	public static final void sizeIntArray(Offset os, int[] v)
-			throws IOException {
+	public static final void sizeIntArray(Offset os, int[] v) throws IOException {
 		int len = v.length;
 		switch (len) {
 		case 0:
@@ -122,8 +120,7 @@ public class B2Size {
 		}
 	}
 
-	public static final void sizeInt2DArray(Offset os, int[][] v)
-			throws IOException {
+	public static final void sizeInt2DArray(Offset os, int[][] v) throws IOException {
 		int len = v.length;
 		if (len <= 0) {
 			os.writer += 1;
@@ -150,8 +147,7 @@ public class B2Size {
 		}
 	}
 
-	public static final void sizeDouble(Offset os, double var)
-			throws IOException {
+	public static final void sizeDouble(Offset os, double var) throws IOException {
 		long v = Double.doubleToLongBits(var);
 		if (v == 0) {
 			os.writer += 1;
@@ -318,8 +314,7 @@ public class B2Size {
 		}
 	}
 
-	public static final void sizeObject(Offset os, Object object)
-			throws Exception {
+	public static final void sizeObject(Offset os, Object object) throws Exception {
 		if (object == null) {
 			sizeNull(os);
 		} else if (object instanceof Map) {
@@ -364,13 +359,11 @@ public class B2Size {
 	}
 
 	// ////////////////////////////////
-	protected static final void printString(Offset os, String v)
-			throws IOException {
+	protected static final void printString(Offset os, String v) throws IOException {
 		printString(os, v, 0, v.length());
 	}
 
-	protected static final void printString(Offset os, String v, int offset,
-			int length) throws IOException {
+	protected static final void printString(Offset os, String v, int offset, int length) throws IOException {
 		for (int i = 0; i < length; i++) {
 			char ch = v.charAt(i + offset);
 

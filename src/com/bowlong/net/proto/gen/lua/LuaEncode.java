@@ -16,7 +16,7 @@ public class LuaEncode extends B2OutputStream {
 	 */
 	static public final byte[] encode(Object obj) {
 		byte[] result = null;
-		try (ByteOutStream os = new ByteOutStream();){
+		try (ByteOutStream os = new ByteOutStream();) {
 			writeObject(os, obj);
 			result = os.toByteArray();
 			os.flush();
@@ -34,17 +34,15 @@ public class LuaEncode extends B2OutputStream {
 	 * @return
 	 * @throws Exception
 	 */
-	static public final <T> T decode(Object obj, Class<T> clazz)
-			throws Exception {
+	static public final <T> T decode(Object obj, Class<T> clazz) throws Exception {
 		if (obj instanceof byte[]) {
 			return decode((byte[]) obj, clazz);
 		}
 		return clazz.newInstance();
 	}
 
-	static public final <T> T decode(byte[] buf, Class<T> clazz)
-			throws Exception {
-		try (ByteInStream in = new ByteInStream(buf);){
+	static public final <T> T decode(byte[] buf, Class<T> clazz) throws Exception {
+		try (ByteInStream in = new ByteInStream(buf);) {
 			T result = (T) B2InputStream.readObject(in);
 			in.close();
 			return result;

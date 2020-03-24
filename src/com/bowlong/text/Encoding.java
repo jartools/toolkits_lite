@@ -62,8 +62,8 @@ public class Encoding {
 
 	/**
 	 * <p>
-	 * Seven-bit ASCII, also known as ISO646-US, also known as the Basic Latin
-	 * block of the Unicode character set.
+	 * Seven-bit ASCII, also known as ISO646-US, also known as the Basic Latin block
+	 * of the Unicode character set.
 	 * </p>
 	 * 
 	 * <p>
@@ -78,8 +78,8 @@ public class Encoding {
 	/**
 	 * <p>
 	 * Sixteen-bit Unicode Transformation Format, byte order specified by a
-	 * mandatory initial byte-order mark (either order accepted on input,
-	 * big-endian used on output).
+	 * mandatory initial byte-order mark (either order accepted on input, big-endian
+	 * used on output).
 	 * </p>
 	 * 
 	 * <p>
@@ -148,15 +148,14 @@ public class Encoding {
 	 * <p>
 	 * This is similar to <a href=
 	 * "http://download.oracle.com/javase/1.4.2/docs/api/java/nio/charset/Charset.html#isSupported%28java.lang.String%29"
-	 * > java.nio.charset.Charset.isSupported(String)</a> but handles more
-	 * formats
+	 * > java.nio.charset.Charset.isSupported(String)</a> but handles more formats
 	 * </p>
 	 * 
 	 * @param name
-	 *            the name of the requested charset; may be either a canonical
-	 *            name or an alias, null returns false
-	 * @return {@code true} if the charset is available in the current Java
-	 *         virtual machine
+	 *            the name of the requested charset; may be either a canonical name
+	 *            or an alias, null returns false
+	 * @return {@code true} if the charset is available in the current Java virtual
+	 *         machine
 	 */
 	public static boolean isSupported(String name) {
 		if (name == null || "".equals(name.trim())) {

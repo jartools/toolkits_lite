@@ -77,8 +77,10 @@ public class SnowflakeIdWorker {
 	/**
 	 * 构造函数
 	 * 
-	 * @param workerId     工作ID (0~31)
-	 * @param datacenterId 数据中心ID (0~31)
+	 * @param workerId
+	 *            工作ID (0~31)
+	 * @param datacenterId
+	 *            数据中心ID (0~31)
 	 */
 	public SnowflakeIdWorker(int workerId, int datacenterId) {
 		reInit(workerId, datacenterId);
@@ -87,8 +89,10 @@ public class SnowflakeIdWorker {
 	/**
 	 * 初始函数
 	 * 
-	 * @param workerId     工作ID (0~31)
-	 * @param datacenterId 数据中心ID (0~31)
+	 * @param workerId
+	 *            工作ID (0~31)
+	 * @param datacenterId
+	 *            数据中心ID (0~31)
 	 */
 	public SnowflakeIdWorker reInit(int workerId, int datacenterId) {
 		if (workerId > maxWorkerId || workerId < 0) {
@@ -146,7 +150,8 @@ public class SnowflakeIdWorker {
 	/**
 	 * 阻塞到下一个毫秒，直到获得新的时间戳
 	 * 
-	 * @param lastTimestamp 上次生成ID的时间截
+	 * @param lastTimestamp
+	 *            上次生成ID的时间截
 	 * @return 当前时间戳
 	 */
 	private long tilNextMillis(long lastTimestamp) {

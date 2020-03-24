@@ -85,8 +85,7 @@ public final class PStr implements Serializable {
 		return this;
 	}
 
-	public final PStr a(final String str, final Map<String, Object> map)
-			throws Exception {
+	public final PStr a(final String str, final Map<String, Object> map) throws Exception {
 		String v = EasyTemplate.make(str, map);
 		sb.append(v);
 		return this;

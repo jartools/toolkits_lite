@@ -35,7 +35,7 @@ import com.bowlong.util.MapEx;
  * @author Canyon
  * @time 2019-02-14 19:32
  */
-@SuppressWarnings({"rawtypes" })
+@SuppressWarnings({ "rawtypes" })
 public class ExToolkit extends ExOrigin {
 
 	static final public void println(Object... args) {

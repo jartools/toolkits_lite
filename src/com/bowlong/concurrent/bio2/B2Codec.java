@@ -102,7 +102,7 @@ public class B2Codec {
 		byte[] b = B2Codec.toBytes(m, 10 * 1024);
 		// boolean bio2 = isBio2(b);
 		// System.out.println(bio2);
-		System.out.println(b.length );
+		System.out.println(b.length);
 		System.out.println(ByteEx.bytesToString(b));
 		NewMap m2 = B2Codec.toMap(b);
 		System.out.println(m2);

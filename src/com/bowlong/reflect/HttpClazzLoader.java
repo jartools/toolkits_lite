@@ -15,8 +15,7 @@ public class HttpClazzLoader {
 
 		private final Map<String, Class<?>> cached = new ConcurrentHashMap<>();
 
-		public CacheClaccLoader(final String szUrl)
-				throws MalformedURLException {
+		public CacheClaccLoader(final String szUrl) throws MalformedURLException {
 			this.hashCode = szUrl.hashCode();
 			this.url = szUrl;
 			// final URL url = new URL(szUrl);
@@ -53,8 +52,7 @@ public class HttpClazzLoader {
 
 	// /////////////////////////////////////////////
 
-	public CacheClaccLoader newCacheClaccLoader(final String szUrl)
-			throws MalformedURLException {
+	public CacheClaccLoader newCacheClaccLoader(final String szUrl) throws MalformedURLException {
 		return new CacheClaccLoader(szUrl);
 	}
 
@@ -65,8 +63,7 @@ public class HttpClazzLoader {
 
 	private static final Map<String, CacheClaccLoader> cached = new ConcurrentHashMap<>();
 
-	public static final synchronized CacheClaccLoader getCacheClassLoader(
-			final String szUrl) throws Exception {
+	public static final synchronized CacheClaccLoader getCacheClassLoader(final String szUrl) throws Exception {
 		CacheClaccLoader ucl = cached.get(szUrl);
 		if (ucl == null) {
 			ucl = instance.newCacheClaccLoader(szUrl);
@@ -75,16 +72,14 @@ public class HttpClazzLoader {
 		return ucl;
 	}
 
-	public static final Class<?> loadClass(final String szUrl,
-			final String className) throws Exception {
+	public static final Class<?> loadClass(final String szUrl, final String className) throws Exception {
 		final CacheClaccLoader ucl = getCacheClassLoader(szUrl);
 		if (ucl == null)
 			return null;
 		return ucl.loadClass(className);
 	}
 
-	public static final <T> T loadObject(final String szUrl,
-			final String className) throws Exception {
+	public static final <T> T loadObject(final String szUrl, final String className) throws Exception {
 		final Class<?> c = loadClass(szUrl, className);
 		if (c == null)
 			return null;

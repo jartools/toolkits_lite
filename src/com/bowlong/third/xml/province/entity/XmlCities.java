@@ -50,8 +50,7 @@ public class XmlCities implements Serializable {
 	/*** 工程模式下面编译取得路径 **/
 	public String getPath4Xml() {
 		String pkg = this.getClass().getPackage().getName();
-		String path = this.getClass().getClassLoader().getResource("")
-				.getPath();
+		String path = this.getClass().getClassLoader().getResource("").getPath();
 		pkg = StrEx.package2Path(pkg);
 		pkg = pkg.replace("entity", "xmls");
 		return path + pkg + "/Cities.xml";
