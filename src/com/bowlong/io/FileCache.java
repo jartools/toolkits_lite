@@ -46,7 +46,7 @@ public class FileCache implements Closeable {
 		return getText(charset);
 	}
 
-	public String getText(final Charset charset) throws IOException {
+	public String getText(Charset charset) throws IOException {
 		if (text == null) {
 			text = new String(getData(), charset);
 		}

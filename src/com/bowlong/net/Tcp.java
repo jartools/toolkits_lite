@@ -20,7 +20,7 @@ public class Tcp {
 	static final int TIME_OUT = 5 * 60 * 1000;
 
 	// //////////////////////////////////
-	public synchronized static final InetAddress addr(final String host) throws UnknownHostException {
+	public synchronized static final InetAddress addr(String host) throws UnknownHostException {
 		InetAddress addr = _HOSTS.get(host);
 		if (addr == null) {
 			addr = InetAddress.getByName(host);
@@ -29,7 +29,7 @@ public class Tcp {
 		return addr;
 	}
 
-	public static final Map<String, Boolean> pingNoExcept(final String from, final String to, final int tryNum) {
+	public static final Map<String, Boolean> pingNoExcept(String from,String to,int tryNum) {
 		final Map<String, Boolean> r2 = new Hashtable<>();
 		if (!StrEx.isIpv4(from))
 			return r2;
@@ -54,7 +54,7 @@ public class Tcp {
 		return r2;
 	}
 
-	public static final boolean pingNoExcept(final String host, final int tryNum) {
+	public static final boolean pingNoExcept(String host,int tryNum) {
 		for (int i = 0; i < tryNum; i++) {
 			if (pingNoExcept(host))
 				return true;
@@ -62,7 +62,7 @@ public class Tcp {
 		return false;
 	}
 
-	public static final boolean pingNoExcept(final String host) {
+	public static final boolean pingNoExcept(String host) {
 		try {
 			return ping(host);
 		} catch (Exception e) {
@@ -70,12 +70,12 @@ public class Tcp {
 		return false;
 	}
 
-	public static final boolean ping(final String host) throws UnknownHostException, IOException {
+	public static final boolean ping(String host) throws UnknownHostException, IOException {
 		final int timeout = 3000;
 		return ping(host, timeout);
 	}
 
-	public static final boolean ping(final String host, final int timeout) throws UnknownHostException, IOException {
+	public static final boolean ping(String host,int timeout) throws UnknownHostException, IOException {
 		// String host = "192.168.1.181"
 		// int timeOut = 3000;
 		boolean status = InetAddress.getByName(host).isReachable(timeout);
@@ -83,13 +83,13 @@ public class Tcp {
 	}
 
 	// //////////////////////////////////
-	public static final Socket createSocket(final String host, final int port) throws IOException {
+	public static final Socket createSocket(String host,int port) throws IOException {
 		final InetAddress addr = addr(host);
 		return new Socket(addr, port);
 	}
 
 	// 可复用的Socket对象
-	public static final ReUsableSocket getReUsableSocket(final String host, final int port) throws IOException {
+	public static final ReUsableSocket getReUsableSocket(String host,int port) throws IOException {
 		final String key = String.format("%s:%d", host, port);
 		ReUsableSocket tcp = _SOCKETS.get(key);
 		if (!tcp.isAlive()) {
@@ -99,36 +99,36 @@ public class Tcp {
 		return tcp;
 	}
 
-	public static final Socket createLocalSocket(final int port) throws IOException {
+	public static final Socket createLocalSocket(int port) throws IOException {
 		return createSocket(localHost, port);
 	}
 
 	// //////////////////////////////////
-	public static final ServerSocket createServer(final int port) throws IOException {
+	public static final ServerSocket createServer(int port) throws IOException {
 		return createServer(port, backlog);
 	}
 
-	public static final ServerSocket createServer(final int port, final int backlog) throws IOException {
+	public static final ServerSocket createServer(int port,int backlog) throws IOException {
 		return new ServerSocket(port, backlog);
 	}
 
-	public static final ServerSocket createServer(final int port, final int backlog, final String host) throws IOException {
+	public static final ServerSocket createServer(int port,int backlog,String host) throws IOException {
 		final InetAddress bindAddr = addr(host);
 		return new ServerSocket(port, backlog, bindAddr);
 	}
 
 	// //////////////////////////////////
-	public static final ServerSocket createLocalServer(final int port) throws IOException {
+	public static final ServerSocket createLocalServer(int port) throws IOException {
 		return createServer(port, backlog, localHost);
 	}
 
-	public static final ServerSocket createLocalServer(final int port, final int backlog) throws IOException {
+	public static final ServerSocket createLocalServer(int port,int backlog) throws IOException {
 		return createServer(port, backlog, localHost);
 	}
 
 	// //////////////////////////////////
 
-	public static final void setTimeout(final Socket socket, final int tm_sec) {
+	public static final void setTimeout(Socket socket,int tm_sec) {
 		if (socket == null)
 			return;
 		try {
@@ -139,8 +139,8 @@ public class Tcp {
 		}
 	}
 
-	// public static final InputStream sendAndReceive(final String host,
-	// final int port, final byte[] b, int tryNum) {
+	// public static final InputStream sendAndReceive(String host,
+	// final int port,byte[] b, int tryNum) {
 	// CacheTcp tcp = null;
 	// try {
 	// tcp = getReUsableSocket(host, port);
@@ -157,32 +157,32 @@ public class Tcp {
 	// return null;
 	// }
 
-	// public static final byte[] readLocalBytes(final int port)
+	// public static final byte[] readLocalBytes(int port)
 	// throws IOException {
 	// byte[] b = null;
 	// return readLocalBytes(port, b);
 	// }
 
-	// public static final byte[] readLocalBytes(final int port, final byte[] b)
+	// public static final byte[] readLocalBytes(int port,byte[] b)
 	// throws IOException {
 	// String host = "127.0.0.1";
 	// return readBytes(host, port, b);
 	// }
 	//
-	// public static final byte[] readBytes(final String host, final int port)
+	// public static final byte[] readBytes(String host,int port)
 	// throws IOException {
 	// byte[] b = null;
 	// return readBytes(host, port, b);
 	// }
 
-	// public static final byte[] readBytes(final String host, final int port,
+	// public static final byte[] readBytes(String host,int port,
 	// final byte[] b) throws IOException {
 	// final int timeout = 300;
 	// return readBytes(host, port, timeout, b);
 	// }
 
-	// public static byte[] readBytes(final String host, final int port,
-	// final int tm_sec, final byte[] b) throws IOException {
+	// public static byte[] readBytes(String host,int port,
+	// final int tm_sec,byte[] b) throws IOException {
 	// final Socket socket = createSocket(host, port);
 	// final OutputStream output = socket.getOutputStream();
 	// final InputStream input = socket.getInputStream();
@@ -206,7 +206,7 @@ public class Tcp {
 	// }
 
 	// //////////////////////////////////
-	public static int readFully(final InputStream input, final byte r2[]) throws IOException {
+	public static int readFully(InputStream input,byte r2[]) throws IOException {
 		final int off = 0;
 		final int len = r2.length;
 		int n = 0;
@@ -226,13 +226,13 @@ public class Tcp {
 
 	// //////////////////////////////////
 
-	public static final void close(final Socket socket, final InputStream input, final OutputStream output) {
+	public static final void close(Socket socket,InputStream input,OutputStream output) {
 		close(socket);
 		close(input);
 		close(output);
 	}
 
-	public static final void close(final InputStream input) {
+	public static final void close(InputStream input) {
 		if (input == null)
 			return;
 		try {
@@ -242,7 +242,7 @@ public class Tcp {
 		}
 	}
 
-	public static final void close(final OutputStream output) {
+	public static final void close(OutputStream output) {
 		if (output == null)
 			return;
 		try {
@@ -252,7 +252,7 @@ public class Tcp {
 		}
 	}
 
-	public static final void close(final Socket socket) {
+	public static final void close(Socket socket) {
 		if (socket == null)
 			return;
 		try {

@@ -25,7 +25,7 @@ public class N4Socket extends ExToolkit {
 		return chn;
 	}
 
-	static final public InetSocketAddress getAddress(final String host, final int port) {
+	static final public InetSocketAddress getAddress(String host,int port) {
 		InetSocketAddress address = null;
 		if (isEmpty(host)) {
 			address = new InetSocketAddress(port);

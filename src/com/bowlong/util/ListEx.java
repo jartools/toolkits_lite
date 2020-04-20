@@ -420,7 +420,7 @@ public class ListEx extends ExOrigin {
 	}
 
 	/*** 将list都随机打乱 **/
-	public static final List rndList(final List srcList) {
+	public static final List rndList(List srcList) {
 		List ret = new ArrayList();
 		List list = new Vector();
 		list.addAll(srcList);
@@ -436,7 +436,7 @@ public class ListEx extends ExOrigin {
 		return ret;
 	}
 
-	public static final List subRndList(final List srcList, final int subSize) {
+	public static final List subRndList(List srcList,int subSize) {
 		if (srcList == null)
 			return srcList;
 		int len = srcList.size();
@@ -447,16 +447,16 @@ public class ListEx extends ExOrigin {
 	}
 
 	/*** 将泛型list都随机打乱 **/
-	public static final <T> List<T> rndListT(final List<T> srcList) {
+	public static final <T> List<T> rndListT(List<T> srcList) {
 		return (List<T>) rndList(srcList);
 	}
 
-	public static final <T> List<T> subRndListT(final List<T> srcList, final int subSize) {
+	public static final <T> List<T> subRndListT(List<T> srcList,int subSize) {
 		return (List<T>) subRndList(srcList, subSize);
 	}
 
 	/*** sublist ,Inc:inclusive,Exc:exclusive **/
-	static public final List subList(final List src, int fIndInc, int tIndExc) {
+	static public final List subList(List src, int fIndInc, int tIndExc) {
 		if (src == null)
 			return newList();
 		if (src.isEmpty())
@@ -470,7 +470,7 @@ public class ListEx extends ExOrigin {
 		return src.subList(fIndInc, tIndExc);
 	}
 
-	static public final List subList(final List src, int fIndInc) {
+	static public final List subList(List src, int fIndInc) {
 		int tIndExc = 0;
 		if (src != null) {
 			tIndExc = src.size();
@@ -479,11 +479,11 @@ public class ListEx extends ExOrigin {
 	}
 
 	/*** sublist ,Inc:inclusive,Exc:exclusive **/
-	static public final <T> List<T> subListT(final List<T> src, int fIndInc, int tIndExc) {
+	static public final <T> List<T> subListT(List<T> src, int fIndInc, int tIndExc) {
 		return subList(src, fIndInc, tIndExc);
 	}
 
-	static public final <T> List<T> subListT(final List<T> src, int fIndInc) {
+	static public final <T> List<T> subListT(List<T> src, int fIndInc) {
 		return subList(src, fIndInc);
 	}
 

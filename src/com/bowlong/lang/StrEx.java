@@ -17,24 +17,24 @@ import com.bowlong.text.EasyTemplate;
 import com.bowlong.util.ListEx;
 
 public final class StrEx extends ExOrigin {
-	public static final String left(final String s, final int len) {
+	public static final String left(String s,int len) {
 		return s.substring(0, len);
 	}
 
-	public static final String right(final String s, final int len) {
+	public static final String right(String s,int len) {
 		int length = s.length();
 		return s.substring(length - len);
 	}
 
-	public static final String sub(final String s, final int begin, final int end) {
+	public static final String sub(String s,int begin,int end) {
 		return s.substring(begin, end);
 	}
 
-	public static final String sub(final String s, final int begin) {
+	public static final String sub(String s,int begin) {
 		return s.substring(begin);
 	}
 
-	public static final String sub(final String s, final String begin, final String end) {
+	public static final String sub(String s,String begin,String end) {
 		int p1 = s.indexOf(begin);
 		p1 = p1 < 0 ? 0 : p1 + begin.length();
 		int p2 = s.indexOf(end, p1);
@@ -43,21 +43,21 @@ public final class StrEx extends ExOrigin {
 	}
 
 	/** 格式化字符串使其长度为n，不足长度是在前面补上“空格字符” **/
-	public static final String fixNSpace(final String s, final int n) {
+	public static final String fixNSpace(String s,int n) {
 		return String.format("%" + n + "s", s);
 	}
 
 	/** 格式化数字val，使其长度为n，不足长度是在前面补上“0” **/
-	public static final String fixNInt(final int val, final int n) {
+	public static final String fixNInt(int val,int n) {
 		return String.format("%0" + n + "d", val);
 	}
 
-	public static final String f(final String s, final Object... args) {
-		return String.format(s, args);
+	public static final String fmt(String fmt,Object... args) {
+		return String.format(fmt, args);
 	}
 
-	public static final String fmtCrLf(final String fmt, final Object... args) {
-		return fmt(fmt, args) + "\r\n";
+	public static final String fmt$CrLf(String fmt,Object... args) {
+		return fmt$(fmt, args) + "\r\n";
 	}
 
 	/**
@@ -68,7 +68,7 @@ public final class StrEx extends ExOrigin {
 	 *            v1,v2
 	 * @return a_v1v1_v2
 	 */
-	public static final String fmt(final String fmt, final Object... args) {
+	public static final String fmt$(String fmt,Object... args) {
 		try {
 			Map<String, String> params = new HashMap<String, String>();
 			int length = args.length;
@@ -82,7 +82,7 @@ public final class StrEx extends ExOrigin {
 		return fmt;
 	}
 
-	static final private String changeN(final String s, final int p, boolean isLowerP, boolean isLowerOther) {
+	static final private String changeN(String s,int p, boolean isLowerP, boolean isLowerOther) {
 		int len = s.length();
 		if (len <= 0)
 			return "";
@@ -114,27 +114,27 @@ public final class StrEx extends ExOrigin {
 		}
 	}
 
-	public static final String upperN1(final String s) {
+	public static final String upperN1(String s) {
 		return changeN(s, 0, false, false);
 	}
 
-	public static final String upperN(final String s, final int p) {
+	public static final String upperN(String s,int p) {
 		return changeN(s, p, false, false);
 	}
 
-	static public final String upperFirst(final String s) {
+	static public final String upperFirst(String s) {
 		return upperN1(s);
 	}
 
-	static public final String upperFirstLowerOther(final String s) {
+	static public final String upperFirstLowerOther(String s) {
 		return changeN(s, 1, false, true);
 	}
 
-	public static final String lowerFirst(final String s) {
+	public static final String lowerFirst(String s) {
 		return changeN(s, 0, true, false);
 	}
 
-	public static final String mapToString(final Map<?, ?> m) {
+	public static final String mapToString(Map<?, ?> m) {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			Iterator<?> it = m.keySet().iterator();
@@ -149,7 +149,7 @@ public final class StrEx extends ExOrigin {
 		}
 	}
 
-	public static final String toString(final List<?> l) {
+	public static final String toString(List<?> l) {
 		StringBuffer sb = StringBufPool.borrowObject();
 		try {
 			Iterator<?> it = l.iterator();
@@ -164,11 +164,11 @@ public final class StrEx extends ExOrigin {
 		}
 	}
 
-	public static final String createString(final byte[] b, final String charset) throws Exception {
+	public static final String createString(byte[] b,String charset) throws Exception {
 		return new String(b, charset);
 	}
 
-	public static final List<String> toLines(final String s) throws IOException {
+	public static final List<String> toLines(String s) throws IOException {
 		List<String> ret = new Vector<String>();
 		StringReader sr = new StringReader(s);
 		BufferedReader br = new BufferedReader(sr);
@@ -182,7 +182,7 @@ public final class StrEx extends ExOrigin {
 	}
 
 	// 全角字符
-	public static final String toW(final String input) {
+	public static final String toW(String input) {
 		char c[] = input.toCharArray();
 		for (int i = 0; i < c.length; i++) {
 			if (c[i] == ' ') {
@@ -195,7 +195,7 @@ public final class StrEx extends ExOrigin {
 	}
 
 	// 半角字符
-	public static final String toC(final String input) {
+	public static final String toC(String input) {
 		char c[] = input.toCharArray();
 		for (int i = 0; i < c.length; i++) {
 			if (c[i] == '\u3000') {
@@ -207,21 +207,21 @@ public final class StrEx extends ExOrigin {
 		return new String(c);
 	}
 
-	public static final String removeLeft(final String s, final int n) {
+	public static final String removeLeft(String s,int n) {
 		int len = s.length();
 		if (len < n)
 			return "";
 		return s.substring(n);
 	}
 
-	public static final String removeRight(final String s, final int n) {
+	public static final String removeRight(String s,int n) {
 		int len = s.length();
 		if (len < n)
 			return "";
 		return s.substring(0, len - n - 1);
 	}
 
-	public static final StringBuffer removeRight(final StringBuffer s, final int n) {
+	public static final StringBuffer removeRight(StringBuffer s,int n) {
 		int len = s.length();
 		if (len < n)
 			s.setLength(0);
@@ -276,7 +276,7 @@ public final class StrEx extends ExOrigin {
 		return false;
 	}
 
-	public static int[] ipv4(final String ipv4) {
+	public static int[] ipv4(String ipv4) {
 		int[] r2 = new int[4];
 		if (ipv4 == null || ipv4.length() < 6 || ipv4.length() > 17)
 			return r2;
@@ -311,19 +311,19 @@ public final class StrEx extends ExOrigin {
 
 	public static final String EMPTY = "";
 
-	public static final boolean isIPv4Address(final String input) {
+	public static final boolean isIPv4Address(String input) {
 		return IPV4_PATTERN.matcher(input).matches();
 	}
 
-	public static final boolean isIPv6StdAddress(final String input) {
+	public static final boolean isIPv6StdAddress(String input) {
 		return IPV6_STD_PATTERN.matcher(input).matches();
 	}
 
-	public static final boolean isIPv6HexCompressedAddress(final String input) {
+	public static final boolean isIPv6HexCompressedAddress(String input) {
 		return IPV6_HEX_COMPRESSED_PATTERN.matcher(input).matches();
 	}
 
-	public static final boolean isIPv6Address(final String input) {
+	public static final boolean isIPv6Address(String input) {
 		return isIPv6StdAddress(input) || isIPv6HexCompressedAddress(input);
 	}
 

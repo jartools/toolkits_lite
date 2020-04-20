@@ -24,11 +24,11 @@ public final class NumFmtEx {
 	static final DecimalFormat _decimalFormat7 = new DecimalFormat(".0000000");
 	static final DecimalFormat _decimalFormat8 = new DecimalFormat(".00000000");
 
-	static public final String formatDouble(final double s) {
+	static public final String formatDouble(double s) {
 		return formatDouble(s, DecimalDot.DOT_2);
 	}
 
-	static public final String formatDouble(final double s, DecimalDot dot) {
+	static public final String formatDouble(double s, DecimalDot dot) {
 		String fmtVal = fmtDouble(s, dot);
 		if (fmtVal.indexOf(".") == 0) {
 			return PStr.str("0", fmtVal);
@@ -36,7 +36,7 @@ public final class NumFmtEx {
 		return fmtVal;
 	}
 
-	static public final String fmtDouble(final double s, DecimalDot dot) {
+	static public final String fmtDouble(double s, DecimalDot dot) {
 		switch (dot) {
 		case DOT_MInt:
 			return _dfmt_MInt.format(s);
@@ -65,11 +65,11 @@ public final class NumFmtEx {
 		}
 	}
 
-	static public final String formartBigNum(final BigDecimal s) {
+	static public final String formartBigNum(BigDecimal s) {
 		return formartBigNum(s, DecimalDot.DOT_2);
 	}
 
-	static public final String formartBigNum(final BigDecimal s, DecimalDot dot) {
+	static public final String formartBigNum(BigDecimal s, DecimalDot dot) {
 		String fmtVal = fmtBigNum(s, dot);
 		if (fmtVal.indexOf(".") == 0) {
 			return PStr.str("0", fmtVal);
@@ -77,7 +77,7 @@ public final class NumFmtEx {
 		return fmtVal;
 	}
 
-	static public final String fmtBigNum(final BigDecimal s, DecimalDot dot) {
+	static public final String fmtBigNum(BigDecimal s, DecimalDot dot) {
 		switch (dot) {
 		case DOT_MInt:
 			return _dfmt_MInt.format(s);

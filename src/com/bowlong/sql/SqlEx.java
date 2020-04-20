@@ -75,22 +75,22 @@ public class SqlEx extends JType {
 
 		}
 
-		public static final String getTruncateSql(final String TABLENAME2) {
+		public static final String getTruncateSql(String TABLENAME2) {
 			String sql = "TRUNCATE TABLE `" + TABLENAME2 + "`";
 			return sql;
 		}
 
-		public static final String getRepairSql(final String TABLENAME2) {
+		public static final String getRepairSql(String TABLENAME2) {
 			String sql = "REPAIR TABLE `" + TABLENAME2 + "`";
 			return sql;
 		}
 
-		public static final String getOptimizeSql(final String TABLENAME2) {
+		public static final String getOptimizeSql(String TABLENAME2) {
 			String sql = "OPTIMIZE TABLE `" + TABLENAME2 + "`";
 			return sql;
 		}
 
-		public static final String getDropSql(final String TABLENAME2) {
+		public static final String getDropSql(String TABLENAME2) {
 			String sql = "DROP TABLE IF EXISTS `" + TABLENAME2 + "`";
 			return sql;
 		}
@@ -813,7 +813,7 @@ public class SqlEx extends JType {
 		return result;
 	}
 
-	public static final List<String> getTables(final DataSource ds, final String startsWith) throws Exception {
+	public static final List<String> getTables(final DataSource ds,String startsWith) throws Exception {
 		List<String> result = newList();
 		List<String> tables = getTableNames(ds);
 		for (String t : tables)
@@ -822,7 +822,7 @@ public class SqlEx extends JType {
 		return result;
 	}
 
-	public static final List<String> getTableNames(final Connection conn, final String startsWith) throws Exception {
+	public static final List<String> getTableNames(final Connection conn,String startsWith) throws Exception {
 		List<String> result = newList();
 		List<String> tables = getTableNames(conn);
 		for (String t : tables)

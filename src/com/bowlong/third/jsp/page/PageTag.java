@@ -148,7 +148,7 @@ public class PageTag extends TagSupport {
 		try {
 			String ret = "";
 			if (!StrEx.isEmpty(pg))
-				ret = StrEx.fmt(pageTxt, pg, action, curPage, allPage, pgName, wrapid);
+				ret = StrEx.fmt$(pageTxt, pg, action, curPage, allPage, pgName, wrapid);
 			JspWriter writer = this.pageContext.getOut();
 			writer.print(ret);
 			writer.flush();

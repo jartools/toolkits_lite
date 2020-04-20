@@ -424,12 +424,12 @@ public class MapEx extends ExOrigin {
 		p.store(os, "");
 	}
 
-	public static final String formatString(final Map m) {
+	public static final String formatString(Map m) {
 		int depth = 1;
 		return formatString(m, depth);
 	}
 
-	public static final String formatString(final Map m, int depth) {
+	public static final String formatString(Map m, int depth) {
 		int p = 0;
 		int size = m.size();
 		StringBuffer sb = StringBufPool.borrowObject();
@@ -497,7 +497,7 @@ public class MapEx extends ExOrigin {
 		return putKvs4Map(r2, objs);
 	}
 
-	static public Map putKvs4Map(final Map r2, final Object... objs) {
+	static public Map putKvs4Map(Map r2,Object... objs) {
 		if (objs == null || objs.length <= 0) {
 			return r2;
 		}
@@ -520,7 +520,7 @@ public class MapEx extends ExOrigin {
 		return r2;
 	}
 
-	static public NewMap putKvs4NewMap(final NewMap r2, final Object... objs) {
+	static public NewMap putKvs4NewMap(NewMap r2,Object... objs) {
 		return (NewMap) putKvs4Map(r2, objs);
 	}
 

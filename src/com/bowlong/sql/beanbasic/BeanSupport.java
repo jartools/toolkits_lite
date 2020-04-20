@@ -312,7 +312,7 @@ public abstract class BeanSupport extends BeanBasic {
 		return baos;
 	}
 
-	public static final void freeStream(final ByteOutStream os) {
+	public static final void freeStream(ByteOutStream os) {
 		ByteOutPool.returnObject(os);
 	}
 

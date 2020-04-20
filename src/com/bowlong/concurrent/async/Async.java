@@ -40,7 +40,7 @@ public class Async {
 		getThreadPool();
 	}
 
-	public static void init(final int min, final int max) {
+	public static void init(int min,int max) {
 		MIN = min;
 		MAX = max;
 

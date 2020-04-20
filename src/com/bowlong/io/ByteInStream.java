@@ -9,11 +9,11 @@ import com.bowlong.objpool.ByteInPool;
 
 public class ByteInStream extends ByteArrayInputStream {
 
-	public static final ByteInStream create(final byte[] buf) {
+	public static final ByteInStream create(byte[] buf) {
 		return new ByteInStream(buf);
 	}
 
-	public ByteInStream(final byte[] buf) {
+	public ByteInStream(byte[] buf) {
 		super(buf);
 	}
 
@@ -21,14 +21,14 @@ public class ByteInStream extends ByteArrayInputStream {
 		return buf;
 	}
 
-	public final synchronized void setBytes(final byte[] buf) {
+	public final synchronized void setBytes(byte[] buf) {
 		super.buf = buf;
 		super.pos = pos;
 		super.mark = 0;
 		super.count = buf.length;
 	}
 
-	public synchronized final byte[] readFully(final byte result[], final int off, final int len) throws IOException {
+	public synchronized final byte[] readFully(byte result[],int off,int len) throws IOException {
 		if (len < 0)
 			throw new IndexOutOfBoundsException();
 		int n = 0;
@@ -41,77 +41,77 @@ public class ByteInStream extends ByteArrayInputStream {
 		return result;
 	}
 
-	public synchronized final byte[] readFully(final int len) throws IOException {
+	public synchronized final byte[] readFully(int len) throws IOException {
 		final int off = 0;
 		final byte result[] = new byte[len];
 		return readFully(result, off, len);
 	}
 
-	public synchronized final byte[] readFully(final byte result[]) throws IOException {
+	public synchronized final byte[] readFully(byte result[]) throws IOException {
 		final int off = 0;
 		final int len = result.length;
 		return readFully(result, off, len);
 	}
 
 	//
-	public final synchronized void setBoolean(final int pos, final boolean v) {
+	public final synchronized void setBoolean(int pos,boolean v) {
 		NumEx.writeBool(buf, pos, v);
 	}
 
-	public final synchronized void setByte(final int pos, final byte v) {
+	public final synchronized void setByte(int pos,byte v) {
 		NumEx.writeByte(buf, pos, v);
 	}
 
-	public final synchronized void setShort(final int pos, final short v) {
+	public final synchronized void setShort(int pos,short v) {
 		NumEx.writeShort(buf, pos, v);
 	}
 
-	public final synchronized void setInt(final int pos, int v) {
+	public final synchronized void setInt(int pos, int v) {
 		NumEx.writeInt(buf, pos, v);
 	}
 
-	public final synchronized void setLong(final int pos, final long v) {
+	public final synchronized void setLong(int pos,long v) {
 		NumEx.writeLong(buf, pos, v);
 	}
 
-	public final synchronized void setFloat(final int pos, final float v) {
+	public final synchronized void setFloat(int pos,float v) {
 		NumEx.writeFloat(buf, pos, v);
 	}
 
-	public final synchronized void setDouble(final int pos, final double v) {
+	public final synchronized void setDouble(int pos,double v) {
 		NumEx.writeDouble(buf, pos, v);
 	}
 
-	public final synchronized void setBytes(final int pos, final byte[] v) {
+	public final synchronized void setBytes(int pos,byte[] v) {
 		NumEx.writeBytes(buf, pos, v);
 	}
 
 	//
-	public final synchronized boolean getBoolean(final int pos) {
+	public final synchronized boolean getBoolean(int pos) {
 		return NumEx.readBool(buf, pos);
 	}
 
-	public final synchronized byte getByte(final int pos) {
+	public final synchronized byte getByte(int pos) {
 		return NumEx.readByte(buf, pos);
 	}
 
-	public final synchronized short getShort(final int pos) {
+	public final synchronized short getShort(int pos) {
 		return NumEx.readShort(buf, pos);
 	}
 
-	public final synchronized int getInt(final int pos) {
+	public final synchronized int getInt(int pos) {
 		return NumEx.readInt(buf, pos);
 	}
 
-	public final synchronized long getLong(final int pos) {
+	public final synchronized long getLong(int pos) {
 		return NumEx.readLong(buf, pos);
 	}
 
-	public final synchronized float getFloat(final int pos) {
+	public final synchronized float getFloat(int pos) {
 		return NumEx.readFloat(buf, pos);
 	}
 
-	public final synchronized double getDouble(final int pos) {
+	public final synchronized double getDouble(int pos) {
 		return NumEx.readDouble(buf, pos);
 	}
 

@@ -40,17 +40,17 @@ public class ReUsableSocket {
 		return true;
 	}
 
-	public ReUsableSocket(final String host, final int port) throws IOException {
+	public ReUsableSocket(String host,int port) throws IOException {
 		this(Tcp.createSocket(host, port));
 	}
 
-	public ReUsableSocket(final Socket socket) throws IOException {
+	public ReUsableSocket(Socket socket) throws IOException {
 		this.socket = socket;
 		this.in = socket.getInputStream();
 		this.out = socket.getOutputStream();
 	}
 
-	public void setTimeout(final int timeout) throws SocketException {
+	public void setTimeout(int timeout) throws SocketException {
 		this.socket.setSoTimeout(timeout);
 	}
 

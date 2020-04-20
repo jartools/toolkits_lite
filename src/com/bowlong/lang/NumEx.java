@@ -31,18 +31,18 @@ public final class NumEx extends ExOrigin {
 	public static final double DOUBLE_MIN_VALUE = 0x0.0000000000001P-1022; // 4.9e-324
 	public static final double DOUBLE_MAX_VALUE = 0x1.fffffffffffffP+1023; // 1.7976931348623157e+308
 
-	private static final int read(final InputStream input) throws IOException {
+	private static final int read(InputStream input) throws IOException {
 		int value = input.read();
 		if (-1 == value)
 			throw new EOFException("Unexpected EOF reached");
 		return value;
 	}
 
-	public static final void writeBytes(final byte[] data, final int offset, final byte[] value) {
+	public static final void writeBytes(byte[] data,int offset,byte[] value) {
 		System.arraycopy(value, 0, data, offset, value.length);
 	}
 
-	public static final void writeBytes(final byte[] data, final Offset offset, final byte[] value) {
+	public static final void writeBytes(byte[] data,Offset offset,byte[] value) {
 		try {
 			writeBytes(data, offset.writer, value);
 		} catch (Exception e) {
@@ -51,11 +51,11 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final byte[] readBytes(final byte[] data, final int offset, final int len) {
+	public static final byte[] readBytes(byte[] data,int offset,int len) {
 		return ByteEx.subBytes(data, offset, len);
 	}
 
-	public static final byte[] readBytes(final byte[] data, final Offset offset, final int len) {
+	public static final byte[] readBytes(byte[] data,Offset offset,int len) {
 		try {
 			return readBytes(data, offset.reader, len);
 		} catch (Exception e) {
@@ -65,13 +65,13 @@ public final class NumEx extends ExOrigin {
 		return new byte[0];
 	}
 
-	public static final void writeUTF8(final byte[] data, final int offset, final String value) {
+	public static final void writeUTF8(byte[] data,int offset,String value) {
 		byte[] b = value.getBytes(Charset.forName("UTF-8"));
 		writeInt(data, offset, b.length);
 		writeBytes(data, offset + 4, b);
 	}
 
-	public static final void writeUTF8(final byte[] data, final Offset offset, final String value) {
+	public static final void writeUTF8(byte[] data,Offset offset,String value) {
 		try {
 			byte[] b = value.getBytes(Charset.forName("UTF-8"));
 			writeInt(data, offset, b.length);
@@ -81,14 +81,14 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final String readUTF8(final byte[] data, final int offset) {
+	public static final String readUTF8(byte[] data,int offset) {
 		int len = readInt(data, offset);
 		byte[] result = new byte[len];
 		System.arraycopy(data, offset + 4, result, 0, len);
 		return new String(result, Charset.forName("UTF-8"));
 	}
 
-	public static final String readUTF8(final byte[] data, final Offset offset) {
+	public static final String readUTF8(byte[] data,Offset offset) {
 		int len = 0;
 		try {
 			len = readInt(data, offset);
@@ -102,11 +102,11 @@ public final class NumEx extends ExOrigin {
 		return "";
 	}
 
-	public static final void writeBool(final byte[] data, final int offset, final boolean value) {
+	public static final void writeBool(byte[] data,int offset,boolean value) {
 		data[offset + 0] = (byte) (value ? 0x01 : 0x00);
 	}
 
-	public static final void writeBool(final byte[] data, final Offset offset, final boolean value) {
+	public static final void writeBool(byte[] data,Offset offset,boolean value) {
 		try {
 			writeBool(data, offset.writer, value);
 		} catch (Exception e) {
@@ -115,7 +115,7 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final boolean readBool(final byte[] data, final int offset) {
+	public static final boolean readBool(byte[] data,int offset) {
 		return (boolean) ((data[offset + 0] & 0xff) == 0x01);
 	}
 
@@ -129,19 +129,19 @@ public final class NumEx extends ExOrigin {
 		return false;
 	}
 
-	public static final void write(final byte[] data, final int offset, final boolean value) {
+	public static final void write(byte[] data,int offset,boolean value) {
 		writeBool(data, offset, value);
 	}
 
-	public static final void write(final byte[] data, final Offset offset, final boolean value) {
+	public static final void write(byte[] data,Offset offset,boolean value) {
 		writeBool(data, offset, value);
 	}
 
-	public static final void writeByte(final byte[] data, final int offset, final int value) {
+	public static final void writeByte(byte[] data,int offset,int value) {
 		data[offset + 0] = (byte) value;
 	}
 
-	public static final void writeByte(final byte[] data, final Offset offset, final int value) {
+	public static final void writeByte(byte[] data,Offset offset,int value) {
 		try {
 			writeByte(data, offset.writer, value);
 		} catch (Exception e) {
@@ -150,12 +150,12 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final void writeChar(final byte[] data, final int offset, final int v) throws IOException {
+	public static final void writeChar(byte[] data,int offset,int v) throws IOException {
 		data[offset + 0] = (byte) ((v >>> 8) & 0xFF);
 		data[offset + 1] = (byte) ((v >>> 0) & 0xFF);
 	}
 
-	public static final char readChar(final byte[] data, final int offset) throws IOException {
+	public static final char readChar(byte[] data,int offset) throws IOException {
 		int ch1 = (data[offset + 0] & 0xff);
 		int ch2 = (data[offset + 1] & 0xff);
 		if ((ch1 | ch2) < 0)
@@ -163,11 +163,11 @@ public final class NumEx extends ExOrigin {
 		return (char) ((ch1 << 8) + (ch2 << 0));
 	}
 
-	public static final byte readByte(final byte[] data, final int offset) {
+	public static final byte readByte(byte[] data,int offset) {
 		return (byte) ((data[offset + 0] & 0xff));
 	}
 
-	public static final byte readByte(final byte[] data, final Offset offset) {
+	public static final byte readByte(byte[] data,Offset offset) {
 		try {
 			return readByte(data, offset.reader);
 		} catch (Exception e) {
@@ -177,20 +177,20 @@ public final class NumEx extends ExOrigin {
 		return 0;
 	}
 
-	public static final void write(final byte[] data, final int offset, final byte value) {
+	public static final void write(byte[] data,int offset,byte value) {
 		writeByte(data, offset, value);
 	}
 
-	public static final void write(final byte[] data, final Offset offset, final byte value) {
+	public static final void write(byte[] data,Offset offset,byte value) {
 		writeByte(data, offset, value);
 	}
 
-	public static final void writeShort(final byte[] data, final int offset, final short value) {
+	public static final void writeShort(byte[] data,int offset,short value) {
 		data[offset + 0] = (byte) ((value >> 8) & 0xff);
 		data[offset + 1] = (byte) ((value >> 0) & 0xff);
 	}
 
-	public static final void writeShort(final byte[] data, final Offset offset, final short value) {
+	public static final void writeShort(byte[] data,Offset offset,short value) {
 		try {
 			writeShort(data, offset.writer, value);
 		} catch (Exception e) {
@@ -199,19 +199,19 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final void write(final byte[] data, final int offset, final short value) {
+	public static final void write(byte[] data,int offset,short value) {
 		writeShort(data, offset, value);
 	}
 
-	public static final void write(final byte[] data, final Offset offset, final short value) {
+	public static final void write(byte[] data,Offset offset,short value) {
 		writeShort(data, offset, value);
 	}
 
-	public static final short readShort(final byte[] data, final int offset) {
+	public static final short readShort(byte[] data,int offset) {
 		return (short) (((data[offset + 0] & 0xff) << 8) + ((data[offset + 1] & 0xff) << 0));
 	}
 
-	public static final short readShort(final byte[] data, final Offset offset) {
+	public static final short readShort(byte[] data,Offset offset) {
 		try {
 			return readShort(data, offset.reader);
 		} catch (Exception e) {
@@ -221,11 +221,11 @@ public final class NumEx extends ExOrigin {
 		return 0;
 	}
 
-	public static final int readUnsignedShort(final byte[] data, final int offset) {
+	public static final int readUnsignedShort(byte[] data,int offset) {
 		return (((data[offset + 0] & 0xff) << 8) + ((data[offset + 1] & 0xff) << 0));
 	}
 
-	public static final int readUnsignedShort(final byte[] data, final Offset offset) {
+	public static final int readUnsignedShort(byte[] data,Offset offset) {
 		try {
 			return readUnsignedShort(data, offset.reader);
 		} catch (Exception e) {
@@ -235,12 +235,12 @@ public final class NumEx extends ExOrigin {
 		return 0;
 	}
 
-	public static final void writeUnsignedShort(final byte[] data, final int offset, int value) {
+	public static final void writeUnsignedShort(byte[] data,int offset, int value) {
 		data[offset + 0] = (byte) ((value >> 24) & 0xff);
 		data[offset + 1] = (byte) ((value >> 16) & 0xff);
 	}
 
-	public static final void writeUnsignedShort(final byte[] data, final Offset offset, final int value) {
+	public static final void writeUnsignedShort(byte[] data,Offset offset,int value) {
 		try {
 			writeUnsignedShort(data, offset.writer, value);
 		} catch (Exception e) {
@@ -249,14 +249,14 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final void writeInt(final byte[] data, final int offset, final int value) {
+	public static final void writeInt(byte[] data,int offset,int value) {
 		data[offset + 0] = (byte) ((value >> 24) & 0xff);
 		data[offset + 1] = (byte) ((value >> 16) & 0xff);
 		data[offset + 2] = (byte) ((value >> 8) & 0xff);
 		data[offset + 3] = (byte) ((value >> 0) & 0xff);
 	}
 
-	public static final void writeInt(final byte[] data, final Offset offset, final int value) {
+	public static final void writeInt(byte[] data,Offset offset,int value) {
 		try {
 			writeInt(data, offset.writer, value);
 		} catch (Exception e) {
@@ -265,19 +265,19 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final void write(final byte[] data, final int offset, final int value) {
+	public static final void write(byte[] data,int offset,int value) {
 		writeInt(data, offset, value);
 	}
 
-	public static final void write(final byte[] data, final Offset offset, final int value) {
+	public static final void write(byte[] data,Offset offset,int value) {
 		writeInt(data, offset, value);
 	}
 
-	public static final int readInt(final byte[] data, final int offset) {
+	public static final int readInt(byte[] data,int offset) {
 		return (((data[offset + 0] & 0xff) << 24) + ((data[offset + 1] & 0xff) << 16) + ((data[offset + 2] & 0xff) << 8) + ((data[offset + 3] & 0xff) << 0));
 	}
 
-	public static final int readInt(final byte[] data, final Offset offset) {
+	public static final int readInt(byte[] data,Offset offset) {
 		try {
 			return readInt(data, offset.reader);
 		} catch (Exception e) {
@@ -287,7 +287,7 @@ public final class NumEx extends ExOrigin {
 		return 0;
 	}
 
-	public static final void writeLong(final byte[] data, final int offset, final long value) {
+	public static final void writeLong(byte[] data,int offset,long value) {
 		data[offset + 0] = (byte) ((value >> 56) & 0xff);
 		data[offset + 1] = (byte) ((value >> 48) & 0xff);
 		data[offset + 2] = (byte) ((value >> 40) & 0xff);
@@ -298,7 +298,7 @@ public final class NumEx extends ExOrigin {
 		data[offset + 7] = (byte) ((value >> 0) & 0xff);
 	}
 
-	public static final void writeLong(final byte[] data, final Offset offset, final long value) {
+	public static final void writeLong(byte[] data,Offset offset,long value) {
 		try {
 			writeLong(data, offset.writer, value);
 		} catch (Exception e) {
@@ -307,21 +307,21 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final void write(final byte[] data, final int offset, final long value) {
+	public static final void write(byte[] data,int offset,long value) {
 		writeLong(data, offset, value);
 	}
 
-	public static final void write(final byte[] data, final Offset offset, final long value) {
+	public static final void write(byte[] data,Offset offset,long value) {
 		writeLong(data, offset, value);
 	}
 
-	public static final long readLong(final byte[] data, final int offset) {
+	public static final long readLong(byte[] data,int offset) {
 		long high = ((data[offset + 0] & 0xff) << 24) + ((data[offset + 1] & 0xff) << 16) + ((data[offset + 2] & 0xff) << 8) + ((data[offset + 3] & 0xff) << 0);
 		long low = ((data[offset + 4] & 0xff) << 24) + ((data[offset + 5] & 0xff) << 16) + ((data[offset + 6] & 0xff) << 8) + ((data[offset + 7] & 0xff) << 0);
 		return (high << 32) + (0xffffffffL & low);
 	}
 
-	public static final long readLong(final byte[] data, final Offset offset) {
+	public static final long readLong(byte[] data,Offset offset) {
 		try {
 			return readLong(data, offset.reader);
 		} catch (Exception e) {
@@ -331,11 +331,11 @@ public final class NumEx extends ExOrigin {
 		return 0;
 	}
 
-	public static final void writeFloat(final byte[] data, final int offset, final float value) {
+	public static final void writeFloat(byte[] data,int offset,float value) {
 		writeInt(data, offset, Float.floatToIntBits(value));
 	}
 
-	public static final void writeFloat(final byte[] data, final Offset offset, final float value) {
+	public static final void writeFloat(byte[] data,Offset offset,float value) {
 		try {
 			writeFloat(data, offset.writer, value);
 		} catch (Exception e) {
@@ -344,19 +344,19 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final void write(final byte[] data, final int offset, final float value) {
+	public static final void write(byte[] data,int offset,float value) {
 		writeFloat(data, offset, value);
 	}
 
-	public static final void write(final byte[] data, final Offset offset, float value) {
+	public static final void write(byte[] data,Offset offset, float value) {
 		writeFloat(data, offset, value);
 	}
 
-	public static final float readFloat(final byte[] data, final int offset) {
+	public static final float readFloat(byte[] data,int offset) {
 		return Float.intBitsToFloat(readInt(data, offset));
 	}
 
-	public static final float readFloat(final byte[] data, final Offset offset) {
+	public static final float readFloat(byte[] data,Offset offset) {
 		try {
 			return readFloat(data, offset.reader);
 		} catch (Exception e) {
@@ -366,11 +366,11 @@ public final class NumEx extends ExOrigin {
 		return 0;
 	}
 
-	public static final void writeDouble(final byte[] data, final int offset, final double value) {
+	public static final void writeDouble(byte[] data,int offset,double value) {
 		writeLong(data, offset, Double.doubleToLongBits(value));
 	}
 
-	public static final void writeDouble(final byte[] data, final Offset offset, final double value) {
+	public static final void writeDouble(byte[] data,Offset offset,double value) {
 		try {
 			writeDouble(data, offset.writer, value);
 		} catch (Exception e) {
@@ -379,15 +379,15 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final void write(final byte[] data, final int offset, final double value) {
+	public static final void write(byte[] data,int offset,double value) {
 		writeDouble(data, offset, value);
 	}
 
-	public static final void write(final byte[] data, final Offset offset, final double value) {
+	public static final void write(byte[] data,Offset offset,double value) {
 		writeDouble(data, offset, value);
 	}
 
-	public static final void writeStr(final byte[] data, int offset, final String value) throws IOException {
+	public static final void writeStr(byte[] data, int offset,String value) throws IOException {
 		char[] chs = value.toCharArray();
 		writeInt(data, offset, chs.length);
 		offset += 4;
@@ -398,7 +398,7 @@ public final class NumEx extends ExOrigin {
 
 	}
 
-	public static final String readStr(final byte[] data, int offset) throws IOException {
+	public static final String readStr(byte[] data, int offset) throws IOException {
 		int len = readInt(data, offset);
 		offset += 4;
 		char[] chs = new char[len];
@@ -410,32 +410,29 @@ public final class NumEx extends ExOrigin {
 		return new String(chs);
 	}
 
-	public static final double readDouble(final byte[] data, final int offset) {
+	public static final double readDouble(byte[] data,int offset) {
 		return Double.longBitsToDouble(readLong(data, offset));
 	}
 
-	public static final double readDouble(final byte[] data, final Offset offset) {
+	public static final double readDouble(byte[] data,Offset offset) {
 		return Double.longBitsToDouble(readLong(data, offset));
 	}
 
-	public static final void writeBytes(final OutputStream output, final byte[] value) throws IOException {
+	public static final void writeBytes(OutputStream output,byte[] value) throws IOException {
 		output.write(value);
 	}
 
-	public static final byte[] readFully(final InputStream input, final int len) throws IOException {
-		final int off = 0;
-		final byte result[] = new byte[len];
-		return readFully(input, result, off, len);
+	public static final byte[] readFully(InputStream input,int len) throws IOException {
+		byte result[] = new byte[len];
+		return readFully(input, result, 0, len);
 	}
 
-	public static final byte[] readFully(final InputStream input, final byte result[]) throws IOException {
-		final int off = 0;
-		final int len = result.length;
-		readFully(input, result, off, len);
+	public static final byte[] readFully(InputStream input,byte result[]) throws IOException {
+		readFully(input, result, 0, result.length);
 		return result;
 	}
 
-	public static final byte[] readFully(final InputStream input, final byte result[], final int off, final int len) throws IOException {
+	public static final byte[] readFully(InputStream input,byte result[],int off,int len) throws IOException {
 		if (len < 0)
 			throw new IndexOutOfBoundsException();
 		int n = 0;
@@ -448,13 +445,13 @@ public final class NumEx extends ExOrigin {
 		return result;
 	}
 
-	public static final int readBytes(final InputStream input, final int len) throws IOException {
+	public static final int readBytes(InputStream input,int len) throws IOException {
 		byte[] b = new byte[len];
 		readFully(input, b);
 		return len;
 	}
 
-	public static final void writeStr(final OutputStream output, final String value) throws IOException {
+	public static final void writeStr(OutputStream output,String value) throws IOException {
 		char[] chs = value.toCharArray();
 		writeInt(output, chs.length);
 		for (char c : chs)
@@ -462,7 +459,7 @@ public final class NumEx extends ExOrigin {
 
 	}
 
-	public static final String readStr(final InputStream input) throws IOException {
+	public static final String readStr(InputStream input) throws IOException {
 		int len = readInt(input);
 		char[] chs = new char[len];
 		for (int n = 0; n < len; n++)
@@ -471,41 +468,41 @@ public final class NumEx extends ExOrigin {
 		return new String(chs);
 	}
 
-	public static final void writeUTF8(final OutputStream output, final String value) throws IOException {
+	public static final void writeUTF8(OutputStream output,String value) throws IOException {
 		byte[] b = value.getBytes(Charset.forName("UTF-8"));
 		writeInt(output, b.length);
 		output.write(b);
 	}
 
-	public static final String readUTF8(final InputStream input) throws IOException {
+	public static final String readUTF8(InputStream input) throws IOException {
 		int len = readInt(input);
 		byte[] b = new byte[len];
 		input.read(b);
 		return new String(b, Charset.forName("UTF-8"));
 	}
 
-	public static final void writeBool(final OutputStream output, final boolean value) throws IOException {
+	public static final void writeBool(OutputStream output,boolean value) throws IOException {
 		output.write((byte) (value ? 1 : 0));
 	}
 
-	public static final boolean readBool(final InputStream input) throws IOException {
+	public static final boolean readBool(InputStream input) throws IOException {
 		return (read(input) == 1) ? true : false;
 	}
 
-	public static final void writeByte(final OutputStream output, final int value) throws IOException {
+	public static final void writeByte(OutputStream output,int value) throws IOException {
 		output.write((byte) (value) & 0xff);
 	}
 
-	public static final int readByte(final InputStream input) throws IOException {
+	public static final int readByte(InputStream input) throws IOException {
 		return read(input);
 	}
 
-	public static final void writeChar(final OutputStream output, final int v) throws IOException {
+	public static final void writeChar(OutputStream output,int v) throws IOException {
 		output.write((v >>> 8) & 0xFF);
 		output.write((v >>> 0) & 0xFF);
 	}
 
-	public static final char readChar(final InputStream input) throws IOException {
+	public static final char readChar(InputStream input) throws IOException {
 		int ch1 = input.read();
 		int ch2 = input.read();
 		if ((ch1 | ch2) < 0)
@@ -513,23 +510,23 @@ public final class NumEx extends ExOrigin {
 		return (char) ((ch1 << 8) + (ch2 << 0));
 	}
 
-	public static final void writeShort(final OutputStream output, final short value) throws IOException {
+	public static final void writeShort(OutputStream output,short value) throws IOException {
 		output.write((byte) ((value >> 8) & 0xff));
 		output.write((byte) ((value >> 0) & 0xff));
 	}
 
-	public static final short readShort(final InputStream input) throws IOException {
+	public static final short readShort(InputStream input) throws IOException {
 		return (short) (((read(input) & 0xff) << 8) + ((read(input) & 0xff) << 0));
 	}
 
-	public static final void writeInt(final OutputStream output, final int value) throws IOException {
+	public static final void writeInt(OutputStream output,int value) throws IOException {
 		output.write((byte) ((value >> 24) & 0xff));
 		output.write((byte) ((value >> 16) & 0xff));
 		output.write((byte) ((value >> 8) & 0xff));
 		output.write((byte) ((value >> 0) & 0xff));
 	}
 
-	public static final int readInt(final InputStream input) throws IOException {
+	public static final int readInt(InputStream input) throws IOException {
 		int value1 = read(input);
 		int value2 = read(input);
 		int value3 = read(input);
@@ -538,7 +535,7 @@ public final class NumEx extends ExOrigin {
 		return ((value1 & 0xff) << 24) + ((value2 & 0xff) << 16) + ((value3 & 0xff) << 8) + ((value4 & 0xff) << 0);
 	}
 
-	public static final void writeLong(final OutputStream output, final long value) throws IOException {
+	public static final void writeLong(OutputStream output,long value) throws IOException {
 		output.write((byte) ((value >> 56) & 0xff));
 		output.write((byte) ((value >> 48) & 0xff));
 		output.write((byte) ((value >> 40) & 0xff));
@@ -549,7 +546,7 @@ public final class NumEx extends ExOrigin {
 		output.write((byte) ((value >> 0) & 0xff));
 	}
 
-	public static final long readLong(final InputStream input) throws IOException {
+	public static final long readLong(InputStream input) throws IOException {
 		byte[] bytes = { 0, 0, 0, 0, 0, 0, 0, 0 };
 		for (int i = 0; i < 8; i++) {
 			bytes[i] = (byte) read(input);
@@ -557,74 +554,74 @@ public final class NumEx extends ExOrigin {
 		return readLong(bytes, 0);
 	}
 
-	public static final void writeFloat(final OutputStream output, final float value) throws IOException {
+	public static final void writeFloat(OutputStream output,float value) throws IOException {
 		writeInt(output, Float.floatToIntBits(value));
 	}
 
-	public static final float readFloat(final InputStream input) throws IOException {
+	public static final float readFloat(InputStream input) throws IOException {
 		return Float.intBitsToFloat(readInt(input));
 	}
 
-	public static final void writeDouble(final OutputStream output, final double value) throws IOException {
+	public static final void writeDouble(OutputStream output,double value) throws IOException {
 		writeLong(output, Double.doubleToLongBits(value));
 	}
 
-	public static final double readDouble(final InputStream input) throws IOException {
+	public static final double readDouble(InputStream input) throws IOException {
 		return Double.longBitsToDouble(readLong(input));
 	}
 
-	public final int readUnsignedByte(final InputStream input) throws IOException {
+	public final int readUnsignedByte(InputStream input) throws IOException {
 		int ch = read(input);
 		if (ch < 0)
 			throw new EOFException();
 		return ch & 0xff;
 	}
 
-	public static final int readUnsignedShort(final InputStream input) throws IOException {
+	public static final int readUnsignedShort(InputStream input) throws IOException {
 		int value1 = read(input);
 		int value2 = read(input);
 
 		return (((value1 & 0xff) << 8) + ((value2 & 0xff) << 0));
 	}
 
-	public static final void writeUnsignedShort(final OutputStream os, final int value) throws IOException {
+	public static final void writeUnsignedShort(OutputStream os,int value) throws IOException {
 		byte[] data = new byte[2];
 		data[0] = (byte) ((value >> 8) & 0xff);
 		data[1] = (byte) ((value >> 0) & 0xff);
 		os.write(data);
 	}
 
-	public static final String fixNInt(final int v, final int n) {
+	public static final String fixNInt(int v,int n) {
 		return StrEx.fixNInt(v, n);
 	}
 
-	public static final short swapShort(final short value) {
+	public static final short swapShort(short value) {
 		return (short) ((((value >> 0) & 0xff) << 8) + (((value >> 8) & 0xff) << 0));
 	}
 
-	public static final int swapInteger(final int value) {
+	public static final int swapInteger(int value) {
 		return (((value >> 0) & 0xff) << 24) + (((value >> 8) & 0xff) << 16) + (((value >> 16) & 0xff) << 8) + (((value >> 24) & 0xff) << 0);
 	}
 
-	public static final long swapLong(final long value) {
+	public static final long swapLong(long value) {
 		return (((value >> 0) & 0xff) << 56) + (((value >> 8) & 0xff) << 48) + (((value >> 16) & 0xff) << 40) + (((value >> 24) & 0xff) << 32) + (((value >> 32) & 0xff) << 24)
 				+ (((value >> 40) & 0xff) << 16) + (((value >> 48) & 0xff) << 8) + (((value >> 56) & 0xff) << 0);
 	}
 
-	public static final float swapFloat(final float value) {
+	public static final float swapFloat(float value) {
 		return Float.intBitsToFloat(swapInteger(Float.floatToIntBits(value)));
 	}
 
-	public static final double swapDouble(final double value) {
+	public static final double swapDouble(double value) {
 		return Double.longBitsToDouble(swapLong(Double.doubleToLongBits(value)));
 	}
 
-	public static final void writeSwappedShort(final byte[] data, final int offset, final short value) {
+	public static final void writeSwappedShort(byte[] data,int offset,short value) {
 		data[offset + 0] = (byte) ((value >> 0) & 0xff);
 		data[offset + 1] = (byte) ((value >> 8) & 0xff);
 	}
 
-	public static final void writeSwappedShort(final byte[] data, final Offset offset, final short value) {
+	public static final void writeSwappedShort(byte[] data,Offset offset,short value) {
 		try {
 			writeSwappedShort(data, offset.writer, value);
 		} catch (Exception e) {
@@ -633,19 +630,19 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final void writeSwapped(final byte[] data, final int offset, final short value) {
+	public static final void writeSwapped(byte[] data,int offset,short value) {
 		writeSwappedShort(data, offset, value);
 	}
 
-	public static final void writeSwapped(final byte[] data, final Offset offset, final short value) {
+	public static final void writeSwapped(byte[] data,Offset offset,short value) {
 		writeSwappedShort(data, offset, value);
 	}
 
-	public static final short readSwappedShort(final byte[] data, final int offset) {
+	public static final short readSwappedShort(byte[] data,int offset) {
 		return (short) (((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8));
 	}
 
-	public static final short readSwappedShort(final byte[] data, final Offset offset) {
+	public static final short readSwappedShort(byte[] data,Offset offset) {
 		try {
 			return readSwappedShort(data, offset.reader);
 		} catch (Exception e) {
@@ -655,11 +652,11 @@ public final class NumEx extends ExOrigin {
 		return 0;
 	}
 
-	public static final int readSwappedUnsignedShort(final byte[] data, final int offset) {
+	public static final int readSwappedUnsignedShort(byte[] data,int offset) {
 		return (((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8));
 	}
 
-	public static final int readSwappedUnsignedShort(final byte[] data, final Offset offset) {
+	public static final int readSwappedUnsignedShort(byte[] data,Offset offset) {
 		try {
 			return readSwappedUnsignedShort(data, offset.reader);
 		} catch (Exception e) {
@@ -669,14 +666,14 @@ public final class NumEx extends ExOrigin {
 		return 0;
 	}
 
-	public static final void writeSwappedInteger(final byte[] data, final int offset, int value) {
+	public static final void writeSwappedInteger(byte[] data,int offset, int value) {
 		data[offset + 0] = (byte) ((value >> 0) & 0xff);
 		data[offset + 1] = (byte) ((value >> 8) & 0xff);
 		data[offset + 2] = (byte) ((value >> 16) & 0xff);
 		data[offset + 3] = (byte) ((value >> 24) & 0xff);
 	}
 
-	public static final void writeSwappedInteger(final byte[] data, final Offset offset, final int value) {
+	public static final void writeSwappedInteger(byte[] data,Offset offset,int value) {
 		try {
 			writeSwappedInteger(data, offset.writer, value);
 		} catch (Exception e) {
@@ -685,19 +682,19 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final void writeSwapped(final byte[] data, final int offset, final int value) {
+	public static final void writeSwapped(byte[] data,int offset,int value) {
 		writeSwappedInteger(data, offset, value);
 	}
 
-	public static final void writeSwapped(final byte[] data, final Offset offset, final int value) {
+	public static final void writeSwapped(byte[] data,Offset offset,int value) {
 		writeSwappedInteger(data, offset, value);
 	}
 
-	public static final int readSwappedInteger(final byte[] data, final int offset) {
+	public static final int readSwappedInteger(byte[] data,int offset) {
 		return (((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8) + ((data[offset + 2] & 0xff) << 16) + ((data[offset + 3] & 0xff) << 24));
 	}
 
-	public static final int readSwappedInteger(final byte[] data, final Offset offset) {
+	public static final int readSwappedInteger(byte[] data,Offset offset) {
 		try {
 			return readSwappedInteger(data, offset.reader);
 		} catch (Exception e) {
@@ -707,13 +704,13 @@ public final class NumEx extends ExOrigin {
 		return 0;
 	}
 
-	public static final long readSwappedUnsignedInteger(final byte[] data, final int offset) {
+	public static final long readSwappedUnsignedInteger(byte[] data,int offset) {
 		long low = (((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8) + ((data[offset + 2] & 0xff) << 16));
 		long high = data[offset + 3] & 0xff;
 		return (high << 24) + (0xffffffffL & low);
 	}
 
-	public static final long readSwappedUnsignedInteger(final byte[] data, final Offset offset) {
+	public static final long readSwappedUnsignedInteger(byte[] data,Offset offset) {
 		try {
 			return readSwappedUnsignedInteger(data, offset.reader);
 		} catch (Exception e) {
@@ -723,7 +720,7 @@ public final class NumEx extends ExOrigin {
 		return 0;
 	}
 
-	public static final void writeSwappedLong(final byte[] data, final int offset, final long value) {
+	public static final void writeSwappedLong(byte[] data,int offset,long value) {
 		data[offset + 0] = (byte) ((value >> 0) & 0xff);
 		data[offset + 1] = (byte) ((value >> 8) & 0xff);
 		data[offset + 2] = (byte) ((value >> 16) & 0xff);
@@ -734,7 +731,7 @@ public final class NumEx extends ExOrigin {
 		data[offset + 7] = (byte) ((value >> 56) & 0xff);
 	}
 
-	public static final void writeSwappedLong(final byte[] data, final Offset offset, final long value) {
+	public static final void writeSwappedLong(byte[] data,Offset offset,long value) {
 		try {
 			writeSwappedLong(data, offset.writer, value);
 		} catch (Exception e) {
@@ -743,21 +740,21 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final void writeSwapped(final byte[] data, final int offset, final long value) {
+	public static final void writeSwapped(byte[] data,int offset,long value) {
 		writeSwappedLong(data, offset, value);
 	}
 
-	public static final void writeSwapped(final byte[] data, final Offset offset, final long value) {
+	public static final void writeSwapped(byte[] data,Offset offset,long value) {
 		writeSwappedLong(data, offset, value);
 	}
 
-	public static final long readSwappedLong(final byte[] data, final int offset) {
+	public static final long readSwappedLong(byte[] data,int offset) {
 		long low = ((data[offset + 0] & 0xff) << 0) + ((data[offset + 1] & 0xff) << 8) + ((data[offset + 2] & 0xff) << 16) + ((data[offset + 3] & 0xff) << 24);
 		long high = ((data[offset + 4] & 0xff) << 0) + ((data[offset + 5] & 0xff) << 8) + ((data[offset + 6] & 0xff) << 16) + ((data[offset + 7] & 0xff) << 24);
 		return (high << 32) + (0xffffffffL & low);
 	}
 
-	public static final long readSwappedLong(final byte[] data, final Offset offset) {
+	public static final long readSwappedLong(byte[] data,Offset offset) {
 		try {
 			return readSwappedLong(data, offset.reader);
 		} catch (Exception e) {
@@ -767,11 +764,11 @@ public final class NumEx extends ExOrigin {
 		return 0;
 	}
 
-	public static final void writeSwappedFloat(final byte[] data, final int offset, final float value) {
+	public static final void writeSwappedFloat(byte[] data,int offset,float value) {
 		writeSwappedInteger(data, offset, Float.floatToIntBits(value));
 	}
 
-	public static final void writeSwappedFloat(final byte[] data, final Offset offset, final float value) {
+	public static final void writeSwappedFloat(byte[] data,Offset offset,float value) {
 		try {
 			writeSwappedFloat(data, offset.writer, value);
 		} catch (Exception e) {
@@ -780,19 +777,19 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final void writeSwapped(final byte[] data, final int offset, final float value) {
+	public static final void writeSwapped(byte[] data,int offset,float value) {
 		writeSwappedFloat(data, offset, value);
 	}
 
-	public static final void writeSwapped(final byte[] data, final Offset offset, final float value) {
+	public static final void writeSwapped(byte[] data,Offset offset,float value) {
 		writeSwappedFloat(data, offset, value);
 	}
 
-	public static final float readSwappedFloat(final byte[] data, final int offset) {
+	public static final float readSwappedFloat(byte[] data,int offset) {
 		return Float.intBitsToFloat(readSwappedInteger(data, offset));
 	}
 
-	public static final float readSwappedFloat(final byte[] data, final Offset offset) {
+	public static final float readSwappedFloat(byte[] data,Offset offset) {
 		try {
 			return readSwappedFloat(data, offset.reader);
 		} catch (Exception e) {
@@ -802,11 +799,11 @@ public final class NumEx extends ExOrigin {
 		return 0;
 	}
 
-	public static final void writeSwappedDouble(final byte[] data, final int offset, final double value) {
+	public static final void writeSwappedDouble(byte[] data,int offset,double value) {
 		writeSwappedLong(data, offset, Double.doubleToLongBits(value));
 	}
 
-	public static final void writeSwappedDouble(final byte[] data, final Offset offset, final double value) {
+	public static final void writeSwappedDouble(byte[] data,Offset offset,double value) {
 		try {
 			writeSwappedDouble(data, offset.writer, value);
 		} catch (Exception e) {
@@ -815,19 +812,19 @@ public final class NumEx extends ExOrigin {
 		}
 	}
 
-	public static final void writeSwapped(final byte[] data, final int offset, final double value) {
+	public static final void writeSwapped(byte[] data,int offset,double value) {
 		writeSwappedDouble(data, offset, value);
 	}
 
-	public static final void writeSwapped(final byte[] data, final Offset offset, final double value) {
+	public static final void writeSwapped(byte[] data,Offset offset,double value) {
 		writeSwappedDouble(data, offset, value);
 	}
 
-	public static final double readSwappedDouble(final byte[] data, final int offset) {
+	public static final double readSwappedDouble(byte[] data,int offset) {
 		return Double.longBitsToDouble(readSwappedLong(data, offset));
 	}
 
-	public static final double readSwappedDouble(final byte[] data, final Offset offset) {
+	public static final double readSwappedDouble(byte[] data,Offset offset) {
 		try {
 			return readSwappedDouble(data, offset.reader);
 		} catch (Exception e) {
@@ -837,30 +834,30 @@ public final class NumEx extends ExOrigin {
 		return 0;
 	}
 
-	public static final void writeSwappedShort(final OutputStream output, final short value) throws IOException {
+	public static final void writeSwappedShort(OutputStream output,short value) throws IOException {
 		output.write((byte) ((value >> 0) & 0xff));
 		output.write((byte) ((value >> 8) & 0xff));
 	}
 
-	public static final short readSwappedShort(final InputStream input) throws IOException {
+	public static final short readSwappedShort(InputStream input) throws IOException {
 		return (short) (((read(input) & 0xff) << 0) + ((read(input) & 0xff) << 8));
 	}
 
-	public static final int readSwappedUnsignedShort(final InputStream input) throws IOException {
+	public static final int readSwappedUnsignedShort(InputStream input) throws IOException {
 		int value1 = read(input);
 		int value2 = read(input);
 
 		return (((value1 & 0xff) << 0) + ((value2 & 0xff) << 8));
 	}
 
-	public static final void writeSwappedInteger(final OutputStream output, final int value) throws IOException {
+	public static final void writeSwappedInteger(OutputStream output,int value) throws IOException {
 		output.write((byte) ((value >> 0) & 0xff));
 		output.write((byte) ((value >> 8) & 0xff));
 		output.write((byte) ((value >> 16) & 0xff));
 		output.write((byte) ((value >> 24) & 0xff));
 	}
 
-	public static final int readSwappedInteger(final InputStream input) throws IOException {
+	public static final int readSwappedInteger(InputStream input) throws IOException {
 		int value1 = read(input);
 		int value2 = read(input);
 		int value3 = read(input);
@@ -869,7 +866,7 @@ public final class NumEx extends ExOrigin {
 		return ((value1 & 0xff) << 0) + ((value2 & 0xff) << 8) + ((value3 & 0xff) << 16) + ((value4 & 0xff) << 24);
 	}
 
-	public static final long readSwappedUnsignedInteger(final InputStream input) throws IOException {
+	public static final long readSwappedUnsignedInteger(InputStream input) throws IOException {
 		int value1 = read(input);
 		int value2 = read(input);
 		int value3 = read(input);
@@ -882,7 +879,7 @@ public final class NumEx extends ExOrigin {
 		return (high << 24) + (0xffffffffL & low);
 	}
 
-	public static final void writeSwappedLong(final OutputStream output, final long value) throws IOException {
+	public static final void writeSwappedLong(OutputStream output,long value) throws IOException {
 		output.write((byte) ((value >> 0) & 0xff));
 		output.write((byte) ((value >> 8) & 0xff));
 		output.write((byte) ((value >> 16) & 0xff));
@@ -893,7 +890,7 @@ public final class NumEx extends ExOrigin {
 		output.write((byte) ((value >> 56) & 0xff));
 	}
 
-	public static final long readSwappedLong(final InputStream input) throws IOException {
+	public static final long readSwappedLong(InputStream input) throws IOException {
 		byte[] bytes = { 0, 0, 0, 0, 0, 0, 0, 0 };
 		readFully(input, bytes);
 		// for (int i = 0; i < 8; i++) {
@@ -902,37 +899,37 @@ public final class NumEx extends ExOrigin {
 		return readSwappedLong(bytes, 0);
 	}
 
-	public static final void writeSwappedFloat(final OutputStream output, final float value) throws IOException {
+	public static final void writeSwappedFloat(OutputStream output,float value) throws IOException {
 		writeSwappedInteger(output, Float.floatToIntBits(value));
 	}
 
-	public static final float readSwappedFloat(final InputStream input) throws IOException {
+	public static final float readSwappedFloat(InputStream input) throws IOException {
 		return Float.intBitsToFloat(readSwappedInteger(input));
 	}
 
-	public static final void writeSwappedDouble(final OutputStream output, double value) throws IOException {
+	public static final void writeSwappedDouble(OutputStream output, double value) throws IOException {
 		writeSwappedLong(output, Double.doubleToLongBits(value));
 	}
 
-	public static final double readSwappedDouble(final InputStream input) throws IOException {
+	public static final double readSwappedDouble(InputStream input) throws IOException {
 		return Double.longBitsToDouble(readSwappedLong(input));
 	}
 
 	// 计算距离
-	public static final int distance(final int x1, final int y1, final int x2, final int y2) {
+	public static final int distance(int x1,int y1,int x2,int y2) {
 		double v = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 		return (int) v;
 	}
 
 	// 计算百分率
-	public static final int percent(final double v, final double max) {
+	public static final int percent(double v,double max) {
 		if (v <= 0 || max <= 0)
 			return 0;
 		int r = (int) (v * 100 / max);
 		return r > 100 ? 100 : r;
 	}
 
-	public static final double longBitsToDouble(final long bits) {
+	public static final double longBitsToDouble(long bits) {
 		int sign = ((bits >> 63) == 0) ? 1 : -1;
 		int exponent = (int) ((bits >> 52) & 0x7ffL);
 		long mantissa = (exponent == 0) ? (bits & 0xfffffffffffffL) << 1 : (bits & 0xfffffffffffffL) | 0x10000000000000L;
@@ -947,11 +944,11 @@ public final class NumEx extends ExOrigin {
 		return (v != v);
 	}
 
-	public static final long abs(final long a) {
+	public static final long abs(long a) {
 		return (a < 0) ? -a : a;
 	}
 
-	public static final double abs(final double a) {
+	public static final double abs(double a) {
 		return (a <= 0.0D) ? 0.0D - a : a;
 	}
 

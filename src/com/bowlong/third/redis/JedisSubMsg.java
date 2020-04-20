@@ -9,23 +9,23 @@ public abstract class JedisSubMsg extends JedisPubSub {
 	public static final String HELLO = "{\"type\":\"hello\"}";
 	public static final String HELLO_STR = "hello";
 
-	// public static final String genMsg(final String msg) {
+	// public static final String genMsg(String msg) {
 	// return PStr.begin("{\"type\":\"gen\",\"key\":\"").a(msg).end("\"}");
 	// }
 
-	public static final String setMsg(final String key) {
+	public static final String setMsg(String key) {
 		return PStr.begin("{\"type\":\"set\",\"key\":\"").a(key).end("\"}");
 	}
 
-	public static final String delMsg(final String key) {
+	public static final String delMsg(String key) {
 		return PStr.begin("{\"type\":\"del\",\"key\":\"").a(key).end("\"}");
 	}
 
-	public static final String hsetMsg(final String key, final String field) {
+	public static final String hsetMsg(String key,String field) {
 		return PStr.begin("{\"type\":\"hset\",\"key\":\"").a(key).a("\",\"field\":\"").a(field).end("\"}");
 	}
 
-	public static final String hdelMsg(final String key, final String field) {
+	public static final String hdelMsg(String key,String field) {
 		return PStr.begin("{\"type\":\"hdel\",\"key\":\"").a(key).a("\",\"field\":\"").a(field).end("\"}");
 	}
 

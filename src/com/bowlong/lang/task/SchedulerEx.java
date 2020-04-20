@@ -41,7 +41,7 @@ public class SchedulerEx {
 
 	// /////////////////////////////////////////////////////////////////
 	// 执行 schedule
-	static public final ScheduledFuture<?> schedule(final ScheduledExecutorService ses, final Runnable r, final long delay, final TimeUnit unit) {
+	static public final ScheduledFuture<?> schedule(ScheduledExecutorService ses,Runnable r,long delay,TimeUnit unit) {
 		return ses.schedule(r, delay, unit);
 	}
 

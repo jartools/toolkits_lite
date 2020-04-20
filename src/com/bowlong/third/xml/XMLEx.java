@@ -43,265 +43,265 @@ public class XMLEx {
 		return a;
 	}
 
-	public static final Document parse(final String xml) throws DocumentException {
+	public static final Document parse(String xml) throws DocumentException {
 		return parse(new StringReader(xml));
 	}
 
-	public static final Document parse(final Reader reader) throws DocumentException {
+	public static final Document parse(Reader reader) throws DocumentException {
 		SAXReader sr = new SAXReader();
 		Document doc = sr.read(reader);
 		return doc;
 	}
 
-	public static final Document parse(final File f) throws DocumentException {
+	public static final Document parse(File f) throws DocumentException {
 		SAXReader sr = new SAXReader();
 		Document doc = sr.read(f);
 		return doc;
 	}
 
-	public static final Document parse(final InputStream in) throws DocumentException {
+	public static final Document parse(InputStream in) throws DocumentException {
 		SAXReader sr = new SAXReader();
 		Document doc = sr.read(in);
 		return doc;
 	}
 
-	public static final Document parse4Path(final String path) throws DocumentException {
+	public static final Document parse4Path(String path) throws DocumentException {
 		return parse(new File(path));
 	}
 
-	public static final Element getRoot(final String xml) throws DocumentException {
+	public static final Element getRoot(String xml) throws DocumentException {
 		Document doc = parse(xml);
 		return getRoot(doc);
 	}
 
-	public static final Element getRoot(final File f) throws DocumentException {
+	public static final Element getRoot(File f) throws DocumentException {
 		Document doc = parse(f);
 		return getRoot(doc);
 	}
 
-	public static final Element getRoot(final Reader reader) throws DocumentException {
+	public static final Element getRoot(Reader reader) throws DocumentException {
 		Document doc = parse(reader);
 		return getRoot(doc);
 	}
 
-	public static final Element getRoot(final Document doc) {
+	public static final Element getRoot(Document doc) {
 		return doc.getRootElement();
 	}
 
-	public static final Element getRoot4Path(final String path) throws DocumentException {
+	public static final Element getRoot4Path(String path) throws DocumentException {
 		Document doc = parse4Path(path);
 		return getRoot(doc);
 	}
 
-	public static final Element getRoot(final Element e, final String name) {
+	public static final Element getRoot(Element e,String name) {
 		return e.element(name);
 	}
 
-	public static final Element element(final Element e, final String name) {
+	public static final Element element(Element e,String name) {
 		Element e1 = e.element(name);
 		return e1;
 	}
 
-	public static final List<Element> elements(final Element e) {
+	public static final List<Element> elements(Element e) {
 		List<Element> e1 = ((List<Element>) e.elements());
 		return e1;
 	}
 
-	public static final List<Element> elements(final Element e, final String name) {
+	public static final List<Element> elements(Element e,String name) {
 		List<Element> e1 = ((List<Element>) e.elements(name));
 		return e1;
 	}
 
-	public static final Element addElement(final Element e, final String name) {
+	public static final Element addElement(Element e,String name) {
 		return e.addElement(name);
 	}
 
-	public static final Element setText(final Element e, final String text) {
+	public static final Element setText(Element e,String text) {
 		e.setText(text);
 		return e;
 	}
 
-	public static final Element setBool(final Element e, final boolean value) {
+	public static final Element setBool(Element e,boolean value) {
 		return setText(e, String.valueOf(value));
 	}
 
-	public static final Element setByte(final Element e, final byte value) {
+	public static final Element setByte(Element e,byte value) {
 		return setText(e, String.valueOf(value));
 	}
 
-	public static final Element setShort(final Element e, final short value) {
+	public static final Element setShort(Element e,short value) {
 		return setText(e, String.valueOf(value));
 	}
 
-	public static final Element setInt(final Element e, final int value) {
+	public static final Element setInt(Element e,int value) {
 		return setText(e, String.valueOf(value));
 	}
 
-	public static final Element setLong(final Element e, final long value) {
+	public static final Element setLong(Element e,long value) {
 		return setText(e, String.valueOf(value));
 	}
 
-	public static final Element setFloat(final Element e, final float value) {
+	public static final Element setFloat(Element e,float value) {
 		return setText(e, String.valueOf(value));
 	}
 
-	public static final Element setDouble(final Element e, final double value) {
+	public static final Element setDouble(Element e,double value) {
 		return setText(e, String.valueOf(value));
 	}
 
-	public static final Attribute setText(final Attribute a, final String value) {
+	public static final Attribute setText(Attribute a,String value) {
 		a.setValue(value);
 		return a;
 	}
 
-	public static final Attribute setBool(final Attribute a, final boolean value) {
+	public static final Attribute setBool(Attribute a,boolean value) {
 		a.setValue(String.valueOf(value));
 		return a;
 	}
 
-	public static final Attribute setByte(final Attribute a, final byte value) {
+	public static final Attribute setByte(Attribute a,byte value) {
 		a.setValue(String.valueOf(value));
 		return a;
 	}
 
-	public static final Attribute setShort(final Attribute a, final short value) {
+	public static final Attribute setShort(Attribute a,short value) {
 		a.setValue(String.valueOf(value));
 		return a;
 	}
 
-	public static final Attribute setInt(final Attribute a, final int value) {
+	public static final Attribute setInt(Attribute a,int value) {
 		a.setValue(String.valueOf(value));
 		return a;
 	}
 
-	public static final Attribute setLong(final Attribute a, final long value) {
+	public static final Attribute setLong(Attribute a,long value) {
 		a.setValue(String.valueOf(value));
 		return a;
 	}
 
-	public static final Attribute setFloat(final Attribute a, final float value) {
+	public static final Attribute setFloat(Attribute a,float value) {
 		a.setValue(String.valueOf(value));
 		return a;
 	}
 
-	public static final Attribute setDouble(final Attribute a, final double value) {
+	public static final Attribute setDouble(Attribute a,double value) {
 		a.setValue(String.valueOf(value));
 		return a;
 	}
 
-	public static final Element addAttribute(final Element e, final String name, final String value) {
+	public static final Element addAttribute(Element e,String name,String value) {
 		return e.addAttribute(name, value);
 	}
 
-	public static final Element addAttribute(final Element e, final String name, final boolean value) {
+	public static final Element addAttribute(Element e,String name,boolean value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
-	public static final Element addAttribute(final Element e, final String name, final byte value) {
+	public static final Element addAttribute(Element e,String name,byte value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
-	public static Element addAttribute(final Element e, final String name, final short value) {
+	public static Element addAttribute(Element e,String name,short value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
-	public static final Element addAttribute(final Element e, final String name, final int value) {
+	public static final Element addAttribute(Element e,String name,int value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
-	public static final Element addAttribute(final Element e, final String name, final long value) {
+	public static final Element addAttribute(Element e,String name,long value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
-	public static final Element addAttribute(final Element e, final String name, final float value) {
+	public static final Element addAttribute(Element e,String name,float value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
-	public static final Element addAttribute(final Element e, final String name, final double value) {
+	public static final Element addAttribute(Element e,String name,double value) {
 		return addAttribute(e, name, String.valueOf(value));
 	}
 
-	public static final Attribute attribute(final Element e, final String name) {
+	public static final Attribute attribute(Element e,String name) {
 		return e.attribute(name);
 	}
 
-	public static final String getText(final Element e) {
+	public static final String getText(Element e) {
 		if (e == null)
 			return "";
 		return e.getText();
 	}
 
-	public static final String getTextTrim(final Element e) {
+	public static final String getTextTrim(Element e) {
 		if (e == null)
 			return "";
 		return e.getTextTrim();
 	}
 
-	public static final boolean getBool(final Element e) {
+	public static final boolean getBool(Element e) {
 		return NumEx.stringToBool(getTextTrim(e));
 	}
 
-	public static final byte getByte(final Element e) {
+	public static final byte getByte(Element e) {
 		return NumEx.stringToByte(getTextTrim(e));
 	}
 
-	public static final short getShort(final Element e) {
+	public static final short getShort(Element e) {
 		return NumEx.stringToShort(getTextTrim(e));
 	}
 
-	public static final int getInt(final Element e) {
+	public static final int getInt(Element e) {
 		return NumEx.stringToInt(getTextTrim(e));
 	}
 
-	public static final long getLong(final Element e) {
+	public static final long getLong(Element e) {
 		return NumEx.stringToLong(getTextTrim(e));
 	}
 
-	public static final float getFloat(final Element e) {
+	public static final float getFloat(Element e) {
 		return NumEx.stringToFloat(getTextTrim(e));
 	}
 
-	public static final double getDouble(final Element e) {
+	public static final double getDouble(Element e) {
 		return NumEx.stringToDouble(getTextTrim(e));
 	}
 
-	public static final String getText(final Attribute a) {
+	public static final String getText(Attribute a) {
 		if (a == null)
 			return "";
 		return a.getText();
 	}
 
-	public static final String getTextTrim(final Attribute a) {
+	public static final String getTextTrim(Attribute a) {
 		if (a == null)
 			return "";
 		return a.getText().trim();
 	}
 
-	public static final boolean getBool(final Attribute e) {
+	public static final boolean getBool(Attribute e) {
 		return NumEx.stringToBool(getTextTrim(e));
 	}
 
-	public static final byte getByte(final Attribute e) {
+	public static final byte getByte(Attribute e) {
 		return NumEx.stringToByte(getTextTrim(e));
 	}
 
-	public static final short getShort(final Attribute e) {
+	public static final short getShort(Attribute e) {
 		return NumEx.stringToShort(getTextTrim(e));
 	}
 
-	public static final int getInt(final Attribute e) {
+	public static final int getInt(Attribute e) {
 		return NumEx.stringToInt(getTextTrim(e));
 	}
 
-	public static final long getLong(final Attribute e) {
+	public static final long getLong(Attribute e) {
 		return NumEx.stringToLong(getTextTrim(e));
 	}
 
-	public static final float getFloat(final Attribute e) {
+	public static final float getFloat(Attribute e) {
 		return NumEx.stringToFloat(getTextTrim(e));
 	}
 
-	public static final double getDouble(final Attribute e) {
+	public static final double getDouble(Attribute e) {
 		return NumEx.stringToDouble(getTextTrim(e));
 	}
 

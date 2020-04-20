@@ -16,11 +16,11 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
  */
 public class HWpfdEx {
 
-	static public final HWPFDocument openHwpdf(final InputStream inStream) throws Exception {
+	static public final HWPFDocument openHwpdf(InputStream inStream) throws Exception {
 		return new HWPFDocument(inStream);
 	}
 
-	static public final HWPFDocument openHwpdf(final POIFSFileSystem poifsFileSystem) throws Exception {
+	static public final HWPFDocument openHwpdf(POIFSFileSystem poifsFileSystem) throws Exception {
 		return new HWPFDocument(poifsFileSystem);
 	}
 

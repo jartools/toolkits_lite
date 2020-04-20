@@ -391,7 +391,7 @@ public class StrBuilder implements Closeable {
 	 */
 	public StrBuilder ap(String fmt, Object... args) {
 		try {
-			String s2 = StrEx.fmt(fmt, args);
+			String s2 = StrEx.fmt$(fmt, args);
 			return a(s2);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -409,7 +409,7 @@ public class StrBuilder implements Closeable {
 	 */
 	public StrBuilder ap(int offset, String fmt, Object... args) {
 		try {
-			String s2 = StrEx.fmt(fmt, args);
+			String s2 = StrEx.fmt$(fmt, args);
 			return a(offset, s2);
 		} catch (Exception e) {
 			e.printStackTrace();

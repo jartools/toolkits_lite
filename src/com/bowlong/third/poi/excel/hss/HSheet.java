@@ -14,7 +14,7 @@ public class HSheet {
 	int maxRow = -1;
 	final Map<String, Object> cache = new Hashtable<String, Object>();
 
-	public HSheet(final HWorkbook wb, final HSSFSheet sheet) {
+	public HSheet(HWorkbook wb,HSSFSheet sheet) {
 		this.wb = wb;
 		this.sheet = sheet;
 		this.sheetName = sheet.getSheetName();

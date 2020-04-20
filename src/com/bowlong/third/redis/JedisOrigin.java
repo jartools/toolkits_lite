@@ -279,7 +279,7 @@ public class JedisOrigin implements Serializable {
 	static public final int N_ZSET = 4; // (有序集)
 	static public final int N_HASH = 5; // (哈希表)
 
-	static public final int ntype(final String type) {
+	static public final int ntype(String type) {
 		switch (type) {
 		case TYPE_NONE:
 			return N_NONE;
@@ -299,7 +299,7 @@ public class JedisOrigin implements Serializable {
 	}
 
 	// 对象类型//none(key不存在),string(字符串),list(列表),set(集合),zset(有序集),hash(哈希表)
-	static public final String type(final JedisPool pool, final String key) {
+	static public final String type(JedisPool pool,String key) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return type(jedis, key);
@@ -310,30 +310,30 @@ public class JedisOrigin implements Serializable {
 		}
 	}
 
-	static public final String type(final Jedis jedis, final String key) {
+	static public final String type(Jedis jedis,String key) {
 		return jedis.type(key);
 	}
 
-	static public final String type(final String key) {
+	static public final String type(String key) {
 		final JedisPool pool = getJedisPool();
 		return type(pool, key);
 	}
 
-	static public final boolean isType(final String key, final String type) {
+	static public final boolean isType(String key,String type) {
 		String t = type(key);
 		if (t == null || t.isEmpty())
 			return false;
 		return t.equals(type);
 	}
 
-	static public final boolean isType(final String key, final int type) {
+	static public final boolean isType(String key,int type) {
 		String t = type(key);
 		if (t == null || t.isEmpty())
 			return false;
 		return t.equals(stype(type));
 	}
 
-	static public final String stype(final int type) {
+	static public final String stype(int type) {
 		switch (type) {
 		case N_NONE:
 			return TYPE_NONE;
@@ -352,23 +352,23 @@ public class JedisOrigin implements Serializable {
 		}
 	}
 
-	static public final byte[] key2(final byte[] key) {
+	static public final byte[] key2(byte[] key) {
 		return key;
 	}
 
-	static public final byte[] key2(final String key) {
+	static public final byte[] key2(String key) {
 		return key.getBytes();
 	}
 
-	static public final byte[] val2(final byte[] val) {
+	static public final byte[] val2(byte[] val) {
 		return val;
 	}
 
-	static public final byte[] val2(final String val) {
+	static public final byte[] val2(String val) {
 		return val.getBytes();
 	}
 
-	static public final byte[] val2(final Object val) {
+	static public final byte[] val2(Object val) {
 		if (val instanceof BeanSupport) {
 			BeanSupport tt = ((BeanSupport) val);
 			try {
@@ -389,8 +389,8 @@ public class JedisOrigin implements Serializable {
 	// ///////////////////// 配置与池对象 /////////////////////
 	static public JedisPoolConfig config = null;
 
-	static public final JedisPoolConfig newConfig(final int maxActive, final int maxIdle, final int minIdle, final int maxWait, final boolean testOnBorrow, final boolean testOnReturn,
-			final boolean testWhileIdle, final int timeBetweenEvictionRunsMillis, final int numTestsPerEvictionRun, final int minEvictableIdleTimeMillis) {
+	static public final JedisPoolConfig newConfig(int maxActive,int maxIdle,int minIdle,int maxWait,boolean testOnBorrow,boolean testOnReturn,
+			final boolean testWhileIdle,int timeBetweenEvictionRunsMillis,int numTestsPerEvictionRun,int minEvictableIdleTimeMillis) {
 		config = new JedisPoolConfig();
 
 		// 控制一个pool可分配多少个jedis实例，通过pool.getResource()来获取；如果赋值为-1，则表示不限制
@@ -428,11 +428,11 @@ public class JedisOrigin implements Serializable {
 		return config;
 	}
 
-	static public final JedisPoolConfig newConfig(final int maxActive, final int maxIdle, final int minIdle, final int maxWait) {
+	static public final JedisPoolConfig newConfig(int maxActive,int maxIdle,int minIdle,int maxWait) {
 		return newConfig(maxActive, maxIdle, minIdle, maxWait, true, true, true, 60 * 1000, 3000, 30 * 1000);
 	}
 
-	static public final JedisPoolConfig newPoolConfig(final int maxActive, final int maxIdle, final int minIdle, final int maxWait) {
+	static public final JedisPoolConfig newPoolConfig(int maxActive,int maxIdle,int minIdle,int maxWait) {
 		config = new JedisPoolConfig();
 		config.setMaxIdle(maxIdle);
 		config.setMinIdle(minIdle);
@@ -545,13 +545,13 @@ public class JedisOrigin implements Serializable {
 
 	// ///////////////////// jedis 对象 /////////////////////
 
-	static public final Jedis newJedis(final String host, final int port, final int timeOut) {
+	static public final Jedis newJedis(String host,int port,int timeOut) {
 		if (timeOut > 0)
 			return new Jedis(host, port, timeOut);
 		return new Jedis(host, port);
 	}
 
-	static public final Jedis newJedis(final String host) {
+	static public final Jedis newJedis(String host) {
 		return new Jedis(host);
 	}
 

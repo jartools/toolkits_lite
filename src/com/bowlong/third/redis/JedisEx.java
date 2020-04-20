@@ -380,7 +380,7 @@ public class JedisEx {
 	public static final int N_ZSET = 4; // (有序集)
 	public static final int N_HASH = 5; // (哈希表)
 
-	public static final int ntype(final String type) {
+	public static final int ntype(String type) {
 		switch (type) {
 		case TYPE_NONE:
 			return N_NONE;
@@ -399,21 +399,21 @@ public class JedisEx {
 		}
 	}
 
-	public static final boolean isType(final String key, final String type) {
+	public static final boolean isType(String key,String type) {
 		String t = type(key);
 		if (t == null || t.isEmpty())
 			return false;
 		return t.equals(type);
 	}
 
-	public static final boolean isType(final String key, final int type) {
+	public static final boolean isType(String key,int type) {
 		String t = type(key);
 		if (t == null || t.isEmpty())
 			return false;
 		return t.equals(stype(type));
 	}
 
-	public static final String stype(final int type) {
+	public static final String stype(int type) {
 		switch (type) {
 		case N_NONE:
 			return TYPE_NONE;
@@ -448,7 +448,7 @@ public class JedisEx {
 		return config;
 	}
 
-	public static final JedisPoolConfig newJedisPoolConfig(final int maxActive, final int maxIdle, final int minIdle, final int maxWait) {
+	public static final JedisPoolConfig newJedisPoolConfig(int maxActive,int maxIdle,int minIdle,int maxWait) {
 		config = new JedisPoolConfig();
 		config.setMaxIdle(maxIdle);
 		config.setMinIdle(minIdle);
@@ -491,11 +491,11 @@ public class JedisEx {
 
 	// /////////////////////
 
-	public static final Jedis newJedis(final String host, final int port) {
+	public static final Jedis newJedis(String host,int port) {
 		return new Jedis(host, port);
 	}
 
-	public static final Jedis newJedis(final String host) {
+	public static final Jedis newJedis(String host) {
 		return new Jedis(host);
 	}
 
@@ -519,7 +519,7 @@ public class JedisEx {
 
 	// /////////////////////
 	// 检查Redis是否联通
-	public static final String ping(final JedisPool pool) {
+	public static final String ping(JedisPool pool) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return ping(jedis);
@@ -530,7 +530,7 @@ public class JedisEx {
 		}
 	}
 
-	public static final String ping(final Jedis jedis) {
+	public static final String ping(Jedis jedis) {
 		return jedis.ping();
 	}
 
@@ -540,7 +540,7 @@ public class JedisEx {
 	}
 
 	// DECR key 整数原子减1
-	public static final Long decr(final JedisPool pool, final String key) {
+	public static final Long decr(JedisPool pool,String key) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return decr(jedis, key);
@@ -551,17 +551,17 @@ public class JedisEx {
 		}
 	}
 
-	public static final Long decr(final Jedis jedis, final String key) {
+	public static final Long decr(Jedis jedis,String key) {
 		return jedis.decr(key);
 	}
 
-	public static final Long decr(final String key) {
+	public static final Long decr(String key) {
 		final JedisPool pool = getJedisLocalPool();
 		return decr(pool, key);
 	}
 
 	// DECRBY key decrement 原子减指定的整数
-	public static final Long decrBy(final JedisPool pool, final String key, final int val) {
+	public static final Long decrBy(JedisPool pool,String key,int val) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return decrBy(jedis, key, val);
@@ -572,17 +572,17 @@ public class JedisEx {
 		}
 	}
 
-	public static final Long decrBy(final Jedis jedis, final String key, final int val) {
+	public static final Long decrBy(Jedis jedis,String key,int val) {
 		return jedis.decrBy(key, val);
 	}
 
-	public static final Long decrBy(final String key, final int val) {
+	public static final Long decrBy(String key,int val) {
 		final JedisPool pool = getJedisLocalPool();
 		return decrBy(pool, key, val);
 	}
 
 	// MULTI 标记一个事务块开始
-	public static final Transaction multi(final JedisPool pool) {
+	public static final Transaction multi(JedisPool pool) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return multi(jedis);
@@ -593,7 +593,7 @@ public class JedisEx {
 		}
 	}
 
-	public static final Transaction multi(final Jedis jedis) {
+	public static final Transaction multi(Jedis jedis) {
 		return jedis.multi();
 	}
 
@@ -603,17 +603,17 @@ public class JedisEx {
 	}
 
 	// DISCARD 丢弃所有 MULTI 之后发的命令
-	public static final String discard(final Transaction t) {
+	public static final String discard(Transaction t) {
 		return t.discard();
 	}
 
 	// EXEC 执行所有 MULTI 之后发的命令
-	public static final List<Object> exec(final Transaction t) {
+	public static final List<Object> exec(Transaction t) {
 		return t.exec();
 	}
 
 	// FLUSHALL 清空所有数据库
-	public static final String flushAll(final JedisPool pool) {
+	public static final String flushAll(JedisPool pool) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return flushAll(jedis);
@@ -624,7 +624,7 @@ public class JedisEx {
 		}
 	}
 
-	public static final String flushAll(final Jedis jedis) {
+	public static final String flushAll(Jedis jedis) {
 		return jedis.flushAll();
 	}
 
@@ -634,7 +634,7 @@ public class JedisEx {
 	}
 
 	// FLUSHDB 清空当前的数据库
-	public static final String flushDB(final JedisPool pool) {
+	public static final String flushDB(JedisPool pool) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return flushDB(jedis);
@@ -645,7 +645,7 @@ public class JedisEx {
 		}
 	}
 
-	public static final String flushDB(final Jedis jedis) {
+	public static final String flushDB(Jedis jedis) {
 		return jedis.flushDB();
 	}
 
@@ -656,7 +656,7 @@ public class JedisEx {
 
 	// /////////////////////
 	// 对象类型//none(key不存在),string(字符串),list(列表),set(集合),zset(有序集),hash(哈希表)
-	public static final String type(final JedisPool pool, final String key) {
+	public static final String type(JedisPool pool,String key) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return type(jedis, key);
@@ -667,18 +667,18 @@ public class JedisEx {
 		}
 	}
 
-	public static final String type(final Jedis jedis, final String key) {
+	public static final String type(Jedis jedis,String key) {
 		return jedis.type(key);
 	}
 
-	public static final String type(final String key) {
+	public static final String type(String key) {
 		final JedisPool pool = getJedisLocalPool();
 		return type(pool, key);
 	}
 
 	// /////////////////////
 	// 是否存在
-	public static final boolean exists(final JedisPool pool, final String key) {
+	public static final boolean exists(JedisPool pool,String key) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return exists(jedis, key);
@@ -689,18 +689,18 @@ public class JedisEx {
 		}
 	}
 
-	public static final boolean exists(final Jedis jedis, final String key) {
+	public static final boolean exists(Jedis jedis,String key) {
 		return jedis.exists(key);
 	}
 
-	public static final boolean exists(final String key) {
+	public static final boolean exists(String key) {
 		final JedisPool pool = getJedisLocalPool();
 		return exists(pool, key);
 	}
 
 	// /////////////////////
 	// 删除数据
-	public static final Long remove(final JedisPool pool, final String key) {
+	public static final Long remove(JedisPool pool,String key) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return remove(jedis, key);
@@ -711,19 +711,19 @@ public class JedisEx {
 		}
 	}
 
-	public static final Long remove(final Jedis jedis, final String key) {
+	public static final Long remove(Jedis jedis,String key) {
 		String message = JedisSubMsg.delMsg(key);
 		publish(jedis, PUBSUB_CHN_SET, message);
 		return jedis.del(key);
 	}
 
-	public static final Long remove(final String key) {
+	public static final Long remove(String key) {
 		final JedisPool pool = getJedisLocalPool();
 		return remove(pool, key);
 	}
 
 	// /////////////////////
-	public static final Long ttl(final JedisPool pool, final String key) {
+	public static final Long ttl(JedisPool pool,String key) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return ttl(jedis, key);
@@ -734,31 +734,31 @@ public class JedisEx {
 		}
 	}
 
-	public static final Long ttl(final Jedis jedis, final String key) {
+	public static final Long ttl(Jedis jedis,String key) {
 		return jedis.ttl(key2(key));
 	}
 
-	public static final Long ttl(final String key) {
+	public static final Long ttl(String key) {
 		final JedisPool pool = getJedisLocalPool();
 		return ttl(pool, key);
 	}
 
-	public static final Long getTimeout(final JedisPool pool, final String key) {
+	public static final Long getTimeout(JedisPool pool,String key) {
 		return ttl(pool, key);
 	}
 
-	public static final Long getTimeout(final Jedis jedis, final String key) {
+	public static final Long getTimeout(Jedis jedis,String key) {
 		return ttl(jedis, key);
 	}
 
-	public static final Long getTimeout(final String key) {
+	public static final Long getTimeout(String key) {
 		final JedisPool pool = getJedisLocalPool();
 		return ttl(pool, key);
 	}
 
 	// /////////////////////
 	// 超时删除
-	public static final void expire(final JedisPool pool, final String key, final int seconds) {
+	public static final void expire(JedisPool pool,String key,int seconds) {
 		final Jedis jedis = pool.getResource();
 		try {
 			expire(jedis, key, seconds);
@@ -769,7 +769,7 @@ public class JedisEx {
 		}
 	}
 
-	public static final void expire(final Jedis jedis, final String key, final int seconds) {
+	public static final void expire(Jedis jedis,String key,int seconds) {
 		final byte[] key2 = key2(key);
 		if (seconds <= 0) {
 			jedis.persist(key2);
@@ -779,12 +779,12 @@ public class JedisEx {
 		jedis.expire(key2, seconds);
 	}
 
-	public static final void expire(final String key, final int seconds) {
+	public static final void expire(String key,int seconds) {
 		final JedisPool pool = getJedisLocalPool();
 		expire(pool, key, seconds);
 	}
 
-	public static final void expire(final String key, final Date date) {
+	public static final void expire(String key,Date date) {
 		long delay = date.getTime() - System.currentTimeMillis();
 		int seconds = (int) (delay <= 0 ? 1 : delay / 1000);
 
@@ -793,24 +793,24 @@ public class JedisEx {
 	}
 
 	// /////////////////////
-	public static final void setTimeout(final JedisPool pool, final String key, final int seconds) {
+	public static final void setTimeout(JedisPool pool,String key,int seconds) {
 		expire(pool, key, seconds);
 	}
 
-	public static final void setTimeout(final Jedis jedis, final String key, final int seconds) {
+	public static final void setTimeout(Jedis jedis,String key,int seconds) {
 		expire(jedis, key, seconds);
 	}
 
-	public static final void setTimeout(final String key, final int seconds) {
+	public static final void setTimeout(String key,int seconds) {
 		expire(key, seconds);
 	}
 
-	public static final void setTimeout(final String key, final Date date) {
+	public static final void setTimeout(String key,Date date) {
 		expire(key, date);
 	}
 
 	// /////////////////////
-	// public static final String putBean(final JedisPool pool, final String
+	// public static final String putBean(JedisPool pool,String
 	// key,
 	// BeanSupport bean) throws Exception {
 	// final Jedis jedis = pool.getResource();
@@ -823,7 +823,7 @@ public class JedisEx {
 	// }
 	// }
 
-	// public static final String putBean(final Jedis jedis, final String key,
+	// public static final String putBean(Jedis jedis,String key,
 	// BeanSupport bean) throws Exception {
 	// final byte[] val = bean.toByteArray();
 	//
@@ -832,14 +832,14 @@ public class JedisEx {
 	// return jedis.set(key2(key), val);
 	// }
 
-	// public static final String putBean(final String key, BeanSupport bean)
+	// public static final String putBean(String key, BeanSupport bean)
 	// throws Exception {
 	// final JedisPool pool = getJedisLocalPool();
 	// return putBean(pool, key, bean);
 	// }
 
 	// /////////////////////
-	public static final String putObject(final JedisPool pool, final String key, Object obj) throws Exception {
+	public static final String putObject(JedisPool pool,String key, Object obj) throws Exception {
 		final Jedis jedis = pool.getResource();
 		try {
 			return putObject(jedis, key, obj);
@@ -850,7 +850,7 @@ public class JedisEx {
 		}
 	}
 
-	public static final String putObject(final Jedis jedis, final String key, Object obj) throws Exception {
+	public static final String putObject(Jedis jedis,String key, Object obj) throws Exception {
 		final byte[] val = ExToolkit.serialization(obj);
 
 		String message = JedisSubMsg.setMsg(key);
@@ -858,13 +858,13 @@ public class JedisEx {
 		return jedis.set(key2(key), val);
 	}
 
-	public static final String putObject(final String key, Object obj) throws Exception {
+	public static final String putObject(String key, Object obj) throws Exception {
 		final JedisPool pool = getJedisLocalPool();
 		return putObject(pool, key, obj);
 	}
 
 	// /////////////////////
-	public static final String putMap(final JedisPool pool, final String key, Map<?, ?> map) throws Exception {
+	public static final String putMap(JedisPool pool,String key, Map<?, ?> map) throws Exception {
 		final Jedis jedis = pool.getResource();
 		try {
 			return putMap(jedis, key, map);
@@ -875,7 +875,7 @@ public class JedisEx {
 		}
 	}
 
-	public static final String putMap(final Jedis jedis, final String key, Map<?, ?> map) throws Exception {
+	public static final String putMap(Jedis jedis,String key, Map<?, ?> map) throws Exception {
 		final byte[] val = B2Helper.toBytes(map);
 
 		String message = JedisSubMsg.setMsg(key);
@@ -883,13 +883,13 @@ public class JedisEx {
 		return jedis.set(key2(key), val);
 	}
 
-	public static final String putMap(final String key, Map<?, ?> map) throws Exception {
+	public static final String putMap(String key, Map<?, ?> map) throws Exception {
 		final JedisPool pool = getJedisLocalPool();
 		return putMap(pool, key, map);
 	}
 
 	// /////////////////////
-	public static final String set(final JedisPool pool, final String key, String value) {
+	public static final String set(JedisPool pool,String key, String value) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return set(jedis, key, value);
@@ -900,7 +900,7 @@ public class JedisEx {
 		}
 	}
 
-	public static final String set(final Jedis jedis, final String key, String value) {
+	public static final String set(Jedis jedis,String key, String value) {
 		final byte[] val = value.getBytes();
 
 		String message = JedisSubMsg.setMsg(key);
@@ -908,12 +908,12 @@ public class JedisEx {
 		return jedis.set(key2(key), val);
 	}
 
-	public static final String set(final String key, String value) {
+	public static final String set(String key, String value) {
 		final JedisPool pool = getJedisLocalPool();
 		return set(pool, key, value);
 	}
 
-	public static final String set(final JedisPool pool, final String key, byte[] value) {
+	public static final String set(JedisPool pool,String key, byte[] value) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return set(jedis, key, value);
@@ -924,7 +924,7 @@ public class JedisEx {
 		}
 	}
 
-	public static final String set(final Jedis jedis, final String key, byte[] value) {
+	public static final String set(Jedis jedis,String key, byte[] value) {
 		final byte[] val = value;
 
 		String message = JedisSubMsg.setMsg(key);
@@ -932,7 +932,7 @@ public class JedisEx {
 		return jedis.set(key2(key), val);
 	}
 
-	public static final String set(final String key, byte[] value) {
+	public static final String set(String key, byte[] value) {
 		final JedisPool pool = getJedisLocalPool();
 		return set(pool, key, value);
 	}
@@ -940,7 +940,7 @@ public class JedisEx {
 	// /////////////////////
 	// /////////////////////
 
-	public static final Object getObject(final JedisPool pool, final String key) throws Exception {
+	public static final Object getObject(JedisPool pool,String key) throws Exception {
 		final Jedis jedis = pool.getResource();
 		try {
 			return getObject(jedis, key);
@@ -951,18 +951,18 @@ public class JedisEx {
 		}
 	}
 
-	public static final Object getObject(final Jedis jedis, final String key) throws Exception {
+	public static final Object getObject(Jedis jedis,String key) throws Exception {
 		byte[] b = jedis.get(key2(key));
 		return ExToolkit.deserialization(b);
 	}
 
-	public static final Object getObject(final String key) throws Exception {
+	public static final Object getObject(String key) throws Exception {
 		final JedisPool pool = getJedisLocalPool();
 		return getObject(pool, key);
 	}
 
 	// /////////////////////
-	public static final NewMap getMap(final JedisPool pool, final String key) throws Exception {
+	public static final NewMap getMap(JedisPool pool,String key) throws Exception {
 		final Jedis jedis = pool.getResource();
 		try {
 			return getMap(jedis, key);
@@ -973,18 +973,18 @@ public class JedisEx {
 		}
 	}
 
-	public static final NewMap getMap(final Jedis jedis, final String key) throws Exception {
+	public static final NewMap getMap(Jedis jedis,String key) throws Exception {
 		byte[] b = jedis.get(key2(key));
 		return B2Helper.toMap(b);
 	}
 
-	public static final NewMap getMap(final String key) throws Exception {
+	public static final NewMap getMap(String key) throws Exception {
 		final JedisPool pool = getJedisLocalPool();
 		return getMap(pool, key);
 	}
 
 	// /////////////////////
-	public static final byte[] get(final JedisPool pool, final String key) {
+	public static final byte[] get(JedisPool pool,String key) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return get(jedis, key);
@@ -995,17 +995,17 @@ public class JedisEx {
 		}
 	}
 
-	public static final byte[] get(final Jedis jedis, final String key) {
+	public static final byte[] get(Jedis jedis,String key) {
 		return jedis.get(key2(key));
 	}
 
-	public static final byte[] get(final String key) {
+	public static final byte[] get(String key) {
 		final JedisPool pool = getJedisLocalPool();
 		return get(pool, key);
 	}
 
 	// /////////////////////
-	public static final List<byte[]> mget(final JedisPool pool, final byte[]... keys) {
+	public static final List<byte[]> mget(JedisPool pool,byte[]... keys) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return mget(jedis, keys);
@@ -1016,23 +1016,23 @@ public class JedisEx {
 		}
 	}
 
-	public static final List<byte[]> mget(final Jedis jedis, final byte[]... keys) {
+	public static final List<byte[]> mget(Jedis jedis,byte[]... keys) {
 		return jedis.mget(keys);
 	}
 
-	public static final List<byte[]> mget(final byte[]... keys) {
+	public static final List<byte[]> mget(byte[]... keys) {
 		final JedisPool pool = getJedisLocalPool();
 		return mget(pool, keys);
 	}
 
 	// /////////////////////
 	// HSET key field value 设置hash里面一个字段的值
-	public static final Long hset(final JedisPool pool, final String key, final String field, final String value) {
+	public static final Long hset(JedisPool pool,String key,String field,String value) {
 		final byte[] val2 = value.getBytes();
 		return hset(pool, key, field, val2);
 	}
 
-	public static final Long hset(final JedisPool pool, final String key, final String field, final byte[] value) {
+	public static final Long hset(JedisPool pool,String key,String field,byte[] value) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return hset(jedis, key, field, value);
@@ -1043,12 +1043,12 @@ public class JedisEx {
 		}
 	}
 
-	public static final Long hset(final Jedis jedis, final String key, final String field, final String value) {
+	public static final Long hset(Jedis jedis,String key,String field,String value) {
 		final byte[] val2 = value.getBytes();
 		return hset(jedis, key, field, val2);
 	}
 
-	public static final Long hset(final Jedis jedis, final String key, final String field, final byte[] value) {
+	public static final Long hset(Jedis jedis,String key,String field,byte[] value) {
 		final byte[] field2 = field.getBytes();
 
 		String message = JedisSubMsg.hsetMsg(key, field);
@@ -1057,19 +1057,19 @@ public class JedisEx {
 		return jedis.hset(key2(key), field2, value);
 	}
 
-	public static final Long hset(final String key, final String field, final String value) {
+	public static final Long hset(String key,String field,String value) {
 		final byte[] val2 = value.getBytes();
 		return hset(key, field, val2);
 	}
 
-	public static final Long hset(final String key, final String field, final byte[] value) {
+	public static final Long hset(String key,String field,byte[] value) {
 		final JedisPool pool = getJedisLocalPool();
 		return hset(pool, key, field, value);
 	}
 
 	// /////////////////////
 	// HDEL key field [field ...] 删除一个或多个哈希域
-	public static final Long hdel(final JedisPool pool, final String key, final String field) {
+	public static final Long hdel(JedisPool pool,String key,String field) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return hdel(jedis, key, field);
@@ -1080,7 +1080,7 @@ public class JedisEx {
 		}
 	}
 
-	public static final Long hdel(final Jedis jedis, final String key, final String field) {
+	public static final Long hdel(Jedis jedis,String key,String field) {
 		final byte[] field2 = field.getBytes();
 
 		String message = JedisSubMsg.hdelMsg(key, field);
@@ -1089,14 +1089,14 @@ public class JedisEx {
 		return jedis.hdel(key2(key), field2);
 	}
 
-	public static final Long hdel(final String key, final String field) {
+	public static final Long hdel(String key,String field) {
 		final JedisPool pool = getJedisLocalPool();
 		return hdel(pool, key, field);
 	}
 
 	// /////////////////////
 	// HGET key field 读取哈希域的的值
-	public static final byte[] hget(final JedisPool pool, final String key, final String field) {
+	public static final byte[] hget(JedisPool pool,String key,String field) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return hget(jedis, key, field);
@@ -1107,19 +1107,19 @@ public class JedisEx {
 		}
 	}
 
-	public static final byte[] hget(final Jedis jedis, final String key, final String field) {
+	public static final byte[] hget(Jedis jedis,String key,String field) {
 		final byte[] field2 = field.getBytes();
 		return jedis.hget(key2(key), field2);
 	}
 
-	public static final byte[] hget(final String key, final String field) {
+	public static final byte[] hget(String key,String field) {
 		final JedisPool pool = getJedisLocalPool();
 		return hget(pool, key, field);
 	}
 
 	// /////////////////////
 	// HGETALL key 从哈希集中读取全部的域和值
-	public static final Map<byte[], byte[]> hgetAll(final JedisPool pool, final String key) {
+	public static final Map<byte[], byte[]> hgetAll(JedisPool pool,String key) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return hgetAll(jedis, key);
@@ -1130,17 +1130,17 @@ public class JedisEx {
 		}
 	}
 
-	public static final Map<byte[], byte[]> hgetAll(final Jedis jedis, final String key) {
+	public static final Map<byte[], byte[]> hgetAll(Jedis jedis,String key) {
 		return jedis.hgetAll(key2(key));
 	}
 
-	public static final Map<byte[], byte[]> hgetAll(final String key) {
+	public static final Map<byte[], byte[]> hgetAll(String key) {
 		final JedisPool pool = getJedisLocalPool();
 		return hgetAll(pool, key);
 	}
 
 	// /////////////////////
-	public static final byte[] getSet(final JedisPool pool, final String key, final byte[] value2) {
+	public static final byte[] getSet(JedisPool pool,String key,byte[] value2) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return getSet(jedis, key, value2);
@@ -1151,18 +1151,18 @@ public class JedisEx {
 		}
 	}
 
-	public static final byte[] getSet(final Jedis jedis, final String key, final byte[] value2) {
+	public static final byte[] getSet(Jedis jedis,String key,byte[] value2) {
 		String message = JedisSubMsg.setMsg(key);
 		publish(jedis, PUBSUB_CHN_SET, message);
 		return jedis.getSet(key2(key), value2);
 	}
 
-	public static final byte[] getSet(final String key, final byte[] value2) {
+	public static final byte[] getSet(String key,byte[] value2) {
 		final JedisPool pool = getJedisLocalPool();
 		return getSet(pool, key, value2);
 	}
 
-	public static final byte[] getSet(final JedisPool pool, final String key, final String value) {
+	public static final byte[] getSet(JedisPool pool,String key,String value) {
 		final Jedis jedis = pool.getResource();
 		final byte[] value2 = value.getBytes();
 		try {
@@ -1174,21 +1174,21 @@ public class JedisEx {
 		}
 	}
 
-	public static final byte[] getSet(final Jedis jedis, final String key, final String value) {
+	public static final byte[] getSet(Jedis jedis,String key,String value) {
 		final byte[] value2 = value.getBytes();
 		String message = JedisSubMsg.setMsg(key);
 		publish(jedis, PUBSUB_CHN_SET, message);
 		return jedis.getSet(key2(key), value2);
 	}
 
-	public static final byte[] getSet(final String key, final String value) {
+	public static final byte[] getSet(String key,String value) {
 		final JedisPool pool = getJedisLocalPool();
 		final byte[] value2 = value.getBytes();
 		return getSet(pool, key, value2);
 	}
 
 	// /////////////////////
-	public static final void publish(final JedisPool pool, final String channel, final String message) {
+	public static final void publish(JedisPool pool,String channel,String message) {
 		final Jedis jedis = pool.getResource();
 		try {
 			publish(jedis, channel, message);
@@ -1199,7 +1199,7 @@ public class JedisEx {
 		}
 	}
 
-	public static final void publish(final JedisPool pool, final String str) {
+	public static final void publish(JedisPool pool,String str) {
 		final Jedis jedis = pool.getResource();
 		try {
 			publish(jedis, str);
@@ -1210,40 +1210,40 @@ public class JedisEx {
 		}
 	}
 
-	public static final void publish(final Jedis jedis, final String channel, final String message) {
+	public static final void publish(Jedis jedis,String channel,String message) {
 		jedis.publish(channel, message);
 	}
 
-	public static final void publish(final Jedis jedis, final String str) {
+	public static final void publish(Jedis jedis,String str) {
 		final String channel = PUBSUB_CHN_GEN;
 		// final String message = JedisSubMsg.genMsg(str);
 		jedis.publish(channel, str);
 	}
 
-	public static final void publish(final String channel, final String message) {
+	public static final void publish(String channel,String message) {
 		final JedisPool pool = getJedisLocalPool();
 		publish(pool, channel, message);
 	}
 
-	public static final void publish(final String str) {
+	public static final void publish(String str) {
 		final JedisPool pool = getJedisLocalPool();
 		publish(pool, str);
 	}
 
 	// /////////////////////
 
-	// public static final Long publish(final Jedis jedis, final String channel,
+	// public static final Long publish(Jedis jedis,String channel,
 	// final byte[] message) {
 	// return jedis.publish(channel.getBytes(), message);
 	// }
 
-	// public static final void subscribe(final Jedis jedis,
-	// final JedisPubSub jedisPubSub, final String channel) {
+	// public static final void subscribe(Jedis jedis,
+	// final JedisPubSub jedisPubSub,String channel) {
 	// jedis.psubscribe(jedisPubSub, new String[] { channel });
 	// }
 
 	// /////////////////////
-	public static final void subscribe(final JedisPool pool, final JedisSubMsg jedisPubSub, final String channel) {
+	public static final void subscribe(JedisPool pool,JedisSubMsg jedisPubSub,String channel) {
 		final Jedis jedis = pool.getResource();
 		try {
 			subscribe(jedis, jedisPubSub, channel);
@@ -1254,23 +1254,23 @@ public class JedisEx {
 		}
 	}
 
-	public static final void subscribe(final Jedis jedis, final JedisSubMsg jedisPubSub, final String channel) {
+	public static final void subscribe(Jedis jedis,JedisSubMsg jedisPubSub,String channel) {
 		jedis.subscribe(jedisPubSub, channel);
 	}
 
-	public static final void subscribe(final JedisSubMsg jedisPubSub, final String channel) {
+	public static final void subscribe(JedisSubMsg jedisPubSub,String channel) {
 		final JedisPool pool = getJedisLocalPool();
 		subscribe(pool, jedisPubSub, channel);
 	}
 
-	public static final void subscribe(final JedisSubMsg jedisPubSub) {
+	public static final void subscribe(JedisSubMsg jedisPubSub) {
 		final JedisPool pool = getJedisLocalPool();
 		final String channel = PUBSUB_CHN_GEN;
 		subscribe(pool, jedisPubSub, channel);
 	}
 
 	// /////////////////////
-	public static final String mset(final JedisPool pool, final byte[]... keysvalues) {
+	public static final String mset(JedisPool pool,byte[]... keysvalues) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return mset(jedis, keysvalues);
@@ -1281,16 +1281,16 @@ public class JedisEx {
 		}
 	}
 
-	public static final String mset(final Jedis jedis, final byte[]... keysvalues) {
+	public static final String mset(Jedis jedis,byte[]... keysvalues) {
 		return jedis.mset(keysvalues);
 	}
 
-	public static final String mset(final byte[]... keysvalues) {
+	public static final String mset(byte[]... keysvalues) {
 		final JedisPool jedis = getJedisLocalPool();
 		return mset(jedis, keysvalues);
 	}
 
-	public static final String mset(final JedisPool pool, final Map<String, String> keysvalues) {
+	public static final String mset(JedisPool pool,Map<String, String> keysvalues) {
 		final Jedis jedis = pool.getResource();
 		try {
 			return mset(jedis, keysvalues);
@@ -1301,7 +1301,7 @@ public class JedisEx {
 		}
 	}
 
-	public static final String mset(final Jedis jedis, final Map<String, String> keysvalues) {
+	public static final String mset(Jedis jedis,Map<String, String> keysvalues) {
 		Set<Entry<String, String>> entrys = keysvalues.entrySet();
 		String[] _keysvalues = new String[keysvalues.size()];
 		int p = 0;
@@ -1317,12 +1317,12 @@ public class JedisEx {
 		return mset(jedis, keysvalues);
 	}
 
-	// public static final String mset(final byte[]... keysvalues) {
+	// public static final String mset(byte[]... keysvalues) {
 	// final Jedis jedis = localJedis();
 	// return mset(jedis, keysvalues);
 	// }
 
-	// public static final byte[] serialization(final Object obj)
+	// public static final byte[] serialization(Object obj)
 	// throws IOException {
 	// if (obj == null)
 	// return new byte[0];
@@ -1340,7 +1340,7 @@ public class JedisEx {
 	// }
 	// }
 	//
-	// public static final Object deserialization(final byte[] b) throws
+	// public static final Object deserialization(byte[] b) throws
 	// Exception {
 	// if (b == null || b.length <= 0)
 	// return null;
@@ -1354,23 +1354,23 @@ public class JedisEx {
 	// }
 	// }
 
-	public static final byte[] key2(final byte[] key) {
+	public static final byte[] key2(byte[] key) {
 		return key;
 	}
 
-	public static final byte[] key2(final String key) {
+	public static final byte[] key2(String key) {
 		return key.getBytes();
 	}
 
-	public static final byte[] val2(final byte[] val) {
+	public static final byte[] val2(byte[] val) {
 		return val;
 	}
 
-	public static final byte[] val2(final String val) {
+	public static final byte[] val2(String val) {
 		return val.getBytes();
 	}
 
-	// public static final byte[] val2(final BeanSupport val) {
+	// public static final byte[] val2(BeanSupport val) {
 	// try {
 	// return val.toByteArray();
 	// } catch (Exception e) {
@@ -1379,7 +1379,7 @@ public class JedisEx {
 	// return null;
 	// }
 
-	public static final byte[] val2(final Object val) {
+	public static final byte[] val2(Object val) {
 		if (val instanceof BeanSupport)
 			return val2((BeanSupport) val);
 		try {

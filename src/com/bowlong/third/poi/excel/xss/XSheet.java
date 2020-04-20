@@ -14,7 +14,7 @@ public class XSheet {
 	int maxRow = -1;
 	final Map<String, Object> cache = new Hashtable<String, Object>();
 
-	public XSheet(final XWorkbook wb, final XSSFSheet sheet) {
+	public XSheet(XWorkbook wb,XSSFSheet sheet) {
 		this.wb = wb;
 		this.sheet = sheet;
 		this.sheetName = sheet.getSheetName();

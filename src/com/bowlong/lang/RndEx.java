@@ -34,7 +34,7 @@ public final class RndEx {
 		return bts;
 	}
 
-	public static final byte[] nextBytes(final int len) {
+	public static final byte[] nextBytes(int len) {
 		return nextBytes(new byte[len]);
 	}
 
@@ -54,11 +54,11 @@ public final class RndEx {
 		return rnd.nextInt();
 	}
 
-	public static final int nextInt(final int n) {
+	public static final int nextInt(int n) {
 		return rnd.nextInt(n);
 	}
 
-	public static final int nextInt(final int f, final int t) {
+	public static final int nextInt(int f,int t) {
 		if (f == t)
 			return t;
 		int min = f > t ? t : f;
@@ -73,17 +73,17 @@ public final class RndEx {
 		return rnd.nextLong();
 	}
 
-	public static final int nextInt(final int[] args) {
+	public static final int nextInt(int[] args) {
 		int i = nextInt(args.length);
 		return args[i];
 	}
 
-	public static final int nextInt(final List<Integer> args) {
+	public static final int nextInt(List<Integer> args) {
 		int i = nextInt(args.size());
 		return args.get(i);
 	}
 
-	public static final int nextIntArgs(final int... args) {
+	public static final int nextIntArgs(int... args) {
 		int i = nextInt(args.length);
 		return args[i];
 	}
@@ -104,7 +104,7 @@ public final class RndEx {
 	}
 
 	/*** 从给定的字符里面随机得一个字符 **/
-	static public final String nextString(final String org) {
+	static public final String nextString(String org) {
 		if (StrEx.isEmpty(org))
 			return "";
 		int len = org.length();
@@ -113,7 +113,7 @@ public final class RndEx {
 	}
 
 	/*** 从给定的字符里面随机得字符 **/
-	static public final String nextString(final String org, int rndLen) {
+	static public final String nextString(String org, int rndLen) {
 		if (rndLen <= 0 || StrEx.isEmpty(org))
 			return "";
 		StringBuffer buff = StringBufPool.borrowObject();
@@ -130,7 +130,7 @@ public final class RndEx {
 	}
 
 	/*** 随机指定长度数字字符 **/
-	static public final String nextString09(final int rndLen) {
+	static public final String nextString09(int rndLen) {
 		if (rndLen <= 0)
 			return "";
 		StringBuffer buff = StringBufPool.borrowObject();
@@ -146,7 +146,7 @@ public final class RndEx {
 		}
 	}
 
-	public static final double nextDouble(final double f, final double t, final int decimal) {
+	public static final double nextDouble(double f,double t,int decimal) {
 		if (f == t)
 			return t;
 
@@ -166,7 +166,7 @@ public final class RndEx {
 		return (mi + rnd.nextInt(ma - mi)) / lmt;
 	}
 
-	public static final double nextDouble(final double f, final double t) {
+	public static final double nextDouble(double f,double t) {
 		return nextDouble(f, t, 2);
 	}
 }

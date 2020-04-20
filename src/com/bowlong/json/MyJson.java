@@ -487,7 +487,7 @@ public class MyJson {
 		return map;
 	}
 
-	public static String formatString(final String s) throws IOException {
+	public static String formatString(String s) throws IOException {
 		Object obj = parse(s);
 		if (obj instanceof Map) {
 			Map m = (Map) obj;
@@ -499,11 +499,11 @@ public class MyJson {
 		return "No Support. (Only for Map or List)";
 	}
 
-	public static String formatString(final Map m) throws IOException {
+	public static String formatString(Map m) throws IOException {
 		return MapEx.formatString(m);
 	}
 
-	public static String formatString(final List l) throws IOException {
+	public static String formatString(List l) throws IOException {
 		return ListEx.formatString(l);
 	}
 

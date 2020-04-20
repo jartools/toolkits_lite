@@ -171,11 +171,11 @@ public class InputStreamEx extends ExOrigin {
 		return readStream(is, true);
 	}
 
-	static final public byte[] readFully(final InputStream is) throws IOException {
+	static final public byte[] readFully(InputStream is) throws IOException {
 		return readStream(is, false);
 	}
 
-	static final public void close(final InputStream input) {
+	static final public void close(InputStream input) {
 		if (input == null)
 			return;
 		try {

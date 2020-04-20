@@ -20,22 +20,22 @@ public final class PStr implements Serializable {
 		return new PStr();
 	}
 
-	static public final PStr b(final Object... objs) {
+	static public final PStr b(Object... objs) {
 		PStr ret = getInstance();
 		ret.a(objs);
 		return ret;
 	}
 
-	public static final PStr begin(final Object... objs) {
+	public static final PStr begin(Object... objs) {
 		return b(objs);
 	}
 
-	public static final String str(final Object... objs) {
+	public static final String str(Object... objs) {
 		PStr pStr = begin(objs);
 		return pStr.end();
 	}
 
-	public static final String strFmt(final String fmt, final Object... args) {
+	public static final String strFmt(String fmt,Object... args) {
 		PStr ret = begin();
 		ret.afmt(fmt, args);
 		return ret.end();
@@ -60,12 +60,12 @@ public final class PStr implements Serializable {
 		return this;
 	}
 
-	public final String end(final Object... v) {
+	public final String end(Object... v) {
 		a(v);
 		return e();
 	}
 
-	public final String e(final Object... v) {
+	public final String e(Object... v) {
 		a(v);
 		String ret = sb.toString();
 		StringBufPool.returnObject(sb);
@@ -74,7 +74,7 @@ public final class PStr implements Serializable {
 	}
 
 	// ///////////////////////////////////////////////////
-	public final PStr a(final Object... objs) {
+	public final PStr a(Object... objs) {
 		if (objs != null) {
 			for (Object obj : objs) {
 				if (obj != null) {
@@ -85,20 +85,20 @@ public final class PStr implements Serializable {
 		return this;
 	}
 
-	public final PStr a(final String str, final Map<String, Object> map) throws Exception {
+	public final PStr a(String str,Map<String, Object> map) throws Exception {
 		String v = EasyTemplate.make(str, map);
 		sb.append(v);
 		return this;
 	}
 
-	public final PStr a(final StringBuffer v) {
+	public final PStr a(StringBuffer v) {
 		sb.append(v);
 		return this;
 	}
 
-	public final PStr afmt(final String needFmtStr, final Object... args) {
+	public final PStr afmt(String needFmtStr,Object... args) {
 		try {
-			String s2 = StrEx.fmt(needFmtStr, args);
+			String s2 = StrEx.fmt$(needFmtStr, args);
 			return a(s2);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -106,12 +106,12 @@ public final class PStr implements Serializable {
 		return this;
 	}
 
-	public final PStr delLeft(final int i) {
+	public final PStr delLeft(int i) {
 		sb.replace(0, i, "");
 		return this;
 	}
 
-	public final PStr delRight(final int i) {
+	public final PStr delRight(int i) {
 		// int len = sb.length();
 		// sb.replace(len - i, len, "");
 		StrEx.removeRight(sb, i);

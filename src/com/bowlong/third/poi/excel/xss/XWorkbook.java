@@ -17,11 +17,11 @@ public class XWorkbook extends XSS {
 	final XSheet[] xSheet;
 	protected final boolean iScached;
 
-	public XWorkbook(final File fp) throws Exception {
+	public XWorkbook(File fp) throws Exception {
 		this(fp, false);
 	}
 
-	public XWorkbook(final File fp, boolean iScached) throws Exception {
+	public XWorkbook(File fp, boolean iScached) throws Exception {
 		this.pkg = openPackage(fp);
 		this.wb = openWorkbook(pkg);
 		this.iScached = iScached;

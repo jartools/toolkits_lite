@@ -18,11 +18,11 @@ public class HWorkbook extends HSS {
 	final HSheet[] hSheet;
 	protected final boolean iScached;
 
-	public HWorkbook(final String fn) throws Exception {
+	public HWorkbook(String fn) throws Exception {
 		this(fn, false);
 	}
 
-	public HWorkbook(final String fn, boolean iScached) throws Exception {
+	public HWorkbook(String fn, boolean iScached) throws Exception {
 		this.pkg = FileEx.openFileInps(fn);
 		this.wb = openWorkbook(pkg);
 		this.iScached = iScached;

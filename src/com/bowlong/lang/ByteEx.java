@@ -83,14 +83,14 @@ public final class ByteEx extends ExOrigin {
 		return b;
 	}
 
-	public static final int indexOf(final byte[] b, final byte[] sp, int start) {
+	public static final int indexOf(byte[] b,byte[] sp, int start) {
 		if (b == null || sp == null)
 			return -1;
 		int len = b.length;
 		return indexOf(b, sp, start, len);
 	}
 
-	public static final int indexOf(final byte[] b, final byte[] sp, int start, int end) {
+	public static final int indexOf(byte[] b,byte[] sp, int start, int end) {
 		if (b == null || sp == null)
 			return -1;
 		int len = b.length;
@@ -255,7 +255,7 @@ public final class ByteEx extends ExOrigin {
 		}
 	}
 
-	public static final boolean equals(final byte[] b1, final byte[] b2) {
+	public static final boolean equals(byte[] b1,byte[] b2) {
 		int n = b1.length;
 		if (n == b2.length) {
 			int i = 0;
@@ -440,11 +440,11 @@ public final class ByteEx extends ExOrigin {
 		return b;
 	}
 
-	public static final byte[] append(final byte[] b1, final byte[] b2) {
+	public static final byte[] append(byte[] b1,byte[] b2) {
 		return append(b1, b2, 0, b2.length);
 	}
 
-	public static final byte[] append(final byte[] b1, final byte[] b2, int offset, int length) {
+	public static final byte[] append(byte[] b1,byte[] b2, int offset, int length) {
 		if (b1 == null || b2 == null)
 			return null;
 		if (b2.length <= 0 || b2.length <= offset || b2.length < offset + length)
@@ -455,48 +455,48 @@ public final class ByteEx extends ExOrigin {
 		return r;
 	}
 
-	public static final byte[] appendBoolean(final byte[] b1, final boolean val) {
+	public static final byte[] appendBoolean(byte[] b1,boolean val) {
 		byte[] b2 = putBoolean(val);
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendByte(final byte[] b1, final byte val) {
+	public static final byte[] appendByte(byte[] b1,byte val) {
 		byte[] b2 = new byte[1];
 		b2[0] = val;
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendChar(final byte[] b1, final char val) {
+	public static final byte[] appendChar(byte[] b1,char val) {
 		byte[] b2 = putChar(val);
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendShort(final byte[] b1, final short val) {
+	public static final byte[] appendShort(byte[] b1,short val) {
 		byte[] b2 = putShort(val);
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendInt(final byte[] b1, final int val) {
+	public static final byte[] appendInt(byte[] b1,int val) {
 		byte[] b2 = putInt(val);
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendFloat(final byte[] b1, final float val) {
+	public static final byte[] appendFloat(byte[] b1,float val) {
 		byte[] b2 = putFloat(val);
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendLong(final byte[] b1, final long val) {
+	public static final byte[] appendLong(byte[] b1,long val) {
 		byte[] b2 = putLong(val);
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendDouble(final byte[] b1, final double val) {
+	public static final byte[] appendDouble(byte[] b1,double val) {
 		byte[] b2 = putDouble(val);
 		return append(b1, b2);
 	}
 
-	public static final byte[] bitSet2ByteArray(final BitSet bitSet) {
+	public static final byte[] bitSet2ByteArray(BitSet bitSet) {
 		byte[] bytes = new byte[bitSet.size() / 8];
 		for (int i = 0; i < bitSet.size(); i++) {
 			int index = i / 8;
@@ -506,7 +506,7 @@ public final class ByteEx extends ExOrigin {
 		return bytes;
 	}
 
-	public static final BitSet byteArray2BitSet(final byte[] bytes) {
+	public static final BitSet byteArray2BitSet(byte[] bytes) {
 		BitSet bitSet = new BitSet(bytes.length * 8);
 		int index = 0;
 		for (int i = 0; i < bytes.length; i++) {
