@@ -1087,10 +1087,10 @@ public final class NumEx extends ExOrigin {
 		} else {
 			writeSwappedInteger(_bs, 0, v);
 		}
-		_bs[0] = (byte) (isHigh2Low ? ((_bs[0] >> 56) & 0xff) : ((_bs[0] >> 32)) & 0xff);
-		_bs[1] = (byte) (isHigh2Low ? ((_bs[1] >> 48) & 0xff) : ((_bs[1] >> 40)) & 0xff);
-		_bs[2] = (byte) (isHigh2Low ? ((_bs[2] >> 40) & 0xff) : ((_bs[2] >> 48)) & 0xff);
-		_bs[3] = (byte) (isHigh2Low ? ((_bs[3] >> 32) & 0xff) : ((_bs[3] >> 56)) & 0xff);
+		// _bs[0] = (byte) (isHigh2Low ? ((_bs[0] >> 56) & 0xff) : ((_bs[0] >> 32)) & 0xff);
+		// _bs[1] = (byte) (isHigh2Low ? ((_bs[1] >> 48) & 0xff) : ((_bs[1] >> 40)) & 0xff);
+		// _bs[2] = (byte) (isHigh2Low ? ((_bs[2] >> 40) & 0xff) : ((_bs[2] >> 48)) & 0xff);
+		// _bs[3] = (byte) (isHigh2Low ? ((_bs[3] >> 32) & 0xff) : ((_bs[3] >> 56)) & 0xff);
 		try {
 			return DatatypeConverter.printBase64Binary(_bs);
 		} catch (Exception e) {
