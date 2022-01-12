@@ -1,5 +1,7 @@
 package com.bowlong.tool;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.bowlong.basic.ExToolkit;
 import com.bowlong.objpool.StringBufPool;
+import com.bowlong.objpool.StringBuilderPool;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 /**
@@ -18,7 +21,8 @@ import com.bowlong.objpool.StringBufPool;
  *
  */
 public class TkitOrigin extends ExToolkit {
-	static final Map<String, Object> allParams(Map<String, Object> map, StringBuffer buff, String key, String[] vals, boolean isNoFitlerEmpty) {
+	static final Map<String, Object> allParams(Map<String, Object> map, StringBuffer buff, String key, String[] vals,
+			boolean isNoFitlerEmpty) {
 		buff.setLength(0);
 		int lens = vals.length;
 		for (int i = 0; i < lens; i++) {
@@ -87,6 +91,35 @@ public class TkitOrigin extends ExToolkit {
 	/*** 取得HttpServletRequest全部参数 getParameterMap **/
 	static public final Map<String, Object> getAllParamsBy(HttpServletRequest request) {
 		return getAllParamsBy(request, false);
+	}
+
+	/*** 取得 HttpServletRequest 的 body 内容 **/
+	static public final String getBody(HttpServletRequest request) {
+		StringBuilder sb = StringBuilderPool.borrowObject();
+		try (BufferedReader br = request.getReader()) {
+			String str;
+			while ((str = br.readLine()) != null) {
+				sb.append(str);
+			}
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String ret = sb.toString();
+		StringBuilderPool.returnObject(sb);
+		return ret;
+	}
+
+	static public final byte[] getBodyBytes(HttpServletRequest request) {
+		int len = request.getContentLength();
+		byte[] buffer = new byte[len];
+		try (InputStream in = request.getInputStream();) {
+			in.read(buffer, 0, len);
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return buffer;
 	}
 
 	/*** 简单拼接取得数量的Sql语句 **/
