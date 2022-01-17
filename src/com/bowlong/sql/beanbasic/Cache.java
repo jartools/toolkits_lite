@@ -192,6 +192,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 				return;
 			if (listIn.contains(item))
 				return;
+			listUp.remove(item);
 			listUp.add(item);
 		}
 	}
