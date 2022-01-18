@@ -12,7 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.bowlong.io.FileEx;
 import com.bowlong.io.FileRw;
-import com.bowlong.json.MyJson;
+import com.bowlong.json.JsonGsonHelper;
 import com.bowlong.objpool.StringBufPool;
 import com.bowlong.text.Encoding;
 
@@ -41,7 +41,7 @@ public class Excel2Pb {
 		Map<String, String> map = new HashMap<String, String>();
 		if (buff != null) {
 			String content = new String(buff, Encoding.UTF8);
-			map = MyJson.toMap(content);
+			map = JsonGsonHelper.toMap4Gson(content);
 		}
 		for (Map.Entry<String, String> mb : md5Map.entrySet()) {
 			String key = mb.getKey();
@@ -59,7 +59,7 @@ public class Excel2Pb {
 		}
 		// 写sersion
 		verFp = FileRw.createFile(url + "version.json");
-		buff = MyJson.toJSONString(md5Map).getBytes();
+		buff = JsonGsonHelper.toJSONStr4Gson(md5Map).getBytes();
 		writeFile(verFp, buff);
 		stream.close();
 	}

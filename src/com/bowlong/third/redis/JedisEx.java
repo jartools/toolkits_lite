@@ -8,7 +8,7 @@ import java.util.Set;
 
 import com.bowlong.basic.ExToolkit;
 import com.bowlong.bio2.B2Helper;
-import com.bowlong.json.MyJson;
+import com.bowlong.json.JsonGsonHelper;
 import com.bowlong.lang.task.ThreadEx;
 import com.bowlong.sql.beanbasic.BeanSupport;
 import com.bowlong.util.NewMap;
@@ -287,7 +287,7 @@ public class JedisEx {
 					@Override
 					public void onReceive(String channel, String message) {
 						System.out.println("onReceive1:" + channel + " " + message);
-						System.out.println(MyJson.toMap(message));
+						System.out.println(JsonGsonHelper.toMap4Gson(message));
 					}
 				}, PUBSUB_CHN_SET);
 			}
@@ -300,7 +300,7 @@ public class JedisEx {
 					@Override
 					public void onReceive(String channel, String message) {
 						System.out.println("onReceive2:" + channel + " " + message);
-						System.out.println(MyJson.toMap(message));
+						System.out.println(JsonGsonHelper.toMap4Gson(message));
 					}
 				}, PUBSUB_CHN_HSET);
 			}

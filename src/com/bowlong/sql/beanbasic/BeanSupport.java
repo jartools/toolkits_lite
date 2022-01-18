@@ -1,6 +1,5 @@
 package com.bowlong.sql.beanbasic;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.bowlong.bio2.B2OutputStream;
 import com.bowlong.io.ByteOutStream;
-import com.bowlong.json.MyJson;
+import com.bowlong.json.JsonGsonHelper;
 import com.bowlong.lang.PStr;
 import com.bowlong.objpool.ByteOutPool;
 import com.bowlong.objpool.StringBufPool;
@@ -177,14 +176,14 @@ public abstract class BeanSupport extends BeanBasic {
 			return result;
 
 		try {
-			result = MyJson.parse(s);
+			result = JsonGsonHelper.toMLObject4Gson(s);
 			if (result == null)
 				return null;
 			if (result instanceof String)
 				return null;
 
 			jsonCache.put(fieldEn, result);
-		} catch (IOException e1) {
+		} catch (Exception e1) {
 			// e1.printStackTrace();
 		}
 		return result;
@@ -195,7 +194,7 @@ public abstract class BeanSupport extends BeanBasic {
 		if (value == null)
 			return null;
 		try {
-			return MyJson.parse(value);
+			return JsonGsonHelper.toMLObject4Gson(value);
 		} catch (Exception e) {
 			// e.printStackTrace();
 		}

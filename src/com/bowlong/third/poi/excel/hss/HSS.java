@@ -1,7 +1,6 @@
 package com.bowlong.third.poi.excel.hss;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +16,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
-import com.bowlong.json.MyJson;
+import com.bowlong.json.JsonGsonHelper;
 import com.bowlong.lang.NumEx;
 import com.bowlong.lang.StrEx;
 import com.bowlong.objpool.StringBufPool;
@@ -382,8 +381,8 @@ public class HSS extends PoiEx {
 	public static final Object getJSON(HSSFSheet sheet,int row,int column) {
 		try {
 			String str = getString(sheet, row, column);
-			return MyJson.parse(str);
-		} catch (IOException e) {
+			return JsonGsonHelper.toMLObject4Gson(str);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;

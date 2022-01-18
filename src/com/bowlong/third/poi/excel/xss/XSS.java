@@ -19,7 +19,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.bowlong.io.FileEx;
-import com.bowlong.json.MyJson;
+import com.bowlong.json.JsonGsonHelper;
 import com.bowlong.lang.NumEx;
 import com.bowlong.lang.StrEx;
 import com.bowlong.objpool.StringBufPool;
@@ -394,8 +394,8 @@ public class XSS extends PoiEx {
 	public static final Object getJSON(XSSFSheet sheet,int row,int column) {
 		try {
 			String str = getString(sheet, row, column);
-			return MyJson.parse(str);
-		} catch (IOException e) {
+			return JsonGsonHelper.toMLObject4Gson(str);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
