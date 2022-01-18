@@ -79,7 +79,7 @@ public class HttpUrlConEx extends HttpBaseEx {
 			// Map<String, List<String>> map = conn.getHeaderFields();
 			int respCode = conn.getResponseCode();
 			byte[] _ret = null;
-			if (HttpURLConnection.HTTP_OK == respCode) {
+			if (respCode < HttpURLConnection.HTTP_BAD_REQUEST) {
 				_ret = inps2Bytes(conn.getInputStream());
 			} else {
 				_ret = inps2Bytes(conn.getErrorStream());

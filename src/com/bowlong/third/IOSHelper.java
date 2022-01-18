@@ -48,7 +48,7 @@ public class IOSHelper {
 		dos.flush();
 		dos.close();
 		int resultCode = httpConn.getResponseCode();
-		if (HttpURLConnection.HTTP_OK == resultCode) {
+		if (resultCode < HttpURLConnection.HTTP_BAD_REQUEST) {
 			StringBuffer sb = new StringBuffer();
 			String readLine = new String();
 			BufferedReader respReader = new BufferedReader(new InputStreamReader(httpConn.getInputStream(), "UTF-8"));
