@@ -1,4 +1,4 @@
-package com.bowlong.third;
+package com.bowlong.json;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
-import com.bowlong.json.EnDeJsonI;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class FastJSON extends JSON {

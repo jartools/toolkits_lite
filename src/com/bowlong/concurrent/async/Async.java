@@ -22,12 +22,12 @@ import java.util.concurrent.RecursiveTask;
 
 import com.bowlong.bio2.B2Helper;
 import com.bowlong.io.FileEx;
+import com.bowlong.json.FastJSON;
 import com.bowlong.lang.ByteEx;
 import com.bowlong.lang.StrEx;
 import com.bowlong.lang.task.ThreadEx;
 import com.bowlong.net.http.HttpEx;
 import com.bowlong.text.Encoding;
-import com.bowlong.third.FastJSON;
 
 @SuppressWarnings("rawtypes")
 public class Async {
