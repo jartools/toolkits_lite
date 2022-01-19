@@ -177,7 +177,7 @@ public class CacheSync<T extends BeanBasic> extends ExToolkit {
 	protected void rmCache(T item) {
 	}
 
-	public void CacheSyncNew(T item) {
+	public void cacheNew(T item) {
 		synchronized (listIn) {
 			if (listDel.contains(item))
 				return;
@@ -186,7 +186,7 @@ public class CacheSync<T extends BeanBasic> extends ExToolkit {
 		Cache(item);
 	}
 
-	public void CacheSyncUpdate(T item) {
+	public void cacheUpdate(T item) {
 		synchronized (listUp) {
 			if (listDel.contains(item))
 				return;
@@ -197,7 +197,7 @@ public class CacheSync<T extends BeanBasic> extends ExToolkit {
 		}
 	}
 
-	public void CacheSyncDelete(T item) {
+	public void cacheDelete(T item) {
 		synchronized (listDel) {
 			listIn.remove(item);
 			listUp.remove(item);
