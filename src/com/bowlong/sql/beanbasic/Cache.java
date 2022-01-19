@@ -33,7 +33,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 
 	static Log log = getLog(Cache.class);
 
-	// 为了防止多线程异常问题，需要在ProCache的初始化的时候，将pool池初始好
+	// 为了防止多线程异常问题，需要在Cache的初始化的时候，将pool池初始好
 	static final public <T extends BeanBasic> void initPool(Class<T> clazz) {
 		BBasisPool.initPool(new BBasisPool<T>(clazz));
 	}
@@ -61,6 +61,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	}
 
 	protected Cache() {
+		// 为了防止多线程异常问题，需要在Cache的初始化的时候，将pool池初始好
 		_init();
 	}
 
@@ -201,27 +202,27 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		case DB_TYPE_D:
 			listIn.remove(key);
 			listUp.remove(key);
-			this.cacheDelete(item);
+			this._cacheDelete(item);
 			break;
 		default:
-			this.cacheUpdate(item);
+			this._cacheUpdate(item);
 			break;
 		}
 	}
 
-	public void cacheDB4Del(T item) {
+	public void cacheDelete(T item) {
 		this.cacheDB(item, DB_TYPE_D);
 	}
 
-	public void cacheDB4Up(T item) {
+	public void cacheUpdate(T item) {
 		this.cacheDB(item, DB_TYPE_U);
 	}
 
-	public void cacheDB4New(T item) {
+	public void cacheNew(T item) {
 		this.cacheDB(item, DB_TYPE_N);
 	}
 
-	private void cacheNew(T item) {
+	private void _cacheNew(T item) {
 		if (item.getmMKey() > 0)
 			return;
 		T nClone = item.toSave();
@@ -232,9 +233,9 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		cache(item);
 	}
 
-	private void cacheUpdate(T item) {
+	private void _cacheUpdate(T item) {
 		if (item.getmMKey() <= 0) {
-			this.cacheNew(item);
+			this._cacheNew(item);
 			return;
 		}
 
@@ -245,7 +246,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		listUp.add(nClone);
 	}
 
-	private void cacheDelete(T item) {
+	private void _cacheDelete(T item) {
 		T nClone = item.toSave();
 		if (nClone == null)
 			return;
