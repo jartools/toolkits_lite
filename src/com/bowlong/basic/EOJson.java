@@ -161,12 +161,22 @@ public class EOJson extends EOException {
 	 * @return
 	 * @throws Exception
 	 */
-	static final public JSONObject toJSON(String json) throws Exception {
-		return new JSONObject(json);
+	static final public JSONObject toJSON(String json) {
+		try {
+			return new JSONObject(json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	static final public JSONArray toJSONArr(String json) throws Exception {
-		return new JSONArray(json);
+	static final public JSONArray toJSONArr(String json) {
+		try {
+			return new JSONArray(json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**

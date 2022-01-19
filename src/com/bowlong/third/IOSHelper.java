@@ -74,12 +74,7 @@ public class IOSHelper {
 	}
 
 	static final private JSONObject toJson(String vStr) {
-		try {
-			return JsonHelper.toJSON(vStr);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return JsonHelper.toJSON(vStr);
 	}
 
 	static final public JSONObject lastPurchase(String result) {
