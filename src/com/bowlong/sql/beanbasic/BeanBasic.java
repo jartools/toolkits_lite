@@ -21,6 +21,56 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 	static final public String selFmt = "SELECT * FROM `%s` WHERE ";
 	static final public String upFmt = "UPDATE `%s` SET %s WHERE %s";
 	static final public String delFmt = "DELETE FROM `%s` WHERE %s";
+	static private long mCursor = 0;
+
+	protected long mMKey = 0; // 数据库主键id标识
+	protected long mCKey = 0; // 对象实例唯一标识(非全局唯一表示，而是new Class的Class的标识)
+	private long mLTime = 0; // 最后操作时间
+	private int mDBType = 0; // 当前数据类型
+
+	public long getmMKey() {
+		return mMKey;
+	}
+
+	public void setmMKey(long mMKey) {
+		this.mMKey = mMKey;
+	}
+
+	public long getmCKey() {
+		return mCKey;
+	}
+
+	public void setmCKey(long mCKey) {
+		this.mCKey = mCKey;
+	}
+
+	public long getmLTime() {
+		return mLTime;
+	}
+
+	public int getmDBType() {
+		return mDBType;
+	}
+
+	public void setmDBType(int mDBType) {
+		this.mDBType = mDBType;
+	}
+
+	public BeanBasic() {
+		super();
+		this.mCKey = (++mCursor);
+	}
+
+	public BeanBasic(long mMKey) {
+		this();
+		this.mMKey = mMKey;
+	}
+
+	public BeanBasic(long mMKey, long mCKey) {
+		super();
+		this.mMKey = mMKey;
+		this.mCKey = mCKey;
+	}
 
 	private Map<String, Object> toMap(ResultSet rs) throws SQLException {
 		return SqlEx.toMap(rs);
@@ -82,8 +132,25 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 		return toMap4Json(map);
 	}
 
+	public void newLastTime() {
+		this.mLTime = now();
+	}
+
+	public <T extends BeanBasic> T toSave() {
+		T cObj = (T) Cache.borrowObject(this.getClass());
+		cObj.setmMKey(this.mMKey);
+		cObj.setmCKey(this.mCKey);
+		cObj.setmDBType(0);
+		cObj.newLastTime();
+		return cObj;
+	}
+
 	/** 清除部分 */
 	public void clear() {
+		this.mMKey = 0;
+		this.mCKey = 0;
+		this.mLTime = 0;
+		this.mDBType = 0;
 	}
 
 	/** 清除全部 */
