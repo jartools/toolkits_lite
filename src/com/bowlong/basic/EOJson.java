@@ -57,16 +57,16 @@ public class EOJson extends EOException {
 	 * @throws JSONException
 	 */
 	static final public Map toMap(String jsonString) throws JSONException {
-		JSONObject jsonObject = new JSONObject(jsonString);
+		JSONObject jroot = new JSONObject(jsonString);
 		Map result = new HashMap();
-		Iterator iterator = jsonObject.keys();
+		Iterator iterator = jroot.keys();
 		String key = null;
-		String value = null;
-
+		Object value = null;
 		while (iterator.hasNext()) {
 			key = (String) iterator.next();
-			value = jsonObject.getString(key);
-			result.put(key, value);
+			value = jroot.opt(key);
+			if (value != null)
+				result.put(key, value);
 		}
 		return result;
 	}
