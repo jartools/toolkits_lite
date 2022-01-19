@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -54,21 +53,86 @@ public class EOJson extends EOException {
 	 * @param jsonObject
 	 *            json对象
 	 * @return Map对象
-	 * @throws JSONException
+	 * @throws Exception
 	 */
-	static final public Map toMap(String jsonString) throws JSONException {
+	static final public Map toMap(String jsonString) throws Exception {
 		JSONObject jroot = new JSONObject(jsonString);
-		Map result = new HashMap();
+		Map res = new HashMap();
 		Iterator iterator = jroot.keys();
 		String key = null;
-		Object value = null;
+		Object val = null;
+		Object val2 = null;
 		while (iterator.hasNext()) {
 			key = (String) iterator.next();
-			value = jroot.opt(key);
-			if (value != null)
-				result.put(key, value);
+			val = jroot.opt(key);
+			if (val == null)
+				continue;
+			if (val instanceof JSONObject) {
+				val2 = toMap((JSONObject) val);
+				if (val2 != null)
+					res.put(key, val2);
+			} else if (val instanceof JSONArray) {
+				val2 = toList((JSONArray) val);
+				if (val2 != null)
+					res.put(key, val2);
+			} else {
+				res.put(key, val);
+			}
 		}
-		return result;
+		return res;
+	}
+
+	static final public Map toMap(JSONObject json) throws Exception {
+		if (json == null)
+			return null;
+		Map res = new HashMap();
+		Iterator iterator = json.keys();
+		String key = null;
+		Object val = null;
+		Object val2 = null;
+		while (iterator.hasNext()) {
+			key = (String) iterator.next();
+			val = json.opt(key);
+			if (val == null)
+				continue;
+			if (val instanceof JSONObject) {
+				val2 = toMap((JSONObject) val);
+				if (val2 != null)
+					res.put(key, val2);
+			} else if (val instanceof JSONArray) {
+				val2 = toList((JSONArray) val);
+				if (val2 != null)
+					res.put(key, val2);
+			} else {
+				res.put(key, val);
+			}
+		}
+		return res;
+	}
+
+	static final public List<Object> toList(JSONArray json) throws Exception {
+		if (json == null)
+			return null;
+		List<Object> list = newListT();
+		int lens = json.length();
+		Object val = null, val2 = null;
+		for (int i = 0; i < lens; i++) {
+			val = json.opt(i);
+			if (val == null)
+				continue;
+			if (val instanceof JSONObject) {
+				val2 = toMap((JSONObject) val);
+				if (val2 != null)
+					list.add(val2);
+			} else if (val instanceof JSONArray) {
+				val2 = toList((JSONArray) val);
+				if (val2 != null)
+					list.add(val2);
+			} else {
+				list.add(val);
+			}
+		}
+		return list;
 	}
 
 	/**
@@ -95,13 +159,13 @@ public class EOJson extends EOException {
 	 * 
 	 * @param json
 	 * @return
-	 * @throws JSONException
+	 * @throws Exception
 	 */
-	static final public JSONObject toJSON(String json) throws JSONException {
+	static final public JSONObject toJSON(String json) throws Exception {
 		return new JSONObject(json);
 	}
 
-	static final public JSONArray toJSONArr(String json) throws JSONException {
+	static final public JSONArray toJSONArr(String json) throws Exception {
 		return new JSONArray(json);
 	}
 
@@ -143,7 +207,7 @@ public class EOJson extends EOException {
 	 * @return json对象
 	 * @throws ParseException
 	 *             json解析异常
-	 * @throws JSONException
+	 * @throws Exception
 	 */
 	static final public Object toJavaBean(Object javabean, String jsonString) throws Exception {
 		JSONObject jsonObject = new JSONObject(jsonString);
