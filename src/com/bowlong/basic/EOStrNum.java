@@ -422,6 +422,18 @@ public class EOStrNum extends EOBasic {
 		return fp;
 	}
 
+	static final public int count(String str, String target) {
+		if (isEmpty(str) || isEmpty(target))
+			return 0;
+		int _c = 0;
+		int i = str.indexOf(target);
+		while (i != -1) {
+			i = str.indexOf(target, i + 1);
+			++_c;
+		}
+		return _c;
+	}
+
 	static final public boolean isInMinMax(double v, double min, double max) {
 		return v >= min && v <= max;
 	}
