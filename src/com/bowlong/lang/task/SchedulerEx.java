@@ -41,7 +41,8 @@ public class SchedulerEx {
 
 	// /////////////////////////////////////////////////////////////////
 	// 执行 schedule
-	static public final ScheduledFuture<?> schedule(ScheduledExecutorService ses,Runnable r,long delay,TimeUnit unit) {
+	static public final ScheduledFuture<?> schedule(ScheduledExecutorService ses, Runnable r, long delay,
+			TimeUnit unit) {
 		return ses.schedule(r, delay, unit);
 	}
 
@@ -54,7 +55,8 @@ public class SchedulerEx {
 	}
 
 	static public final ScheduledFuture<?> schedule(Runnable r, long delay, TimeUnit unit) {
-		return schedule(_getSes(), r, delay, unit);
+		ScheduledExecutorService _ses = _getSes();
+		return schedule(_ses, r, delay, unit);
 	}
 
 	static public final ScheduledFuture<?> scheduleMS(Runnable r, long delay) {
@@ -65,7 +67,8 @@ public class SchedulerEx {
 		return schedule(r, delay, TimeUnit.SECONDS);
 	}
 
-	static public final ScheduledFuture<?> schedule(ScheduledExecutorService ses, Callable r, long delay, TimeUnit unit) {
+	static public final ScheduledFuture<?> schedule(ScheduledExecutorService ses, Callable r, long delay,
+			TimeUnit unit) {
 		return ses.schedule(r, delay, unit);
 	}
 
@@ -78,7 +81,8 @@ public class SchedulerEx {
 	}
 
 	static public final ScheduledFuture<?> schedule(Callable r, long delay, TimeUnit unit) {
-		return schedule(_getSes(), r, delay, unit);
+		ScheduledExecutorService _ses = _getSes();
+		return schedule(_ses, r, delay, unit);
 	}
 
 	static public final ScheduledFuture<?> scheduleMS(Callable r, long delay) {
@@ -90,20 +94,24 @@ public class SchedulerEx {
 	}
 
 	// 定时执行,再间隔调度重复执行,FixedDelay相对固定的延迟后，执行某项计划。
-	static public final ScheduledFuture<?> fixedDelay(ScheduledExecutorService scheduledPool, Runnable r, long initialDelay, long delay, TimeUnit unit) {
+	static public final ScheduledFuture<?> fixedDelay(ScheduledExecutorService scheduledPool, Runnable r,
+			long initialDelay, long delay, TimeUnit unit) {
 		return scheduledPool.scheduleWithFixedDelay(r, initialDelay, delay, unit);
 	}
 
-	static public final ScheduledFuture<?> fixedDelayMS(ScheduledExecutorService scheduledPool, Runnable r, long initialDelay, long delay) {
+	static public final ScheduledFuture<?> fixedDelayMS(ScheduledExecutorService scheduledPool, Runnable r,
+			long initialDelay, long delay) {
 		return fixedDelay(scheduledPool, r, initialDelay, delay, TimeUnit.MILLISECONDS);
 	}
 
-	static public final ScheduledFuture<?> fixedDelaySec(ScheduledExecutorService scheduledPool, Runnable r, long initialDelay, long delay) {
+	static public final ScheduledFuture<?> fixedDelaySec(ScheduledExecutorService scheduledPool, Runnable r,
+			long initialDelay, long delay) {
 		return fixedDelay(scheduledPool, r, initialDelay, delay, TimeUnit.SECONDS);
 	}
 
 	static public final ScheduledFuture<?> fixedDelay(Runnable r, long initialDelay, long delay, TimeUnit unit) {
-		return fixedDelay(_getSes(), r, initialDelay, delay, unit);
+		ScheduledExecutorService _ses = _getSes();
+		return fixedDelay(_ses, r, initialDelay, delay, unit);
 	}
 
 	static public final ScheduledFuture<?> fixedDelayMS(Runnable r, long initialDelay, long delay) {
@@ -115,20 +123,24 @@ public class SchedulerEx {
 	}
 
 	// 已固定的频率来执行某项计划(任务)
-	static public final ScheduledFuture<?> fixedRate(ScheduledExecutorService threadPool, Runnable r, long initialDelay, long delay, TimeUnit unit) {
+	static public final ScheduledFuture<?> fixedRate(ScheduledExecutorService threadPool, Runnable r, long initialDelay,
+			long delay, TimeUnit unit) {
 		return threadPool.scheduleAtFixedRate(r, initialDelay, delay, unit);
 	}
 
-	static public final ScheduledFuture<?> fixedRateMS(ScheduledExecutorService threadPool, Runnable r, long initialDelay, long delay) {
+	static public final ScheduledFuture<?> fixedRateMS(ScheduledExecutorService threadPool, Runnable r,
+			long initialDelay, long delay) {
 		return fixedRate(threadPool, r, initialDelay, delay, TimeUnit.MILLISECONDS);
 	}
 
-	static public final ScheduledFuture<?> fixedRateSec(ScheduledExecutorService threadPool, Runnable r, long initialDelay, long delay) {
+	static public final ScheduledFuture<?> fixedRateSec(ScheduledExecutorService threadPool, Runnable r,
+			long initialDelay, long delay) {
 		return fixedRate(threadPool, r, initialDelay, delay, TimeUnit.SECONDS);
 	}
 
 	static public final ScheduledFuture<?> fixedRate(Runnable r, long initialDelay, long delay, TimeUnit unit) {
-		return fixedRate(_getSes(), r, initialDelay, delay, unit);
+		ScheduledExecutorService _ses = _getSes();
+		return fixedRate(_ses, r, initialDelay, delay, unit);
 	}
 
 	static public final ScheduledFuture<?> fixedRateMS(Runnable r, long initialDelay, long delay) {
@@ -145,18 +157,21 @@ public class SchedulerEx {
 
 	// /////////////////////////////////////////////////////////////////
 	// 定时-执行
-	static public final ScheduledFuture<?> timeFixedDelay(ScheduledExecutorService threadPool, Runnable r, Date d, long delay) {
+	static public final ScheduledFuture<?> timeFixedDelay(ScheduledExecutorService threadPool, Runnable r, Date d,
+			long delay) {
 		long initialDelay = d.getTime() - now();
 		initialDelay = initialDelay <= 0 ? 1 : initialDelay;
 		return fixedDelayMS(threadPool, r, initialDelay, delay);
 	}
 
 	static public final ScheduledFuture<?> timeFixedDelay(Runnable r, Date d, long delay) {
-		return timeFixedDelay(_getSes(), r, d, delay);
+		ScheduledExecutorService _ses = _getSes();
+		return timeFixedDelay(_ses, r, d, delay);
 	}
 
 	// 确定时分秒，每日执行
-	static public final ScheduledFuture<?> timeEveryDay(ScheduledExecutorService threadPool, Runnable r, int hour, int minute, int sec) {
+	static public final ScheduledFuture<?> timeEveryDay(ScheduledExecutorService threadPool, Runnable r, int hour,
+			int minute, int sec) {
 		long now = now();
 		NewDate dat = new NewDate();
 		long h = dat.getHour();
@@ -177,6 +192,7 @@ public class SchedulerEx {
 
 	// 确定时分秒，每日执行
 	static public final ScheduledFuture<?> timeEveryDay(Runnable r, int hour, int minute, int sec) {
-		return timeEveryDay(_getSes(), r, hour, minute, sec);
+		ScheduledExecutorService _ses = _getSes();
+		return timeEveryDay(_ses, r, hour, minute, sec);
 	}
 }

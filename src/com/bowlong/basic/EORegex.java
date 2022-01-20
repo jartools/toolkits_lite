@@ -25,8 +25,9 @@ public class EORegex extends EOJson {
 		int start = 0;
 		Pattern p = Pattern.compile(regx);
 		Matcher m = p.matcher(str);
+		String item;
 		while (m.find(start)) {
-			String item = m.group();
+			item = m.group();
 			start = m.end();
 			ret.add(item);
 		}
@@ -40,8 +41,9 @@ public class EORegex extends EOJson {
 		int start = 0;
 		Pattern p = Pattern.compile(regx);
 		Matcher m = p.matcher(str);
+		String item;
 		while (m.find(start)) {
-			String item = m.group();
+			item = m.group();
 			start = m.end();
 			ret.add(item);
 		}
@@ -90,8 +92,9 @@ public class EORegex extends EOJson {
 		int start = 0;
 		Pattern p = Pattern.compile(regx);
 		Matcher m = p.matcher(str);
+		String item;
 		while (m.find(start)) {
-			String item = m.group();
+			item = m.group();
 			start = m.end();
 			ret.add(item);
 		}
@@ -113,7 +116,8 @@ public class EORegex extends EOJson {
 		String mid = String.format("(%s)+", contains);
 		String str2 = "(.)+"; // 必须有
 		String str3 = "(.*)?"; // 可有可无
-		return isMatch(src, (isBeg ? str2 : str3) + mid + (isEnd ? str2 : str3));
+		String regx = (isBeg ? str2 : str3) + mid + (isEnd ? str2 : str3);
+		return isMatch(src, regx);
 	}
 
 	static final public boolean isContains(String src, String contains) {

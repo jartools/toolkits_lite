@@ -30,12 +30,14 @@ public final class MyThreadFactory implements ThreadFactory {
 	public MyThreadFactory(String nameP, boolean daemon) {
 		SecurityManager s = System.getSecurityManager();
 		group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
-		namePrefix = String.format(fmt, nameP, nPool.getAndIncrement());
+		int _c = nPool.getAndIncrement();
+		namePrefix = String.format(fmt, nameP, _c);
 		this.daemon = daemon;
 	}
 
 	public Thread newThread(Runnable r) {
-		Thread t = new Thread(group, r, namePrefix + nThread.getAndIncrement(), 0);
+		String nm = namePrefix + nThread.getAndIncrement();
+		Thread t = new Thread(group, r, nm, 0);
 		t.setDaemon(daemon);
 		if (t.getPriority() != Thread.NORM_PRIORITY)
 			t.setPriority(Thread.NORM_PRIORITY);

@@ -98,7 +98,8 @@ public class FileEx extends InputStreamEx implements Serializable {
 	 * @throws Exception
 	 */
 	static final public boolean createFolder(String path) {
-		return createFolder(openFile(path));
+		File f = openFile(path);
+		return createFolder(f);
 	}
 
 	// createDire
@@ -111,7 +112,8 @@ public class FileEx extends InputStreamEx implements Serializable {
 	static final public void createFile(File f) throws Exception {
 		try {
 			if (isNoExists(f)) {
-				createFolder(f.getParentFile());
+				File fp = f.getParentFile();
+				createFolder(fp);
 				f.createNewFile();
 			}
 		} finally {
@@ -159,7 +161,8 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public void delFile(String filePath) {
-		delFile(openFile(filePath));
+		File f = openFile(filePath);
+		delFile(f);
 	}
 
 	/**
@@ -186,17 +189,20 @@ public class FileEx extends InputStreamEx implements Serializable {
 		}
 		String[] tempList = file.list();
 		File temp = null;
+		String _fp;
 		for (int i = 0; i < tempList.length; i++) {
 			if (path.endsWith(File.separator)) {
-				temp = openFile(path + tempList[i]);
+				_fp = path + tempList[i];
 			} else {
-				temp = openFile(path + File.separator + tempList[i]);
+				_fp = path + File.separator + tempList[i];
 			}
+			temp = openFile(_fp);
 			if (temp.isFile()) {
 				temp.delete();
 			} else if (temp.isDirectory()) {
-				delAllFile(path + "/" + tempList[i]); // 先删除文件夹里面的文件
-				delFolder(path + "/" + tempList[i]); // 再删除空文件夹
+				_fp = path + "/" + tempList[i];
+				delAllFile(_fp); // 先删除文件夹里面的文件
+				delFolder(_fp); // 再删除空文件夹
 			}
 		}
 	}
@@ -215,7 +221,8 @@ public class FileEx extends InputStreamEx implements Serializable {
 		int byteread = 0;
 		File oldfile = openFile(oldPath);
 		if (oldfile.exists()) { // 文件存在时
-			try (InputStream inStream = new FileInputStream(oldPath); FileOutputStream fs = new FileOutputStream(newPath);) {
+			try (InputStream inStream = new FileInputStream(oldPath);
+					FileOutputStream fs = new FileOutputStream(newPath);) {
 				byte[] buffer = new byte[1024];
 				// int length;
 				while ((byteread = inStream.read(buffer)) != -1) {
@@ -242,15 +249,18 @@ public class FileEx extends InputStreamEx implements Serializable {
 		File a = openFile(oldPath);
 		String[] file = a.list();
 		File temp = null;
+		String _fp;
 		for (int i = 0; i < file.length; i++) {
 			if (oldPath.endsWith(File.separator)) {
-				temp = openFile(oldPath + file[i]);
+				_fp = oldPath + file[i];
 			} else {
-				temp = openFile(oldPath + File.separator + file[i]);
+				_fp = oldPath + File.separator + file[i];
 			}
+			temp = openFile(_fp);
 
 			if (temp.isFile()) {
-				try (FileInputStream input = new FileInputStream(temp); FileOutputStream output = new FileOutputStream(newPath + "/" + (temp.getName()).toString());) {
+				try (FileInputStream input = new FileInputStream(temp);
+						FileOutputStream output = new FileOutputStream(newPath + "/" + (temp.getName()).toString());) {
 
 					byte[] b = new byte[1024 * 5];
 					int len;
@@ -263,7 +273,9 @@ public class FileEx extends InputStreamEx implements Serializable {
 				}
 			}
 			if (temp.isDirectory()) { // 如果是子文件夹
-				copyFolder(oldPath + "/" + file[i], newPath + "/" + file[i]);
+				_fp = oldPath + "/" + file[i];
+				String _fp2 = newPath + "/" + file[i];
+				copyFolder(_fp, _fp2);
 			}
 		}
 	}
@@ -298,7 +310,8 @@ public class FileEx extends InputStreamEx implements Serializable {
 
 	static final public boolean rename(String srcPath, String name) {
 		File file = openFile(srcPath);
-		File newFile = openFile(file.getParent() + File.separator + name);
+		String _fp = file.getParent() + File.separator + name;
+		File newFile = openFile(_fp);
 		return file.renameTo(newFile);
 	}
 
@@ -476,11 +489,13 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public void writeFully(File f, String str, boolean append) throws Exception {
-		writeFully(f, str.getBytes("UTF-8"), append);
+		byte[] bts = str.getBytes("UTF-8");
+		writeFully(f, bts, append);
 	}
 
 	static final public void writeFully(String file, String str, boolean append) throws Exception {
-		writeFully(file, str.getBytes("UTF-8"), append);
+		byte[] bts = str.getBytes("UTF-8");
+		writeFully(file, bts, append);
 	}
 
 	static final public void write(String file, byte[] data) throws Exception {
@@ -510,7 +525,9 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static public void writeText(File fn, String str, Charset charset) throws Exception {
-		try (FileOutputStream fos = new FileOutputStream(fn); OutputStreamWriter osw = new OutputStreamWriter(fos, charset); BufferedWriter bw = new BufferedWriter(osw);) {
+		try (FileOutputStream fos = new FileOutputStream(fn);
+				OutputStreamWriter osw = new OutputStreamWriter(fos, charset);
+				BufferedWriter bw = new BufferedWriter(osw);) {
 			bw.write(str);
 			bw.flush();
 			osw.flush();
@@ -523,7 +540,9 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static public File writeFile(String inFile, String outFile) {
-		return writeFile(openFile(inFile), openFile(outFile));
+		File fIn = openFile(inFile);
+		File fOut = openFile(outFile);
+		return writeFile(fIn, fOut);
 	}
 
 	static public File writeFile(File inFile, File outFile) {
@@ -559,7 +578,8 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static public InputStream openInpsWithOutBom(String path) throws Exception {
-		return B2InputStream.dropBomByInps(new FileInputStream(path));
+		FileInputStream f = new FileInputStream(path);
+		return B2InputStream.dropBomByInps(f);
 	}
 
 	static final public BufferedInputStream openBufferedInputStream(InputStream is) {
@@ -598,7 +618,8 @@ public class FileEx extends InputStreamEx implements Serializable {
 		return new DataOutputStream(bos);
 	}
 
-	static final public DataOutputStream openDataOutputStream(String file, boolean append) throws FileNotFoundException {
+	static final public DataOutputStream openDataOutputStream(String file, boolean append)
+			throws FileNotFoundException {
 		OutputStream os = openOutputStream(file, append);
 		return openDataOutputStream(os);
 	}
@@ -711,8 +732,9 @@ public class FileEx extends InputStreamEx implements Serializable {
 	}
 
 	static final public byte[] getResource(Class<?> c, String fname) throws Exception {
-		InputStream in = getResourceStream(c, fname);
-		return readFully(in);
+		try (InputStream in = getResourceStream(c, fname);) {
+			return readFully(in);
+		}
 	}
 
 	static final public void main(String[] args) {

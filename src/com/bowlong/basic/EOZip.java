@@ -36,8 +36,7 @@ public class EOZip extends EOURL {
 
 	static final public byte[] gzip(byte[] b) throws IOException {
 		ByteArrayOutputStream baos = ObjPool.borrowObject(ByteArrayOutputStream.class);
-		try {
-			GZIPOutputStream gos = new GZIPOutputStream(baos);
+		try (GZIPOutputStream gos = new GZIPOutputStream(baos);) {
 			gos.write(b);
 			gos.finish();
 			return baos.toByteArray();
@@ -50,11 +49,9 @@ public class EOZip extends EOURL {
 
 	static final public byte[] unGZip(byte[] b) throws IOException {
 		ByteArrayOutputStream baos = ObjPool.borrowObject(ByteArrayOutputStream.class);
-		try {
-			int times = 1000;
-			byte[] buff = new byte[4 * 1024];
-			InputStream bais = newInStream(b);
-			GZIPInputStream gis = new GZIPInputStream(bais);
+		int times = 1000;
+		byte[] buff = new byte[4 * 1024];
+		try (InputStream bais = newInStream(b); GZIPInputStream gis = new GZIPInputStream(bais);) {
 			while (true) {
 				if (times-- <= 0)
 					break;
@@ -73,9 +70,11 @@ public class EOZip extends EOURL {
 
 	static final public byte[] unGZip(byte[] b, int srcLen) throws IOException {
 		byte[] buff = new byte[srcLen];
-		InputStream bais = newInStream(b);
-		GZIPInputStream gis = new GZIPInputStream(bais);
-		gis.read(buff);
+		try (InputStream bais = newInStream(b); GZIPInputStream gis = new GZIPInputStream(bais);) {
+			gis.read(buff);
+		} catch (IOException e) {
+			throw e;
+		}
 		return buff;
 	}
 

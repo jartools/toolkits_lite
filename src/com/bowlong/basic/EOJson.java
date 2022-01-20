@@ -30,7 +30,8 @@ public class EOJson extends EOException {
 	 */
 	static final public Map toMap(Object javaBean) {
 		Map result = new HashMap();
-		Method[] methods = javaBean.getClass().getDeclaredMethods();
+		Class jClass = javaBean.getClass();
+		Method[] methods = jClass.getDeclaredMethods();
 		for (Method method : methods) {
 			try {
 				String field = method.getName();
@@ -143,7 +144,8 @@ public class EOJson extends EOException {
 	 * @return json对象
 	 */
 	static final public JSONObject toJSON(Object bean) {
-		return toJSON(toMap(bean));
+		Map map = toMap(bean);
+		return toJSON(map);
 	}
 
 	static final public JSONObject toJSON(Map<?, ?> map) {
@@ -188,7 +190,8 @@ public class EOJson extends EOException {
 	 *            Map数据
 	 */
 	static final public Object toJavaBean(Object javabean, Map data) {
-		Method[] methods = javabean.getClass().getDeclaredMethods();
+		Class jClass = javabean.getClass();
+		Method[] methods = jClass.getDeclaredMethods();
 		for (Method method : methods) {
 
 			try {
@@ -219,9 +222,8 @@ public class EOJson extends EOException {
 	 *             json解析异常
 	 * @throws Exception
 	 */
-	static final public Object toJavaBean(Object javabean, String jsonString) throws Exception {
-		JSONObject jsonObject = new JSONObject(jsonString);
-		Map map = toMap(jsonObject.toString());
+	static final public Object toJavaBean(Object javabean, String strJson) throws Exception {
+		Map map = toMap(strJson);
 		return toJavaBean(javabean, map);
 	}
 
@@ -242,15 +244,18 @@ public class EOJson extends EOException {
 	}
 
 	static final public String toJSONStr(Object javabean) {
-		return toJSON(javabean).toString();
+		JSONObject jObj = toJSON(javabean);
+		return jObj.toString();
 	}
 
 	static final public String toJSONStr(Map<?, ?> map) {
-		return toJSON(map).toString();
+		JSONObject jObj = toJSON(map);
+		return jObj.toString();
 	}
 
 	static final public String toJSONStr(List<?> list) {
-		return toJSONArr(list).toString();
+		JSONArray jArr = toJSONArr(list);
+		return jArr.toString();
 	}
 
 	static final public JSONObject get(JSONObject json, String key) {

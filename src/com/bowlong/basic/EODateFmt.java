@@ -96,15 +96,18 @@ public class EODateFmt extends EOStrNum {
 	}
 
 	static public final String format(Date v, String fmt) {
-		return new SimpleDateFormat(fmt).format(v);
+		SimpleDateFormat fdf = new SimpleDateFormat(fmt);
+		return fdf.format(v);
 	}
 
 	static public final String format(Calendar v, String fmt) {
-		return format(v.getTime(), fmt);
+		Date d = v.getTime();
+		return format(d, fmt);
 	}
 
 	static public final String format(long ms, String fmt) {
-		return format(new Date(ms), fmt);
+		Date d = new Date(ms);
+		return format(d, fmt);
 	}
 
 	static public final Date parse2Date(Calendar cal) {
@@ -118,7 +121,8 @@ public class EODateFmt extends EOStrNum {
 	static public final Date parse2Date(String v, String fmt) {
 		Date dat = null;
 		try {
-			dat = new SimpleDateFormat(fmt).parse(v);
+			SimpleDateFormat fdf = new SimpleDateFormat(fmt);
+			dat = fdf.parse(v);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -140,7 +144,8 @@ public class EODateFmt extends EOStrNum {
 	}
 
 	static public final Calendar parse2Cal(String v, String fmt) {
-		return parse2Cal(parse2Date(v, fmt));
+		Date d = parse2Date(v, fmt);
+		return parse2Cal(d);
 	}
 
 	/*** 当前系统时间字符串(yyyy-MM-dd HH:mm:ss) **/
@@ -189,17 +194,20 @@ public class EODateFmt extends EOStrNum {
 	}
 
 	static public final String nowStr(String fmt) {
-		return format(nowDate(), fmt);
+		Date d = nowDate();
+		return format(d, fmt);
 	}
 
 	/*** 转换为字符串格式(yyyy-MM-dd HH:mm:ss) **/
 	static public final String format_YMDHms(long ms) {
-		return format_YMDHms(parse2Date(ms));
+		Date d = parse2Date(ms);
+		return format_YMDHms(d);
 	}
 
 	/*** 转换为字符串格式(yyyy-MM-dd HH:mm:ss) **/
 	static public final String format_YMDHms(Calendar v) {
-		return format_YMDHms(parse2Date(v));
+		Date d = parse2Date(v);
+		return format_YMDHms(d);
 	}
 
 	/*** 转换为字符串格式(yyyy-MM-dd HH:mm:ss) **/
@@ -327,7 +335,8 @@ public class EODateFmt extends EOStrNum {
 	static public final boolean isAfter(Date d1) {
 		if (d1 == null)
 			return false;
-		return isAfter(d1, nowDate());
+		Date d = nowDate();
+		return isAfter(d1, d);
 	}
 
 	static public final boolean isAfter(Date d1, Date d2) {
@@ -346,7 +355,8 @@ public class EODateFmt extends EOStrNum {
 	static public final boolean isBefore(Date d1) {
 		if (d1 == null)
 			return false;
-		return isBefore(d1, nowDate());
+		Date d = nowDate();
+		return isBefore(d1, d);
 	}
 
 	static public final boolean isBefore(Date d1, Date d2) {
@@ -367,14 +377,16 @@ public class EODateFmt extends EOStrNum {
 		if (d1 == null || isEmpty(d2))
 			return false;
 		Date dd2 = parse2Date(d2, pattern);
-		return compareTo(d1, dd2) >= 0;
+		int cv = compareTo(d1, dd2);
+		return cv >= 0;
 	}
 
 	/*** d1在d2时间之后,或相等 **/
 	static public final boolean isNotBefore(Date d1, Date d2) {
 		if (d1 == null || d2 == null)
 			return false;
-		return compareTo(d1, d2) >= 0;
+		int cv = compareTo(d1, d2);
+		return cv >= 0;
 	}
 
 	/*** d1在d2时间之前,或相等 **/
@@ -382,14 +394,16 @@ public class EODateFmt extends EOStrNum {
 		if (d1 == null || isEmpty(d2))
 			return false;
 		Date dd2 = parse2Date(d2, pattern);
-		return compareTo(d1, dd2) <= 0;
+		int cv = compareTo(d1, dd2);
+		return cv <= 0;
 	}
 
 	/*** d1在d2时间之前,或相等 **/
 	static public final boolean isNotAfter(Date d1, Date d2) {
 		if (d1 == null || d2 == null)
 			return false;
-		return compareTo(d1, d2) <= 0;
+		int cv = compareTo(d1, d2);
+		return cv <= 0;
 	}
 
 	/*** [subtractor:减数],[minuend:被减数] **/
@@ -454,11 +468,13 @@ public class EODateFmt extends EOStrNum {
 
 	/*** 星期数(0~6) **/
 	static final public int week(Date v) {
-		return week(parse2Cal(v));
+		Calendar c = parse2Cal(v);
+		return week(c);
 	}
 
 	static final public int week() {
-		return week(nowCalendar());
+		Calendar c = nowCalendar();
+		return week(c);
 	}
 
 	static final public Calendar setYMDHMS(Calendar c, int year, int month, int day, int hour, int minute, int second) {
@@ -487,22 +503,25 @@ public class EODateFmt extends EOStrNum {
 		return setYMDHMS(c, y, m, d, 0, 0, 0);
 	}
 
-	static final public Calendar getZero(Date c) {
-		return getZero(parse2Cal(c));
+	static final public Calendar getZero(Date d) {
+		Calendar c = parse2Cal(d);
+		return getZero(c);
 	}
 
 	static final public Calendar zeroTime() {
-		return getZero(nowCalendar());
+		Calendar c = nowCalendar();
+		return getZero(c);
 	}
 
 	static final public long zeroLong() {
-		return zeroTime().getTimeInMillis();
+		Calendar c = zeroTime();
+		return c.getTimeInMillis();
 	}
 
 	/** toWeek(0~6) */
-	static final public Calendar getZero4Week(Calendar v, int toWeek, boolean isNext) {
+	static final public Calendar getZero4Week(Calendar c, int toWeek, boolean isNext) {
 		toWeek = toWeek >= 7 ? 0 : toWeek;
-		int _curr = week(v);
+		int _curr = week(c);
 		int _diff = 0;
 		if (_curr == 0 && toWeek != 0) {
 			_diff = isNext ? toWeek : (toWeek - 7);
@@ -513,39 +532,43 @@ public class EODateFmt extends EOStrNum {
 			}
 		}
 
-		Calendar c = parse2Cal(v.getTime());
 		if (_diff != 0) {
 			c.add(Calendar.DAY_OF_MONTH, _diff);
 		}
 		return getZero(c);
 	}
 
-	static final public Calendar getZero4Week(Calendar v, int toWeek) {
-		return getZero4Week(v, toWeek, true);
+	static final public Calendar getZero4Week(Calendar c, int toWeek) {
+		return getZero4Week(c, toWeek, true);
 	}
 
-	static final public Calendar getZero4Week(Date v, int toWeek) {
-		return getZero4Week(parse2Cal(v), toWeek);
+	static final public Calendar getZero4Week(Date d, int toWeek) {
+		Calendar c = parse2Cal(d);
+		return getZero4Week(c, toWeek);
 	}
 
 	static final public Calendar getZero4Week(int toWeek) {
-		return getZero4Week(nowCalendar(), toWeek);
+		Calendar c = nowCalendar();
+		return getZero4Week(c, toWeek);
 	}
 
 	static final public long getZeroLong4Week(Calendar v, int toWeek, boolean isNext) {
-		return getZero4Week(v, toWeek, isNext).getTimeInMillis();
+		Calendar c = getZero4Week(v, toWeek, isNext);
+		return c.getTimeInMillis();
 	}
 
-	static final public long getZeroLong4Week(Calendar v, int toWeek) {
-		return getZeroLong4Week(v, toWeek, true);
+	static final public long getZeroLong4Week(Calendar c, int toWeek) {
+		return getZeroLong4Week(c, toWeek, true);
 	}
 
-	static final public long getZeroLong4Week(Date v, int toWeek) {
-		return getZeroLong4Week(parse2Cal(v), toWeek);
+	static final public long getZeroLong4Week(Date d, int toWeek) {
+		Calendar c = parse2Cal(d);
+		return getZeroLong4Week(c, toWeek);
 	}
 
 	static final public long getZeroLong4Week(int toWeek) {
-		return getZeroLong4Week(nowCalendar(), toWeek);
+		Calendar c = nowCalendar();
+		return getZeroLong4Week(c, toWeek);
 	}
 
 	static final public long getDiffNow(long src, boolean isAsc) {
@@ -553,12 +576,14 @@ public class EODateFmt extends EOStrNum {
 		return isAsc ? (_n - src) : (src - _n);
 	}
 
-	static final public long getDiffNow(Date v, boolean isAsc) {
-		return getDiffNow(v.getTime(), isAsc);
+	static final public long getDiffNow(Date d, boolean isAsc) {
+		long _l = d.getTime();
+		return getDiffNow(_l, isAsc);
 	}
 
-	static final public long getDiffNow(Calendar v, boolean isAsc) {
-		return getDiffNow(v.getTimeInMillis(), isAsc);
+	static final public long getDiffNow(Calendar c, boolean isAsc) {
+		long _l = c.getTimeInMillis();
+		return getDiffNow(_l, isAsc);
 	}
 
 	static final public long getDiffNow(String src, String fmt, boolean isAsc) {

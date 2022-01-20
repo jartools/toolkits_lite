@@ -21,7 +21,8 @@ public class EOException extends EODateFmt {
 	}
 
 	static final public String e2s(Throwable e, Object obj) {
-		return e2s(e, String.valueOf(obj), onull);
+		String fmt = String.valueOf(obj);
+		return e2s(e, fmt, onull);
 	}
 
 	static final public String e2s(Throwable e, String fmt, Object... args) {
@@ -32,7 +33,8 @@ public class EOException extends EODateFmt {
 				if (args == null || args.length <= 0) {
 					sb.append(" - ").append(fmt);
 				} else {
-					String str = StrBuilder.builder().ap(fmt, args).str();
+					StrBuilder _sb = StrBuilder.builder();
+					String str = _sb.ap(fmt, args).str();
 					// String str = String.format(fmt, args);
 					sb.append(" - ").append(str);
 				}

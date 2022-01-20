@@ -1,5 +1,7 @@
 package com.bowlong.basic;
 
+import java.net.URL;
+
 import com.bowlong.util.Ref;
 
 /**
@@ -301,7 +303,9 @@ public class EOStrNum extends EOBasic {
 	}
 
 	static final public String appPath() {
-		return EOStrNum.class.getClassLoader().getResource("").getPath();
+		ClassLoader _cL = EOStrNum.class.getClassLoader();
+		URL _url = _cL.getResource("");
+		return _url.getPath();
 	}
 
 	static final public String dirTmWebRoot() {
@@ -393,7 +397,8 @@ public class EOStrNum extends EOBasic {
 		if (index == 0) {
 			fp = fp.substring(lens);
 		} else if (index > 0) {
-			String _b = left(fp.substring(0, index), "/", true);
+			String _s = fp.substring(0, index);
+			String _b = left(_s, "/", true);
 			_b = left(_b, "/", true);
 			String _e = fp.substring(index + lens);
 			fp = _b + "/" + _e;

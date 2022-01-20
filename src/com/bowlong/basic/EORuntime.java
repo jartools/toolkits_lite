@@ -2,6 +2,7 @@ package com.bowlong.basic;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import com.bowlong.lang.InputStreamEx;
 
@@ -24,7 +25,8 @@ public class EORuntime extends EORegex {
 
 	static final public Process exec(String cmd) {
 		try {
-			return currRt().exec(cmd);
+			Runtime rt = currRt();
+			return rt.exec(cmd);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -35,17 +37,25 @@ public class EORuntime extends EORegex {
 		Process _p = exec(cmd);
 		if (_p == null)
 			return null;
-		String ret = InputStreamEx.inps2Str(_p.getInputStream());
-		_p.destroy();
+		String ret = "";
+		try (InputStream in = _p.getInputStream()) {
+			ret = InputStreamEx.inps2Str(in);
+			_p.destroy();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return ret;
 	}
 
 	// cmd = "tar -cf" + tarName + " " + fileName;
-	// envp = 设置全局环境变量，其格式为name=value;envp={"val=2", "call=Bash Shell"} 等价于 export
+	// envp = 设置全局环境变量，其格式为name=value;envp={"val=2", "call=Bash Shell"} 等价于
+	// export
 	// val=2
 	static final public Process exec(String cmd, String[] envp, File dir) {
 		try {
-			return currRt().exec(cmd, envp, dir);
+			Runtime rt = currRt();
+			return rt.exec(cmd, envp, dir);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -55,7 +65,8 @@ public class EORuntime extends EORegex {
 	// cmd = {"tar","-cf",tarName,fileName};
 	static final public Process exec(String[] cmd, String[] envp, File dir) {
 		try {
-			return currRt().exec(cmd, envp, dir);
+			Runtime rt = currRt();
+			return rt.exec(cmd, envp, dir);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -123,7 +134,8 @@ public class EORuntime extends EORegex {
 	}
 
 	static final public void addShutdownHook(Thread thread) {
-		currRt().addShutdownHook(thread);
+		Runtime rt = currRt();
+		rt.addShutdownHook(thread);
 	}
 
 	static final public String callNetstat() {
@@ -131,6 +143,7 @@ public class EORuntime extends EORegex {
 	}
 
 	static final public String callNetstat(int port) {
-		return execStr(String.format(fmtNet, port));
+		String _v = String.format(fmtNet, port);
+		return execStr(_v);
 	}
 }

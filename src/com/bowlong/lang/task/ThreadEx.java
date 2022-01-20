@@ -13,6 +13,7 @@ import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -32,7 +33,8 @@ public class ThreadEx {
 	}
 
 	static final public ExecutorService newCachedThreadPool(String name, boolean daemon) {
-		return Executors.newCachedThreadPool(newThreadFactory(name, daemon));
+		MyThreadFactory my = newThreadFactory(name, daemon);
+		return Executors.newCachedThreadPool(my);
 	}
 
 	// 创建一个固定大小线程
@@ -45,7 +47,8 @@ public class ThreadEx {
 	}
 
 	static final public ExecutorService newFixedThreadPool(String name, int nThreads, boolean daemon) {
-		return Executors.newFixedThreadPool(nThreads, newThreadFactory(name, daemon));
+		MyThreadFactory my = newThreadFactory(name, daemon);
+		return Executors.newFixedThreadPool(nThreads, my);
 	}
 
 	// 单线程
@@ -58,7 +61,8 @@ public class ThreadEx {
 	}
 
 	static final public ExecutorService newSingleThreadExecutor(String name, boolean daemon) {
-		return Executors.newSingleThreadExecutor(newThreadFactory(name, daemon));
+		MyThreadFactory my = newThreadFactory(name, daemon);
+		return Executors.newSingleThreadExecutor(my);
 	}
 
 	public static ExecutorService newThreadExecutor() {
@@ -66,11 +70,15 @@ public class ThreadEx {
 	}
 
 	public static ExecutorService newThreadExecutor(int min, int max) {
-		return new ThreadPoolExecutor(min, max, 60L, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(max), new ThreadPoolExecutor.CallerRunsPolicy());
+		ArrayBlockingQueue<Runnable> abq = new ArrayBlockingQueue<Runnable>(max);
+		CallerRunsPolicy crp = new ThreadPoolExecutor.CallerRunsPolicy();
+		return new ThreadPoolExecutor(min, max, 60L, TimeUnit.SECONDS, abq, crp);
 	}
 
 	public static ExecutorService newThreadExecutor(int min, int max, ThreadFactory threadFactory) {
-		return new ThreadPoolExecutor(min, max, 60L, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(max), threadFactory, new ThreadPoolExecutor.CallerRunsPolicy());
+		ArrayBlockingQueue<Runnable> abq = new ArrayBlockingQueue<Runnable>(max);
+		CallerRunsPolicy crp = new ThreadPoolExecutor.CallerRunsPolicy();
+		return new ThreadPoolExecutor(min, max, 60L, TimeUnit.SECONDS, abq, threadFactory, crp);
 	}
 
 	// 用线程池执行任务 ： (Executor 是 ExecutorService 的父类)
@@ -118,11 +126,13 @@ public class ThreadEx {
 	}
 
 	public static ScheduledExecutorService newScheduledPool(String name, int nThreads, boolean daemon) {
-		return Executors.newScheduledThreadPool(nThreads, newThreadFactory(name, daemon));
+		MyThreadFactory my = newThreadFactory(name, daemon);
+		return Executors.newScheduledThreadPool(nThreads, my);
 	}
 
 	static final public ScheduledExecutorService newSingleThreadScheduledExecutor(String name) {
-		return Executors.newSingleThreadScheduledExecutor(newThreadFactory(name, false));
+		MyThreadFactory my = newThreadFactory(name, false);
+		return Executors.newSingleThreadScheduledExecutor(my);
 	}
 
 	static final public FutureTask<Exception> execute(ExecutorService es, FutureTask<Exception> task) {
@@ -162,26 +172,32 @@ public class ThreadEx {
 	}
 
 	static final public void execute(Runnable r) {
-		execute(_getExec(), r);
+		ExecutorService _es = _getExec();
+		execute(_es, r);
 	}
 
 	static final public Future<?> submit(Runnable r) {
-		return submit(_getExec(), r);
+		ExecutorService _es = _getExec();
+		return submit(_es, r);
 	}
 
 	static final public <T> Future<T> submit(Callable<T> c) {
-		return submit(_getExec(), c);
+		ExecutorService _es = _getExec();
+		return submit(_es, c);
 	}
 
 	static final public void executeSingle(Runnable r) {
-		execute(_getSingleExec(), r);
+		ExecutorService _es = _getSingleExec();
+		execute(_es, r);
 	}
 
 	static final public Future<?> submitSingle(Runnable r) {
-		return submit(_getSingleExec(), r);
+		ExecutorService _es = _getSingleExec();
+		return submit(_es, r);
 	}
 
 	static final public <T> Future<T> submitSingle(Callable<T> c) {
-		return submit(_getSingleExec(), c);
+		ExecutorService _es = _getSingleExec();
+		return submit(_es, c);
 	}
 }

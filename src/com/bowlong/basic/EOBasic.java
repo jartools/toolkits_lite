@@ -197,7 +197,8 @@ public class EOBasic extends EOConfig {
 	}
 
 	static final public <K, V> Map<K, V> newMap2() {
-		return Collections.synchronizedMap(new HashMap<K, V>());
+		Map<K, V> map = newMapT();
+		return Collections.synchronizedMap(map);
 	}
 
 	static final public <K, V> Map<K, V> newMap3() {
@@ -267,7 +268,8 @@ public class EOBasic extends EOConfig {
 	}
 
 	static public final <T> List<T> newList2() {
-		return Collections.synchronizedList(new ArrayList<T>()); // add > get
+		List<T> list = newListT();
+		return Collections.synchronizedList(list); // add > get
 	}
 
 	public static final <T> List<T> newListT() {
@@ -301,8 +303,13 @@ public class EOBasic extends EOConfig {
 		return (s == null || s.isEmpty());
 	}
 
+	static final public <E> Set<E> newSetT() {
+		return new HashSet<E>();
+	}
+
 	static final public <E> Set<E> newSet() {
-		return Collections.synchronizedSet(new HashSet<E>());
+		Set<E> set = newSetT();
+		return Collections.synchronizedSet(set);
 	}
 
 	static final public boolean isEmpty(Set s) {
