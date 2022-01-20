@@ -251,6 +251,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 					rmCache(_tt);
 					dbIn.remove(_tt);
 					dbUp.remove(_tt);
+					returnObject(_tt);
 				}
 			}
 		}
