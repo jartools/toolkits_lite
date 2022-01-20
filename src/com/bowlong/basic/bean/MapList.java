@@ -99,10 +99,9 @@ public class MapList<T> extends ExToolkit {
 		return obj;
 	}
 
-	@SuppressWarnings("null")
 	public List<T> getCurrList() {
 		List<T> ret = newListT();
-		if (ret != null)
+		if (this.list != null)
 			ret.addAll(this.list);
 		else {
 			Collection<T> c = null;
