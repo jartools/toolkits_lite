@@ -35,7 +35,8 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 
 	// 为了防止多线程异常问题，需要在Cache的初始化的时候，将pool池初始好
 	static final public <T extends BeanBasic> void initPool(Class<T> clazz) {
-		BBasisPool.initPool(new BBasisPool<T>(clazz));
+		BBasisPool<T> bp = new BBasisPool<T>(clazz);
+		BBasisPool.initPool(bp);
 	}
 
 	static final public <T extends BeanBasic> BBasisPool<T> getPool(Class<T> clazz) {
@@ -72,12 +73,13 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	protected String coulmns_all = "";
 	protected String val_all = "";
 	protected DataSet _dset = null; // mysql的DataSet
-	private String sqlIn = "";
+	protected String sqlIn = "";
 	protected String sqlUp = "";
 	protected String sqlDel = "";
-	final protected MapListBBasic<T> listIn = new MapListBBasic<>();
-	final protected MapListBBasic<T> listUp = new MapListBBasic<>();
-	final protected MapListBBasic<T> listDel = new MapListBBasic<>();
+	final protected MapListBBasic<T> dbIn = new MapListBBasic<T>();
+	final protected MapListBBasic<T> dbUp = new MapListBBasic<T>();
+	final protected MapListBBasic<T> dbDel = new MapListBBasic<T>();
+	final Object oLock = new Object();
 
 	// 分页查询效率慢,优化方式 ORDER BY
 	// (建议where的时候用某个自增标识来做起点。比如id必须大于那个最后一条记录的id,并用 ORDER BY id 贼快)
@@ -194,116 +196,65 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	protected void rmCache(T item) {
 	}
 
-	protected void cacheDB(T item, int dbType) {
-		if (item == null)
-			return;
-		long key = item.getmCKey();
-		switch (dbType) {
-		case DB_TYPE_D:
-			listIn.remove(key);
-			listUp.remove(key);
-			this._cacheDelete(item);
-			break;
-		default:
-			this._cacheUpdate(item);
-			break;
+	public void cacheNew(T item) {
+		synchronized (oLock) {
+			if (dbDel.contains(item))
+				return;
+			dbIn.add(item);
+		}
+		cache(item);
+	}
+
+	public void cacheUpdate(T item) {
+		synchronized (oLock) {
+			if (dbDel.contains(item))
+				return;
+			if (dbIn.contains(item))
+				return;
+			if (dbUp.contains(item))
+				return;
+			dbUp.add(item);
 		}
 	}
 
 	public void cacheDelete(T item) {
-		this.cacheDB(item, DB_TYPE_D);
-	}
-
-	public void cacheUpdate(T item) {
-		this.cacheDB(item, DB_TYPE_U);
-	}
-
-	public void cacheNew(T item) {
-		this.cacheDB(item, DB_TYPE_N);
-	}
-
-	private void _cacheNew(T item) {
-		if (item.getmMKey() > 0)
-			return;
-		T nClone = item.toSave();
-		if (nClone == null)
-			return;
-		nClone.setmDBType(DB_TYPE_N);
-		listIn.add(nClone);
-		cache(item);
-	}
-
-	private void _cacheUpdate(T item) {
-		if (item.getmMKey() <= 0) {
-			this._cacheNew(item);
-			return;
+		synchronized (oLock) {
+			dbIn.remove(item);
+			dbUp.remove(item);
+			if (dbDel.contains(item))
+				return;
+			dbDel.add(item);
 		}
-
-		T nClone = item.toSave();
-		if (nClone == null)
-			return;
-		nClone.setmDBType(DB_TYPE_U);
-		listUp.add(nClone);
-	}
-
-	private void _cacheDelete(T item) {
-		T nClone = item.toSave();
-		if (nClone == null)
-			return;
-		nClone.setmDBType(DB_TYPE_D);
-		listDel.add(nClone);
 	}
 
 	public void saveDatabase() {
-		MapListBBasic<T> tmpSrc = new MapListBBasic<T>();
-		listDel.mergeD(tmpSrc);
-		listIn.mergeD(tmpSrc);
-		listUp.mergeD(tmpSrc);
-		List<T> tmpList = tmpSrc.getCurrList();
-		int lens = tmpList.size();
-		T it = null;
-		List<Map> tempDe = newListT();
-		List<Map> tempUp = newListT();
-		List<Map> tempIn = newListT();
-		Map<String, Object> tempMap = null;
-		List<T> tmpInT = newListT();
-		for (int i = 0; i < lens; i++) {
-			it = tmpList.get(i);
-			tempMap = it.toMap();
-			switch (it.getmDBType()) {
-			case DB_TYPE_D:
-				rmCache(it);
-				tempDe.add(tempMap);
-				break;
-			case DB_TYPE_U:
-				tempUp.add(tempMap);
-				break;
-			case DB_TYPE_N:
-				tempIn.add(tempMap);
-				tmpInT.add(it);
-				break;
-			default:
-				break;
-			}
-		}
-
-		_delete(tempDe);
-		_insert(tempIn, tmpInT);
-		_update(tempUp);
-
-		for (int i = 0; i < lens; i++) {
-			it = tmpList.get(i);
-			returnObject(it);
-		}
-
-		tempDe.clear();
-		tempIn.clear();
-		tmpInT.clear();
-		tempUp.clear();
-		tmpList.clear();
+		List<Map> temp = newListT();
+		_delete(temp);
+		_insert(temp);
+		_update(temp);
 	}
 
 	void _delete(List<Map> temp) {
+		synchronized (oLock) {
+			List<T> tmpList = null;
+			if (!dbDel.isEmpty()) {
+				tmpList = dbDel.getCurrList();
+				dbDel.clear();
+			}
+
+			if (tmpList != null) {
+				T _tt = null;
+				int lens = tmpList.size();
+				for (int i = 0; i < lens; i++) {
+					_tt = tmpList.get(i);
+					temp.add(_tt.toMap());
+					rmCache(_tt);
+					dbIn.remove(_tt);
+					dbUp.remove(_tt);
+				}
+			}
+		}
+
 		if (!isEmpty(temp) && !isEmpty(sqlDel)) {
 			try {
 				dset().batchUpdate(sqlDel, temp);
@@ -311,12 +262,29 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 				log.error(e2s(e));
 			}
 		}
+		temp.clear();
 	}
 
-	void _insert(List<Map> temp, List<T> tmpList) {
+	void _insert(List<Map> temp) {
 		if (isEmpty(sqlIn) && !isEmpty(tabelName) && !isEmpty(coulmns_new)) {
 			sqlIn = String.format(BeanBasic.insFmt, tabelName, coulmns_new, val_new);
 		}
+		List<T> tmpList = null;
+		synchronized (oLock) {
+			if (!dbIn.isEmpty()) {
+				tmpList = dbIn.getCurrList();
+				dbIn.clear();
+			}
+		}
+		if (tmpList != null) {
+			int lens = tmpList.size();
+			T _tt = null;
+			for (int i = 0; i < lens; i++) {
+				_tt = tmpList.get(i);
+				temp.add(_tt.toMap());
+			}
+		}
+
 		if (!isEmpty(temp) && !isEmpty(sqlIn)) {
 			try {
 				long[] ids = dset().batchInsertGK(sqlIn, temp);
@@ -325,9 +293,27 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 				log.error(e2s(e));
 			}
 		}
+		temp.clear();
 	}
 
 	void _update(List<Map> temp) {
+		List<T> tmpList = null;
+		synchronized (oLock) {
+			if (!dbUp.isEmpty()) {
+				tmpList = dbUp.getCurrList();
+				dbUp.clear();
+			}
+		}
+
+		if (tmpList != null) {
+			int lens = tmpList.size();
+			T _tt = null;
+			for (int i = 0; i < lens; i++) {
+				_tt = tmpList.get(i);
+				temp.add(_tt.toMap());
+			}
+		}
+
 		if (!isEmpty(temp) && !isEmpty(sqlUp)) {
 			try {
 				dset().batchUpdate(sqlUp, temp);
@@ -335,9 +321,10 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 				log.error(e2s(e));
 			}
 		}
+		temp.clear();
 	}
 
-	private void callInsert(List<T> list, long[] ids) {
+	protected void callInsert(List<T> list, long[] ids) {
 		if (list == null || ids == null)
 			return;
 		int lens = ids.length;
@@ -358,7 +345,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	}
 
 	protected boolean isInOrUp(T item) {
-		return listIn.contains(item) || listUp.contains(item);
+		return dbIn.contains(item) || dbUp.contains(item);
 	}
 
 	protected String getSql4Map(int begin, int nlmt) {
@@ -418,7 +405,8 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 	public void excBatchSql(List<String> sqls) {
 		if (isEmpty(sqls))
 			return;
-		excBatchSql(ListEx.toStrArray(sqls));
+		String[] _arr = ListEx.toStrArray(sqls);
+		excBatchSql(_arr);
 	}
 
 	public void excBatchSql(String... sqls) {

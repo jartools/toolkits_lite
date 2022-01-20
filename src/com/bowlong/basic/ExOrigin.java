@@ -222,7 +222,7 @@ public class ExOrigin extends EOZip {
 
 	static final public <K, V> List<K> keys(Map<K, V> map) {
 		List<K> list = newListT();
-		if (map == null)
+		if (map == null || map.isEmpty())
 			return list;
 		list.addAll(map.keySet());
 		return list;
@@ -230,7 +230,7 @@ public class ExOrigin extends EOZip {
 
 	static final public <K, V> List<V> values(Map<K, V> map) {
 		List<V> list = newListT();
-		if (map == null)
+		if (map == null || map.isEmpty())
 			return list;
 		list.addAll(map.values());
 		return list;

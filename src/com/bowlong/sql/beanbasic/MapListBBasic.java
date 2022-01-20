@@ -22,6 +22,10 @@ public class MapListBBasic<T extends BeanBasic> extends MapList<T> {
 		super(isList);
 	}
 
+	public MapListBBasic(boolean isSafe, boolean isList) {
+		super(isSafe, isList);
+	}
+
 	public boolean add(T obj) {
 		long key = obj.getmCKey();
 		return this.put(key, obj);
@@ -90,7 +94,7 @@ public class MapListBBasic<T extends BeanBasic> extends MapList<T> {
 				continue;
 			key = it.getmCKey();
 			if (isDelCurr) {
-				this.remove(key);
+				this.removeByKey(key);
 			}
 			if (key <= 0)
 				continue;
@@ -107,5 +111,13 @@ public class MapListBBasic<T extends BeanBasic> extends MapList<T> {
 
 	public MapListBBasic<T> mergeD(MapListBBasic<T> toDest) {
 		return this.merge(toDest, true);
+	}
+
+	public boolean remove(T obj) {
+		if (obj == null)
+			return false;
+		long key = obj.getmCKey();
+		T rmv = this.removeByKey(key);
+		return rmv != null;
 	}
 }

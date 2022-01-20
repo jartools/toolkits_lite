@@ -1,5 +1,6 @@
 package com.bowlong.basic.bean;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +15,10 @@ import com.bowlong.basic.ExToolkit;
  * @time 2022-01-19
  */
 public class MapList<T> extends ExToolkit {
-	private Map<Object, T> map = newMapT();
+	private Map<Object, T> map = null;
 	private List<T> list = null;
+	private boolean isList = false;
+	private boolean isSafe = false;
 
 	public List<T> getList() {
 		return list;
@@ -23,12 +26,26 @@ public class MapList<T> extends ExToolkit {
 
 	public MapList() {
 		super();
+		this.init();
 	}
 
 	public MapList(boolean isList) {
 		super();
-		if (isList)
-			list = newListT();
+		this.isList = isList;
+		this.init();
+	}
+
+	public MapList(boolean isSafe, boolean isList) {
+		super();
+		this.isSafe = isSafe;
+		this.isList = isList;
+		this.init();
+	}
+
+	protected void init() {
+		this.map = this.isSafe ? newMap() : newMapT();
+		if (this.isList)
+			this.list = this.isSafe ? newList2() : newListT();
 	}
 
 	public boolean put(Object key, T obj) {
@@ -72,7 +89,7 @@ public class MapList<T> extends ExToolkit {
 		return map.get(key);
 	}
 
-	public T remove(Object key) {
+	public T removeByKey(Object key) {
 		T obj = get(key);
 		if (obj != null) {
 			map.remove(key);
@@ -82,12 +99,19 @@ public class MapList<T> extends ExToolkit {
 		return obj;
 	}
 
+	@SuppressWarnings("null")
 	public List<T> getCurrList() {
-		if (list != null)
-			return list;
-		List<T> list = newListT();
-		list.addAll(this.map.values());
-		return list;
+		List<T> ret = newListT();
+		if (ret != null)
+			ret.addAll(this.list);
+		else {
+			Collection<T> c = null;
+			if (!this.map.isEmpty())
+				c = this.map.values();
+			if (c != null)
+				ret.addAll(c);
+		}
+		return ret;
 	}
 
 	public List<T> merge(List<T> src) {
