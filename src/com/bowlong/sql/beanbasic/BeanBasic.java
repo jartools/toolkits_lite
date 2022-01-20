@@ -62,7 +62,7 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 
 	public BeanBasic() {
 		super();
-		this.mCKey = (++mCursor);
+		this.newCKey();
 	}
 
 	public BeanBasic(long mMKey) {
@@ -140,8 +140,12 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 		this.mLTime = now();
 	}
 
+	public void newCKey() {
+		this.mCKey = (++mCursor);
+	}
+
 	public <T extends BeanBasic> T toSave() {
-		T cObj = (T) Cache.borrowObject(this.getClass());
+		T cObj = (T) Cache.borrowObject(this.getClass(),false);
 		cObj.setmMKey(this.mMKey);
 		cObj.setmCKey(this.mCKey);
 		cObj.setmDBType(0);

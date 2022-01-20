@@ -52,8 +52,11 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		return pool;
 	}
 
-	static final public <T extends BeanBasic> T borrowObject(Class<T> clazz) {
-		return BBasisPool.borrowObject(clazz);
+	static final public <T extends BeanBasic> T borrowObject(Class<T> clazz, boolean isNewCKey) {
+		T ret = BBasisPool.borrowObject(clazz);
+		if (isNewCKey && ret != null)
+			ret.newCKey();
+		return ret;
 	}
 
 	static final public <T extends BeanBasic> void returnObject(T obj) {
