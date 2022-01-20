@@ -26,9 +26,9 @@ public class HttpBaseEx extends InputStreamEx {
 	/** 超时时间为1分钟 */
 	static final public int defaultTimeout = 60000;
 	/** 连接超时时间 */
-	static final public int defaultConRequTimeout = 59500;
+	static final public int defaultConRequTimeout = 59900;
 	/** 回应超时时间 */
-	static final public int defaultSoTimeout = 59500;
+	static final public int defaultSoTimeout = 59900;
 
 	static private Map<String, String> mdefHead = newMapT(), mcustHead = newMapT();
 
