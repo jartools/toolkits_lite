@@ -23,6 +23,10 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 	static final public String delFmt = "DELETE FROM `%s` WHERE %s";
 	static private long mCursor = 0;
 
+	static final public long getCursor() {
+		return mCursor;
+	}
+
 	protected long mMKey = 0; // 数据库主键id标识
 	protected long mCKey = 0; // 对象实例唯一标识(非全局唯一表示，而是new Class的Class的标识)
 	private long mLTime = 0; // 最后操作时间

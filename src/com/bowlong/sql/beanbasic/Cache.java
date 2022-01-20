@@ -333,6 +333,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 		for (int i = 0; i < lens; i++) {
 			_item = list.get(i);
 			_id = ids[i];
+			_item.setmMKey(_id);
 			callInsertLong(_item, _id);
 			callInsert(_item, (int) _id);
 		}
