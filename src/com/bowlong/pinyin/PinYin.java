@@ -21,13 +21,12 @@ public class PinYin {
 	}
 
 	public void reloadPy() {
-		try {
-			if (p == null) {
-				InputStream is = getClass().getResourceAsStream("pinyin.bio2");
+		if (p == null) {
+			try (InputStream is = getClass().getResourceAsStream("pinyin.bio2");) {
 				p = B2InputStream.readMap(is);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

@@ -40,7 +40,8 @@ public abstract class AbstractHandler implements InvocationHandler {
 	}
 
 	public Object getProxy() {
-		return Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), this);
+		Class<? extends Object> tClass = target.getClass();
+		return Proxy.newProxyInstance(tClass.getClassLoader(), tClass.getInterfaces(), this);
 	}
 
 	public Object getProxy(Object target) {

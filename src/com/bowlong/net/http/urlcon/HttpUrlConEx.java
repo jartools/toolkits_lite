@@ -25,7 +25,8 @@ public class HttpUrlConEx extends HttpBaseEx {
 
 	static Log log = getLog(HttpUrlConEx.class);
 
-	static public final byte[] send(String url, String query, byte[] params, boolean isPost, int timeOutCon, int timeOutSo) {
+	static public final byte[] send(String url, String query, byte[] params, boolean isPost, int timeOutCon,
+			int timeOutSo) {
 		HttpURLConnection conn = null;
 		try {
 			int lens4params = 0;
@@ -42,7 +43,8 @@ public class HttpUrlConEx extends HttpBaseEx {
 			}
 			// 打开和URL之间的连接
 			conn = (HttpURLConnection) reqUrl.openConnection();
-			for (Entry<String, String> entry : getMapHead().entrySet()) {
+			Map<String, String> hMap = getMapHead();
+			for (Entry<String, String> entry : hMap.entrySet()) {
 				conn.setRequestProperty(entry.getKey(), entry.getValue());
 			}
 			// 设置是否使用缓存 - POST不能使用缓存?
@@ -104,7 +106,8 @@ public class HttpUrlConEx extends HttpBaseEx {
 		return sendBytes(url, params, isPost, 0, 0);
 	}
 
-	static public final byte[] sendStr(String url, String params, boolean isPost, int timeOutCon, int timeOutSo, String charset) {
+	static public final byte[] sendStr(String url, String params, boolean isPost, int timeOutCon, int timeOutSo,
+			String charset) {
 		byte[] btParams = getBytes(params, charset);
 		return sendBytes(url, btParams, isPost, timeOutCon, timeOutSo);
 	}
@@ -135,7 +138,8 @@ public class HttpUrlConEx extends HttpBaseEx {
 	static public final byte[] sendParams(String url, Map<String, ?> map, String charset, boolean isPost) {
 		String query = buildQuery(map, charset);
 		if (isPost) {
-			return send(url, "", query.getBytes(), isPost);
+			byte[] bts = query.getBytes();
+			return send(url, "", bts, isPost);
 		} else {
 			return send(url, query, null, isPost);
 		}
@@ -160,7 +164,8 @@ public class HttpUrlConEx extends HttpBaseEx {
 	static final public byte[] sendParams4Json(String url, Map<String, ?> map, String charset, boolean isPost) {
 		String query = buildStrByJSON4Obj(map);
 		if (isPost) {
-			return send(url, "", getBytes(query, charset), isPost);
+			byte[] bts = getBytes(query, charset);
+			return send(url, "", bts, isPost);
 		} else {
 			return send(url, query, null, isPost);
 		}

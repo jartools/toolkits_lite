@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 
@@ -67,7 +66,8 @@ public class HttpBaseEx extends InputStreamEx {
 
 	static final protected Map<String, String> getMapHead() {
 		Map<String, String> _ret = newMapT();
-		copy(getDefHead(), _ret, true);
+		Map<String, String> _def = getDefHead();
+		copy(_def, _ret, true);
 		copy(mcustHead, _ret, true);
 		return _ret;
 	}
@@ -92,14 +92,8 @@ public class HttpBaseEx extends InputStreamEx {
 		try {
 			if (isEmpty(data))
 				return "";
-
-			JSONObject json = new JSONObject();
-			Map<String, String> mapKV = MapEx.toMapKV(data);
-			for (Entry<String, String> entry : mapKV.entrySet()) {
-				String key = entry.getKey();
-				String val = entry.getValue();
-				json.put(key, val);
-			}
+			Map<String, Object> map = MapEx.toMap(data);
+			JSONObject json = new JSONObject(map);
 			return json.toJSONString();
 		} catch (Exception e) {
 		}

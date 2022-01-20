@@ -201,7 +201,7 @@ public class EOBasic extends EOConfig {
 		return Collections.synchronizedMap(map);
 	}
 
-	static final public <K, V> Map<K, V> newMap3() {
+	static final public <K, V> Map<K, V> newMap3Hashtable() {
 		return new Hashtable<K, V>();// 线程安全的 等价于 newMap2
 	}
 

@@ -14,10 +14,13 @@ public final class ByteEx extends ExOrigin {
 
 	public static final byte[] EMPTY = new byte[0];
 
-	protected static final char[] DIGIT = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+	protected static final char[] DIGIT = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
+			'f' };
 
-	protected static final char[] CHARS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
-			'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+	protected static final char[] CHARS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
+			'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+			'V', 'W', 'X', 'Y', 'Z' };
 
 	private static final char[] encodeHex(byte[] b) {
 		int l = b.length;
@@ -58,39 +61,46 @@ public final class ByteEx extends ExOrigin {
 	}
 
 	public static final String byteToString(byte[] b) {
-		return new String(encodeHex(b));
+		char[] _cs = encodeHex(b);
+		return new String(_cs);
 	}
 
 	public static final String bytesToString(byte[] b) {
 		StringBuffer sb = new StringBuffer(b.length * 2);
+		int v;
+		String hex;
 		for (int i = 0; i < b.length; i++) {
-			int v = b[i] & 0xff;
+			v = b[i] & 0xff;
 			if (v < 16) {
 				sb.append('0');
 			}
-			sb.append(Integer.toHexString(v));
+			hex = Integer.toHexString(v);
+			sb.append(hex);
 		}
 		return sb.toString().toUpperCase();
 	}
 
 	public static final byte[] stringToBytes(String s) {
 		byte[] b = new byte[s.length() / 2];
+		int index, v;
+		String _s;
 		for (int i = 0; i < b.length; i++) {
-			int index = i * 2;
-			int v = Integer.parseInt(s.substring(index, index + 2), 16);
+			index = i * 2;
+			_s = s.substring(index, index + 2);
+			v = Integer.parseInt(_s, 16);
 			b[i] = (byte) v;
 		}
 		return b;
 	}
 
-	public static final int indexOf(byte[] b,byte[] sp, int start) {
+	public static final int indexOf(byte[] b, byte[] sp, int start) {
 		if (b == null || sp == null)
 			return -1;
 		int len = b.length;
 		return indexOf(b, sp, start, len);
 	}
 
-	public static final int indexOf(byte[] b,byte[] sp, int start, int end) {
+	public static final int indexOf(byte[] b, byte[] sp, int start, int end) {
 		if (b == null || sp == null)
 			return -1;
 		int len = b.length;
@@ -210,8 +220,8 @@ public final class ByteEx extends ExOrigin {
 
 	public static final int lastIndexOf(byte[] source, byte[] target, int fromIndex) {
 		/*
-		 * Check arguments; return immediately where possible. For consistency, don't
-		 * check for null str.
+		 * Check arguments; return immediately where possible. For consistency,
+		 * don't check for null str.
 		 */
 		int sourceOffset = 0;
 		int sourceCount = source.length;
@@ -255,7 +265,7 @@ public final class ByteEx extends ExOrigin {
 		}
 	}
 
-	public static final boolean equals(byte[] b1,byte[] b2) {
+	public static final boolean equals(byte[] b1, byte[] b2) {
 		int n = b1.length;
 		if (n == b2.length) {
 			int i = 0;
@@ -322,21 +332,25 @@ public final class ByteEx extends ExOrigin {
 	}
 
 	public static final int getInt(byte[] b, int off) {
-		return ((b[off + 3] & 0xFF) << 0) + ((b[off + 2] & 0xFF) << 8) + ((b[off + 1] & 0xFF) << 16) + ((b[off + 0]) << 24);
+		return ((b[off + 3] & 0xFF) << 0) + ((b[off + 2] & 0xFF) << 8) + ((b[off + 1] & 0xFF) << 16)
+				+ ((b[off + 0]) << 24);
 	}
 
 	public static final float getFloat(byte[] b, int off) {
-		int i = ((b[off + 3] & 0xFF) << 0) + ((b[off + 2] & 0xFF) << 8) + ((b[off + 1] & 0xFF) << 16) + ((b[off + 0]) << 24);
+		int i = ((b[off + 3] & 0xFF) << 0) + ((b[off + 2] & 0xFF) << 8) + ((b[off + 1] & 0xFF) << 16)
+				+ ((b[off + 0]) << 24);
 		return Float.intBitsToFloat(i);
 	}
 
 	public static final long getLong(byte[] b, int off) {
-		return ((b[off + 7] & 0xFFL) << 0) + ((b[off + 6] & 0xFFL) << 8) + ((b[off + 5] & 0xFFL) << 16) + ((b[off + 4] & 0xFFL) << 24) + ((b[off + 3] & 0xFFL) << 32) + ((b[off + 2] & 0xFFL) << 40)
+		return ((b[off + 7] & 0xFFL) << 0) + ((b[off + 6] & 0xFFL) << 8) + ((b[off + 5] & 0xFFL) << 16)
+				+ ((b[off + 4] & 0xFFL) << 24) + ((b[off + 3] & 0xFFL) << 32) + ((b[off + 2] & 0xFFL) << 40)
 				+ ((b[off + 1] & 0xFFL) << 48) + (((long) b[off + 0]) << 56);
 	}
 
 	public static final double getDouble(byte[] b, int off) {
-		long j = ((b[off + 7] & 0xFFL) << 0) + ((b[off + 6] & 0xFFL) << 8) + ((b[off + 5] & 0xFFL) << 16) + ((b[off + 4] & 0xFFL) << 24) + ((b[off + 3] & 0xFFL) << 32) + ((b[off + 2] & 0xFFL) << 40)
+		long j = ((b[off + 7] & 0xFFL) << 0) + ((b[off + 6] & 0xFFL) << 8) + ((b[off + 5] & 0xFFL) << 16)
+				+ ((b[off + 4] & 0xFFL) << 24) + ((b[off + 3] & 0xFFL) << 32) + ((b[off + 2] & 0xFFL) << 40)
 				+ ((b[off + 1] & 0xFFL) << 48) + (((long) b[off + 0]) << 56);
 		return Double.longBitsToDouble(j);
 	}
@@ -440,11 +454,11 @@ public final class ByteEx extends ExOrigin {
 		return b;
 	}
 
-	public static final byte[] append(byte[] b1,byte[] b2) {
+	public static final byte[] append(byte[] b1, byte[] b2) {
 		return append(b1, b2, 0, b2.length);
 	}
 
-	public static final byte[] append(byte[] b1,byte[] b2, int offset, int length) {
+	public static final byte[] append(byte[] b1, byte[] b2, int offset, int length) {
 		if (b1 == null || b2 == null)
 			return null;
 		if (b2.length <= 0 || b2.length <= offset || b2.length < offset + length)
@@ -455,52 +469,53 @@ public final class ByteEx extends ExOrigin {
 		return r;
 	}
 
-	public static final byte[] appendBoolean(byte[] b1,boolean val) {
+	public static final byte[] appendBoolean(byte[] b1, boolean val) {
 		byte[] b2 = putBoolean(val);
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendByte(byte[] b1,byte val) {
+	public static final byte[] appendByte(byte[] b1, byte val) {
 		byte[] b2 = new byte[1];
 		b2[0] = val;
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendChar(byte[] b1,char val) {
+	public static final byte[] appendChar(byte[] b1, char val) {
 		byte[] b2 = putChar(val);
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendShort(byte[] b1,short val) {
+	public static final byte[] appendShort(byte[] b1, short val) {
 		byte[] b2 = putShort(val);
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendInt(byte[] b1,int val) {
+	public static final byte[] appendInt(byte[] b1, int val) {
 		byte[] b2 = putInt(val);
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendFloat(byte[] b1,float val) {
+	public static final byte[] appendFloat(byte[] b1, float val) {
 		byte[] b2 = putFloat(val);
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendLong(byte[] b1,long val) {
+	public static final byte[] appendLong(byte[] b1, long val) {
 		byte[] b2 = putLong(val);
 		return append(b1, b2);
 	}
 
-	public static final byte[] appendDouble(byte[] b1,double val) {
+	public static final byte[] appendDouble(byte[] b1, double val) {
 		byte[] b2 = putDouble(val);
 		return append(b1, b2);
 	}
 
 	public static final byte[] bitSet2ByteArray(BitSet bitSet) {
 		byte[] bytes = new byte[bitSet.size() / 8];
+		int index, offset;
 		for (int i = 0; i < bitSet.size(); i++) {
-			int index = i / 8;
-			int offset = 7 - i % 8;
+			index = i / 8;
+			offset = 7 - i % 8;
 			bytes[index] |= (bitSet.get(i) ? 1 : 0) << offset;
 		}
 		return bytes;

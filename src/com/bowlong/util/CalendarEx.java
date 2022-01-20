@@ -8,7 +8,8 @@ import com.bowlong.basic.ExOrigin;
 public class CalendarEx extends ExOrigin {
 
 	static public final int year() {
-		return year(nowCalendar());
+		Calendar c = nowCalendar();
+		return year(c);
 	}
 
 	static public final int year(Calendar v) {
@@ -16,7 +17,8 @@ public class CalendarEx extends ExOrigin {
 	}
 
 	static public final int month() {
-		return month(nowCalendar());
+		Calendar c = nowCalendar();
+		return month(c);
 	}
 
 	static public final int month(Calendar v) {
@@ -25,7 +27,8 @@ public class CalendarEx extends ExOrigin {
 	}
 
 	static public final int day() {
-		return day(nowCalendar());
+		Calendar c = nowCalendar();
+		return day(c);
 	}
 
 	static public final int day(Calendar v) {
@@ -33,7 +36,8 @@ public class CalendarEx extends ExOrigin {
 	}
 
 	static public final int hour() {
-		return hour(nowCalendar());
+		Calendar c = nowCalendar();
+		return hour(c);
 	}
 
 	static public final int hour(Calendar v) {
@@ -41,7 +45,8 @@ public class CalendarEx extends ExOrigin {
 	}
 
 	static public final int minute() {
-		return minute(nowCalendar());
+		Calendar c = nowCalendar();
+		return minute(c);
 	}
 
 	static public final int minute(Calendar v) {
@@ -49,7 +54,8 @@ public class CalendarEx extends ExOrigin {
 	}
 
 	static public final int second() {
-		return second(nowCalendar());
+		Calendar c = nowCalendar();
+		return second(c);
 	}
 
 	static public final int second(Calendar v) {
@@ -57,7 +63,8 @@ public class CalendarEx extends ExOrigin {
 	}
 
 	static public final int ms() {
-		return ms(nowCalendar());
+		Calendar c = nowCalendar();
+		return ms(c);
 	}
 
 	static public final int ms(Calendar v) {
@@ -74,13 +81,15 @@ public class CalendarEx extends ExOrigin {
 	}
 
 	static public final boolean isWeekEnd() {
-		return isWeekEnd(nowCalendar());
+		Calendar c = nowCalendar();
+		return isWeekEnd(c);
 	}
 
 	static public final boolean isWeekEnd(long nowtime) {
 		if (nowtime == 0)
 			return false;
-		return isWeekEnd(parse2Cal(nowtime));
+		Calendar c = parse2Cal(nowtime);
+		return isWeekEnd(c);
 	}
 
 	/*** 年中的星期(此日期是此年份第几个星期) **/
@@ -89,7 +98,8 @@ public class CalendarEx extends ExOrigin {
 	}
 
 	static public final int weekInYear() {
-		return weekInYear(nowCalendar());
+		Calendar c = nowCalendar();
+		return weekInYear(c);
 	}
 
 	/*** 月中的星期(此日期是此月第几个星期) **/
@@ -98,7 +108,8 @@ public class CalendarEx extends ExOrigin {
 	}
 
 	static public final int weekInMonth() {
-		return weekInMonth(nowCalendar());
+		Calendar c = nowCalendar();
+		return weekInMonth(c);
 	}
 
 	/*** 年中的天数(此日期是此年份第几天) **/
@@ -107,7 +118,8 @@ public class CalendarEx extends ExOrigin {
 	}
 
 	static public final int dayInYear() {
-		return dayInYear(nowCalendar());
+		Calendar c = nowCalendar();
+		return dayInYear(c);
 	}
 
 	static public final int dayInMonth(Calendar v) {
@@ -115,7 +127,8 @@ public class CalendarEx extends ExOrigin {
 	}
 
 	static public final int dayInMonth() {
-		return dayInMonth(nowCalendar());
+		Calendar c = nowCalendar();
+		return dayInMonth(c);
 	}
 
 	public static final Calendar addYear(Calendar c, int v) {

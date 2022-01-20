@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,10 +27,6 @@ import com.bowlong.objpool.StringBufPool;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ListEx extends ExOrigin {
-	public static final <T> List<T> newArrayList() {
-		return new ArrayList<T>();
-	}
-
 	public static final <T> List<T> newLinkedList() {
 		return new LinkedList<T>();
 	}
@@ -159,9 +154,7 @@ public class ListEx extends ExOrigin {
 
 	public static final List toListByLine(String s) {
 		List l = new Vector();
-		StringReader sr = new StringReader(s);
-		BufferedReader br = new BufferedReader(sr);
-		try {
+		try (StringReader sr = new StringReader(s); BufferedReader br = new BufferedReader(sr);) {
 			String v;
 			while (true) {
 				v = br.readLine();
@@ -223,7 +216,7 @@ public class ListEx extends ExOrigin {
 	}
 
 	public static final List toArrayList(List list) {
-		List ret = newArrayList();
+		List ret = newListT();
 		if (list == null)
 			return ret;
 		for (Object e : list) {
@@ -415,7 +408,9 @@ public class ListEx extends ExOrigin {
 	// 对List进行打乱顺序
 	public static final List shuffleRnd(List src) {
 		// Collections.shuffle(src, new Random(System.currentTimeMillis()));
-		Collections.shuffle(src, new Random(RndEx.randomNum()));
+		long l = RndEx.randomNum();
+		Random r = new Random(l);
+		Collections.shuffle(src, r);
 		return src;
 	}
 
@@ -436,7 +431,7 @@ public class ListEx extends ExOrigin {
 		return ret;
 	}
 
-	public static final List subRndList(List srcList,int subSize) {
+	public static final List subRndList(List srcList, int subSize) {
 		if (srcList == null)
 			return srcList;
 		int len = srcList.size();
@@ -451,7 +446,7 @@ public class ListEx extends ExOrigin {
 		return (List<T>) rndList(srcList);
 	}
 
-	public static final <T> List<T> subRndListT(List<T> srcList,int subSize) {
+	public static final <T> List<T> subRndListT(List<T> srcList, int subSize) {
 		return (List<T>) subRndList(srcList, subSize);
 	}
 
@@ -509,7 +504,7 @@ public class ListEx extends ExOrigin {
 
 	public static final List<Byte> distinctByte(List<Byte> vars) {
 		List<Byte> ret = new Vector<Byte>();
-		Map<Byte, Byte> mvars = new Hashtable<Byte, Byte>();
+		Map<Byte, Byte> mvars = newMap3Hashtable();
 		for (Byte v : vars) {
 			mvars.put(v, v);
 		}
@@ -519,7 +514,7 @@ public class ListEx extends ExOrigin {
 
 	public static final List<Short> distinctShort(List<Short> vars) {
 		List<Short> ret = new Vector<Short>();
-		Map<Short, Short> mvars = new Hashtable<Short, Short>();
+		Map<Short, Short> mvars = newMap3Hashtable();
 		for (Short v : vars) {
 			mvars.put(v, v);
 		}
@@ -529,7 +524,7 @@ public class ListEx extends ExOrigin {
 
 	public static final List<Integer> distinctInteger(List<Integer> vars) {
 		List<Integer> ret = new Vector<Integer>();
-		Map<Integer, Integer> mvars = new Hashtable<Integer, Integer>();
+		Map<Integer, Integer> mvars = newMap3Hashtable();
 		for (Integer v : vars) {
 			mvars.put(v, v);
 		}
@@ -539,7 +534,7 @@ public class ListEx extends ExOrigin {
 
 	public static final List<Long> distinctLong(List<Long> vars) {
 		List<Long> ret = new Vector<Long>();
-		Map<Long, Long> mvars = new Hashtable<Long, Long>();
+		Map<Long, Long> mvars = newMap3Hashtable();
 		for (Long v : vars) {
 			mvars.put(v, v);
 		}
@@ -549,7 +544,7 @@ public class ListEx extends ExOrigin {
 
 	public static final List<String> distinctString(List<String> vars) {
 		List<String> ret = new Vector<String>();
-		Map<String, String> mvars = new Hashtable<String, String>();
+		Map<String, String> mvars = newMap3Hashtable();
 		for (String v : vars) {
 			mvars.put(v, v);
 		}

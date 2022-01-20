@@ -13,36 +13,29 @@ import com.bowlong.net.http.urlcon.HttpUrlConEx;
  */
 public class HttpEx extends HttpUrlConEx {
 	public static final byte[] readUrl(String url) throws Exception {
-		InputStream is = openUrl(url);
-		try {
+		try (InputStream is = openUrl(url);) {
 			return readStream(is);
-		} finally {
-			is.close();
 		}
 	}
 
 	public static final byte[] readUrl(String url, byte[] post) throws Exception {
 		HttpURLConnection huc = openUrl(url, post);
-		InputStream is = huc.getInputStream();
-		try {
+		try (InputStream is = huc.getInputStream();) {
 			return readStream(is);
 		} finally {
-			is.close();
 			huc.disconnect();
 		}
 	}
 
 	public static final byte[] readUrl(URL url) throws Exception {
-		InputStream is = openUrl(url);
-		try {
+		try (InputStream is = openUrl(url);) {
 			return readStream(is);
-		} finally {
-			is.close();
 		}
 	}
 
 	public static final InputStream openUrl(String url) throws Exception {
-		return openUrl(new URL(url));
+		URL u = new URL(url);
+		return openUrl(u);
 	}
 
 	public static HttpURLConnection openUrl(String url, byte[] post) throws Exception {
@@ -62,9 +55,4 @@ public class HttpEx extends HttpUrlConEx {
 	public static final InputStream openUrl(URL url) throws IOException {
 		return url.openStream();
 	}
-
-	// private static final ByteOutStream newStream(int size) {
-	// return new ByteOutStream(size);
-	// }
-
 }

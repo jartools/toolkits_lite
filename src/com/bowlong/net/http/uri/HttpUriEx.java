@@ -11,6 +11,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.config.RequestConfig.Builder;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.params.ClientPNames;
@@ -56,8 +57,9 @@ public class HttpUriEx extends HttpBaseEx {
 		tiOutCon = (tiOutCon <= 0) ? defaultConRequTimeout : tiOutCon;
 		// 读取超时
 		tiOutSo = (tiOutSo <= 0) ? defaultSoTimeout : tiOutSo;
-
-		RequestConfig cfg = RequestConfig.custom().setConnectTimeout(defaultTimeout).setConnectionRequestTimeout(tiOutCon).setSocketTimeout(tiOutSo).setRedirectsEnabled(true).build();
+		Builder builder = RequestConfig.custom().setConnectTimeout(defaultTimeout);
+		builder = builder.setConnectionRequestTimeout(tiOutCon).setSocketTimeout(tiOutSo);
+		RequestConfig cfg = builder.setRedirectsEnabled(true).build();
 		// HttpClients.createDefault();
 		return HttpClients.custom().setDefaultRequestConfig(cfg).build();
 	}
@@ -68,7 +70,8 @@ public class HttpUriEx extends HttpBaseEx {
 		try {
 			client = httpclient4_5(tiOutCon, tiOutSo);
 			res = client.execute(requ);
-			if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+			int code = res.getStatusLine().getStatusCode();
+			if (code < HttpStatus.SC_BAD_REQUEST) {
 				try (InputStream ins = res.getEntity().getContent()) {
 					return inps2Bytes(ins);
 				}
@@ -101,7 +104,8 @@ public class HttpUriEx extends HttpBaseEx {
 	static public final InputStream readInStream(HttpResponse response) throws Exception {
 		if (response == null)
 			return null;
-		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+		int code = response.getStatusLine().getStatusCode();
+		if (code < HttpStatus.SC_BAD_REQUEST) {
 			HttpEntity en = response.getEntity();
 			return en.getContent();
 		}
@@ -112,11 +116,11 @@ public class HttpUriEx extends HttpBaseEx {
 	static public final String readStr4Netty(HttpResponse response, String charset) {
 		if (response == null)
 			return "";
-		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-			try {
+		int code = response.getStatusLine().getStatusCode();
+		if (code < HttpStatus.SC_BAD_REQUEST) {
+			HttpEntity en = response.getEntity();
+			try (InputStream ins = en.getContent();) {
 				charset = reCharset(charset);
-				HttpEntity en = response.getEntity();
-				InputStream ins = en.getContent();
 				byte[] bts = B2InputStream.readStream(ins);
 				return new String(bts, charset);
 			} catch (Exception e) {
@@ -130,14 +134,13 @@ public class HttpUriEx extends HttpBaseEx {
 	static public final String readStr(HttpResponse response, String charset) {
 		if (response == null)
 			return "";
-		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-			try {
-				charset = reCharset(charset);
-				HttpEntity en = response.getEntity();
-				InputStream ins = en.getContent();
-
+		int code = response.getStatusLine().getStatusCode();
+		if (code < HttpStatus.SC_BAD_REQUEST) {
+			HttpEntity en = response.getEntity();
+			charset = reCharset(charset);
+			try (InputStream ins = en.getContent();
+					BufferedReader br = new BufferedReader(new InputStreamReader(ins, charset));) {
 				StringBuffer buff = new StringBuffer();
-				BufferedReader br = new BufferedReader(new InputStreamReader(ins, charset));
 				String readLine = null;
 				while ((readLine = br.readLine()) != null) {
 					buff.append(readLine);

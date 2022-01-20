@@ -19,7 +19,8 @@ public class ObjPool {
 
 	static final public <T> T borrowObject(Class<T> c) {
 		try {
-			return (T) getPool(c).borrow();
+			BasicPool<T> pool = getPool(c);
+			return pool.borrow();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -31,7 +32,8 @@ public class ObjPool {
 			return;
 		try {
 			Class<T> c = (Class<T>) obj.getClass();
-			getPool(c).returnObj(obj);
+			BasicPool<T> pool = getPool(c);
+			pool.returnObj(obj);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -17,24 +17,24 @@ import com.bowlong.text.EasyTemplate;
 import com.bowlong.util.ListEx;
 
 public final class StrEx extends ExOrigin {
-	public static final String left(String s,int len) {
+	public static final String left(String s, int len) {
 		return s.substring(0, len);
 	}
 
-	public static final String right(String s,int len) {
+	public static final String right(String s, int len) {
 		int length = s.length();
 		return s.substring(length - len);
 	}
 
-	public static final String sub(String s,int begin,int end) {
+	public static final String sub(String s, int begin, int end) {
 		return s.substring(begin, end);
 	}
 
-	public static final String sub(String s,int begin) {
+	public static final String sub(String s, int begin) {
 		return s.substring(begin);
 	}
 
-	public static final String sub(String s,String begin,String end) {
+	public static final String sub(String s, String begin, String end) {
 		int p1 = s.indexOf(begin);
 		p1 = p1 < 0 ? 0 : p1 + begin.length();
 		int p2 = s.indexOf(end, p1);
@@ -43,20 +43,20 @@ public final class StrEx extends ExOrigin {
 	}
 
 	/** 格式化字符串使其长度为n，不足长度是在前面补上“空格字符” **/
-	public static final String fixNSpace(String s,int n) {
+	public static final String fixNSpace(String s, int n) {
 		return String.format("%" + n + "s", s);
 	}
 
 	/** 格式化数字val，使其长度为n，不足长度是在前面补上“0” **/
-	public static final String fixNInt(int val,int n) {
+	public static final String fixNInt(int val, int n) {
 		return String.format("%0" + n + "d", val);
 	}
 
-	public static final String fmt(String fmt,Object... args) {
+	public static final String fmt(String fmt, Object... args) {
 		return String.format(fmt, args);
 	}
 
-	public static final String fmt$CrLf(String fmt,Object... args) {
+	public static final String fmt$CrLf(String fmt, Object... args) {
 		return fmt$(fmt, args) + "\r\n";
 	}
 
@@ -68,7 +68,7 @@ public final class StrEx extends ExOrigin {
 	 *            v1,v2
 	 * @return a_v1v1_v2
 	 */
-	public static final String fmt$(String fmt,Object... args) {
+	public static final String fmt$(String fmt, Object... args) {
 		try {
 			Map<String, String> params = new HashMap<String, String>();
 			int length = args.length;
@@ -82,7 +82,7 @@ public final class StrEx extends ExOrigin {
 		return fmt;
 	}
 
-	static final private String changeN(String s,int p, boolean isLowerP, boolean isLowerOther) {
+	static final private String changeN(String s, int p, boolean isLowerP, boolean isLowerOther) {
 		int len = s.length();
 		if (len <= 0)
 			return "";
@@ -118,7 +118,7 @@ public final class StrEx extends ExOrigin {
 		return changeN(s, 0, false, false);
 	}
 
-	public static final String upperN(String s,int p) {
+	public static final String upperN(String s, int p) {
 		return changeN(s, p, false, false);
 	}
 
@@ -164,19 +164,20 @@ public final class StrEx extends ExOrigin {
 		}
 	}
 
-	public static final String createString(byte[] b,String charset) throws Exception {
+	public static final String createString(byte[] b, String charset) throws Exception {
 		return new String(b, charset);
 	}
 
 	public static final List<String> toLines(String s) throws IOException {
 		List<String> ret = new Vector<String>();
-		StringReader sr = new StringReader(s);
-		BufferedReader br = new BufferedReader(sr);
-		while (true) {
-			String line = br.readLine();
-			if (line == null)
-				break;
-			ret.add(line);
+		try (StringReader sr = new StringReader(s); BufferedReader br = new BufferedReader(sr);) {
+			String line;
+			while (true) {
+				line = br.readLine();
+				if (line == null)
+					break;
+				ret.add(line);
+			}
 		}
 		return ret;
 	}
@@ -207,21 +208,21 @@ public final class StrEx extends ExOrigin {
 		return new String(c);
 	}
 
-	public static final String removeLeft(String s,int n) {
+	public static final String removeLeft(String s, int n) {
 		int len = s.length();
 		if (len < n)
 			return "";
 		return s.substring(n);
 	}
 
-	public static final String removeRight(String s,int n) {
+	public static final String removeRight(String s, int n) {
 		int len = s.length();
 		if (len < n)
 			return "";
 		return s.substring(0, len - n - 1);
 	}
 
-	public static final StringBuffer removeRight(StringBuffer s,int n) {
+	public static final StringBuffer removeRight(StringBuffer s, int n) {
 		int len = s.length();
 		if (len < n)
 			s.setLength(0);
@@ -234,7 +235,8 @@ public final class StrEx extends ExOrigin {
 	public static String[] toArray(List<String> list) {
 		if (list == null || list.size() <= 0)
 			return new String[0];
-		return list.toArray(new String[list.size()]);
+		String[] _arr = new String[list.size()];
+		return list.toArray(_arr);
 	}
 
 	public static final boolean isIpv4(String ip) {
@@ -303,11 +305,13 @@ public final class StrEx extends ExOrigin {
 		return r2;
 	}
 
-	static final Pattern IPV4_PATTERN = Pattern.compile("^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");
+	static final Pattern IPV4_PATTERN = Pattern
+			.compile("^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");
 
 	static final Pattern IPV6_STD_PATTERN = Pattern.compile("^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$");
 
-	static final Pattern IPV6_HEX_COMPRESSED_PATTERN = Pattern.compile("^((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)$");
+	static final Pattern IPV6_HEX_COMPRESSED_PATTERN = Pattern
+			.compile("^((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)$");
 
 	public static final String EMPTY = "";
 
@@ -369,35 +373,40 @@ public final class StrEx extends ExOrigin {
 	static public final boolean isAfter(String str1, String str2) {
 		if (isEmptyTrim(str1) || isEmptyTrim(str2))
 			return false;
-		return str1.compareTo(str2) > 0;
+		int ct = str1.compareTo(str2);
+		return ct > 0;
 	}
 
 	/*** 判断str1在str2之前 **/
 	static public final boolean isBefore(String str1, String str2) {
 		if (isEmptyTrim(str1) || isEmptyTrim(str2))
 			return false;
-		return str1.compareTo(str2) < 0;
+		int ct = str1.compareTo(str2);
+		return ct < 0;
 	}
 
 	/*** 判断str1与str2相同 **/
 	static public final boolean isSame(String str1, String str2) {
 		if (isEmptyTrim(str1) || isEmptyTrim(str2))
 			return false;
-		return str1.compareTo(str2) == 0;
+		int ct = str1.compareTo(str2);
+		return ct == 0;
 	}
 
 	/*** 判断str1在str2之前或者相同 **/
 	static public final boolean isNotAfter(String str1, String str2) {
 		if (isEmptyTrim(str1) || isEmptyTrim(str2))
 			return false;
-		return str1.compareTo(str2) <= 0;
+		int ct = str1.compareTo(str2);
+		return ct <= 0;
 	}
 
 	/*** 判断str1在str2之后或者相同 **/
 	static public final boolean isNotBefore(String str1, String str2) {
 		if (isEmptyTrim(str1) || isEmptyTrim(str2))
 			return false;
-		return str1.compareTo(str2) >= 0;
+		int ct = str1.compareTo(str2);
+		return ct >= 0;
 	}
 
 	/*** 过滤掉-特殊字符 **/
@@ -483,6 +492,7 @@ public final class StrEx extends ExOrigin {
 	}
 
 	static public final String join(String sep, Object... objects) {
-		return join(sep, ListEx.toListT(objects));
+		List<Object> list = ListEx.toListT(objects);
+		return join(sep, list);
 	}
 }

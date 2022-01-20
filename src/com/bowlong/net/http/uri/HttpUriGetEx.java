@@ -37,10 +37,11 @@ public class HttpUriGetEx extends HttpUriEx {
 			}
 
 			HttpGet get = new HttpGet(url.toURI());
-			for (Entry<String, String> entry : getMapHead().entrySet()) {
+			Map<String, String> hMap = getMapHead();
+			for (Entry<String, String> entry : hMap.entrySet()) {
 				get.setHeader(entry.getKey(), entry.getValue());
 			}
-			get.setHeader("Accept-Charset", charset);
+			get.setHeader("Charset", charset);
 			return execute(get);
 		} catch (Exception e) {
 			logError(e, log);

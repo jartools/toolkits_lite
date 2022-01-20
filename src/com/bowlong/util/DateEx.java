@@ -10,59 +10,73 @@ import com.bowlong.lang.NumEx;
 public class DateEx extends ExOrigin {
 
 	static public final int year() {
-		return year(nowDate());
+		Date d = nowDate();
+		return year(d);
 	}
 
 	static public final int year(Date v) {
-		return NumEx.stringToInt(format(v, fmt_yyyy));
+		String s = format(v, fmt_yyyy);
+		return NumEx.stringToInt(s);
 	}
 
 	static public final int month() {
-		return month(nowDate());
+		Date d = nowDate();
+		return month(d);
 	}
 
 	static public final int month(Date v) {
-		return NumEx.stringToInt(format(v, fmt_MM));
+		String s = format(v, fmt_MM);
+		return NumEx.stringToInt(s);
 	}
 
 	static public final int day() {
-		return day(nowDate());
+		Date d = nowDate();
+		return day(d);
 	}
 
 	static public final int day(Date v) {
-		return NumEx.stringToInt(format(v, fmt_dd));
+		String s = format(v, fmt_dd);
+		return NumEx.stringToInt(s);
 	}
 
 	static public final int hour() {
-		return hour(nowDate());
+		Date d = nowDate();
+		return hour(d);
 	}
 
 	static public final int hour(Date v) {
-		return NumEx.stringToInt(format(v, fmt_HH));
+		String s = format(v, fmt_HH);
+		return NumEx.stringToInt(s);
 	}
 
 	static public final int minute() {
-		return minute(nowDate());
+		Date d = nowDate();
+		return minute(d);
 	}
 
 	static public final int minute(Date v) {
-		return NumEx.stringToInt(format(v, fmt_mm));
+		String s = format(v, fmt_mm);
+		return NumEx.stringToInt(s);
 	}
 
 	static public final int second() {
-		return second(nowDate());
+		Date d = nowDate();
+		return second(d);
 	}
 
 	static public final int second(Date v) {
-		return NumEx.stringToInt(format(v, fmt_ss));
+		String s = format(v, fmt_ss);
+		return NumEx.stringToInt(s);
 	}
 
 	static public final int ms() {
-		return ms(nowDate());
+		Date d = nowDate();
+		return ms(d);
 	}
 
 	static public final int ms(Date v) {
-		return NumEx.stringToInt(format(v, fmt_SSS));
+		String s = format(v, fmt_SSS);
+		return NumEx.stringToInt(s);
 	}
 
 	/*** 是否为周末(星期六，星期天) **/
@@ -75,84 +89,102 @@ public class DateEx extends ExOrigin {
 	}
 
 	static public final boolean isWeekEnd() {
-		return isWeekEnd(nowDate());
+		Date d = nowDate();
+		return isWeekEnd(d);
 	}
 
 	static public final boolean isWeekEnd(long nowtime) {
 		if (nowtime == 0)
 			return false;
-		return isWeekEnd(parse2Date(nowtime));
+		Date d = parse2Date(nowtime);
+		return isWeekEnd(d);
 	}
 
 	static public final int weekInYear(Date v) {
-		return NumEx.stringToInt(format(v, fmt_wInYear));
+		String s = format(v, fmt_wInYear);
+		return NumEx.stringToInt(s);
 	}
 
 	static public final int weekInYear() {
-		return weekInYear(nowDate());
+		Date d = nowDate();
+		return weekInYear(d);
 	}
 
 	static public final int weekInMonth(Date v) {
-		return NumEx.stringToInt(format(v, fmt_WInMonth));
+		String s = format(v, fmt_WInMonth);
+		return NumEx.stringToInt(s);
 	}
 
 	static public final int weekInMonth() {
-		return weekInMonth(nowDate());
+		Date d = nowDate();
+		return weekInMonth(d);
 	}
 
 	static public final int dayInYear(Date v) {
-		return NumEx.stringToInt(format(v, fmt_DInYear));
+		String s = format(v, fmt_DInYear);
+		return NumEx.stringToInt(s);
 	}
 
 	static public final int dayInYear() {
-		return dayInYear(nowDate());
+		Date d = nowDate();
+		return dayInYear(d);
 	}
 
 	static public final int dayInMonth(Date v) {
-		return NumEx.stringToInt(format(v, fmt_dInMonth));
+		String s = format(v, fmt_dInMonth);
+		return NumEx.stringToInt(s);
 	}
 
 	static public final int dayInMonth() {
-		return dayInMonth(nowDate());
+		Date d = nowDate();
+		return dayInMonth(d);
 	}
 
 	public static final Date addYear(Date date, int v) {
-		Calendar c = CalendarEx.addYear(parse2Cal(date), v);
+		Calendar c = parse2Cal(date);
+		c = CalendarEx.addYear(c, v);
 		return c.getTime();
 	}
 
 	public static final Date addMonth(Date date, int v) {
-		Calendar c = CalendarEx.addMonth(parse2Cal(date), v);
+		Calendar c = parse2Cal(date);
+		c = CalendarEx.addMonth(c, v);
 		return c.getTime();
 	}
 
 	public static final Date addWeek(Date date, int v) {
-		Calendar c = CalendarEx.addWeek(parse2Cal(date), v);
+		Calendar c = parse2Cal(date);
+		c = CalendarEx.addWeek(c, v);
 		return c.getTime();
 	}
 
 	public static final Date addDay(Date date, int v) {
-		Calendar c = CalendarEx.addDay(parse2Cal(date), v);
+		Calendar c = parse2Cal(date);
+		c = CalendarEx.addDay(c, v);
 		return c.getTime();
 	}
 
 	public static final Date addHour(Date date, int v) {
-		Calendar c = CalendarEx.addHour(parse2Cal(date), v);
+		Calendar c = parse2Cal(date);
+		c = CalendarEx.addHour(c, v);
 		return c.getTime();
 	}
 
 	public static final Date addMinute(Date date, int v) {
-		Calendar c = CalendarEx.addMinute(parse2Cal(date), v);
+		Calendar c = parse2Cal(date);
+		c = CalendarEx.addMinute(c, v);
 		return c.getTime();
 	}
 
 	public static final Date addSecond(Date date, int v) {
-		Calendar c = CalendarEx.addSecond(parse2Cal(date), v);
+		Calendar c = parse2Cal(date);
+		c = CalendarEx.addSecond(c, v);
 		return c.getTime();
 	}
 
 	public static final Date addMilliSecond(Date date, int v) {
-		Calendar c = CalendarEx.addMilliSecond(parse2Cal(date), v);
+		Calendar c = parse2Cal(date);
+		c = CalendarEx.addMilliSecond(c, v);
 		return c.getTime();
 	}
 }

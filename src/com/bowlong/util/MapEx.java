@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -24,7 +23,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.collections4.bag.HashBag;
 import org.apache.commons.collections4.bidimap.TreeBidiMap;
@@ -37,25 +35,21 @@ import org.apache.commons.collections4.map.StaticBucketMap;
 
 import com.alibaba.fastjson.JSON;
 import com.bowlong.basic.ExOrigin;
-import com.bowlong.lang.NumEx;
 import com.bowlong.lang.StrEx;
 import com.bowlong.objpool.StringBufPool;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class MapEx extends ExOrigin {
 
-	public static final Map singletonEmptyMap = new Hashtable();
+	public static final Map singletonEmptyMap = newMap3Hashtable();
 
 	public static final Map singletonEmptyMap() {
 		return singletonEmptyMap;
 	}
 
 	public static final <K, V> Map<K, V> newSortedMap() {
-		return Collections.synchronizedMap(new TreeMap<K, V>());
-	}
-
-	public static final <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap() {
-		return new ConcurrentHashMap<K, V>();
+		TreeMap<K, V> tree = new TreeMap<K, V>();
+		return Collections.synchronizedMap(tree);
 	}
 
 	public static final HashedMap newHashedMap() {
@@ -91,43 +85,53 @@ public class MapEx extends ExOrigin {
 	}
 
 	public static final boolean getBoolean(Map map, Object key) {
-		return toBoolean(map.get(key));
+		Object val = map.get(key);
+		return toBoolean(val);
 	}
 
 	public static final byte getByte(Map map, Object key) {
-		return toByte(map.get(key));
+		Object val = map.get(key);
+		return toByte(val);
 	}
 
 	public static final short getShort(Map map, Object key) {
-		return toShort(map.get(key));
+		Object val = map.get(key);
+		return toShort(val);
 	}
 
 	public static final int getInt(Map map, Object key) {
-		return toInt(map.get(key));
+		Object val = map.get(key);
+		return toInt(val);
 	}
 
 	public static final long getLong(Map map, Object key) {
-		return toLong(map.get(key));
+		Object val = map.get(key);
+		return toLong(val);
 	}
 
 	public static final float getFloat(Map map, Object key) {
-		return toFloat(map.get(key));
+		Object val = map.get(key);
+		return toFloat(val);
 	}
 
 	public static final double getDouble(Map map, Object key) {
-		return toDouble(map.get(key));
+		Object val = map.get(key);
+		return toDouble(val);
 	}
 
 	public static final BigInteger getBigInteger(Map map, Object key) {
-		return (BigInteger) map.get(key);
+		Object val = map.get(key);
+		return (BigInteger) val;
 	}
 
 	public static final BigDecimal getBigDecimal(Map map, Object key) {
-		return (BigDecimal) map.get(key);
+		Object val = map.get(key);
+		return (BigDecimal) val;
 	}
 
 	public static final String getStringNoTrim(Map map, Object key) {
-		return toStr(map.get(key));
+		Object val = map.get(key);
+		return toStr(val);
 	}
 
 	public static final String getString(Map map, Object key) {
@@ -136,7 +140,8 @@ public class MapEx extends ExOrigin {
 	}
 
 	public static final Date getDate(Map map, Object key) {
-		return toDate(map.get(key));
+		Object val = map.get(key);
+		return toDate(val);
 	}
 
 	public static final NewDate getNewDate(Map map, Object key) {
@@ -153,9 +158,10 @@ public class MapEx extends ExOrigin {
 			return new NewDate(((java.sql.Timestamp) obj));
 		else if (obj instanceof Long)
 			return new NewDate((Long) obj);
-		else if (obj instanceof String)
-			return new NewDate(parse2Date((String) obj, fmt_yyyy_MM_dd_HH_mm_ss));
-
+		else if (obj instanceof String) {
+			Date d = parse2Date((String) obj, fmt_yyyy_MM_dd_HH_mm_ss);
+			return new NewDate(d);
+		}
 		return null;
 	}
 
@@ -237,13 +243,13 @@ public class MapEx extends ExOrigin {
 	}
 
 	public static final Map toHashtable(Map map) {
-		Map ret = newMap();
+		Map ret = newMap3Hashtable();
 		ret.putAll(map);
 		return ret;
 	}
 
 	public static final Map toConcurrentHashMap(Map map) {
-		Map ret = newConcurrentHashMap();
+		Map ret = newMap();
 		ret.putAll(map);
 		return ret;
 	}
@@ -264,11 +270,13 @@ public class MapEx extends ExOrigin {
 			} else if (obj instanceof Object[]) {
 				objs = (Object[]) obj;
 				if (objs.length < 2) {
-					throw new IllegalArgumentException("Array element " + i + ", '" + obj + "', has a length less than 2");
+					throw new IllegalArgumentException(
+							"Array element " + i + ", '" + obj + "', has a length less than 2");
 				}
 				map.put(objs[0], objs[1]);
 			} else {
-				throw new IllegalArgumentException("Array element " + i + ", '" + obj + "', is neither of type Map.Entry nor an Array");
+				throw new IllegalArgumentException(
+						"Array element " + i + ", '" + obj + "', is neither of type Map.Entry nor an Array");
 			}
 		}
 		return map;
@@ -319,73 +327,9 @@ public class MapEx extends ExOrigin {
 		return ret;
 	}
 
-	static public final Map<String, Integer> toMapKVInt(Map map) {
-		Map<String, Integer> ret = newMapT();
-		if (isEmpty(map))
-			return ret;
-		Object keyObj, valObj;
-		String key;
-		Integer val;
-
-		for (Entry<Object, Object> entry : ((Map<Object, Object>) map).entrySet()) {
-			keyObj = entry.getKey();
-			valObj = entry.getValue();
-			if (keyObj == null || valObj == null)
-				continue;
-
-			key = keyObj.toString();
-			val = NumEx.stringToInt(valObj.toString());
-			ret.put(key, val);
-		}
-		return ret;
-	}
-
-	static public final Map<Integer, String> toMapKIntV(Map map) {
-		Map<Integer, String> ret = newMapT();
-		if (isEmpty(map))
-			return ret;
-		Object keyObj, valObj;
-		Integer key;
-		String val;
-
-		for (Entry<Object, Object> entry : ((Map<Object, Object>) map).entrySet()) {
-			keyObj = entry.getKey();
-			valObj = entry.getValue();
-			if (keyObj == null || valObj == null)
-				continue;
-
-			key = NumEx.stringToInt(keyObj.toString());
-			val = valObj.toString();
-			ret.put(key, val);
-		}
-		return ret;
-	}
-
-	static public final Map<Integer, Integer> toMapKIntVInt(Map map) {
-		Map<Integer, Integer> ret = newMapT();
-		if (isEmpty(map))
-			return ret;
-		Object keyObj, valObj;
-		Integer key;
-		Integer val;
-		for (Entry<Object, Object> entry : ((Map<Object, Object>) map).entrySet()) {
-			keyObj = entry.getKey();
-			valObj = entry.getValue();
-			if (keyObj == null || valObj == null)
-				continue;
-
-			key = NumEx.stringToInt(keyObj.toString());
-			val = NumEx.stringToInt(valObj.toString());
-			ret.put(key, val);
-		}
-		return ret;
-	}
-
 	public static final Map toMapByProperties(String s) {
 		Properties p = new Properties();
-		try {
-			StringReader sr = new StringReader(s);
-			BufferedReader br = new BufferedReader(sr);
+		try (StringReader sr = new StringReader(s); BufferedReader br = new BufferedReader(sr);) {
 			p.load(br);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -400,8 +344,9 @@ public class MapEx extends ExOrigin {
 	}
 
 	public static final Properties load(InputStream is) throws Exception {
-		InputStreamReader isr = new InputStreamReader(is);
-		return load(isr);
+		try (InputStreamReader isr = new InputStreamReader(is);) {
+			return load(isr);
+		}
 	}
 
 	public static final Properties load(Reader br) throws Exception {
@@ -497,7 +442,7 @@ public class MapEx extends ExOrigin {
 		return putKvs4Map(r2, objs);
 	}
 
-	static public Map putKvs4Map(Map r2,Object... objs) {
+	static public Map putKvs4Map(Map r2, Object... objs) {
 		if (objs == null || objs.length <= 0) {
 			return r2;
 		}
@@ -520,7 +465,7 @@ public class MapEx extends ExOrigin {
 		return r2;
 	}
 
-	static public NewMap putKvs4NewMap(NewMap r2,Object... objs) {
+	static public NewMap putKvs4NewMap(NewMap r2, Object... objs) {
 		return (NewMap) putKvs4Map(r2, objs);
 	}
 

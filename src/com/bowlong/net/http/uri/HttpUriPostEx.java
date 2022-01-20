@@ -15,7 +15,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.bowlong.lang.StrEx;
-import com.bowlong.net.http.Browser;
 import com.bowlong.text.EncodingEx;
 import com.bowlong.util.MapEx;
 
@@ -47,10 +46,11 @@ public class HttpUriPostEx extends HttpUriEx {
 				post.setEntity(urlencode);
 				// contentLength = urlencode.getContentLength();
 			}
-			for (Entry<String, String> entry : getMapHead().entrySet()) {
+			Map<String, String> hMap = getMapHead();
+			for (Entry<String, String> entry : hMap.entrySet()) {
 				post.setHeader(entry.getKey(), entry.getValue());
 			}
-			post.setHeader("Accept-Charset", charset);
+			post.setHeader("Charset", charset);
 			return execute(post);
 		} catch (Exception e) {
 			logError(e, log);
@@ -77,10 +77,11 @@ public class HttpUriPostEx extends HttpUriEx {
 				HttpEntity httpEn = new StringEntity(params, charset);
 				post.setEntity(httpEn);
 			}
-			post.setHeader("Accept", "*/*");
-			post.setHeader("Accept-Charset", charset);
-			post.setHeader("Connection", "close"); // Keep-Alive close
-			post.setHeader("User-Agent", Browser.ch360);
+			Map<String, String> hMap = getMapHead();
+			for (Entry<String, String> entry : hMap.entrySet()) {
+				post.setHeader(entry.getKey(), entry.getValue());
+			}
+			post.setHeader("Charset", charset);
 			return execute(post);
 		} catch (Exception e) {
 			logError(e, log);

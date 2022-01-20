@@ -15,7 +15,8 @@ public final class RndEx {
 	}
 
 	public static final String randomUUID() {
-		return UUID.randomUUID().toString();
+		UUID uuid = UUID.randomUUID();
+		return uuid.toString();
 	}
 
 	public static final boolean nextBoolean() {
@@ -35,7 +36,8 @@ public final class RndEx {
 	}
 
 	public static final byte[] nextBytes(int len) {
-		return nextBytes(new byte[len]);
+		byte[] bts = new byte[len];
+		return nextBytes(bts);
 	}
 
 	public static final double nextDouble() {
@@ -58,7 +60,7 @@ public final class RndEx {
 		return rnd.nextInt(n);
 	}
 
-	public static final int nextInt(int f,int t) {
+	public static final int nextInt(int f, int t) {
 		if (f == t)
 			return t;
 		int min = f > t ? t : f;
@@ -118,8 +120,10 @@ public final class RndEx {
 			return "";
 		StringBuffer buff = StringBufPool.borrowObject();
 		try {
+			String rnd;
 			for (int i = 0; i < rndLen; i++) {
-				buff.append(nextString(org));
+				rnd = nextString(org);
+				buff.append(rnd);
 			}
 			return buff.toString();
 		} catch (Exception e) {
@@ -135,8 +139,10 @@ public final class RndEx {
 			return "";
 		StringBuffer buff = StringBufPool.borrowObject();
 		try {
+			int rnd;
 			for (int i = 0; i < rndLen; i++) {
-				buff.append(nextInt(10));
+				rnd = nextInt(10);
+				buff.append(rnd);
 			}
 			return buff.toString();
 		} catch (Exception e) {
@@ -146,7 +152,7 @@ public final class RndEx {
 		}
 	}
 
-	public static final double nextDouble(double f,double t,int decimal) {
+	public static final double nextDouble(double f, double t, int decimal) {
 		if (f == t)
 			return t;
 
@@ -166,7 +172,7 @@ public final class RndEx {
 		return (mi + rnd.nextInt(ma - mi)) / lmt;
 	}
 
-	public static final double nextDouble(double f,double t) {
+	public static final double nextDouble(double f, double t) {
 		return nextDouble(f, t, 2);
 	}
 }
