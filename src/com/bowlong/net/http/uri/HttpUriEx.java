@@ -9,17 +9,12 @@ import org.apache.commons.logging.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.config.RequestConfig.Builder;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.params.ClientPNames;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.params.CoreConnectionPNames;
-import org.apache.http.params.HttpParams;
 
 import com.bowlong.bio2.B2InputStream;
 import com.bowlong.net.http.HttpBaseEx;
@@ -35,21 +30,21 @@ public class HttpUriEx extends HttpBaseEx {
 	static Log log = getLog(HttpUriEx.class);
 
 	// 4.3版本的超时
-	static final HttpClient httpclient4_3(int tiOutCon, int tiOutSo) {
-		HttpClient client = new DefaultHttpClient();
-		HttpParams params = client.getParams();
-		// 设置是否可以重定向
-		params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
-
-		// 请求超时
-		tiOutCon = (tiOutCon <= 0) ? defaultConRequTimeout : tiOutCon;
-		params.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, tiOutCon);
-
-		// 读取超时
-		tiOutSo = (tiOutSo <= 0) ? defaultSoTimeout : tiOutSo;
-		params.setParameter(CoreConnectionPNames.SO_TIMEOUT, tiOutSo);
-		return client;
-	}
+	// static final HttpClient httpclient4_3(int tiOutCon, int tiOutSo) {
+	// HttpClient client = new DefaultHttpClient();
+	// HttpParams params = client.getParams();
+	// // 设置是否可以重定向
+	// params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
+	//
+	// // 请求超时
+	// tiOutCon = (tiOutCon <= 0) ? defaultConRequTimeout : tiOutCon;
+	// params.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, tiOutCon);
+	//
+	// // 读取超时
+	// tiOutSo = (tiOutSo <= 0) ? defaultSoTimeout : tiOutSo;
+	// params.setParameter(CoreConnectionPNames.SO_TIMEOUT, tiOutSo);
+	// return client;
+	// }
 
 	// 4.5版本的超时
 	static final CloseableHttpClient httpclient4_5(int tiOutCon, int tiOutSo) {
