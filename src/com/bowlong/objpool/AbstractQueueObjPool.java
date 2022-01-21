@@ -22,7 +22,8 @@ public abstract class AbstractQueueObjPool<T> {
 			synchronized (queues) {
 				if (num.get() > 0) {
 					num.decrementAndGet();
-					return resetObj(queues.poll());
+					T it = queues.poll();
+					return resetObj(it);
 				}
 			}
 		}

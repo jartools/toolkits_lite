@@ -144,7 +144,8 @@ public class SnowflakeIdWorker {
 	}
 
 	public synchronized String nextIdStr() {
-		return String.valueOf(nextId());
+		long _id = nextId();
+		return String.valueOf(_id);
 	}
 
 	/**

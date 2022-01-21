@@ -40,8 +40,11 @@ public class BasicPool<T> extends AbstractQueueObjPool<T> {
 	}
 
 	public final void onInit(int initNum) {
+		T it;
 		for (int i = 0; i < initNum; i++) {
-			returnObj(createObj());
+			it = createObj();
+			if (it != null)
+				returnObj(it);
 		}
 	}
 

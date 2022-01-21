@@ -24,8 +24,8 @@ public class SnowflakeldPool extends BasicPool<SnowflakeIdWorker> {
 	}
 
 	public SnowflakeldPool(int num) {
-		super(SnowflakeIdWorker.class, num);
-		_init();
+		this();
+		onInit(num);
 	}
 
 	void _init() {
@@ -49,7 +49,7 @@ public class SnowflakeldPool extends BasicPool<SnowflakeIdWorker> {
 		} else {
 			do {
 				ret = get();
-				ThreadEx.sleep(20);
+				ThreadEx.sleep(2);
 			} while (ret == null);
 		}
 		return ret;
@@ -72,6 +72,7 @@ public class SnowflakeldPool extends BasicPool<SnowflakeIdWorker> {
 	}
 
 	static final public String nextIdStr() {
-		return String.valueOf(nextId());
+		long _id = nextId();
+		return String.valueOf(_id);
 	}
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.bowlong.basic.ExToolkit;
 import com.bowlong.sql.SqlEx;
+import com.bowlong.tool.SnowflakeIdWorker;
 
 /**
  * 添加bean 基础类
@@ -21,11 +22,7 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 	static final public String selFmt = "SELECT * FROM `%s` WHERE ";
 	static final public String upFmt = "UPDATE `%s` SET %s WHERE %s";
 	static final public String delFmt = "DELETE FROM `%s` WHERE %s";
-	static private long mCursor = 0;
-
-	static final public long getCursor() {
-		return mCursor;
-	}
+	static final private SnowflakeIdWorker mCursor = SnowflakeIdWorker.defInstance();
 
 	protected long mMKey = 0; // 数据库主键id标识
 	protected long mCKey = 0; // 对象实例唯一标识(非全局唯一表示，而是new Class的Class的标识)
@@ -141,11 +138,11 @@ public abstract class BeanBasic extends ExToolkit implements RsTHandler<BeanBasi
 	}
 
 	public void newCKey() {
-		this.mCKey = (++mCursor);
+		this.mCKey = mCursor.nextId();
 	}
 
 	public <T extends BeanBasic> T toSave() {
-		T cObj = (T) Cache.borrowObject(this.getClass(),false);
+		T cObj = (T) Cache.borrowObject(this.getClass(), false);
 		cObj.setmMKey(this.mMKey);
 		cObj.setmCKey(this.mCKey);
 		cObj.setmDBType(0);

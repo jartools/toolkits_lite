@@ -54,7 +54,7 @@ public class Cache<T extends BeanBasic> extends ExToolkit {
 
 	static final public <T extends BeanBasic> T borrowObject(Class<T> clazz, boolean isNewCKey) {
 		T ret = BBasisPool.borrowObject(clazz);
-		if (isNewCKey && ret != null)
+		if ((ret != null) && (isNewCKey || ret.getmCKey() <= 0L))
 			ret.newCKey();
 		return ret;
 	}
