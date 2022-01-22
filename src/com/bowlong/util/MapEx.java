@@ -30,7 +30,7 @@ import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.collections4.map.LRUMap;
 import org.apache.commons.collections4.map.LinkedMap;
 import org.apache.commons.collections4.map.MultiKeyMap;
-import org.apache.commons.collections4.map.MultiValueMap;
+//import org.apache.commons.collections4.map.MultiValueMap;
 import org.apache.commons.collections4.map.StaticBucketMap;
 
 import com.alibaba.fastjson.JSON;
@@ -76,9 +76,9 @@ public class MapEx extends ExOrigin {
 		return new MultiKeyMap();
 	}
 
-	public static final MultiValueMap newMultiValueMap() {
-		return new MultiValueMap();
-	}
+	// public static final MultiValueMap newMultiValueMap() {
+	// return new MultiValueMap();
+	// }
 
 	public static final StaticBucketMap newStaticBucketMap() {
 		return new StaticBucketMap();

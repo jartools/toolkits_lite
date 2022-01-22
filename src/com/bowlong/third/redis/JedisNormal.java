@@ -3,12 +3,13 @@ package com.bowlong.third.redis;
 import java.util.ArrayList;
 import java.util.List;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.SortingParams;
-
 import com.bowlong.lang.StrEx;
 import com.bowlong.util.ListEx;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+//import redis.clients.jedis.SortingParams;
+import redis.clients.jedis.params.SortingParams;
 
 /**
  * jedis -- 主要操作 <br/>

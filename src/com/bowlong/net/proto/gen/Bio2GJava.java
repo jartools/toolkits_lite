@@ -8,8 +8,6 @@ import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import schemasMicrosoftComVml.STExt;
-
 import com.bowlong.lang.PStr;
 import com.bowlong.lang.StrEx;
 import com.bowlong.util.NewList;

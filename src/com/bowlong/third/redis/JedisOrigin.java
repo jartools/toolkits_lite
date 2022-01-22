@@ -1,6 +1,7 @@
 package com.bowlong.third.redis;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.util.Map;
 
 import com.bowlong.basic.ExToolkit;
@@ -403,7 +404,8 @@ public class JedisOrigin implements Serializable {
 		config.setMinIdle(minIdle);
 
 		// 表示当borrow一个jedis实例时，最大的等待时间，如果超过等待时间，则直接抛出JedisConnectionException
-		config.setMaxWaitMillis(maxWait);
+		Duration d = Duration.ofMillis(maxWait);
+		config.setMaxWait(d);
 
 		// 在borrow一个jedis实例时，是否提前进行alidate操作；如果为true，则得到的jedis实例均是可用的
 		config.setTestOnBorrow(testOnBorrow);
@@ -417,14 +419,16 @@ public class JedisOrigin implements Serializable {
 		config.setTestWhileIdle(testWhileIdle);
 
 		// 表示idle object evitor两次扫描之间要sleep的毫秒数
-		config.setTimeBetweenEvictionRunsMillis(timeBetweenEvictionRunsMillis);
+		d = Duration.ofMillis(timeBetweenEvictionRunsMillis);
+		config.setTimeBetweenEvictionRuns(d);
 
 		// 表示idle object evitor每次扫描的最多的对象数
 		config.setNumTestsPerEvictionRun(numTestsPerEvictionRun);
 
 		// 表示一个对象至少停留在idle状态的最短时间，然后才能被idle object evitor扫描并驱逐
 		// 这一项只有在timeBetweenEvictionRunsMillis大于0时才有意义
-		config.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMillis);
+		d = Duration.ofMillis(minEvictableIdleTimeMillis);
+		config.setMinEvictableIdleTime(d);
 		return config;
 	}
 
@@ -437,7 +441,8 @@ public class JedisOrigin implements Serializable {
 		config.setMaxIdle(maxIdle);
 		config.setMinIdle(minIdle);
 		config.setMaxTotal(maxActive);
-		config.setMaxWaitMillis(maxWait);
+		Duration d = Duration.ofMillis(maxWait);
+		config.setMaxWait(d);
 		config.setTestWhileIdle(true);
 		return config;
 	}

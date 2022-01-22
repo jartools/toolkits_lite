@@ -24,6 +24,7 @@ import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
+import freemarker.template.Version;
 
 /**
  * @UserName : SandKing
@@ -38,9 +39,11 @@ public class SK_Generate {
 
 	public static Configuration getConfiguration() {
 		if (cfg == null) {
-			cfg = new Configuration();
+			Version ver = Configuration.VERSION_2_3_31;
+			cfg = new Configuration(ver);
 			cfg.setClassForTemplateLoading(DTP.class, "");
-			cfg.setObjectWrapper(new DefaultObjectWrapper());
+			DefaultObjectWrapper _dw = new DefaultObjectWrapper(ver);
+			cfg.setObjectWrapper(_dw);
 		}
 		return cfg;
 	}
@@ -48,9 +51,11 @@ public class SK_Generate {
 	public static Configuration getConfiguration(String path) {
 		if (cfg == null) {
 			try {
-				cfg = new Configuration();
+				Version ver = Configuration.VERSION_2_3_31;
+				cfg = new Configuration(ver);
 				cfg.setDirectoryForTemplateLoading(FileRw.getFile(path));
-				cfg.setObjectWrapper(new BeansWrapper());
+				BeansWrapper _dw = new BeansWrapper(ver);
+				cfg.setObjectWrapper(_dw);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

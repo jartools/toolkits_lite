@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import opensource.jpinyin.PinyinHelper;
-
 import com.bowlong.lang.StrEx;
 import com.bowlong.util.ListEx;
 import com.bowlong.util.MapEx;
 import com.dbmaker.freemarker.sk.decode.SK_JdbcType;
 import com.dbmaker.freemarker.sk.decode.SK_SqlTypeDecode;
+import com.github.stuxuhai.jpinyin.PinyinException;
+import com.github.stuxuhai.jpinyin.PinyinHelper;
 
 /**
  * @UserName : SandKing
@@ -69,10 +69,12 @@ public abstract class SK_ITable {
 	protected Set<String> impImports;
 	protected Set<String> cfgImports;
 
-	public SK_ITable(String tableName, String d_tableName, String x_tableName, String packageName, String all_basicType_x_columnName, String all_columnName, String all_columnNameSign,
-			String all_objAndGetD_columnName, String all_columnName_Sign, String primary_columnName, String primaryD_columnName, String primaryX_columnName, String primaryClassType,
-			String primaryBasicType, List<String> all_objAndGetD_columnNames, List<SK_Column> columns, List<SK_BindKey> bindKeys, List<SK_Index> indexKeys, SK_Database db, String config,
-			int columnSize, boolean isCfg) {
+	public SK_ITable(String tableName, String d_tableName, String x_tableName, String packageName,
+			String all_basicType_x_columnName, String all_columnName, String all_columnNameSign,
+			String all_objAndGetD_columnName, String all_columnName_Sign, String primary_columnName,
+			String primaryD_columnName, String primaryX_columnName, String primaryClassType, String primaryBasicType,
+			List<String> all_objAndGetD_columnNames, List<SK_Column> columns, List<SK_BindKey> bindKeys,
+			List<SK_Index> indexKeys, SK_Database db, String config, int columnSize, boolean isCfg) {
 		super();
 		this.tableName = tableName;
 		this.d_tableName = d_tableName;
@@ -278,7 +280,13 @@ public abstract class SK_ITable {
 				String columnName = map.get("COLUMN_NAME").toString();
 				String remarks = map.get("REMARKS").toString();
 				boolean autoincrement = "YES".equals(MapEx.getString(map, "IS_AUTOINCREMENT")) ? true : false;
-				String columnName_ = PinyinHelper.getShortPinyin(columnName);
+				String columnName_ = "";
+				try {
+					columnName_ = PinyinHelper.getShortPinyin(columnName);
+				} catch (PinyinException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				String d_columnName = StrEx.upperN1(columnName_);
 				String x_columnName = StrEx.lowerFirst(columnName_);
 				String typeName = map.get("TYPE_NAME").toString();
@@ -296,7 +304,8 @@ public abstract class SK_ITable {
 				}
 				String basicType = SK_SqlTypeDecode.getBasicType(classType);
 
-				column = new SK_Column(autoincrement, columnName, d_columnName, x_columnName, typeName, columnSize, dataType, classType, basicType, remarks);
+				column = new SK_Column(autoincrement, columnName, d_columnName, x_columnName, typeName, columnSize,
+						dataType, classType, basicType, remarks);
 				columns.add(column);
 			}
 		}
@@ -330,10 +339,16 @@ public abstract class SK_ITable {
 						}
 					}
 				}
-				String pkTableName_ = PinyinHelper.getShortPinyin(pkTableName);
-				String pkColumnName_ = PinyinHelper.getShortPinyin(pkColumnName);
-				String fkTableName_ = PinyinHelper.getShortPinyin(fkTableName);
-				String fkColumnName_ = PinyinHelper.getShortPinyin(fkColumnName);
+				String pkTableName_ = "", pkColumnName_ = "", fkTableName_ = "", fkColumnName_ = "";
+				try {
+					pkTableName_ = PinyinHelper.getShortPinyin(pkTableName);
+					pkColumnName_ = PinyinHelper.getShortPinyin(pkColumnName);
+					fkTableName_ = PinyinHelper.getShortPinyin(fkTableName);
+					fkColumnName_ = PinyinHelper.getShortPinyin(fkColumnName);
+				} catch (PinyinException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 				String d_pkTableName = StrEx.upperN1(pkTableName_);
 				String d_pkColumnName = StrEx.upperN1(pkColumnName_);
@@ -344,8 +359,9 @@ public abstract class SK_ITable {
 				String x_pkColumnName = StrEx.lowerFirst(pkColumnName_);
 				String x_fkTableName = StrEx.lowerFirst(fkTableName_);
 				String x_fkColumnName = StrEx.lowerFirst(fkColumnName_);
-				sk_key = new SK_BindKey(pkTableName, pkColumnName, fkTableName, fkColumnName, d_pkTableName, d_pkColumnName, d_fkTableName, d_fkColumnName, x_pkTableName, x_pkColumnName,
-						x_fkTableName, x_fkColumnName, pk, unique);
+				sk_key = new SK_BindKey(pkTableName, pkColumnName, fkTableName, fkColumnName, d_pkTableName,
+						d_pkColumnName, d_fkTableName, d_fkColumnName, x_pkTableName, x_pkColumnName, x_fkTableName,
+						x_fkColumnName, pk, unique);
 				bindKeys.add(sk_key);
 			}
 			pk = true;
@@ -356,10 +372,16 @@ public abstract class SK_ITable {
 				String fkTableName = map.get("FKTABLE_NAME").toString();
 				String fkColumnName = map.get("FKCOLUMN_NAME").toString();
 
-				String pkTableName_ = PinyinHelper.getShortPinyin(pkTableName);
-				String pkColumnName_ = PinyinHelper.getShortPinyin(pkColumnName);
-				String fkTableName_ = PinyinHelper.getShortPinyin(fkTableName);
-				String fkColumnName_ = PinyinHelper.getShortPinyin(fkColumnName);
+				String pkTableName_ = "", pkColumnName_ = "", fkTableName_ = "", fkColumnName_ = "";
+				try {
+					pkTableName_ = PinyinHelper.getShortPinyin(pkTableName);
+					pkColumnName_ = PinyinHelper.getShortPinyin(pkColumnName);
+					fkTableName_ = PinyinHelper.getShortPinyin(fkTableName);
+					fkColumnName_ = PinyinHelper.getShortPinyin(fkColumnName);
+				} catch (PinyinException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 				String d_pkTableName = StrEx.upperN1(pkTableName_);
 				String d_pkColumnName = StrEx.upperN1(pkColumnName_);
@@ -370,8 +392,9 @@ public abstract class SK_ITable {
 				String x_pkColumnName = StrEx.lowerFirst(pkColumnName_);
 				String x_fkTableName = StrEx.lowerFirst(fkTableName_);
 				String x_fkColumnName = StrEx.lowerFirst(fkColumnName_);
-				sk_key = new SK_BindKey(pkTableName, pkColumnName, fkTableName, fkColumnName, d_pkTableName, d_pkColumnName, d_fkTableName, d_fkColumnName, x_pkTableName, x_pkColumnName,
-						x_fkTableName, x_fkColumnName, pk, true);
+				sk_key = new SK_BindKey(pkTableName, pkColumnName, fkTableName, fkColumnName, d_pkTableName,
+						d_pkColumnName, d_fkTableName, d_fkColumnName, x_pkTableName, x_pkColumnName, x_fkTableName,
+						x_fkColumnName, pk, true);
 				bindKeys.add(sk_key);
 			}
 		}
@@ -452,7 +475,13 @@ public abstract class SK_ITable {
 					break;
 				}
 			}
-			String columnName_ = PinyinHelper.getShortPinyin(columnName);
+			String columnName_ = "";
+			try {
+				columnName_ = PinyinHelper.getShortPinyin(columnName);
+			} catch (PinyinException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			String d_columnName = StrEx.upperN1(columnName_);
 			String x_columnName = StrEx.lowerFirst(columnName_);
 			index = sk_indexs.remove(indexName);
@@ -473,7 +502,8 @@ public abstract class SK_ITable {
 				x_columnNames.add(x_columnName);
 				basicTypes.add(basicType);
 				classTypes.add(classType);
-				index = new SK_Index(indexName, columnNames, d_columnNames, x_columnNames, basicTypes, classTypes, "", "", "", "", "", "", "", unique, this);
+				index = new SK_Index(indexName, columnNames, d_columnNames, x_columnNames, basicTypes, classTypes, "",
+						"", "", "", "", "", "", unique, this);
 				indexs.add(index);
 			} else {
 				columnNames = index.getColumnNames();

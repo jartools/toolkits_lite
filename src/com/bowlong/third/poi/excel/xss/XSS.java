@@ -11,6 +11,7 @@ import java.util.Vector;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFComment;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
@@ -301,25 +302,24 @@ public class XSS extends PoiEx {
 			XSSFCell v = c.getCell(column);
 			if (v == null)
 				return "";
-			int cellType = v.getCellType();
-			if (cellType == XSSFCell.CELL_TYPE_NUMERIC) {
+			CellType cellType = v.getCellType();
+			switch (cellType) {
+			case NUMERIC:
 				return "" + v.getNumericCellValue();
-			} else if (cellType == XSSFCell.CELL_TYPE_BLANK) {
+			case BLANK:
 				return "";
-			} else if (cellType == XSSFCell.CELL_TYPE_STRING) {
-				return v.getStringCellValue().trim();
-			} else if (cellType == XSSFCell.CELL_TYPE_BOOLEAN) {
+			case BOOLEAN:
 				return "" + v.getBooleanCellValue();
-			} else if (cellType == XSSFCell.CELL_TYPE_FORMULA) {
-				String result = "";
-				try {
-					result = "" + v.getStringCellValue().trim();
-				} catch (Exception e) {
-					result = "" + v.getNumericCellValue();
-				}
-				return result;
+			default:
+				break;
 			}
-			return v.getStringCellValue().trim();
+			String result = "";
+			try {
+				result = v.getStringCellValue().trim();
+			} catch (Exception e) {
+				result = "" + v.getNumericCellValue();
+			}
+			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/core-3.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.1.3.jar"/>
-	<classpathentry kind="lib" path="lib/poi-ooxml-schemas-3.9-20121203.jar"/>
-	<classpathentry kind="lib" path="lib/json-20160212.jar"/>
-	<classpathentry kind="lib" path="lib/commons-dbutils-1.5.jar"/>
-	<classpathentry kind="lib" path="lib/jpinyin-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/freemarker.jar"/>
-	<classpathentry kind="lib" path="lib/commons-io-2.4.jar"/>
-	<classpathentry kind="lib" path="lib/jedis-2.3.1.jar"/>
-	<classpathentry kind="lib" path="lib/commons-pool2-2.1.jar"/>
-	<classpathentry kind="lib" path="lib/commons-dbcp.jar"/>
-	<classpathentry kind="lib" path="lib/jsoup-1.8.3.jar"/>
-	<classpathentry kind="lib" path="lib/jsp-api.jar"/>
-	<classpathentry kind="lib" path="lib/poi-3.9-20121203.jar"/>
-	<classpathentry kind="lib" path="lib/poi-ooxml-3.9-20121203.jar"/>
-	<classpathentry kind="lib" path="lib/poi-scratchpad-3.9-20121203.jar"/>
-	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="lib/spring-2.5.jar"/>
-	<classpathentry kind="lib" path="lib/commons-collections4-4.0.jar"/>
-	<classpathentry kind="lib" path="lib/netty-all-4.1.34.Final.jar"/>
-	<classpathentry kind="lib" path="lib/javax.servlet-api-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/gson-2.8.6.jar"/>
-	<classpathentry kind="lib" path="lib/druid-1.2.8.jar"/>
-	<classpathentry kind="lib" path="lib/fastjson-1.2.79.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/freemarker/commons-dbutils-1.7.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/freemarker/freemarker-2.3.31.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/google/google-api-client-1.33.0.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/google/google-api-services-androidpublisher-v3-rev20211125-1.32.1.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/google/google-http-client-1.41.0.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/google/google-http-client-jackson2-1.41.0.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/json/fastjson-1.2.79.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/json/jackson-core-2.13.1.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/json/json-20211205.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/json/gson-2.8.9.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/commons-collections4-4.4.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/commons-dbcp2-2.9.0.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/commons-io-2.11.0.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/commons-pool2-2.11.1.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/core-3.4.1.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/dom4j-2.1.3.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/druid-1.2.8.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/javax.servlet-api-4.0.1.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/javax.servlet.jsp-api-2.3.3.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/jedis-4.0.1.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/jpinyin-1.1.8.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/jsoup-1.14.3.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/poi-5.2.0.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/poi-scratchpad-5.2.0.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/springframework/spring-core-5.3.9.jar"/>
 	<classpathentry kind="lib" path="lib/httpclient-4.5.13.jar"/>
 	<classpathentry kind="lib" path="lib/httpcore-4.4.15.jar"/>
-	<classpathentry kind="lib" path="lib/libs_ggplay/google-http-client-1.24.1.jar"/>
-	<classpathentry kind="lib" path="lib/libs_ggplay/google-api-client-1.24.1.jar"/>
-	<classpathentry kind="lib" path="lib/libs_ggplay/google-api-services-androidpublisher-v3-rev23-1.25.0.jar"/>
-	<classpathentry kind="lib" path="lib/libs_ggplay/google-http-client-jackson2-1.24.1.jar"/>
-	<classpathentry kind="lib" path="lib/libs_ggplay/google-oauth-client-1.24.1.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_80"/>
+	<classpathentry kind="lib" path="lib/netty-all-4.1.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/springframework/spring-context-5.3.8.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/springframework/spring-web-5.3.9.jar"/>
+	<classpathentry kind="lib" path="lib2022_jdk8/poi-ooxml-5.2.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_261"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -8,10 +8,10 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import opensource.jpinyin.PinyinHelper;
-
 import com.bowlong.lang.StrEx;
 import com.dbmaker.freemarker.sk.decode.SK_SqlTypeDecode;
+import com.github.stuxuhai.jpinyin.PinyinException;
+import com.github.stuxuhai.jpinyin.PinyinHelper;
 
 /**
  * @UserName : SandKing
@@ -95,7 +95,12 @@ public class SK_Database {
 				List<SK_BindKey> bindKeys = new ArrayList<SK_BindKey>();
 				List<SK_Index> indexKeys = new ArrayList<SK_Index>();
 				// 拼音名称
-				String tableName_ = PinyinHelper.getShortPinyin(tableName);
+				String tableName_ = "";
+				try {
+					tableName_ = PinyinHelper.getShortPinyin(tableName);
+				} catch (PinyinException e) {
+					e.printStackTrace();
+				}
 				// 大写名称
 				String d_tableName = StrEx.upperN1(tableName_);
 				// 小写名称

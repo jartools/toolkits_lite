@@ -19,7 +19,6 @@ import org.dom4j.io.XMLWriter;
 
 import com.bowlong.lang.NumEx;
 
-@SuppressWarnings("unchecked")
 public class XMLEx {
 
 	public static final Document createDocument() {

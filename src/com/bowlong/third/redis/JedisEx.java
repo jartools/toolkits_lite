@@ -1,5 +1,6 @@
 package com.bowlong.third.redis;
 
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -441,7 +442,8 @@ public class JedisEx {
 		config.setMaxIdle(64);
 		config.setMinIdle(1);
 		config.setMaxTotal(128);
-		config.setMaxWaitMillis(4 * 1000);
+		Duration d = Duration.ofMillis(4 * 1000);
+		config.setMaxWait(d);
 		// config.testOnBorrow = true;
 		// config.testOnReturn = true;
 		config.setTestWhileIdle(true);
@@ -453,7 +455,8 @@ public class JedisEx {
 		config.setMaxIdle(maxIdle);
 		config.setMinIdle(minIdle);
 		config.setMaxTotal(maxActive);
-		config.setMaxWaitMillis(maxWait);
+		Duration d = Duration.ofMillis(maxWait);
+		config.setMaxWait(d);
 		// config.testOnBorrow = true;
 		// config.testOnReturn = true;
 		config.setTestWhileIdle(true);

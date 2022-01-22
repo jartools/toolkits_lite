@@ -1,5 +1,6 @@
 package com.bowlong.third.redis;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -66,9 +67,11 @@ public class JedisTookits {
 			config.setTestOnBorrow(testOnBorrow);
 			config.setTestOnReturn(testOnReturn);
 			config.setTestWhileIdle(testWhileIdle);
-			config.setTimeBetweenEvictionRunsMillis(timeBetweenEvictionRunsMillis);
+			Duration d = Duration.ofMillis(timeBetweenEvictionRunsMillis);
+			config.setTimeBetweenEvictionRuns(d);
 			config.setNumTestsPerEvictionRun(numTestsPerEvictionRun);
-			config.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMillis);
+			d = Duration.ofMillis(minEvictableIdleTimeMillis);
+			config.setMinEvictableIdleTime(d);
 
 			pwd = StrEx.isEmpty(pwd) ? password : pwd;
 			boolean isNullPwd = StrEx.isEmpty(pwd);
@@ -175,6 +178,7 @@ public class JedisTookits {
 		} finally {
 			try {
 				pool.returnResource(r);
+				pool.close();
 				pool.destroy();
 			} catch (Exception e2) {
 			}
@@ -216,6 +220,7 @@ public class JedisTookits {
 		} finally {
 			try {
 				pool.returnResource(r);
+				pool.close();
 				pool.destroy();
 			} catch (Exception e2) {
 			}
