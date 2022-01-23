@@ -20,25 +20,35 @@ public class RShutdown extends Thread {
 
 	protected void exce_run() throws Exception {
 		logShutDown("=====RShutdown 守护进程停掉===", null);
+		doExit();
+	}
+
+	final public void doExit() {
+		clear();
 		exce_exit();
 	}
 
-	final protected void exce_exit() throws Exception {
+	protected void clear() {
+	}
+
+	final private void exce_exit() {
 		beforeShutDown();
 		System.exit(1);
 	}
 
 	// 记录关闭日志
-	protected void logShutDown(String logInfo, Socket socket) throws Exception {
+	protected void logShutDown(String logInfo, Socket socket) {
 	}
 
 	// 在下线之前
-	protected void beforeShutDown() throws Exception {
+	protected void beforeShutDown() {
 	}
 
 	// 添加守护进程
-	final public void addShutdownHook() {
-		ExOrigin.addShutdownHook(this);
+	final public void addShutdownHook(Thread t) {
+		if (t == null)
+			t = this;
+		ExOrigin.addShutdownHook(t);
 	}
 
 	static final public void close(Socket socket) {

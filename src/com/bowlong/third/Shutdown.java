@@ -48,15 +48,15 @@ public class Shutdown extends RShutdown {
 				return;
 			logShutDown(info, hder.socket);
 			if (this.isDoShut) {
-				clear();
-				exce_exit();
+				doExit();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	void clear() {
+	@Override
+	protected void clear() {
 		try {
 			int lens = list.size();
 			for (int i = 0; i < lens; i++) {
