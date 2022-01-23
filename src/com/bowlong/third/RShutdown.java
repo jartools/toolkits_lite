@@ -24,8 +24,13 @@ public class RShutdown extends Thread {
 	}
 
 	final public void doExit() {
-		clear();
-		exce_exit();
+		try {
+			clear();
+			exce_exit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	protected void clear() {
@@ -33,7 +38,7 @@ public class RShutdown extends Thread {
 
 	final private void exce_exit() {
 		beforeShutDown();
-		System.exit(1);
+		System.exit(0);
 	}
 
 	// 记录关闭日志
