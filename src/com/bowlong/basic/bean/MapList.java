@@ -42,10 +42,11 @@ public class MapList<T> extends ExToolkit {
 		this.init();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void init() {
-		this.map = this.isSafe ? newMap() : newMapT();
+		this.map = (Map<Object, T>) (this.isSafe ? newMap() : newMapT());
 		if (this.isList)
-			this.list = this.isSafe ? newList2() : newListT();
+			this.list = (List<T>) (this.isSafe ? newList2() : newListT());
 	}
 
 	public boolean put(Object key, T obj) {
