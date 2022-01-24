@@ -4,11 +4,14 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import com.bowlong.basic.ExOrigin;
+import com.bowlong.lang.task.ThreadEx;
 import com.bowlong.net.Tcp;
 
 //SHUTDOWN - 守护进程
 public class RShutdown extends Thread {
 	protected boolean isShuting = false;
+	private boolean isSHook = false;
+
 	@Override
 	final public void run() {
 		try {
@@ -26,12 +29,18 @@ public class RShutdown extends Thread {
 	final public void doExit() {
 		try {
 			this.isShuting = true;
+			ThreadEx.shutdown();
 			clear();
 			exce_exit();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(-1);
+			this._sysExit(-1);
 		}
+	}
+
+	final public void doExitByHook() {
+		this.isSHook = true;
+		this.doExit();
 	}
 
 	protected void clear() {
@@ -39,7 +48,12 @@ public class RShutdown extends Thread {
 
 	final private void exce_exit() {
 		beforeShutDown();
-		System.exit(1);
+		this._sysExit(1);
+	}
+
+	final private void _sysExit(int statues) {
+		if (!this.isSHook)
+			System.exit(statues);
 	}
 
 	// 记录关闭日志
@@ -53,7 +67,7 @@ public class RShutdown extends Thread {
 	// 添加守护进程
 	final public void addShutdownHook(Thread t) {
 		if (t == null)
-			t = this;
+			return;
 		ExOrigin.addShutdownHook(t);
 	}
 

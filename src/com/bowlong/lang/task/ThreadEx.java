@@ -171,6 +171,19 @@ public class ThreadEx {
 		return _singleExecutor;
 	}
 
+	static final public void shutdown() {
+		ExecutorService _es = null;
+		if (_executor != null) {
+			_es = _getExec();
+			_es.shutdown();
+		}
+
+		if (_singleExecutor != null) {
+			_es = _getSingleExec();
+			_es.shutdown();
+		}
+	}
+
 	static final public void execute(Runnable r) {
 		ExecutorService _es = _getExec();
 		execute(_es, r);
