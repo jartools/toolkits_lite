@@ -33,7 +33,7 @@ public class Shutdown extends RShutdown {
 
 	@Override
 	protected void exce_run() throws Exception {
-		while (!this.isDoShut && this.ssocket != null) {
+		while (!this.isShuting && !this.isDoShut && this.ssocket != null) {
 			SDHandler hder = new SDHandler(this, ssocket.accept());
 			list.add(hder);
 			ThreadEx.execute(hder);

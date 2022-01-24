@@ -71,6 +71,5 @@ public class SDHandler extends InputStreamEx implements Runnable {
 		close();
 		this.flag_shutdown = null;
 		this.socket = null;
-		this.socket = null;
 	}
 }

@@ -8,7 +8,7 @@ import com.bowlong.net.Tcp;
 
 //SHUTDOWN - 守护进程
 public class RShutdown extends Thread {
-
+	protected boolean isShuting = false;
 	@Override
 	final public void run() {
 		try {
@@ -25,11 +25,12 @@ public class RShutdown extends Thread {
 
 	final public void doExit() {
 		try {
+			this.isShuting = true;
 			clear();
 			exce_exit();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(1);
+			System.exit(-1);
 		}
 	}
 
@@ -38,7 +39,7 @@ public class RShutdown extends Thread {
 
 	final private void exce_exit() {
 		beforeShutDown();
-		System.exit(0);
+		System.exit(1);
 	}
 
 	// 记录关闭日志
