@@ -18,13 +18,20 @@ public class Shutdown extends RShutdown {
 		if (sleep > 0) {
 			ThreadEx.sleep(sleep);
 		}
+		addShutdownHook(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                doExitByHook();
+            }
+        }));
+		
 		this.flag_shutdown = flag_shut;
 		InetAddress addr = InetAddress.getByName("127.0.0.1");
 		ssocket = new ServerSocket(port, 2, addr);
 	}
 
 	public Shutdown(int port, String flag_shut) throws Exception {
-		this(port, 1000, flag_shut);
+		this(port, 100, flag_shut);
 	}
 
 	public Shutdown(int port) throws Exception {
