@@ -27,6 +27,8 @@ public class RShutdown extends Thread {
 	}
 
 	final public void doExit() {
+		if (this.isShuting)
+			return;
 		try {
 			this.isShuting = true;
 			ThreadEx.shutdown();
