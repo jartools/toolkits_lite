@@ -314,6 +314,34 @@ public class EOStrNum extends EOBasic {
 		return toDir(dir);
 	}
 
+	static final public String locateFromClasspath(String resourceName) {
+		String path = null;
+		// String tt = "path";
+		// attempt to load from the context classpath
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		if (loader != null) {
+			URL url = loader.getResource(resourceName);
+			if (url != null) {
+				// tt = "context classpath";
+				path = url.getPath();
+			}
+		}
+
+		// attempt to load from the system classpath
+		if (isEmpty(path)) {
+			URL url = ClassLoader.getSystemResource(resourceName);
+			if (url != null) {
+				// tt = "system classpath";
+				path = url.getPath();
+			}
+		}
+
+		if (isEmpty(path))
+			path = resourceName;
+		// log.info("Loading configuration from "+tt+" (" + path + ")");
+		return path;
+	}
+
 	static final public String package2Path(String pkg) {
 		return pkg.replaceAll("\\.", "/");
 	}
