@@ -420,8 +420,20 @@ public class FileEx extends InputStreamEx implements Serializable {
 		return null;
 	}
 
-	static final public String readText(String file) throws Exception {
-		return readText(openFile(file));
+	static final public String readText(String fn) throws Exception {
+		String fname = locateFromClasspath(fn);
+		File file = openFile(fname);
+		boolean isJar = fname.contains(".jar!");
+		if (!isJar && file.exists())
+			return readText(file);
+
+		if (isJar) {
+			try (InputStream is = FileEx.class.getClassLoader().getResourceAsStream(fn);) {
+				return readText(is, "UTF-8");
+			}
+		}
+		String _err = "=== is null , [" + fn + "] = [" + fname + "]";
+		throw new Exception(_err);
 	}
 
 	static final public String readText(File file) throws Exception {
