@@ -19,12 +19,12 @@ public class Shutdown extends RShutdown {
 			ThreadEx.sleep(sleep);
 		}
 		addShutdownHook(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                doExitByHook();
-            }
-        }));
-		
+			@Override
+			public void run() {
+				doExitByHook();
+			}
+		}));
+
 		this.flag_shutdown = flag_shut;
 		InetAddress addr = InetAddress.getByName("127.0.0.1");
 		ssocket = new ServerSocket(port, 2, addr);
@@ -40,11 +40,16 @@ public class Shutdown extends RShutdown {
 
 	@Override
 	protected void exce_run() throws Exception {
-		while (!this.isShuting && !this.isDoShut && this.ssocket != null) {
-			SDHandler hder = new SDHandler(this, ssocket.accept());
+		while (true) {
+			if (this.isShuting || this.isDoShut)
+				break;
+			ServerSocket _ss = this.ssocket;
+			if (_ss == null || _ss.isClosed())
+				break;
+			SDHandler hder = new SDHandler(this, _ss.accept());
 			list.add(hder);
 			ThreadEx.execute(hder);
-			ThreadEx.sleep(200);
+			ThreadEx.sleep(500);
 		}
 	}
 
@@ -72,10 +77,11 @@ public class Shutdown extends RShutdown {
 			list.clear();
 
 			this.flag_shutdown = null;
-			if (this.ssocket != null) {
-				this.ssocket.close();
-			}
+			ServerSocket _ss = this.ssocket;
 			this.ssocket = null;
+			if (_ss != null) {
+				_ss.close();
+			}
 		} catch (Exception e) {
 		}
 	}
