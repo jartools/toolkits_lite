@@ -242,6 +242,12 @@ public class EOJson extends EOException {
 	static final public String toJSONStr(JSONObject json) {
 		return toJSONStr(json, false);
 	}
+	
+	static final public String toJSONStr(JSONArray json) {
+		if (json == null)
+			return "[]";
+		return json.toString();
+	}
 
 	static final public String toJSONStr(Object javabean) {
 		JSONObject jObj = toJSON(javabean);
