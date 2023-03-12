@@ -83,7 +83,7 @@ public class JsonGsonHelper extends ExOrigin {
 	
 	static final public List toList4Gson(String jsonStr) {
 		Gson gson = new Gson();
-		TypeToken<?> type = TypeToken.getArray(Map.class);
+		TypeToken<?> type = TypeToken.getArray(List.class);
 		return gson.fromJson(jsonStr, type.getType());
 	}
 	
@@ -94,7 +94,7 @@ public class JsonGsonHelper extends ExOrigin {
 		if(jsonStr.startsWith("{"))
 			type = TypeToken.get(Map.class);
 		else
-			type = TypeToken.getArray(Map.class);
+			type = TypeToken.getArray(List.class);
 		return gson.fromJson(jsonStr, type.getType());
 	}
 	
