@@ -70,6 +70,11 @@ public class JsonGsonHelper extends ExOrigin {
 	static final public String toJSONStr4Gson(List<?> list) {
 		return toJSONStr4Gson(list,false);
 	}
+	
+	static final public String toJSONStr4GsonFmt(String json) {
+		Object obj = toMLObject4Gson(json);
+		return toJSONStr4Gson(obj,true);
+	}
 
 	static final public Map toMap4Gson(String jsonStr) {
 		Gson gson = new Gson();
