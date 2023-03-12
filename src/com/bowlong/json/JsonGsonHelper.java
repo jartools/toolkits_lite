@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.bowlong.basic.ExOrigin;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -13,31 +14,61 @@ import com.google.gson.reflect.TypeToken;
 
 @SuppressWarnings("rawtypes")
 public class JsonGsonHelper extends ExOrigin {
-
-	static final public String toJSONStr4Gson(JsonObject json, boolean isList) {
-		if (json == null) {
-			return isList ? "[]" : "{}";
-		}
+	static final public Gson getGson(boolean isFmt) {
+		if(isFmt)
+			return new GsonBuilder().setPrettyPrinting().create();
+		return new Gson();
+	}
+	
+	static final public String toJSONStr4Gson(JsonObject json,boolean isFmt) {
+		if (json == null)
+			return "{}";
+		if(isFmt)
+			return getGson(true).toJson(json);
 		return json.toString();
 	}
-
+	
 	static final public String toJSONStr4Gson(JsonObject json) {
-		return toJSONStr4Gson(json, false);
+		return toJSONStr4Gson(json,false);
+	}
+	
+	static final public String toJSONStr4Gson(JsonArray json,boolean isFmt) {
+		if (json == null) 
+			return "[]";
+		if(isFmt)
+			return getGson(true).toJson(json);
+		return json.toString();
+	}
+	
+	static final public String toJSONStr4Gson(JsonArray json) {
+		return toJSONStr4Gson(json,false);
 	}
 
-	static final public String toJSONStr4Gson(Object javabean) {
-		Gson gson = new Gson();
+	static final public String toJSONStr4Gson(Object javabean,boolean isFmt) {
+		Gson gson = getGson(isFmt);
 		return gson.toJson(javabean);
 	}
-
-	static final public String toJSONStr4Gson(Map<?, ?> map) {
-		Gson gson = new Gson();
-		return gson.toJson(map);
+	
+	static final public String toJSONStr4Gson(Object javabean) {
+		return toJSONStr4Gson(javabean,false);
 	}
 
-	static final public String toJSONStr4Gson(List<?> list) {
-		Gson gson = new Gson();
+	static final public String toJSONStr4Gson(Map<?, ?> map,boolean isFmt) {
+		Gson gson = getGson(isFmt);
+		return gson.toJson(map);
+	}
+	
+	static final public String toJSONStr4Gson(Map<?, ?> map) {
+		return toJSONStr4Gson(map,false);
+	}
+
+	static final public String toJSONStr4Gson(List<?> list,boolean isFmt) {
+		Gson gson = getGson(isFmt);
 		return gson.toJson(list);
+	}
+	
+	static final public String toJSONStr4Gson(List<?> list) {
+		return toJSONStr4Gson(list,false);
 	}
 
 	static final public Map toMap4Gson(String jsonStr) {
