@@ -232,15 +232,10 @@ public class EOJson extends EOException {
 		return (T) toJavaBean(javabean, jsonString);
 	}
 
-	static final public String toJSONStr(JSONObject json, boolean isList) {
-		if (json == null) {
-			return isList ? "[]" : "{}";
-		}
-		return json.toString();
-	}
-
 	static final public String toJSONStr(JSONObject json) {
-		return toJSONStr(json, false);
+		if (json == null)
+			return "{}";
+		return json.toString();
 	}
 	
 	static final public String toJSONStr(JSONArray json) {
