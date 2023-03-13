@@ -33,6 +33,6 @@
 	<classpathentry kind="lib" path="lib2022_jdk8/springframework/spring-web-5.3.9.jar"/>
 	<classpathentry kind="lib" path="lib2022_jdk8/poi-ooxml-5.2.0.jar"/>
 	<classpathentry kind="lib" path="lib2022_jdk8/netty-all-4.1.63.Final.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_261"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
