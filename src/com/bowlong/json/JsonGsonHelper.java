@@ -45,6 +45,8 @@ public class JsonGsonHelper extends ExOrigin {
 	}
 
 	static final public String toJSONStr4Gson(Object javabean,boolean isFmt) {
+		if(javabean == null)
+			return "{}";
 		Gson gson = getGson(isFmt);
 		return gson.toJson(javabean);
 	}
@@ -72,7 +74,7 @@ public class JsonGsonHelper extends ExOrigin {
 	}
 	
 	static final public String toJSONStr4GsonFmt(String json) {
-		Object obj = toMLObject4Gson(json);
+		Object obj = toMLObject4Gson2(json);
 		return toJSONStr4Gson(obj,true);
 	}
 
@@ -91,11 +93,27 @@ public class JsonGsonHelper extends ExOrigin {
 	static final public Object toMLObject4Gson(String jsonStr) {
 		Gson gson = new Gson();
 		TypeToken<?> type = null;
-		if(jsonStr.startsWith("{"))
+		String str = jsonStr.trim();
+		boolean isMap = str.startsWith("{");
+		boolean isList = str.startsWith("[");
+		if(isMap)
 			type = TypeToken.get(Map.class);
-		else
+		else if(isList)
 			type = TypeToken.getArray(List.class);
-		return gson.fromJson(jsonStr, type.getType());
+		if(type == null)
+			return null;
+		return gson.fromJson(str, type.getType());
+	}
+	
+	static final public Object toMLObject4Gson2(String jsonStr) {
+		String str = jsonStr.trim();
+		boolean isMap = str.startsWith("{");
+		boolean isList = str.startsWith("[");
+		if(isMap)
+			return toMap4Gson(str);
+		else if(isList)
+			return toList4Gson(str);
+		return null;
 	}
 	
 	static final public <T> List<T> toList4Gson(Class<T> clazz, String jsonStr) {
