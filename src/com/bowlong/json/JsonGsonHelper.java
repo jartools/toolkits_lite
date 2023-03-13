@@ -74,7 +74,17 @@ public class JsonGsonHelper extends ExOrigin {
 	}
 	
 	static final public String toJSONStr4GsonFmt(String json) {
-		Object obj = toMLObject4Gson2(json);
+		Object obj = toMLObject4Gson(json);
+		return toJSONStr4Gson(obj,true);
+	}
+	
+	static final public String toJSONStr4GsonFmtMap(String json) {
+		Map obj = toMap4Gson(json);
+		return toJSONStr4Gson(obj,true);
+	}
+	
+	static final public String toJSONStr4GsonFmtList(String json) {
+		List obj = toList4Gson(json);
 		return toJSONStr4Gson(obj,true);
 	}
 
@@ -105,16 +115,6 @@ public class JsonGsonHelper extends ExOrigin {
 		return gson.fromJson(str, type.getType());
 	}
 	
-	static final public Object toMLObject4Gson2(String jsonStr) {
-		String str = jsonStr.trim();
-		boolean isMap = str.startsWith("{");
-		boolean isList = str.startsWith("[");
-		if(isMap)
-			return toMap4Gson(str);
-		else if(isList)
-			return toList4Gson(str);
-		return null;
-	}
 	
 	static final public <T> List<T> toList4Gson(Class<T> clazz, String jsonStr) {
 		Gson gson = new Gson();
