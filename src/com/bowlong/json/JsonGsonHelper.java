@@ -107,8 +107,11 @@ public class JsonGsonHelper extends ExOrigin {
 		String str = jsonStr.trim();
 		boolean isMap = str.startsWith("{");
 		boolean isList = str.startsWith("[");
+		boolean isList2 = str.substring(1,2).equals("[");
 		if(isMap)
 			type = TypeToken.get(Map.class);
+		else if(isList && isList2)
+			type = new TypeToken<List<List<Map<?,?>>>>(){};
 		else if(isList)
 			type = new TypeToken<List<Map<?,?>>>(){};
 //			type = TypeToken.getArray(List.class);
